@@ -1,0 +1,17 @@
+# Table of contents
+- file: intro
+  numbered: true
+
+- part: Using QIIME 2
+  chapters:
+  - file: using/getting-started
+  - file: using/overview-tutorial
+
+- part: Developing with QIIME 2
+  chapters: 
+  - file: developing/getting-started
+  - file: developing/first-plugin
+
+- part: Back Matter
+  chapters:
+  - file: back-matter/glossary.md

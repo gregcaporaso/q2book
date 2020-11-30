@@ -1,0 +1,11 @@
+#######################################################################################
+# A default configuration that will be loaded for all jupyter books
+# See the documentation for help and more options: 
+# https://jupyterbook.org/customize/config.html
+
+#######################################################################################
+# Book settings
+title                       : q2book
+author                      : J Gregory Caporaso 
+copyright                   : "2020" 
+logo                        : logo.png 
