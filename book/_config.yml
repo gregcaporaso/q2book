@@ -9,3 +9,6 @@ title                       : q2book
 author                      : J Gregory Caporaso 
 copyright                   : "2020" 
 logo                        : logo.png 
+
+parse:
+    myst_extended_syntax: true
