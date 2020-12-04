@@ -2,10 +2,15 @@
 - file: intro
   numbered: true
 
-- part: Using QIIME 2
+- part: Microbiome Bioinformatics with QIIME 2
   chapters:
   - file: using/getting-started
   - file: using/overview-tutorial
+
+- part: Understanding the algorithms
+  chapters: 
+  - file: algorithms/pairwise-alignment
+  - file: algorithms/database-searching
 
 - part: Developing with QIIME 2
   chapters: 
