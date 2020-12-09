@@ -54,3 +54,9 @@ Section 3 is intended to be read sequentially. This will take you through differ
 	 * Building a simple plugin: qiime2.plugin, usage API
 	 * Building a more complex plugin: defining types, formats, and transformers
 	 * Building a simple interface: qiime2.sdk
+
+## List of works cited
+
+```{bibliography} references.bib
+:filter: docname in docnames
+```
