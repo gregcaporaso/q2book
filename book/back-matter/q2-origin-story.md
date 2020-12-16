@@ -1,4 +1,4 @@
-# Appendix 2: History of it QIIME platform
+# Appendix 2: History of the QIIME platform
 
 _This content is derived from a grant proposal, and needs to be revised and expanded for this book._
 
