@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2. An interactive overview of QIIME 2 &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Pairwise sequence alignment" href="../algorithms/pairwise-alignment.html" />
+    <link rel="prev" title="1. Getting started with using QIIME 2" href="getting-started.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/intro.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. An interactive overview of QIIME 2
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/pairwise-alignment.html">
+   1. Pairwise sequence alignment
+   <link src="a76822"/>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/database-searching.html">
+   2. Sequence homology searching
+   <link src="d22e6b"/>
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/historical-context.html">
+   1. Appendix 1: An inadequate history of microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   2. Appendix 2: History of it QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   3. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/using/overview-tutorial.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-data">
+   2.1. The data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exercises">
+   2.2. Exercises
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="an-interactive-overview-of-qiime-2">
+<h1><span class="section-number">2. </span>An interactive overview of QIIME 2<a class="headerlink" href="#an-interactive-overview-of-qiime-2" title="Permalink to this headline">¶</a></h1>
+<p>In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we’re through that, let’s jump in and do something really quickly with QIIME 2. In this chapter I’ll present a workflow, which you should follow along with on your computer if possible, that will demultiplex sequences, apply quality control and build a feature table, and build five different interactive visualizations. The interactive that we’ll build in this chapter are the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity, beta diversity, and taxonomic composition of your samples. Before you can apply these steps to your own data, you’ll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in the next chapter.</p>
+<div class="section" id="the-data">
+<h2><span class="section-number">2.1. </span>The data<a class="headerlink" href="#the-data" title="Permalink to this headline">¶</a></h2>
+<p>For the purpose of getting a very quick overview of QIIME 2, we’re going to work with a desert soil microbiome data set from the Atacama Desert in northern Chile. The Atacama desert is one of the most arid locations on the Earth. In many years it receives no rain at all. The data we’ll use here is sampled along a gradient from the hyper-arid core of the desert to the western foothills of the Andes mountain range, where there is more moisture resulting from snowmelt in the mountains.</p>
+<p>I have a few hypotheses going into this analysis that we can validate when we analyze the data. First, I expect to see dessication resistant organisms dominating the samples in the hyper-arid core of the desert. Second, I hypothesize that there will be fewer types of microbes, whether I look at the genus level or higher taxonomic levels, in the hyper-arid samples than in the less arid samples. Third, I expect the samples from the hyper-arid sites to be more similar to each other in overall composition than they are to samples from the less arid sites. I’m formulating these ideas now, before I start analyzing the data, so I have an idea of what I expect to see. After analyzing the samples, I’ll have a good idea of whether the data meets my expectations or whether something surprizing is going on.</p>
+<p>We’ll begin this analysis by downloading a QIIME 2 artifact that contains our demultiplexed sequence data. (As mentioned above, in the next chapter we’ll cover generating this artifact from your sequencing data by importing it.) Do this as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget <span class="se">\</span>
+  -O <span class="s2">&quot;sample-metadata.tsv&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;https://data.qiime2.org/2020.11/tutorials/atacama-soils/sample_metadata.tsv&quot;</span>
+
+wget <span class="se">\</span>
+  -O <span class="s2">&quot;emp-paired-end-sequences.qza&quot;</span> <span class="se">\</span>
+  <span class="s2">&quot;https://docs.qiime2.org/2020.11/data/tutorials/atacama-soils/emp-paired-end-sequences.qza&quot;</span>
+</pre></div>
+</div>
+<p>You’ll see some output on the screen, and you should ultimately see that these two files were downloaded successfully.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If it seems like the download failed, remove any files that were generated by these commands and try to download them again. If you’re still running into errors, you should feel free to post a question to the QIIME 2 Forum. In general, if you’re confused about something in the book, or something isn’t working for you, the QIIME 2 Forum is the best place to get help. Start by searching to see if anyone has asked a similar question that has been answered. If not, post your own question. It can be intimidating to post questions to online forums, but it can also be extremely helpful. Don’t worry - the QIIME 2 community is very friendly and many of the people posting questions there have little or no experience using command line software before trying QIIME 2, so even if your question seems basic, you can rest assured that someone has had or will have almost the same question you’re asking.</p>
+</div>
+<p>The commands that you ran downloaded two files that will get us started on this analysis. The first, sample-metadata.tsv, is a tab-separated text file (the <code class="docutils literal notranslate"><span class="pre">.tsv</span></code> file extension tells you this). In QIIME 2, the sample metadata file maps sample identifiers to information about those samples. You should be able to open and view that file in a program such as Google Sheets (any text editor, such as NotePad, NotePad++, TextEdit, or TextMate, will also work, but the layout that will provided by a spreadsheet viewer will help you interpret the file contents). In this data set you’ll see that sample metadata includes information such as the latitude and longitude where a sample was collected, whether that site was classified as hyper-arid, arid, or semi-arid. As you can imagine, that information is essential for letting us explore the hypotheses that I listed above. Sample metadata is absolutely essential to your analysis. We’ll revisit this in a lot more detail a little bit later.</p>
+<p>The second file that we downloaded above was our multiplexed sequence data. This is sequencing data as it came off an Illumina DNA sequencing instrument. At this stage, the sequences are all grouped together - they are not grouped by sample. Instead, during sample preparation (PCR specifically), a short DNA sequence referred to as an index or a barcode was added to sequences on a per-sample basis. For example, sample-1 might be assigned the barcode TGACCGTACGTA, and sample-2 might be assigned the barcode TGGTAGACCCGT. All sequences derived from sample-1 will have the sample-1 barcode associated with them, and all sequences derived from sample-2 will have the sample-2 barcode associated with them. One piece of sample metadata in our sample metadata file is the barcode sequence associated with each sample, and we can use the <code class="docutils literal notranslate"><span class="pre">q2-demux</span></code> plugin to assign sequences to samples.</p>
+<p>As a first analysis step with QIIME 2, demultiplex the sequence data with the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">demux</span> <span class="n">emp</span><span class="o">-</span><span class="n">paired</span> \
+  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">seqs</span> <span class="n">emp</span><span class="o">-</span><span class="n">paired</span><span class="o">-</span><span class="n">end</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">barcodes</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span> \
+  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">barcodes</span><span class="o">-</span><span class="n">column</span> <span class="n">barcode</span><span class="o">-</span><span class="n">sequence</span> \
+  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">rev</span><span class="o">-</span><span class="n">comp</span><span class="o">-</span><span class="n">mapping</span><span class="o">-</span><span class="n">barcodes</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">sample</span><span class="o">-</span><span class="n">sequences</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">error</span><span class="o">-</span><span class="n">correction</span><span class="o">-</span><span class="n">details</span> <span class="n">demux</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">qza</span>
+</pre></div>
+</div>
+<p>Since this is one of the first QIIME 2 commands that you’ve run (at least while reading this book) let’s take a look at it in some detail. As we look at this command, I’m going to assume that you either have some command line software experience, or that you’ve read <em>the introductory chapter in this book on using the command line</em>. There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command’s components are separated by spaces. The first space-separated component is <code class="docutils literal notranslate"><span class="pre">qiime</span></code>. This tells your computer that the QIIME 2 program should be run. The second space-separated component is <code class="docutils literal notranslate"><span class="pre">demux</span></code>. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the <code class="docutils literal notranslate"><span class="pre">q2-demux</span></code> plugin. The third space-separated component is <code class="docutils literal notranslate"><span class="pre">emp-paired</span></code>, which is an action in the q2-demux plugin. This action demultiplexes paired-end sequencing data that is formatted as is typical for Earth Microbiome Project (EMP) sequenced data (more on that later). As mentioned in the previous chapter, if you’d like to learn about this action, you could run the command <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">demux</span> <span class="pre">emp-paired</span> <span class="pre">--help</span></code>, which will print help text to the screen. Finally, the <code class="docutils literal notranslate"><span class="pre">\</span></code> at the end of the line is worth mentioning now. When you’re working on the command line, line breaks (i.e., the character that is received when you press the <em>Return</em> key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can be long, it’s helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like the command should be split across multiple lines. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation. The <code class="docutils literal notranslate"><span class="pre">\</span></code> character here simply means that the terminal shouldn’t interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">demux</span> <span class="n">emp</span><span class="o">-</span><span class="n">paired</span> <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">seqs</span> <span class="n">emp</span><span class="o">-</span><span class="n">paired</span><span class="o">-</span><span class="n">end</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qza</span> <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">barcodes</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span> <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">barcodes</span><span class="o">-</span><span class="n">column</span> <span class="n">barcode</span><span class="o">-</span><span class="n">sequence</span> <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">rev</span><span class="o">-</span><span class="n">comp</span><span class="o">-</span><span class="n">mapping</span><span class="o">-</span><span class="n">barcodes</span> <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">sample</span><span class="o">-</span><span class="n">sequences</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">error</span><span class="o">-</span><span class="n">correction</span><span class="o">-</span><span class="n">details</span> <span class="n">demux</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">qza</span>
+</pre></div>
+</div>
+<p>That command will do the exact same thing as the one above. I think you’ll agree though that the first variant, where the command is split across multiple lines, is easier to read.</p>
+<p>After we specify the program (<code class="docutils literal notranslate"><span class="pre">qiime</span></code>), the plugin (<code class="docutils literal notranslate"><span class="pre">demux</span></code>), and the action (<code class="docutils literal notranslate"><span class="pre">emp-paired</span></code>) that we want to run, we provide options to that action to tell it what files we want it to operate on, what we want it to do exactly, and what we want the outputs to be called. These components of the command are specified on the remaining lines. Let’s look at those now.</p>
+<p>This action takes one QIIME 2 artifact as input, the mutliplexed sequences that we downloaded above. In the QIIME 2 command line interface, input artifacts are always specified with options beginning with <code class="docutils literal notranslate"><span class="pre">--i-</span></code>. This action also takes a metadata file and a metadata column, both of which are specified with options beginning with <code class="docutils literal notranslate"><span class="pre">--m-</span></code> (where the <em>m</em> implies <em>metadata</em>). Here, these specify the file containing the metadata (that’s the second file that we downloaded above) and column header in that file that contains the barcode sequences. If you have opened the <code class="docutils literal notranslate"><span class="pre">sample-metadata.tsv</span></code> file, you’ll see that there is a column called <code class="docutils literal notranslate"><span class="pre">barcode-sequence</span></code>. This column could be called nearly anything (there are some rules for what column names are allowed that we’ll cover later). As long as you specify the column name correctly when you call this action, it will know where to find the barcodes. Input and metadata parameters, in general, are files that you’re providing to a QIIME 2 action for actions to be performed on. They will never be modified by QIIME 2 - they are only viewed or read. In this command we’re also providing one parameter, specified by the option beginning with <code class="docutils literal notranslate"><span class="pre">--p-</span></code>. Parameters modify the behavior of an action, and parameters that don’t take any values (such as this one) are often referred to as <em>flags</em>. We’ll see examples of parameters that take a value later in this chapter. Finally, this command will generate two files as output, and we specify the paths (absolute or relative) where we want to store those files with output options. Output options always begin with <code class="docutils literal notranslate"><span class="pre">--o-</span></code> in QIIME 2. The first output created by this command was <code class="docutils literal notranslate"><span class="pre">demux.qza</span></code>, which contains our demultiplexed sequences (or sequences that have been grouped by sample). The second output created by this command is <code class="docutils literal notranslate"><span class="pre">demux-log.qza</span></code>. This is a log file that contains some details about this action.</p>
+<p>As mentioned in the previous chapter, QIIME 2 artifacts such as the two <code class="docutils literal notranslate"><span class="pre">.qza</span></code> files that were generated by the previous command, are intermediary files in a QIIME 2 analysis. They’re not meant to be directly viewed by humans. Generally when there is something interesting to view from a QIIME 2 artifact, there will be a visualizer to convert the intermeidary result into something that you can view. Here we’ll apply two different visualizers that will allow us to look at the results that were generated.</p>
+<p>The first visualizer we’ll use is a very powerful and general purpose visualizer that you should always keep in mind. It’s the <code class="docutils literal notranslate"><span class="pre">tabulate</span></code> visualizer in the <code class="docutils literal notranslate"><span class="pre">q2-metadata</span></code> plugin. This might not seem very intuitive at the moment, but many QIIME 2 artifacts that provide some information on a per-sample (or per-feature) basis can be used as if they are metadata. The power of this will become more clear in later chapters. We’ll apply this to the log artifact that was generated as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">metadata</span> <span class="n">tabulate</span> \
+  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="n">file</span> <span class="n">demux</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">demux</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">qzv</span>
+</pre></div>
+</div>
+<p>The next visualizer that we’ll use is one that is specific to visualizing summaries of demultiplexed sequence data with quality scores. In addition to a summary of the demultiplexing run, it provides information on the quality of sequence data in the form of interactive visulizations. You can run this command as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">demux</span> <span class="n">summarize</span> \
+  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">data</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">demux</span><span class="o">.</span><span class="n">qzv</span>
+</pre></div>
+</div>
+<p>Both of these commands should have run successfully for you. You’ll know they did if you see text printed to the terminal saying something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Saved</span> <span class="n">Visualization</span> <span class="n">to</span><span class="p">:</span> <span class="n">demux</span><span class="o">.</span><span class="n">qzv</span>
+</pre></div>
+</div>
+<p>The next step is viewing this visualizations. You can do this in a few ways, but the one I recommend right now is using <a class="reference external" href="https://view.qiime2.org">QIIME 2 View</a>. Open that page in your web browser now. You should see a big box on the screen where you can drop a QIIME 2 artifact or visualization to view it. Remember that artifacts don’t really contain much of interest in terms of viewing by a human, so don’t bother trying to view those now. We’ll do that later. Instead, load the <code class="docutils literal notranslate"><span class="pre">demux.qzv</span></code> visualization in one browswer tab and the <code class="docutils literal notranslate"><span class="pre">demux-log.qzv</span></code> in another brower tab. As advertised, these will provide two different types of summaries of the demultiplexing run. <code class="docutils literal notranslate"><span class="pre">demux.qzv</span></code> is the more relevant visualization for us right now - notice that this visualization has two tabs within the page labelled <em>Overview</em> and <em>Interactive Quality Plot</em>. The <em>Overview</em> tab provides details on the sequence counts per sample (or the number of sequences per sample) for both the forward and reverse reads since this is a paired-end sequencing run. The median sequence per sample count is reasonably high here, but I notice when looking at the details on the bottom of the page that a lot of samples had very low sequence counts. This likely indicates an issue with DNA extraction or amplifcation of those samples. The <em>Interactive Quality Plot</em> presents a summary of the sequence quality by sequence position. In general, this looks like a high quality sequencing run to me.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Feel free to spend a few minutes exploring these files, but don’t worry too much about the details right now. We’re going to discuss these plots, as well as demultiplexing in general, in a lot more detail in a couple of chapters. Remember, the goal of this chapter is just to do a few things quickly with QIIME 2.</p>
+</div>
+<p>Since our sequence quality generally looks good, let’s move on to the next step of our analysis: sequence quality control. QIIME 2 has a few options for performing quality control. Here we’ll use the DADA2 denoising approach, which is available through the <code class="docutils literal notranslate"><span class="pre">q2-dada2</span></code> plugin. Go ahead and run this command, which will take up to about 10 minutes to complete, and then we’ll talk about specifically what it’s doing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">dada2</span> <span class="n">denoise</span><span class="o">-</span><span class="n">single</span> \
+  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">demultiplexed</span><span class="o">-</span><span class="n">seqs</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">trim</span><span class="o">-</span><span class="n">left</span> <span class="mi">13</span> \
+  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">trunc</span><span class="o">-</span><span class="nb">len</span> <span class="mi">150</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">table</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">representative</span><span class="o">-</span><span class="n">sequences</span> <span class="n">feature</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">denoising</span><span class="o">-</span><span class="n">stats</span> <span class="n">dada2</span><span class="o">-</span><span class="n">log</span><span class="o">.</span><span class="n">qza</span>
+</pre></div>
+</div>
+<p>As you can tell from the first line of this command, we’re calling the program <code class="docutils literal notranslate"><span class="pre">qiime</span></code>, the plugin <code class="docutils literal notranslate"><span class="pre">dada2</span></code>, and the action <code class="docutils literal notranslate"><span class="pre">denoise-single</span></code>. This runs DADA2’s single-end read denoiser, which may seem like a surprising choice given that I previously mentioned that this is paired end data. The reason that I choose to use the single end denoiser here is that these are short sequence reads for the region of the 16S rRNA that we’re sequencing. The region is about 350 bases long, but the sequencing run was a 2x150 run (where the 2 implies that it was paired end, for two reads, and 150 implies that 150 bases were read in each direction. This is generally considered to be too short for joining of paired end reads, so I’m not going to join them here.</p>
+<p>Your <code class="docutils literal notranslate"><span class="pre">denoise-single</span></code> command may have finished running by now. If not, take a break for a few minutes. Stretch your legs, go for a walk around the block, or grab a glass of water. Waiting for a long-running job (i.e., a command that is currently running) to finish is a great opportunity to break up your screen time.</p>
+<div class="figure align-default" id="xkcd-compiling">
+<a class="reference internal image-reference" href="https://imgs.xkcd.com/comics/compiling.png"><img alt="https://imgs.xkcd.com/comics/compiling.png" src="https://imgs.xkcd.com/comics/compiling.png" style="height: 250px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 2.1 </span><span class="caption-text">For programmers, waiting for code to compile is an excuse for a break. For data analysts, it’s waiting for a long-running job to finish.</span><a class="headerlink" href="#xkcd-compiling" title="Permalink to this image">¶</a></p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span> <span class="n">summarize</span> \
+  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">table</span> <span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">table</span><span class="o">.</span><span class="n">qzv</span> \
+  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span>
+
+<span class="n">qiime</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span> <span class="n">tabulate</span><span class="o">-</span><span class="n">seqs</span> \
+  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">data</span> <span class="n">rep</span><span class="o">-</span><span class="n">seqs</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">rep</span><span class="o">-</span><span class="n">seqs</span><span class="o">.</span><span class="n">qzv</span>
+
+<span class="n">qiime</span> <span class="n">metadata</span> <span class="n">tabulate</span> \
+  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="n">file</span> <span class="n">denoising</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">qza</span> \
+  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">denoising</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">qzv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercises">
+<h2><span class="section-number">2.2. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>In this chapter we performed single-end denoising of the sequencing data. Try re-running the steps above, but with paired end denoising and see how your results differ. Instead of using <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">dada2</span> <span class="pre">denoise-single</span></code>, you can use <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">dada2</span> <span class="pre">denoise-paired</span></code> for this. Use the same trim and truncation values for the reverse reads as you use for the forward reads. Be sure to run <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">dada2</span> <span class="pre">denoise-paired</span> <span class="pre">--help</span></code> to learn how to use this command. The inputs and outputs are the same, but some of the parameters that you’ll need to use differ. After running <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">dada2</span> <span class="pre">denoise-paired</span></code> the remaining commands will be identical to the ones that were used for analyzing the single-end data. What differs and what doesn’t differ when you compare results for the two analysis workflows?</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./using"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="getting-started.html" title="previous page"><span class="section-number">1. </span>Getting started with using QIIME 2</a>
+    <a class='right-next' id="next-link" href="../algorithms/pairwise-alignment.html" title="next page"><span class="section-number">1. </span>Pairwise sequence alignment <link src='a76822'/></a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

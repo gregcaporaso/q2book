@@ -1,0 +1,1180 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1. Pairwise sequence alignment &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Sequence homology searching" href="database-searching.html" />
+    <link rel="prev" title="2. An interactive overview of QIIME 2" href="../using/overview-tutorial.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/intro.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/overview-tutorial.html">
+   2. An interactive overview of QIIME 2
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   1. Pairwise sequence alignment
+   <link src="a76822"/>
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="database-searching.html">
+   2. Sequence homology searching
+   <link src="d22e6b"/>
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/historical-context.html">
+   1. Appendix 1: An inadequate history of microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   2. Appendix 2: History of it QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   3. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/algorithms/pairwise-alignment.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-a-sequence-alignment-link-src-e63a4f">
+   1.1. What is a sequence alignment?
+   <link src="e63a4f"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-simple-procedure-for-aligning-a-pair-of-sequences-link-src-86c6b7">
+   1.2. A simple procedure for aligning a pair of sequences
+   <link src="86c6b7"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-create-a-blank-matrix-where-the-rows-and-columns-represent-the-positions-in-the-sequences-link-src-pf7bf8">
+     1.2.1. Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences.
+     <link src="pf7Bf8"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-add-values-to-the-cells-in-the-matrix-link-src-fdxype">
+     1.2.2. Step 2: Add values to the cells in the matrix.
+     <link src="fDXYPE"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-identify-the-longest-diagonals-link-src-ahda6v">
+     1.2.3. Step 3: Identify the longest diagonals.
+     <link src="AHda6V"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-4-transcribe-some-of-the-possible-alignments-that-arise-from-this-process-link-src-pd0jsr">
+     1.2.4. Step 4: Transcribe some of the possible alignments that arise from this process.
+     <link src="PD0jSR"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-this-simple-procedure-is-too-simplistic-link-src-jzshio">
+     1.2.5. Why this simple procedure is too simplistic
+     <link src="jzshiO"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#differential-scoring-of-matches-and-mismatches-link-src-9f5e71">
+   1.3. Differential scoring of matches and mismatches
+   <link src="9f5e71"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm-link-src-15efc2">
+   1.4. A better approach for global pairwise alignment using the Needleman-Wunsch algorithm
+   <link src="15efc2"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stepwise-needleman-wunsch-alignment-link-src-gn3vj6">
+     1.4.1. Stepwise Needleman-Wunsch alignment
+     <link src="Gn3Vj6"/>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-1-create-blank-matrices-link-src-hvbaxt">
+       1.4.1.1. Step 1: Create blank matrices.
+       <link src="hVbAxT"/>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-2-compute-f-and-t-link-src-tma9ea">
+       1.4.1.2. Step 2: Compute
+       <span class="math notranslate nohighlight">
+        \(F\)
+       </span>
+       and
+       <span class="math notranslate nohighlight">
+        \(T\)
+       </span>
+       .
+       <link src="Tma9ea"/>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-3-transcribe-the-alignment-link-src-afavlt">
+       1.4.1.3. Step 3: Transcribe the alignment.
+       <link src="AFAVLt"/>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#automating-needleman-wunsch-alignment-with-python-link-src-b8xi7y">
+     1.4.2. Automating Needleman-Wunsch alignment with Python
+     <link src="B8xI7Y"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-note-on-computing-f-and-t-link-src-qrabtd">
+     1.4.3. A note on computing
+     <span class="math notranslate nohighlight">
+      \(F\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T\)
+     </span>
+     <link src="QRabtd"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-versus-local-alignment-link-src-c80f21">
+   1.5. Global versus local alignment
+   <link src="c80f21"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#smith-waterman-local-sequence-alignment-link-src-c9656e">
+   1.6. Smith-Waterman local sequence alignment
+   <link src="c9656e"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-create-blank-matrices-link-src-ew2bdo">
+     1.6.1. Step 1: Create blank matrices.
+     <link src="Ew2bdO"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-compute-f-and-t-link-src-qhcruj">
+     1.6.2. Step 2: Compute
+     <span class="math notranslate nohighlight">
+      \(F\)
+     </span>
+     and
+     <span class="math notranslate nohighlight">
+      \(T\)
+     </span>
+     .
+     <link src="qHCRuJ"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-transcribe-the-alignment-link-src-yf5dzy">
+     1.6.3. Step 3: Transcribe the alignment.
+     <link src="Yf5dZy"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#automating-smith-waterman-alignment-with-python-link-src-zx1ojn">
+     1.6.4. Automating Smith-Waterman alignment with Python
+     <link src="zX1OjN"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#differential-scoring-of-gaps-link-src-976169">
+   1.7. Differential scoring of gaps
+   <link src="976169"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-long-does-pairwise-sequence-alignment-take-link-src-ac446d">
+   1.8. How long does pairwise sequence alignment take?
+   <link src="ac446d"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#comparing-implementations-of-smith-waterman-link-src-gfhvcp">
+     1.8.1. Comparing implementations of Smith-Waterman
+     <link src="gFhVcP"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#analyzing-smith-waterman-run-time-as-a-function-of-sequence-length-link-src-1gicuj">
+     1.8.2. Analyzing Smith-Waterman run time as a function of sequence length
+     <link src="1gIcuj"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conclusions-on-the-scalability-of-pairwise-sequence-alignment-with-smith-waterman-link-src-n9htil">
+     1.8.3. Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman
+     <link src="N9htIl"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="pairwise-sequence-alignment-link-src-a76822">
+<h1><span class="section-number">1. </span>Pairwise sequence alignment <link src='a76822'/><a class="headerlink" href="#pairwise-sequence-alignment-link-src-a76822" title="Permalink to this headline">¶</a></h1>
+<p>One of the most fundamental problems in bioinformatics is determining how “similar” a pair of biological sequences are. There are many applications for this, including inferring the function or source organism of an unknown gene sequence, developing hypotheses about the relatedness of organisms, or grouping sequences from closely related organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/2231712">one of the most cited papers</a> in modern biology. In this chapter we’ll explore why determining sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
+<p>Imagine you have three sequences - call them <code class="docutils literal notranslate"><span class="pre">r1</span></code>and <code class="docutils literal notranslate"><span class="pre">r2</span></code> (<em>r</em> is for <em>reference</em>) and <code class="docutils literal notranslate"><span class="pre">q1</span></code> (<em>q</em> is for <em>query</em>) - and you want to know whether <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> or <code class="docutils literal notranslate"><span class="pre">r2</span></code>. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the <a class="reference external" href="http://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> between them) to figure this out. Here’s what this would look like.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">hamming</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">DNA</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCCAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGACACACGGGGATTAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGAGACACGGCGATTAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">q1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we just stored 3 sequences as variables. Now we’re going to compute the hamming distance between them using the function <code class="docutils literal notranslate"><span class="pre">hamming()</span></code>. Don’t forget we can look at what any function does by using <code class="docutils literal notranslate"><span class="pre">%psource</span></code>. Let’s see what the <code class="docutils literal notranslate"><span class="pre">hamming()</span></code> function looks like (don’t worry if some parts of it aren’t entirely clear just yet):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">hamming</span>
+</pre></div>
+</div>
+<p>Let’s find out if our query (“q1”) is closer to reference 1 or reference 2 based on the hamming distance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">q1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In this case, <code class="docutils literal notranslate"><span class="pre">q1</span></code> has a smaller distance to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than it does to <code class="docutils literal notranslate"><span class="pre">r2</span></code>, so <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than <code class="docutils literal notranslate"><span class="pre">r2</span></code>. But it’s not always that simple.</p>
+<p>Here we’ve assumed that only <em>substitution events</em> have occurred, meaning one DNA base was substituted with another. Let’s define <code class="docutils literal notranslate"><span class="pre">q2</span></code>, which is the same as <code class="docutils literal notranslate"><span class="pre">q1</span></code> except that a single base has been deleted at the beginning of the sequence, and a single base has been inserted at the end of the sequence.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q2</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This change had a big effect on the distance between the two sequences. In this case, the deletion event at the beginning of <code class="docutils literal notranslate"><span class="pre">q2</span></code> has shifted that sequence relative to <code class="docutils literal notranslate"><span class="pre">r1</span></code>, which resulted in many of the bases “downstream” of the deleted base being different. However the sequences do still seem fairly similar, so perhaps this relatively large distance isn’t biologically justified.</p>
+<p>What we’d really want to do is have a way to indicate that a deletion seems to have occurred in <code class="docutils literal notranslate"><span class="pre">q2</span></code>. Let’s define <code class="docutils literal notranslate"><span class="pre">q3</span></code>, where we use a <code class="docutils literal notranslate"><span class="pre">-</span></code> character to indicate a deletion with respect to <code class="docutils literal notranslate"><span class="pre">r1</span></code>. This results in what seems like a more reasonable distance between the two sequences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q3</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;-TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q3</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>What we’ve done here is create a pairwise alignment of <code class="docutils literal notranslate"><span class="pre">r1</span></code> and <code class="docutils literal notranslate"><span class="pre">q3</span></code>. In other words, we’ve <strong>aligned</strong> positions to maximize the similarity of the two sequences, using the <code class="docutils literal notranslate"><span class="pre">-</span></code> to fill in spaces where one character is missing with respect to that location in the other sequence. We refer to <code class="docutils literal notranslate"><span class="pre">-</span></code> characters in aligned sequences as <strong>gap characters</strong>, or gaps.</p>
+<p>The <em>alignment</em> of these two sequences is clear if we print them  out, one on top of the other:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Scanning through these two sequences, we can see that they are largely identical, with the exception of one <code class="docutils literal notranslate"><span class="pre">-</span></code> character, and about 25% <em>substitutions</em> of one base for another.</p>
+<div class="section" id="what-is-a-sequence-alignment-link-src-e63a4f">
+<h2><span class="section-number">1.1. </span>What is a sequence alignment? <link src='e63a4f'/><a class="headerlink" href="#what-is-a-sequence-alignment-link-src-e63a4f" title="Permalink to this headline">¶</a></h2>
+<p>Let’s take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution, a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as <strong>mutations</strong>. Some types of mutation events that can occur are:</p>
+<ul class="simple">
+<li><p><strong>substitutions</strong>, where one base (or amino acid, in protein sequences) is replaced with another;</p></li>
+<li><p><strong>insertions</strong>, where one or more contiguous bases are inserted into a sequence;</p></li>
+<li><p>and <strong>deletions</strong>, where one or more contiguous bases are deleted from a sequence.</p></li>
+</ul>
+<p>(Other types of mutation events can occur, but we’re going to focus on these for now.)</p>
+<p>Figure 1 illustrates how one ancestral DNA sequence (Figure 1a), over time, might evolve into two derived sequences (Figure 1b). When two or more sequences are derived from a single ancestral sequence, as is the case in this example, those sequences are said to be <strong>homologs</strong> of one another, or homologous sequences. On a piece of paper, make a hypothesis about which of these types of mutation events occurred where over our hypothetical evolution of these sequences.</p>
+<figure>
+    <img src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/fundamentals/images/alignment.png">
+    <figcaption>Figure 1: Sequence evolution and pairwise sequence alignment. Abbreviation key: *indel*: insertion or deletion event has occurred since the last common ancestor; *sub*: substitution event has occurred since the last common ancestor; *nc*: no change has occurred since the last common ancestor.</figcaption>
+</figure>
+<p>
+<p><strong>The goal of pairwise sequence alignment is, given two sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.</strong> In practice, we develop this hypothesis by aligning the sequences to one another inserting gaps as necessary, in a way that maximizes their similarity. This is a <strong>maximum parsimony</strong> approach (an application of <a class="reference external" href="https://en.wikipedia.org/wiki/Occam%27s_razor">Occam’s razor</a>), where we assume that the simplest explanation (the one involving the fewest or least extreme mutation events) is the most likely.</p>
+<p>In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in Figure 1c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct 100 million years ago – and even if not extinct, it would no longer be the same).</p>
+<p>Figure 1d-f illustrates three possible alignments of these two sequences. Just as the notes you made about which types of mutation events may have happened at which positions represents your <em>hypothesis</em> about the evolutionary events that took place, a sequence alignment that you might get from a computer program such as BLAST is also only a hypothesis. Which do you think is the most likely alignment of these sequences (note that there may not be a single best answer)?</p>
+<p>You can think of an alignment as a table (Figure 1g), where the rows are sequences and the columns are positions in those sequences. When you have two or more aligned sequences, there will, by definition, always be the same number of columns in each row. Each column in your alignment represents a hypothesis about the evolutionary events that occurred at that position since the last ancestor of the aligned sequences (the sequence in Figure 1a in our example). The specific hypotheses represented by each column in the Figure 1d alignment are explicitly annotated in Figure 1g.</p>
+<p>One thing that’s worth pointing out at this point is that because we don’t know what the ancestral sequence was, when we encounter a gap in a pairwise alignment, we generally won’t know whether a deletion occurred in one sequence, or an insertion occurred in the other. For that reason, you will often see the term <strong>indel</strong> used to refer to these insertion or deletion events.</p>
+<p>In the next section we’ll work through our first bioinformatics algorithm, in this case a very simple (and also simplistic) method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.</p>
+</div>
+<div class="section" id="a-simple-procedure-for-aligning-a-pair-of-sequences-link-src-86c6b7">
+<h2><span class="section-number">1.2. </span>A simple procedure for aligning a pair of sequences <link src='86c6b7'/><a class="headerlink" href="#a-simple-procedure-for-aligning-a-pair-of-sequences-link-src-86c6b7" title="Permalink to this headline">¶</a></h2>
+<p>Let’s define two sequences, <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code>, and develop an approach for aligning them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGGTGGAACCGGTAACACCCAC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGGTAACCGGTTAACACCCAC&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>I’m going to use a function in the following cells called <code class="docutils literal notranslate"><span class="pre">show_F</span></code> to display a table that we’re going to use to develop our alignment. Once a function has been imported, you can view the source code for that function. This will be useful as we begin to explore some of the algorithms that are in use throughout these notebooks. You should spend time reading the source code examples in this book until you’re sure that you understand what’s happening, especially if your goal is to develop bioinformatics software. Reading other people’s code is a good way to improve your own.</p>
+<p>Let’s import the function <code class="docutils literal notranslate"><span class="pre">show_F</span></code> and then view its source code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">show_F</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">show_F</span>
+</pre></div>
+</div>
+<p>Now let’s look at how to align these sequences.</p>
+<div class="section" id="step-1-create-a-blank-matrix-where-the-rows-and-columns-represent-the-positions-in-the-sequences-link-src-pf7bf8">
+<h3><span class="section-number">1.2.1. </span>Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences. <link src="pf7Bf8"/><a class="headerlink" href="#step-1-create-a-blank-matrix-where-the-rows-and-columns-represent-the-positions-in-the-sequences-link-src-pf7bf8" title="Permalink to this headline">¶</a></h3>
+<p>We’ll create this matrix and initialize it with all zeros as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-add-values-to-the-cells-in-the-matrix-link-src-fdxype">
+<h3><span class="section-number">1.2.2. </span>Step 2: Add values to the cells in the matrix. <link src="fDXYPE"/><a class="headerlink" href="#step-2-add-values-to-the-cells-in-the-matrix-link-src-fdxype" title="Permalink to this headline">¶</a></h3>
+<p>Next we’ll add initial values to the cells so that if the characters at the corresponding row and column are the same, the value of the cell is changed from zero to one. We can then review the resulting matrix. For clarity, we’ll have <code class="docutils literal notranslate"><span class="pre">show_F</span></code> hide the zero values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row_number</span><span class="p">,</span> <span class="n">row_character</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seq2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">col_number</span><span class="p">,</span> <span class="n">col_character</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seq1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">row_character</span> <span class="o">==</span> <span class="n">col_character</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">data</span><span class="p">[</span><span class="n">row_number</span><span class="p">,</span> <span class="n">col_number</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">hide_zeros</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-identify-the-longest-diagonals-link-src-ahda6v">
+<h3><span class="section-number">1.2.3. </span>Step 3: Identify the longest diagonals. <link src="AHda6V"/><a class="headerlink" href="#step-3-identify-the-longest-diagonals-link-src-ahda6v" title="Permalink to this headline">¶</a></h3>
+<p>Next we’ll identify the longest stretches of non-zero characters, which we’ll refer to here as the <em>diagonals</em>. Diagonals indicate segments of the two sequences that are identical and uninterrupted by mismatched characters (substitution events) or indel events.</p>
+<p>We can identify the longest diagonals as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># create a copy of our data matrix to work with, so we</span>
+<span class="gp">... </span><span class="c1"># leave the original untouched.</span>
+<span class="gp">... </span><span class="n">summed_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># iterate over the cells in our data matrix, starting in</span>
+<span class="gp">... </span><span class="c1"># the second row and second column</span>
+<span class="gp">... </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">summed_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">summed_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<span class="gp">... </span>        <span class="c1"># if the value in the current cell is greater than zero</span>
+<span class="gp">... </span>        <span class="c1"># (i.e., the characters at the corresponding pair of</span>
+<span class="gp">... </span>        <span class="c1"># sequence positions are the same), add the value from the</span>
+<span class="gp">... </span>        <span class="c1"># cell that is diagonally up and to the left.</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">summed_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">summed_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">summed_data</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Identify the longest diagonal</span>
+<span class="gp">... </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The longest diagonal is </span><span class="si">%d</span><span class="s2"> characters long.&quot;</span> <span class="o">%</span> <span class="n">summed_data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">summed_data</span><span class="p">,</span> <span class="n">hide_zeros</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-4-transcribe-some-of-the-possible-alignments-that-arise-from-this-process-link-src-pd0jsr">
+<h3><span class="section-number">1.2.4. </span>Step 4: Transcribe some of the possible alignments that arise from this process. <link src="PD0jSR"/><a class="headerlink" href="#step-4-transcribe-some-of-the-possible-alignments-that-arise-from-this-process-link-src-pd0jsr" title="Permalink to this headline">¶</a></h3>
+<p>We’re going to gloss over how to do this algorithmically for the moment, as we’ll come back to that in a lot of detail later in this chapter. Briefly, what we want to do is start with the longest diagonal and trace it backwards to transcribe the alignment by writing down the characters from each of the two sequences at every row and column corresponding to the diagonal that you’re following. When we encounter a break in the diagonal, we find the next longest diagonal that starts in a cell that is up and/or to the left of the cell when the previous diagonal you were following ends. For every cell that you move straight upwards (non-diagonally), you’d insert a gap in the sequence on the horizontal axis of your matrix. For every cell that you move straight leftwards, you’d insert a gap in the sequence on the vertical axis of your matrix.</p>
+<p>We’d also generally compute a score for an alignment to help us figure out which alignments are better than others. For now, let’s add one for every match, and subtract one for every mismatch.</p>
+<p>If this step is confusing, don’t worry about it for now. We’ll be back to this in a lot more detail soon.</p>
+<p>Here are two possible alignments:</p>
+<p>Alignment 1 (score: 19)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ACCGGTGGAACCGG</span><span class="o">-</span><span class="n">TAACACCCAC</span>
+<span class="n">ACCGGT</span><span class="o">--</span><span class="n">AACCGGTTAACACCCAC</span>
+</pre></div>
+</div>
+<p>Alignment 2 (score: 8)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ACCGGTGGAACCGGTAACACCCAC</span>
+<span class="n">ACCGGT</span><span class="o">--------</span><span class="n">TAACACCCAC</span>
+</pre></div>
+</div>
+<p>Why might the first alignment be the more biologically relevant one (meaning the one that is more likely to represent that true evolutionary history of this pair of molecules)? Why might the second be the more biologically relevant one?</p>
+<p><strong>As an exercise</strong>, go back to where we defined <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.</p>
+</div>
+<div class="section" id="why-this-simple-procedure-is-too-simplistic-link-src-jzshio">
+<h3><span class="section-number">1.2.5. </span>Why this simple procedure is too simplistic <link src="jzshiO"/><a class="headerlink" href="#why-this-simple-procedure-is-too-simplistic-link-src-jzshio" title="Permalink to this headline">¶</a></h3>
+<p>I suggested above that you keep a list of assumptions that are made by this approach. Here are a couple of the very problematic ones.</p>
+<ol class="simple">
+<li><p>We’re scoring all matches as 1 and all mismatches as 0. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What’s a more biologically meaningful way to do this (think about protein sequences here)?</p></li>
+<li><p>Similarly, every gap that is introduced results in the same penalty being incurred. Based on what we know about how insertion/deletion events occur, what do you think is a more biologically meaningful way to do this?</p></li>
+</ol>
+<p>All scoring schemes have limitations, and you should remember that when you’re working with software that generates alignments for you (e.g., systems such as <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a>). Especially as you’re getting started in bioinformatics, it’s easy to forget that and just accept the result from computer software as “the right answer”. You’ll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won’t do your work for you. Their answers are based on models (for example, how we model matches, mismatches and gaps here) and as you’re learning here, the models are not perfect. Be skeptical!</p>
+<p>Another important consideration as we think about algorithms for aligning pairs of sequences is how long an algorithm will take to run as a function of the input it’s provided (or in technical terminology, the <a class="reference external" href="http://bigocheatsheet.com/">computational complexity</a> of the algorithm). When searching a sequence against a database (for example, to get an idea of what its function is), you may have billions of bases to search against, which would correspond to billions of columns in one of the matrices we just computed. Computers are fast, but the data sets you’re going to be working with are very large and in many cases growing exponentially in size over time. Working in bioinformatics, it’s inevitable that you’re going to begin to discover the limitations of the algorithms and software you use. Runtime and memory requirements are the usual culprits. Because the data sets are getting bigger more quickly than computers are getting faster (at least as of this writing), just waiting for computers to get faster won’t work. We need smart people who understand some computer science and some biology to design clever algorithms, software, and analytic techniques to enable the next generation of advances that technologies like high-throughput DNA sequencing are promising. (And there are a lot of people who want to spend good money to pay people who can do these things, so keep reading!)</p>
+<p>Over the next several sections we’ll explore ways of addressing the two issues noted above. We’ll introduce the problem of the computational complexity of pairwise sequence alignment at the end of this chapter, and explore approaches for addressing that (i.e., making database searching faster) in the next chapter.</p>
+</div>
+</div>
+<div class="section" id="differential-scoring-of-matches-and-mismatches-link-src-9f5e71">
+<h2><span class="section-number">1.3. </span>Differential scoring of matches and mismatches <link src='9f5e71'/><a class="headerlink" href="#differential-scoring-of-matches-and-mismatches-link-src-9f5e71" title="Permalink to this headline">¶</a></h2>
+<p>When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we’re going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we’ll discuss here are general to both. With protein sequences, we’re aligning amino acid residues (or <em>residues</em>, for short) to one another, instead of nucleotides.</p>
+<p>First, let’s talk about why two-value scoring schemes are too simplistic for protein alignment. In a protein, each amino acid residue is contributing to the structure and/or function of the protein. A given amino acid residue may contribute a charge to an enzyme that helps it to bind its substrate, it may introduce structural stability or instability in a protein, or provide spacing between different functional domains of the protein. Substitutions between amino acids that have similar chemical or physical properties tend to be better tolerated (i.e., less detrimental to the function of the protein) than substitutions between amino acids with different chemical or physical properties. It therefore makes sense to account for the chemical and physical properties of the amino acids being aligned when scoring matches and mismatches.</p>
+<p>Let’s take the sodium-potassium pump as an example. This molecule is described in the Protein Data Bank’s (PDB) <em>Molecule of the Month</em> series. Spend a couple of minutes reading about it  <a class="reference external" href="http://pdb101.rcsb.org/motm/118">here</a>.</p>
+<figure>
+  <img src="http://cdn.rcsb.org/pdb101/motm/images/2zxe_composite.jpg" height="400">
+  <figcaption>Figure 2: Structure of a sodium-potassium pump, as illustrated in the PDB <i>Molecule of the Month</i> series. To learn more about protein structure, a good place to start is the <a href="http://pdb101.rcsb.org/">PDB Educational Portal</a>.</figcaption>
+</figure>
+<p>
+<p>Because the sodium-potassium pump is a membrane-bound protein, it has regions that are composed of long stretches of polar or charged residues, which facilitate being positioned inside or outside of the cell, and regions that are composed of long stretches of non-polar residues, which facilitate being positioned within the cell membrane. If a mutation occurs in a gene encoding a sodium-potassium pump that substitutes a non-polar residue for another non-polar residue, that will likely be less disruptive to the protein’s function than if a polar residue is substituted for a non-polar residue. This is because the non-polar residue is likely to be in the membrane-bound region of the protein (since that’s where most of the non-polar residues are in this protein), and polar residues destabilize membrane-bound proteins when they are present within the membrane (a highly non-polar environment). Given this knowledge of amino acids and proteins, when aligning a pair of protein sequences, we probably want to score the alignment of a non-polar residue with a polar residue as less likely than with another non-polar residue.</p>
+<p>To score matches and mismatches differently based on which pair of amino acid residues are being aligned, our alignment algorithm is redefined to incorporate a <strong>substitution matrix</strong>, which defines the score associated with substitution of one amino acid for another. A widely used substitution matrix is referred to as BLOSUM 50. Let’s take a look at this matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">blosum50</span><span class="p">,</span> <span class="n">show_substitution_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blosum50</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aas</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">aa1</span> <span class="ow">in</span> <span class="n">aas</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">aa2</span> <span class="ow">in</span> <span class="n">aas</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="n">aa1</span><span class="p">][</span><span class="n">aa2</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aa_labels</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aas</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_substitution_matrix</span><span class="p">(</span><span class="n">aa_labels</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Look at the scores in this matrix in the context of details about the biochemistry of the amino acids (see the molecular structures <a class="reference external" href="http://en.wikipedia.org/wiki/Amino_acid">on Wikipedia</a> or in any general microbiology or biochemistry text). Does a positive score represent a more or less favorable substitution? Confirm that the scores match your intuition for some similar and dissimilar amino acids.</p>
+<p>You can look up individual substitution scores as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;G&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;G&#39;</span><span class="p">][</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">][</span><span class="s1">&#39;K&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s (Dayhoff, Schwartz, Orcutt (1978) <i>A Model of Evolutionary Change in Proteins.</i> Atlas of Protein Sequence and Structure) and by <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC50453/">Henikoff and Henikoff</a> in the early 1990s. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/15286655">This</a> is a good article on the source of the widely used substitution matrices by Sean Eddy. We’ll work with BLOSUM 50 here for the remainder of this chapter.</p>
+</div>
+<div class="section" id="a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm-link-src-15efc2">
+<h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm <link src='15efc2'/><a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm-link-src-15efc2" title="Permalink to this headline">¶</a></h2>
+<p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/5420325">Saul B. Needleman and Christian D. Wunsch in 1970</a>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first residue (or base) through their last residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
+<div class="section" id="stepwise-needleman-wunsch-alignment-link-src-gn3vj6">
+<h3><span class="section-number">1.4.1. </span>Stepwise Needleman-Wunsch alignment <link src="Gn3Vj6"/><a class="headerlink" href="#stepwise-needleman-wunsch-alignment-link-src-gn3vj6" title="Permalink to this headline">¶</a></h3>
+<p>Needleman-Wunsch alignment is similar to the approach that we explored above. We’ll work through the steps of the algorithm first, and then automate the process by defining Python functions that perform the steps for us given a pair of sequences.</p>
+<p>We’ll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we’re starting with are the same that are used in Chapter 2 of <a class="reference external" href="http://amzn.to/1IYUEz2">Biological Sequence Analysis</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">Protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;HEAGAWGHEE&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;PAWHEAE&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="step-1-create-blank-matrices-link-src-hvbaxt">
+<h4><span class="section-number">1.4.1.1. </span>Step 1: Create blank matrices. <link src="hVbAxT"/><a class="headerlink" href="#step-1-create-blank-matrices-link-src-hvbaxt" title="Permalink to this headline">¶</a></h4>
+<p>As we discussed earlier in this chapter, a pair of sequences can be aligned in different ways. Needleman-Wunsch provides the best alignment, as defined by its score. Here we’ll compute two new matrices that together allow us to determine the highest alignment score given the sequences and the substitution matrix, and to transcribe the aligned sequences. These matrices are</p>
+<ul class="simple">
+<li><p>the <em>dynamic programming matrix</em>, or <span class="math notranslate nohighlight">\(F\)</span></p></li>
+<li><p>and the <em>traceback matrix</em>, or <span class="math notranslate nohighlight">\(T\)</span>.</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are defined at the same time.</p>
+<p><span class="math notranslate nohighlight">\(F\)</span> looks a lot like the matrix we defined in our simplistic example above, but it has one extra row and column, corresponding to the start of each of the sequences (a <em>state</em> that is independent of the first residue of the sequences that is important for our algorithm). <span class="math notranslate nohighlight">\(F\)</span> keeps track of the best score of the alignment through the corresponding pair of positions, if the alignment were to terminate at that pair of positions.</p>
+<p>Because there are multiple possible alignments that a score in <span class="math notranslate nohighlight">\(F\)</span> can be derived from, we use our second matrix, <span class="math notranslate nohighlight">\(T\)</span>, to track which single alignment led to each score in <span class="math notranslate nohighlight">\(F\)</span>. <span class="math notranslate nohighlight">\(T\)</span> has the same shape (i.e., numbers of rows and columns) as <span class="math notranslate nohighlight">\(F\)</span>, and its values encode information about how the sequences were aligned to result in the score in the corresponding cell in <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<p>Prior to initialization, <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> would look like the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">show_T</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-compute-f-and-t-link-src-tma9ea">
+<h4><span class="section-number">1.4.1.2. </span>Step 2: Compute <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. <link src="Tma9ea"/><a class="headerlink" href="#step-2-compute-f-and-t-link-src-tma9ea" title="Permalink to this headline">¶</a></h4>
+<p>The first row and column of <span class="math notranslate nohighlight">\(F\)</span> are initialized using the following formulas. <span class="math notranslate nohighlight">\(d\)</span> in these formulas is a value referred to as the <em>gap penalty</em>. This is a constant value that is subtracted from the score of the alignment every time a gap character has to be introduced to align the sequences. We’ll use a constant value of <span class="math notranslate nohighlight">\(d=8\)</span> (it’s positive because we subtract it) for now, and explore its use more shortly. <span class="math notranslate nohighlight">\(i\)</span> is the row number in <span class="math notranslate nohighlight">\(F\)</span>, and <span class="math notranslate nohighlight">\(j\)</span> is the column number in <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+&amp; F(0, 0) = 0\\
+&amp; F(i, 0) = F(i-1, 0) - d\\
+&amp; F(0, j) = F(0, j-1) - d\\
+\end{align}
+\end{split}\]</div>
+<p>As an exercise, try computing the values for the cells in the first four rows in column zero and the first four columns in row zero of <span class="math notranslate nohighlight">\(F\)</span>. What you’ll notice is that the score that you compute for most of the cells (all of them except for <span class="math notranslate nohighlight">\(F(0, 0)\)</span>) depends on the score at another position in <span class="math notranslate nohighlight">\(F\)</span>. In a second matrix, <span class="math notranslate nohighlight">\(T\)</span>, draw an arrow from the cell that you’re currently defining the score for in <span class="math notranslate nohighlight">\(F\)</span> to the cell whose score it depends on. If the score depends on the cell above, you’d draw an up arrow (↑). If the score depends on the cell to the left, you’d draw a left arrow (←). If the score doesn’t depend on any other cell (you should have only one of these), indicate that with a bullet (•).</p>
+<p>Initializing <span class="math notranslate nohighlight">\(F\)</span> would result in the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">d</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">d</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Initializing <span class="math notranslate nohighlight">\(T\)</span> would result in the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;•&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;↑&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;←&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Next, we’ll compute the scores for all of the other cells in <span class="math notranslate nohighlight">\(F\)</span>, starting at position <span class="math notranslate nohighlight">\((1, 1)\)</span>. In Needleman-Wunsch alignment, the score <span class="math notranslate nohighlight">\(F\)</span> for cell <span class="math notranslate nohighlight">\((i, j)\)</span> (when <span class="math notranslate nohighlight">\(i &gt; 0\)</span> and <span class="math notranslate nohighlight">\(j &gt; 0\)</span>) is computed as the maximum of three possible values. <span class="math notranslate nohighlight">\(s\)</span> refers to the substitution matrix, and <span class="math notranslate nohighlight">\(c_i\)</span> and <span class="math notranslate nohighlight">\(c_j\)</span> refer to characters in <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+F(i, j) = max \left(\begin{align}
+&amp; F(i-1, j-1) + s(c_i, c_j)\\
+&amp; F(i-1, j) - d\\
+&amp; F(i, j-1) - d
+\end{align}\right)
+\end{split}\]</div>
+<p>Describing the scoring function in English, we score a cell with the maximum of three values: either the value of the cell up and to the left plus the score for the substitution taking place in the current cell (which you find by looking up the substitution in the substitution matrix); the value of the cell above minus the gap penalty; or the value of the cell to the left minus the gap penalty. In this way, you’re determining whether the best (highest) score is obtained by inserting a gap in sequence 1 (corresponding to <span class="math notranslate nohighlight">\(F(i-1, j) - d\)</span>), inserting a gap in sequence 2 (corresponding to <span class="math notranslate nohighlight">\(F(i, j-1) - d\)</span>), or aligning the characters in sequence 1 and sequence 2 (corresponding to <span class="math notranslate nohighlight">\(F(i-1, j-1) + s(c_i, c_j)\)</span>).</p>
+<p>As an exercise, fill in the values of cells <span class="math notranslate nohighlight">\((1, 1)\)</span>, <span class="math notranslate nohighlight">\((1, 2)\)</span>, and <span class="math notranslate nohighlight">\((2, 1)\)</span> in <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. Remember to insert arrows in <span class="math notranslate nohighlight">\(T\)</span> indicating which cell each score was derived from as you fill in the matrix. If you’re deriving the score for a given cell in <span class="math notranslate nohighlight">\(F\)</span> from the cell diagonally up and to the left, you should put a diagonal arrow in <span class="math notranslate nohighlight">\(T\)</span> (↖).</p>
+<p>Notice the situation that you encounter when computing the value for <span class="math notranslate nohighlight">\(F(2, 1)\)</span>. Which arrow do you draw there? Keep this question in mind, and think about how it might impact your final result.</p>
+<p>The function in the next cell generates the dynamic programming and traceback matrices for us. You should review this code to understand exactly how it’s working.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">format_dynamic_programming_matrix</span><span class="p">,</span> <span class="n">format_traceback_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment._pairwise</span> <span class="kn">import</span> <span class="n">_compute_score_and_traceback_matrices</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">_compute_score_and_traceback_matrices</span>
+</pre></div>
+</div>
+<p>You can now apply this function to <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> to compute the dynamic programming and traceback matrices.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.sequence</span> <span class="kn">import</span> <span class="n">Protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">TabularMSA</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">seq1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">seq2</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nw_matrix</span><span class="p">,</span> <span class="n">traceback_matrix</span> <span class="o">=</span> <span class="n">_compute_score_and_traceback_matrices</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nw_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">traceback_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-transcribe-the-alignment-link-src-afavlt">
+<h4><span class="section-number">1.4.1.3. </span>Step 3: Transcribe the alignment. <link src="AFAVLt"/><a class="headerlink" href="#step-3-transcribe-the-alignment-link-src-afavlt" title="Permalink to this headline">¶</a></h4>
+<p>We can now use <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> to transcribe and score the alignment of sequences 1 and 2. To do this, we start at the bottom-right of the matrices and follow the arrows to cell <span class="math notranslate nohighlight">\((0, 0)\)</span>.</p>
+<ul class="simple">
+<li><p>Every time we encounter a vertical arrow, we consume a character from sequence 2 (the vertical sequence) and add a gap to sequence 1.</p></li>
+<li><p>Every time we encounter a horizontal arrow, we consume a character from sequence 1 (the horizontal sequence) and add a gap to sequence 2.</p></li>
+<li><p>Every time we encounter a diagonal arrow, we consume a character from sequence 1 and sequence 2.</p></li>
+<li><p>When we encounter a bullet, we’ve reached the end of the alignment so we’re done.</p></li>
+</ul>
+<p>As you transcribe the alignment, write sequence 1 on top of sequence 2, and work from right to left (since you are working backwards through the matrix).</p>
+<p>The score in the cell that you started in (the bottom-right in this case) is the score for the alignment.</p>
+<p>Work through this process on paper, and then review the function in the next cell to see how this looks in Python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment._pairwise</span> <span class="kn">import</span> <span class="n">_traceback</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">_traceback</span>
+</pre></div>
+</div>
+<p>You can then execute this as follows, and print out the resulting alignment. Compare the result that you obtained with the result of calling this function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln1</span><span class="p">,</span> <span class="n">aln2</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_traceback</span><span class="p">(</span><span class="n">traceback_matrix</span><span class="p">,</span><span class="n">nw_matrix</span><span class="p">,</span><span class="n">seq1</span><span class="p">,</span><span class="n">seq2</span><span class="p">,</span> <span class="n">nw_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nw_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="automating-needleman-wunsch-alignment-with-python-link-src-b8xi7y">
+<h3><span class="section-number">1.4.2. </span>Automating Needleman-Wunsch alignment with Python <link src="B8xI7Y"/><a class="headerlink" href="#automating-needleman-wunsch-alignment-with-python-link-src-b8xi7y" title="Permalink to this headline">¶</a></h3>
+<p>Calling the steps we just described is labor-intensive, and they don’t change regardless of the protein sequences that we want to align. So, as a bioinformatics software developer, you’d want to make this functionality more easily accessible to users. To do that, you’d define a function that takes all of the necessary input and provides the aligned sequences and the score as output, without requiring the user to make several function calls.</p>
+<p>Think for a minute about how you’d define this function. What are the required inputs? What would the function provide as output? What would be a good name for the function? (Naming functions is hard: you want the name to be self-documenting, so users know what the function does, but you also want it to be concise because you and your users will be typing it often.) Write your answers to these questions down. What you’re doing here is sketching an <em>Application Programmer Interface</em>, or <em>API</em> for a function. Defining APIs is a bit of an art and a bit of a science, and there are great APIs and horrible APIs. API definition is hard, and it’s something that you get better at with practice. Spending time thinking about APIs is important for developers, as it’s how your users will interact with your code. There is a lot of good code out there that no one uses because it has a bad API.</p>
+<p>Here’s the scikit-bio implementation of Needleman-Wunsch alignment. How is its API different from the interface you sketched out above?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">global_pairwise_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">global_pairwise_align</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">global_pairwise_align</span><span class="p">(</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;HEAGAWGHEE&quot;</span><span class="p">),</span> <span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;PAWHEAE&quot;</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">,</span> <span class="n">penalize_terminal_gaps</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-note-on-computing-f-and-t-link-src-qrabtd">
+<h3><span class="section-number">1.4.3. </span>A note on computing <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> <link src="QRabtd"/><a class="headerlink" href="#a-note-on-computing-f-and-t-link-src-qrabtd" title="Permalink to this headline">¶</a></h3>
+<p>Some applications of global alignment use both the alignment score and the aligned sequences, and some only use one or the other. As a result, some applications optimize this process by only keeping track of the information they need. For example, if you’re working on a database search algorithm, you might only care about the score of the alignment. In this case you might not need to keep track of <span class="math notranslate nohighlight">\(T\)</span>, and could reduce the amount of memory that your software requires by not keeping track of it.</p>
+</div>
+</div>
+<div class="section" id="global-versus-local-alignment-link-src-c80f21">
+<h2><span class="section-number">1.5. </span>Global versus local alignment <link src='c80f21'/><a class="headerlink" href="#global-versus-local-alignment-link-src-c80f21" title="Permalink to this headline">¶</a></h2>
+<p>The alignment we just constructed is a <em>global alignment</em>, meaning we align both sequences from their beginning through their end. This has some important specific applications: for example, if we have two full-length protein sequences, and we have a crystal structure for one of them, we can use global alignment to give us a direct mapping between all positions in both sequences.</p>
+<p>This is in contrast to local alignment, where we have a pair of sequences that we suspect may partially overlap each other, and we want to know what the best possible alignment of all or part of one sequence is with all or part of the other sequences. Perhaps the most widely used application of this is in sequence database searching (e.g., <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">the BLAST web server</a>), where we have a query sequence and we want to find the closest match (or matches) in a reference database containing many different gene sequences. In this case, the whole reference database could be represented as a single sequence, as we could perform a local alignment against it to find the region that contains the highest scoring match.</p>
+<p>Global and local alignment are both used for different applications. We’ll next look at an algorithm for computing local alignments. You’ll see that this is very similar to Needleman-Wunsch alignment.</p>
+</div>
+<div class="section" id="smith-waterman-local-sequence-alignment-link-src-c9656e">
+<h2><span class="section-number">1.6. </span>Smith-Waterman local sequence alignment <link src='c9656e'/><a class="headerlink" href="#smith-waterman-local-sequence-alignment-link-src-c9656e" title="Permalink to this headline">¶</a></h2>
+<p>The algorithm that is most commonly used for performing local alignment was originally published by <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/7265238">Temple F. Smith and Michael S. Waterman in 1981</a>, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.</p>
+<p>Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small important differences. We’ll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We’ll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">Protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;HEAGAWGHEE&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;PAWHEAE&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="step-1-create-blank-matrices-link-src-ew2bdo">
+<h3><span class="section-number">1.6.1. </span>Step 1: Create blank matrices. <link src="Ew2bdO"/><a class="headerlink" href="#step-1-create-blank-matrices-link-src-ew2bdo" title="Permalink to this headline">¶</a></h3>
+<p><span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are created in the same way for Smith-Waterman as for Needleman-Wunsch so prior to initialization, <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> would again look like the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">num_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">show_T</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">str</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-compute-f-and-t-link-src-qhcruj">
+<h3><span class="section-number">1.6.2. </span>Step 2: Compute <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. <link src="qHCRuJ"/><a class="headerlink" href="#step-2-compute-f-and-t-link-src-qhcruj" title="Permalink to this headline">¶</a></h3>
+<p>Computing <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> is slightly different for Smith-Waterman than for Needleman-Wunsch. First, initialization is easier. The following formulas are used for computing the first row and column of <span class="math notranslate nohighlight">\(F\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+&amp; F(0, 0) = 0\\
+&amp; F(i, 0) = 0\\
+&amp; F(0, j) = 0
+\end{align}
+\end{split}\]</div>
+<p>Initializing <span class="math notranslate nohighlight">\(F\)</span> would therefore result in the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">F</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Because none of the values that were just added to <span class="math notranslate nohighlight">\(F\)</span> depend on any other cells in <span class="math notranslate nohighlight">\(F\)</span>, initializing <span class="math notranslate nohighlight">\(T\)</span> would result in the following.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;•&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;•&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;•&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We’d next want to compute the remaining cells in <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>. This proceeds exactly the same as for Needleman-Wunsch, except that there is one additional term in the scoring function:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+F(i, j) = max \left(\begin{align}
+&amp; 0\\
+&amp; F(i-1, j-1) + s(c_i, c_j)\\
+&amp; F(i-1, j) - d\\
+&amp; F(i, j-1) - d)
+\end{align}\right)
+\end{split}\]</div>
+<p>Go back to the final <span class="math notranslate nohighlight">\(F\)</span> matrix that you computed with Needleman-Wunsch earlier in the chapter. How would this new scoring term change that matrix? As you did before, compute the values for the first few cells of <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, this time using the Smith-Waterman scoring function. Remember that when you add a score to <span class="math notranslate nohighlight">\(F\)</span> that does not depend on other cells in <span class="math notranslate nohighlight">\(F\)</span> (which in this case corresponds to <span class="math notranslate nohighlight">\(0\)</span> being the max value from the scoring function), you should add a bullet (•) to the corresponding cell in <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>We’ll use the same function that we used above to compute the full <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> matrices. To indicate that we now want to compute this using Smith-Waterman, we pass some additional parameters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment._pairwise</span> <span class="kn">import</span> <span class="n">_init_matrices_sw</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">seq1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">seq2</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sw_matrix</span><span class="p">,</span> <span class="n">traceback_matrix</span> <span class="o">=</span> <span class="n">_compute_score_and_traceback_matrices</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">,</span> <span class="n">new_alignment_score</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">init_matrices_f</span><span class="o">=</span><span class="n">_init_matrices_sw</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sw_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">traceback_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-transcribe-the-alignment-link-src-yf5dzy">
+<h3><span class="section-number">1.6.3. </span>Step 3: Transcribe the alignment. <link src="Yf5dZy"/><a class="headerlink" href="#step-3-transcribe-the-alignment-link-src-yf5dzy" title="Permalink to this headline">¶</a></h3>
+<p>There is one small difference in the traceback step between Smith-Waterman and Needleman-Wunsch. You should now begin tracing back from the cell with the highest value in <span class="math notranslate nohighlight">\(F\)</span>, rather than the bottom right cell of the matrix. We find this cell directly in the code below. As before, the alignment terminates when we hit a bullet (•) character, but in contrast to Needleman-Wunsch alignment, this can happen anywhere in the matrix, not only in <span class="math notranslate nohighlight">\(F(0, 0)\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">max_value</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_j</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sw_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sw_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">sw_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_value</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">max_i</span><span class="p">,</span> <span class="n">max_j</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+<span class="gp">... </span>            <span class="n">max_value</span> <span class="o">=</span> <span class="n">sw_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln1</span><span class="p">,</span> <span class="n">aln2</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">start_a1</span><span class="p">,</span> <span class="n">start_a2</span> <span class="o">=</span> <span class="n">_traceback</span><span class="p">(</span><span class="n">traceback_matrix</span><span class="p">,</span> <span class="n">sw_matrix</span><span class="p">,</span> <span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">max_i</span><span class="p">,</span> <span class="n">max_j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="automating-smith-waterman-alignment-with-python-link-src-zx1ojn">
+<h3><span class="section-number">1.6.4. </span>Automating Smith-Waterman alignment with Python <link src="zX1OjN"/><a class="headerlink" href="#automating-smith-waterman-alignment-with-python-link-src-zx1ojn" title="Permalink to this headline">¶</a></h3>
+<p>Again, we can define a <em>convenience function</em>, which will allow us to provide the required input and just get our aligned sequences back.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">local_pairwise_align</span>
+</pre></div>
+</div>
+<p>And we can take the <em>convenience function</em> one step further, and wrap <code class="docutils literal notranslate"><span class="pre">local_pairwise_align</span></code> and <code class="docutils literal notranslate"><span class="pre">global_pairwise_align</span></code> up in a more general <code class="docutils literal notranslate"><span class="pre">align</span></code> function, which takes a boolean parameter (i.e., <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>) indicating where we want a local or global alignment.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">align</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">,</span> <span class="n">gap_penalty</span><span class="p">,</span> <span class="n">substitution_matrix</span><span class="p">,</span> <span class="n">local</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">local</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">local_pairwise_align</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">,</span> <span class="n">gap_penalty</span><span class="p">,</span> <span class="n">gap_penalty</span><span class="p">,</span> <span class="n">substitution_matrix</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">global_pairwise_align</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">,</span> <span class="n">gap_penalty</span><span class="p">,</span> <span class="n">gap_penalty</span><span class="p">,</span> <span class="n">substitution_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span><span class="n">Protein</span><span class="p">(</span><span class="s1">&#39;HEAGAWGHEE&#39;</span><span class="p">),</span> <span class="n">Protein</span><span class="p">(</span><span class="s1">&#39;PAWHEAE&#39;</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span><span class="n">Protein</span><span class="p">(</span><span class="s1">&#39;HEAGAWGHEE&#39;</span><span class="p">),</span> <span class="n">Protein</span><span class="p">(</span><span class="s1">&#39;PAWHEAE&#39;</span><span class="p">),</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This was a lot of complicated material, so congratulations on making it this far. If you feel comfortable with everything we just went through, you now understand the basics of pairwise alignment, which is easily the most fundamental algorithm in bioinformatics. If you’re not feeling totally comfortable with all of this, go back and re-read it. This time spend more time working out the individual steps with a pencil and paper by computing more cells in <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> as you go, and performing the traceback step manually. And don’t get discouraged: we can describe the steps that need to be carried out to a computer with just a few lines of code, so it’s nothing magical. Computing a pairwise alignment just involves the systematic application of a few well defined steps. You <em>will</em> be able to carry out those steps (a metric of your understanding of the algorithm) as long as you put a bit of effort into performing those steps.</p>
+</div>
+</div>
+<div class="section" id="differential-scoring-of-gaps-link-src-976169">
+<h2><span class="section-number">1.7. </span>Differential scoring of gaps <link src='976169'/><a class="headerlink" href="#differential-scoring-of-gaps-link-src-976169" title="Permalink to this headline">¶</a></h2>
+<p>The second limitation of the our simple alignment algorithm (which we discussed <span class="xref myst">way back at the beginning of this chapter</span>), and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn’t ideal based on what we know about how insertion/deletion events occur (see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK21114/">this discussion of replication slippage</a> if you’re not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as <em>affine gap scoring</em>.</p>
+<p>To score gap extensions differently from gap creations (or gap opens), we need to modify the terms corresponding to the addition of gaps in our scoring function. When we compute the score corresponding to a gap in our alignment (i.e., where we’d insert either a ↑ or a ← in <span class="math notranslate nohighlight">\(T\)</span>), we should incur a <em>gap extension penalty</em> if the value in <span class="math notranslate nohighlight">\(T\)</span> that the new arrow will point to is the same type of arrow. Otherwise, we should incur the <em>gap open penalty</em>. If we represent our gap open penalty as <span class="math notranslate nohighlight">\(d^0\)</span>, and our gap extend penalty as <span class="math notranslate nohighlight">\(d^e\)</span>, our scoring scheme would look now like the following:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+F(i, j) = max \left(\begin{align}
+&amp; 0\\
+&amp; F(i-1, j-1) + s(c_i, c_j)\\
+&amp; \left\{\begin{array}{l l} F(i-1, j) - d^e \quad \text{if $T(i-1, j)$ is ↑}\\ F(i-1, j) - d^o \quad \text{if $T(i-1, j)$ is not ↑} \end{array}  \right\} \\
+&amp; \left\{\begin{array}{l l} F(i, j-1) - d^e \quad \text{if $T(i, j-1)$ is ←}\\ F(i, j-1) - d^o \quad \text{if $T(i, j-1)$ is not ←} \end{array}  \right\}
+ \end{align}\right)
+\end{split}\]</div>
+<p>Notice how we only use the gap extend penalty if the previous max score resulted from a gap in the same sequence because it represents the continuation of an existing gap in that sequence. We know which sequence a gap is being introduced in by the characters in the traceback matrix: ↑ always implies a gap in the sequence on the horizontal axis of <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, and ← always implies a gap in the sequence on the vertical axis of <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>And here’s a quick quiz: is this a Smith-Waterman or Needleman-Wunsch scoring function? How do you know?</p>
+<p>Take a look at how the scores differ with these additions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;HEAGAWGHEE&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;PAWHEAE&quot;</span><span class="p">)])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sw_matrix</span><span class="p">,</span> <span class="n">traceback_matrix</span> <span class="o">=</span> <span class="n">_compute_score_and_traceback_matrices</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_F</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sw_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">show_T</span><span class="p">(</span><span class="n">seq1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">seq2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">traceback_matrix</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>While we just looked at Smith-Waterman alignment with affine gap scoring, Needleman-Wunsch is adapted in the same way for affine gap scoring.</p>
+<p>The convenience functions we worked with above all take <code class="docutils literal notranslate"><span class="pre">gap_open_penalty</span></code> and <code class="docutils literal notranslate"><span class="pre">gap_extend_penalty</span></code>, which we can see by calling <code class="docutils literal notranslate"><span class="pre">help</span></code> on the function. So, we can use those functions to explore sequence alignment with affine gap scoring.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">global_pairwise_align</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here I define <code class="docutils literal notranslate"><span class="pre">seq1</span></code> to be slightly different than what I have above. Notice how we get different alignments when we use affine gap penalties (i.e., <code class="docutils literal notranslate"><span class="pre">gap_extend_penalty</span></code> is not equal to <code class="docutils literal notranslate"><span class="pre">gap_open_penalty</span></code>) versus equal gap open and gap extend penalties.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;HEAGAWGFHEE&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">TabularMSA</span><span class="p">([</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;PAWHEAE&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">global_pairwise_align</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">global_pairwise_align</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">blosum50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won’t need to write any code to do this, but rather you can adapt some of the commands that we’ve already used above. Don’t forget about the <code class="docutils literal notranslate"><span class="pre">help</span></code> function - that’s essential for learning how to use a function.</p>
+</div>
+<div class="section" id="how-long-does-pairwise-sequence-alignment-take-link-src-ac446d">
+<h2><span class="section-number">1.8. </span>How long does pairwise sequence alignment take? <link src='ac446d'/><a class="headerlink" href="#how-long-does-pairwise-sequence-alignment-take-link-src-ac446d" title="Permalink to this headline">¶</a></h2>
+<p>The focus of this book is <em>applied</em> bioinformatics, and two of the practical considerations we need to think about when developing algorithms and applications is how long they’ll take to run, and how much system memory (or RAM) they’ll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.</p>
+<p>We just worked through a few algorithms for pairwise sequence alignment, and ran some toy examples based on short sequences. What if we wanted to scale this up to align much longer sequences, or to align relatively short sequences against a large database? In this section we’ll explore the runtime of sequence alignment.</p>
+<div class="section" id="comparing-implementations-of-smith-waterman-link-src-gfhvcp">
+<h3><span class="section-number">1.8.1. </span>Comparing implementations of Smith-Waterman <link src="gFhVcP"/><a class="headerlink" href="#comparing-implementations-of-smith-waterman-link-src-gfhvcp" title="Permalink to this headline">¶</a></h3>
+<p>To explore runtime, let’s use the IPython <a class="reference external" href="http://ipython.org/ipython-doc/dev/interactive/tutorial.html#magic-functions">magic function</a> called <code class="docutils literal notranslate"><span class="pre">timeit</span></code>. This allows us to conveniently run a given command many times and reports the average time it takes to run. We’ll use this to see how long local alignment takes to run. Note that we don’t care about getting the actual alignment back for the moment. We just want the runtime in seconds.</p>
+<p>First, let’s <em>benchmark</em> the runtime of the scikit-bio <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_nucleotide</span></code> function. This specifically performs nucleotide alignment, and is implemented in Python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_nucleotide</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;GGTCTTCGCTAGGCTTTCATCGGGTTCGGCATCTACTCTGAGTTACTACG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;GGTCTTCAGGCTTTCATCGGGAACGGCATCTCTGAGTTACTACC&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">local_pairwise_align_nucleotide</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">gap_open_penalty</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gap_extend_penalty</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From interpreting these results, it looks like this is taking a few seconds to compute the alignment. When executing this, you may see a red warning box pop up. Read that warning message (a good practice, in general!). This is telling us that there is a faster implementation of Smith-Waterman alignment available in scikit-bio, so let’s benchmark that one for comparison. We’ll use the same two sequences for a direct comparison, of course.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="n">local_pairwise_align_ssw</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We clearly see here that the <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code> function is much faster for performing alignment than <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_nucleotide</span></code> (be sure to compare the units of each run time!). This is because <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code> is a much more efficient implementation of Smith-Waterman alignment, and it additionally applies some cool tricks that allow it to not compute all of the values in <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, but still get the right answer most of the time. This is referred to as a <em>heuristic</em> approach to optimizing an algorithm. We’ll spend some time defining and comparing heuristics in the Database Searching chapter, but to get you to start thinking about it, what you care about is how much a heuristic reduces the run time of an algorithm, and how often it gives you the same answer as the full algorithm. Take a minute to compare the results of the two functions we just ran:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">local_pairwise_align_nucleotide</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">gap_open_penalty</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">gap_extend_penalty</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">local_pairwise_align_ssw</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span>
+</pre></div>
+</div>
+<p>How do the results look?</p>
+<p>If you were truly evaluating a new heuristic, you’d want to compare many different inputs with the heuristic and the full algorithm.  For now, just take it from me that <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code> is generally producing comparable results to <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_nucleotide</span></code>, and you can clearly see that it’s running much faster. So, we’ll use that implementation in this text when we need to perform fast local alignments.</p>
+</div>
+<div class="section" id="analyzing-smith-waterman-run-time-as-a-function-of-sequence-length-link-src-1gicuj">
+<h3><span class="section-number">1.8.2. </span>Analyzing Smith-Waterman run time as a function of sequence length <link src="1gIcuj"/><a class="headerlink" href="#analyzing-smith-waterman-run-time-as-a-function-of-sequence-length-link-src-1gicuj" title="Permalink to this headline">¶</a></h3>
+<p>Next, let’s apply this to pairs of sequences where we vary the length. We don’t really care what the sequences are here, so we’ll use <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/routines.random.html">numpy’s <code class="docutils literal notranslate"><span class="pre">random</span></code> module</a> to get random pairs of sequences.</p>
+<p>Let’s first define a function to generate a random sequence of a specific length and type of biological sequence. Take a minute to understand that code, as we’ll do this a few times throughout the text.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">random_sequence</span><span class="p">(</span><span class="n">moltype</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="c1"># Our &quot;alphabet&quot; here will consist of the standard characters in a</span>
+<span class="gp">... </span>    <span class="c1"># molecules alphabet.</span>
+<span class="gp">... </span>    <span class="n">alphabet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">moltype</span><span class="o">.</span><span class="n">nondegenerate_chars</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">alphabet</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">moltype</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now let’s apply that function a few times. Execute this cell a few times to confirm that the sequences we get back are in fact changing each time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">25</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now we’ll define a loop where we align random pairs of sequences of increasing length, and compile the time it took to align the sequences. Here we want programmatic access to the runtimes, so we’re going to use <a class="reference external" href="https://docs.python.org/3/library/timeit.html">Python’s <code class="docutils literal notranslate"><span class="pre">timeit</span></code> module</a> (which the <code class="docutils literal notranslate"><span class="pre">%timeit</span></code> magic function is based on). The computer’s doing a lot of work here, even though these are relatively small sequences, so this may take over a minute or so.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">timeit</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq_lengths</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span><span class="mi">110000</span><span class="p">,</span><span class="mi">20000</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_time_function</span><span class="p">(</span><span class="n">seq_length</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">f</span><span class="p">():</span>
+<span class="gp">... </span>        <span class="n">seq1</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">seq2</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">DNA</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">local_pairwise_align_ssw</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">f</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">seq_length</span> <span class="ow">in</span> <span class="n">seq_lengths</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">timeit</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">get_time_function</span><span class="p">(</span><span class="n">seq_length</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">repeat</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we look at the run times, we can see that they are increasing with increasing sequence lengths:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtimes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">seq_lengths</span><span class="p">,</span> <span class="n">times</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Sequence length&quot;</span><span class="p">,</span> <span class="s2">&quot;Runtime (s)&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtimes</span>
+</pre></div>
+</div>
+<p>That’s probably to be expected, but what we care about now is <em>how</em> the runtimes are increasing as a function of sequence length. Is the relationship between runtime and sequence length:</p>
+<ul class="simple">
+<li><p>linear: <span class="math notranslate nohighlight">\(runtime \approx constant \times sequence\ length\)</span></p></li>
+<li><p>quadratic: <span class="math notranslate nohighlight">\(runtime \approx constant \times {sequence\ length}^2\)</span></p></li>
+<li><p>exponential: <span class="math notranslate nohighlight">\(runtime \approx {constant}^{sequence\ length}\)</span></p></li>
+<li><p>or something else?</p></li>
+</ul>
+<p>Ultimately, we’d like to get an idea of how useful alignment would be in practice if our sequences were much longer, and specifically if sequence length might ultimately make sequence alignment too slow. Plotting these runtimes can help us to figure this out.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Sequence length&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Runtime (s)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">runtimes</span><span class="p">,</span> <span class="n">fit_reg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span>
+</pre></div>
+</div>
+<p>This looks to be a <a class="reference external" href="http://en.wikipedia.org/wiki/Quadratic_time">quadratic relationship</a>: the increase in runtime is proportional to the square of sequence length. If you think back to the computation of <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, this makes sense. If our sequences are each five bases long, our matrices will have five rows and five columns, so <span class="math notranslate nohighlight">\(5 \times 5 = 25\)</span> cells that need to be filled in by performing some numeric computations. If we double our sequences lengths to ten, our matrices will have ten rows and ten columns, so <span class="math notranslate nohighlight">\(10 \times 10 = 100\)</span> cells that need to be filled in. Because each of the numeric computations take roughly the same amount of time (you can take that on faith, or prove it to yourself using <code class="docutils literal notranslate"><span class="pre">timeit</span></code>), when we double our sequence length we have four times as many cells to compute.</p>
+<p>When runtime scales quadratically, that can be a practical limitation for an algorithm. We’d much prefer to see a linear relationship (i.e., if we double our sequence length, our runtime doubles). But this is an inherent issue with pairwise alignment, so it’s one that we need to deal with.</p>
+<p>One question you might have is whether developing a version of this algorithm which can run in parallel on multiple processors would be an effective way to make it scale to larger data sets. In the next cell, we look and how the plot would change if we could run the alignment process over four processors.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># if we could split this process over more processors (four, for example)</span>
+<span class="gp">... </span><span class="c1"># that would effectively reduce the runtime by 1/4</span>
+<span class="gp">... </span><span class="n">parallel_runtimes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">seq_lengths</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="o">/</span><span class="mi">4</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Sequence length&quot;</span><span class="p">,</span> <span class="s2">&quot;Runtime (s)&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parallel_runtimes</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Sequence length&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Runtime (s)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parallel_runtimes</span><span class="p">,</span> <span class="n">fit_reg</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span>
+</pre></div>
+</div>
+<p>Notice that the runtimes in the plot are smaller, but shape of the curve is the same. While parallelization can reduce the runtime of an algorithm, it won’t change its <em>computational complexity</em> (or how its runtime scales as a function of its input size). You can explore the computational complexity of different types of algorithms in the <a class="reference external" href="http://bigocheatsheet.com/">Big-O Cheat Sheet</a>, though it’s a fairly advanced introduction to the topic (and one that’s usually covered in the second or third year for Computer Science majors).</p>
+</div>
+<div class="section" id="conclusions-on-the-scalability-of-pairwise-sequence-alignment-with-smith-waterman-link-src-n9htil">
+<h3><span class="section-number">1.8.3. </span>Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman <link src="N9htIl"/><a class="headerlink" href="#conclusions-on-the-scalability-of-pairwise-sequence-alignment-with-smith-waterman-link-src-n9htil" title="Permalink to this headline">¶</a></h3>
+<p>These are pretty long sequences that we’re working with here, and the runtime is still pretty reasonable (only a few seconds for DNA sequences around 100,000 bases), so that suggests this implementation of Smith-Waterman should work ok for aligning pairs of sequences, even if the sequences are fairly long. However, we’re often interested in doing more than just pairwise alignment. For example, we may want to align many sequences to each other (which we’ll explore in the Multiple Sequence Alignment chapter), or we may want to perform many pairwise alignments (which we’ll explore in the Database Searching chapter). In the next chapter we’ll begin exploring ways to address this scalability issue by approximating solutions to the problem.</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./algorithms"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="../using/overview-tutorial.html" title="previous page"><span class="section-number">2. </span>An interactive overview of QIIME 2</a>
+    <a class='right-next' id="next-link" href="database-searching.html" title="next page"><span class="section-number">2. </span>Sequence homology searching <link src='d22e6b'/></a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

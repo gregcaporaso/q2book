@@ -1,0 +1,1014 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2. Sequence homology searching &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Getting started with developing with QIIME 2" href="../developing/getting-started.html" />
+    <link rel="prev" title="1. Pairwise sequence alignment" href="pairwise-alignment.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/intro.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/overview-tutorial.html">
+   2. An interactive overview of QIIME 2
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pairwise-alignment.html">
+   1. Pairwise sequence alignment
+   <link src="a76822"/>
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. Sequence homology searching
+   <link src="d22e6b"/>
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/historical-context.html">
+   1. Appendix 1: An inadequate history of microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   2. Appendix 2: History of it QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   3. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/algorithms/database-searching.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-the-problem-link-src-p7khdy">
+   2.1. Defining the problem
+   <link src="P7kHdy"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-annotated-sequences-link-src-gakbxe">
+   2.2. Loading annotated sequences
+   <link src="gAKBxE"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-the-problem-link-src-sz9u3s">
+   2.3. Defining the problem
+   <link src="SZ9u3S"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-complete-homology-search-function-link-src-0c9fcs">
+   2.4. A complete homology search function
+   <link src="0C9FCS"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reducing-the-runtime-for-database-searches-link-src-0f9232">
+   2.5. Reducing the runtime for database searches
+   <link src="0f9232"/>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#heuristic-algorithms-link-src-muardw">
+   2.6. Heuristic algorithms
+   <link src="mUArdw"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-reference-sequence-selection-link-src-beqxhf">
+     2.6.1. Random reference sequence selection
+     <link src="bEQxHf"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#composition-based-reference-sequence-collection-link-src-p4vq4b">
+     2.6.2. Composition-based reference sequence collection
+     <link src="P4vQ4b"/>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#gc-content-link-src-8yikfo">
+       2.6.2.1. GC content
+       <link src="8yiKFO"/>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#kmer-content-link-src-qbltrv">
+       2.6.2.2. kmer content
+       <link src="QblTRV"/>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#further-optimizing-composition-based-approaches-by-pre-computing-reference-database-information-link-src-hqmzgf">
+       2.6.2.3. Further optimizing composition-based approaches by pre-computing reference database information
+       <link src="HQmZgF"/>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#determining-the-statistical-significance-of-a-pairwise-alignment-link-src-87c92f">
+   2.7. Determining the statistical significance of a pairwise alignment
+   <link src="87c92f"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#metrics-of-alignment-quality-link-src-ydqcls">
+     2.7.1. Metrics of alignment quality
+     <link src="YdqCls"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#false-positives-false-negatives-p-values-and-alpha-link-src-tjqwvy">
+     2.7.2. False positives, false negatives, p-values, and alpha
+     <link src="TjqwVY"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpreting-alignment-scores-in-context-link-src-a0nqbh">
+     2.7.3. Interpreting alignment scores in context
+     <link src="a0nqBH"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exploring-the-limit-of-detection-of-sequence-homology-searches-link-src-n8oggw">
+     2.7.4. Exploring the limit of detection of sequence homology searches
+     <link src="n8OGGW"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="sequence-homology-searching-link-src-d22e6b">
+<h1><span class="section-number">2. </span>Sequence homology searching <link src='d22e6b'/><a class="headerlink" href="#sequence-homology-searching-link-src-d22e6b" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we’ll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We <span class="xref myst">previously defined homology</span> between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it’s very hard (really, impossible) to know what it is without more information.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">mystery</span><span class="o">-</span><span class="n">sequence1</span>
+<span class="n">PQITLWQRPLVTIRIGGQLKEALLDTGADDTVLEEMNLPGKWKPKMIGGIGGFIKVRQYDQIPVEIAHKAIGTVLVGPTPVNIIGRNLLTQIGATLNF</span>
+</pre></div>
+</div>
+<p>What a researcher will often do is search this sequence, their <em>query</em>, against some <em>reference database</em> of annotated sequences to learn what function the sequence performs (if the reference database contains functional annotation of sequences) and/or what organisms are likely to encode this sequence in their genome (if the reference database contains taxonomic annotation of sequences).</p>
+<p>Whose genome is the above sequence encoded in? What is its function? Take a minute now to answer these questions using the <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&amp;PAGE_TYPE=BlastSearch&amp;LINK_LOC=blasthome">Protein BLAST homology search tool on the NCBI website</a>.</p>
+<p>In the context of database searching, a query sequence and a reference sequence that we hypothesize to be homologous can be identical to one another, or they can differ as a result of mutation events. When sequences differ, we’re often then interested in how much they differ, or their pairwise similarity, which can help us identify the most closely related of several homologs in the reference database. There is an important distinction in the terms <em>homology</em> and <em>similarity</em>: homology is a discrete variable, and similarity is a continuous variable. A pair of biological sequences either <em>are</em> or <em>are not</em> derived from a common ancestor, but they can be more or less similar to each other. Saying that two sequences are 80% homologous doesn’t make sense. What people generally mean when they say this is that two sequences are 80% similar, and as a result they are hypothesizing homology between the sequences.</p>
+<div class="section" id="defining-the-problem-link-src-p7khdy">
+<h2><span class="section-number">2.1. </span>Defining the problem <link src="P7kHdy"/><a class="headerlink" href="#defining-the-problem-link-src-p7khdy" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned above, if we want to perform a homology search we’ll have one or more <em>query sequences</em>, and for each we want to know which sequence(s) in a reference database it is most similar to.</p>
+<p>Sequence homology searching can be implemented in a few ways. In this chapter, we’ll use the local alignment function that we worked with in <span class="xref myst">the Pairwise Alignment chapter</span>, <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code>, run it many times to search one <em>query</em> sequence against many <em>reference</em> sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">local_pairwise_align_ssw</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When our reference database starts getting hundreds of millions of bases long (as would be the case if we were searching against 97% OTUs from the <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/22134646">Greengenes small-subunit ribosomal RNA (SSU rRNA) reference database</a>), billions of bases long (as would be the case if we were searching against <a class="reference external" href="https://genome.ucsc.edu/cgi-bin/hgGateway">the human genome</a>) or trillions of bases long (as would be the case if we were searching against the <a class="reference external" href="http://www.ncbi.nlm.nih.gov/refseq/">NCBI non-redundant nucleotide database</a>), runtime becomes an important consideration. For that reason, learning about <em>heuristic algorithms</em> is an essential part of learning about sequence homology searching. Heuristic algorithms apply some rules (i.e., heuristics) to approximate the correct solution to a problem in a fraction of the runtime that would be required if we wanted to be guaranteed to find the correct solution. Heuristic algorithms are very common in bioinformatics, and we’ll use them in several other places in this book.</p>
+<p>While we’ll be aligning nucleotide sequences in this chapter, the same concepts apply to protein homology searching.</p>
+</div>
+<div class="section" id="loading-annotated-sequences-link-src-gakbxe">
+<h2><span class="section-number">2.2. </span>Loading annotated sequences <link src="gAKBxE"/><a class="headerlink" href="#loading-annotated-sequences-link-src-gakbxe" title="Permalink to this headline">¶</a></h2>
+<p>The first thing we’ll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we’re going to work with are derived from the <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a> database, and we’re accessing them using the <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial <a class="reference external" href="http://www.nature.com/scitable/definition/ribosome-194">ribosome</a> (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it’s one of about 200 genes that are encoded in the genomes of all known cellular organisms. We’ll come back to this gene a few times in the book, notably in <span class="xref myst">Studying Biological Diversity</span>. The sequences in Greengenes are taxonomically annotated, meaning that we’ll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.</p>
+<p>First, let’s load Greengenes into a list of <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code> sequence objects, and associate the taxonomy of each sequence as sequence metadata.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">load_taxonomy_reference_database</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">load_taxonomy_reference_database</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next, we’ll just inspect a couple of the sequences we loaded. Notice how the specificity of our taxonomic annotations (i.e., how many taxonomic levels are annotated and unknown) differs for different sequences.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reference_db</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For the sake of runtime, we’re going to work through this chapter using a random sample of sequences from this database. Here we’ll use Python’s <a class="reference external" href="https://docs.python.org/3/library/random.html">random module</a> to select sequences at random.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference_db</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">reference_db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> sequences are present in the subsampled database.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We’ll also extract some sequences from Greengenes to use as query sequences in our database searches. This time we won’t annotate them (to simulate not knowing what organisms they’re from). We’ll also trim these sequences so they’re shorter than the full length references. This will simulate obtaining a partial gene sequence, as is most common with the current sequencing technologies (as of this writing), but will also help to make the examples run faster.</p>
+<p>Note that some of our query sequences may also be in our subsampled reference database and some won’t. This is realistic: sometimes we’re working with sequences that are exact matches to known sequences, and sometimes we’re working with sequences that don’t match any known sequences (or at least any in the reference database that we’re working with).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">load_taxonomy_query_sequences</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">load_taxonomy_query_sequences</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span> <span class="o">=</span> <span class="n">load_taxonomy_query_sequences</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s inspect a couple of the query sequences that we’ll work with.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-the-problem-link-src-sz9u3s">
+<h2><span class="section-number">2.3. </span>Defining the problem <link src="SZ9u3S"/><a class="headerlink" href="#defining-the-problem-link-src-sz9u3s" title="Permalink to this headline">¶</a></h2>
+<p>The problem that we are going to address here is as follows. We now have a query sequence (<span class="math notranslate nohighlight">\(q_i\)</span>) which is not taxonomically annotated (meaning we don’t know the taxonomy of the organism whose genome it is found in), and a reference database (<span class="math notranslate nohighlight">\(R\)</span>) of taxonomically annotated sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, ... r_n\)</span>). We want to infer a taxonomic annotation for <span class="math notranslate nohighlight">\(q_i\)</span>. We’ll do this by identifying the most similar sequence(s) in <span class="math notranslate nohighlight">\(R\)</span> and associating their taxonomy with <span class="math notranslate nohighlight">\(q_i\)</span>. Because we actually do know the taxonomy of <span class="math notranslate nohighlight">\(q_i\)</span> (to the extent that we trust the annotations in <span class="math notranslate nohighlight">\(R\)</span>), we can evaluate how well this approach works.</p>
+<p>There are a few realistic features of the situation that we’ve set up here that I want you to be aware of.</p>
+<ol class="simple">
+<li><p>All of the query and reference sequences are homologous. In this case, they are all sequences of the 16S rRNA gene from archaea and bacteria. This may or may not be the case in real-world applications. Sometimes you’ll work with gene-specific databases such as Greengenes, and sometimes you’ll work with non-specific databases such as the NCBI nucleotide database (nr). Regardless, the search process is similar.</p></li>
+<li><p>The distance between each query sequence and its most closely related sequences in <span class="math notranslate nohighlight">\(R\)</span> will vary widely. Sometimes <span class="math notranslate nohighlight">\(q\)</span> will be an exact match to a reference sequence <span class="math notranslate nohighlight">\(r_i\)</span>, and sometimes we may have as little as <span class="math notranslate nohighlight">\(50\%\)</span> similarity.</p></li>
+</ol>
+<p>As we work through the next sections, imagine that we’re exploring scaling this system up, so that instead of searching just one or a few query sequences against the reference database, we ultimately want to apply this to search millions of sequences against the database. This would be the real-world problem we faced if we had collected 16S rRNA sequences from the environment (which would of course be unannotated) using high-throughput DNA sequencing.</p>
+</div>
+<div class="section" id="a-complete-homology-search-function-link-src-0c9fcs">
+<h2><span class="section-number">2.4. </span>A complete homology search function <link src="0C9FCS"/><a class="headerlink" href="#a-complete-homology-search-function-link-src-0c9fcs" title="Permalink to this headline">¶</a></h2>
+<p>Let’s define a homology search function that aligns each provided query sequences <span class="math notranslate nohighlight">\(q_i\)</span> with each of our reference database sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, ... r_n\)</span>). This function will take as input one or more query sequences, and the reference database. We’ll call the top scoring alignments for each <span class="math notranslate nohighlight">\(q_i\)</span> the <em>best hits</em>, and we’ll specifically request some number (<code class="docutils literal notranslate"><span class="pre">n</span></code>) of best hits for each <span class="math notranslate nohighlight">\(q_i\)</span>. The output of this function will be a summary of the <code class="docutils literal notranslate"><span class="pre">n</span></code> best hits for each query sequence, including some technical information about the alignment and the taxonomy associated with the corresponding reference sequence. We’ll then review the taxonomy annotations for our best hits, and from those make an inference about the taxonomy annotation for <span class="math notranslate nohighlight">\(q_i\)</span>.</p>
+<p>Spend a minute looking at this function and try to understand what it’s doing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">local_alignment_search</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">local_alignment_search</span>
+</pre></div>
+</div>
+<p>Now let’s perform some database searches. You can run the remaining code cells in this section a few times to experiment with searching different query sequences against the same reference database.</p>
+<p>This next cell, which is the one that actually performs the database searches, will take a little bit of time to run (maybe up to a minute or two). There is some code in this cell that will track the runtime. As it’s running, think about how many query sequences we’re searching against how many reference sequences, and refer back to the number of sequences in the full reference database. Does this strategy seem scalable to millions of sequences, which as mentioned above might be our ultimate goal? When you know the per-sequence runtime of this search, estimate how long it would take to do this in seconds for one million sequences. Convert the time in seconds to a unit that will be more meaningful to you.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">local_alignment_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Runtime: </span><span class="si">%1.4f</span><span class="s2"> sec per query&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="n">stop_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_queries</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span>
+</pre></div>
+</div>
+<p>Now, let’s try to answer our initial question: what is the most likely taxonomic annotation for each of our query sequences? Spend a few minutes reviewing this information, and write down what you think the most likely taxonomic annotation is for each of the query sequences. Here are some hints to help you out:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">k</span></code>, <code class="docutils literal notranslate"><span class="pre">p</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">g</span></code>, and <code class="docutils literal notranslate"><span class="pre">s</span></code> refer to <em>kingdom</em>, <em>phylum</em>, <em>class</em>, <em>order</em>, <em>family</em>, <em>genus</em>, and <em>species</em>, respectively. If you see an annotation for a reference sequence that looks like <code class="docutils literal notranslate"><span class="pre">g__</span></code>, that means that the genus is unknown for that sequence.</p></li>
+<li><p>Just as the reference taxonomy annotations don’t always go down to the species level, your taxonomic annotations don’t have to either. Not assigning at a given level implies that you’re uncertain about what the annotation should be at that level, and it’s usually better just to indicate that you’re uncertain rather than make a bad guess. If you’re uncertain of what the species is, assign the query <code class="docutils literal notranslate"><span class="pre">s__</span></code> and try to decide what the most likely genus is. If you’re uncertain of the genus, assign <code class="docutils literal notranslate"><span class="pre">g__</span></code>, and try to decide what the most likely family is…</p></li>
+<li><p>As you look at each of the reference taxonomy annotations below, refer back to the table above to look at the percent similarity between each query and reference, and maybe the length of the alignments and their scores. These values give you an idea of how confident you should be in each of your taxonomic annotations.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Closest taxonomies for query </span><span class="si">%s</span><span class="s1"> (in order):&#39;</span> <span class="o">%</span> <span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reference taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Because we have taxonomic annotations for all of the Greengenes sequences (though as you probably have noticed by now, they differ in their specificity), we can next look at taxonomy associated with each of our queries in Greengenes. How do your annotations compare to those from Greengenes, which we’ll print out in the next cell?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Known taxonomy for query </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">q_id</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">q_id</span><span class="p">]))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reducing-the-runtime-for-database-searches-link-src-0f9232">
+<h2><span class="section-number">2.5. </span>Reducing the runtime for database searches <link src='0f9232'/><a class="headerlink" href="#reducing-the-runtime-for-database-searches-link-src-0f9232" title="Permalink to this headline">¶</a></h2>
+<p>In the examples above, it’s taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven’t modified the database subsampling step) it is computing the <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> matrices described in <span class="xref myst">the Pairwise Alignment chapter</span>, and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn’t change the fact that this doesn’t scale to real-world applications because we’d have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.</p>
+<p>As we discussed in the previous chapter, the run time of pairwise alignment scales quadratically with sequence length. Database searching, at least in the example we’re exploring in this chapter, is a bit of a different problem however. Our sequence lengths aren’t changing, but rather it takes a long time because we’re performing a computationally expensive step, pairwise alignment, many times. Our database is fixed in that the number of sequences in it doesn’t change and the sequences themselves don’t change. Our query sequences are all exactly the same length in this example (remember that we set that above, when we sliced a single region from reference database sequences to create our query sequences). Let’s explore how the runtime of this database search scales under these constraints.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">tabulate_local_alignment_search_runtime</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">n_query_sequences</span><span class="p">,</span>
+<span class="gp">... </span>                                            <span class="n">n_reference_sequences</span><span class="p">,</span> <span class="n">search_function</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="c1"># we&#39;ll iterate over the pairs of number of query sequences</span>
+<span class="gp">... </span>    <span class="c1"># and number of reference sequences, and compute the runtime</span>
+<span class="gp">... </span>    <span class="c1"># of the database search three times for each pair (so we</span>
+<span class="gp">... </span>    <span class="c1"># have some idea of the variance in the runtimes). this is</span>
+<span class="gp">... </span>    <span class="c1"># achieved here with a nested for loop (i.e., a for loop</span>
+<span class="gp">... </span>    <span class="c1"># within a for loop).</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">nq</span><span class="p">,</span> <span class="n">nr</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">n_query_sequences</span><span class="p">,</span> <span class="n">n_reference_sequences</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="c1"># select nq query sequences at random</span>
+<span class="gp">... </span>            <span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">nq</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># select nr reference sequences at random</span>
+<span class="gp">... </span>            <span class="n">temp_reference_db</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">reference_db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">nr</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># run the search and store its runtime</span>
+<span class="gp">... </span>            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>            <span class="n">_</span> <span class="o">=</span> <span class="n">search_function</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">temp_reference_db</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="n">stop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>            <span class="n">median_query_sequence_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">])</span>
+<span class="gp">... </span>            <span class="n">median_reference_sequence_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">temp_reference_db</span><span class="p">])</span>
+<span class="gp">... </span>            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nq</span><span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">median_query_sequence_len</span><span class="p">,</span> <span class="n">median_reference_sequence_len</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">stop_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">runtimes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+<span class="gp">... </span>                            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Number of query seqs&quot;</span><span class="p">,</span> <span class="s2">&quot;Number of reference seqs&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                                     <span class="s2">&quot;Median query seq length&quot;</span><span class="p">,</span> <span class="s2">&quot;Median reference seq length&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                                     <span class="s2">&quot;Runtime (s)&quot;</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">runtimes</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># we&#39;ll temporarily work with a smaller reference database</span>
+<span class="gp">... </span><span class="c1"># so this will run a lot faster. this will be of fixed size.</span>
+<span class="gp">... </span><span class="n">n_reference_sequences</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># since our database is smaller, we can work with some slightly</span>
+<span class="gp">... </span><span class="c1"># larger numbers of sequences.</span>
+<span class="gp">... </span><span class="n">n_query_sequences</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">local_alignment_search_runtimes</span> <span class="o">=</span> <span class="n">tabulate_local_alignment_search_runtime</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span>
+<span class="gp">... </span>                                                                          <span class="n">n_query_sequences</span><span class="p">,</span> <span class="n">n_reference_sequences</span><span class="p">,</span>
+<span class="gp">... </span>                                                                          <span class="n">local_alignment_search</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">local_alignment_search_runtimes</span>
+</pre></div>
+</div>
+<p>This table shows that we’ve tried a few variations on number of query sequences but kept the number of reference sequences constant. There is no variance in the query sequence length, and there is a relatively small amount of variance in reference sequence length (they’re all of the same order of magnitude). There is also relatively little variance in runtime for fixed numbers of query and reference sequences.</p>
+<p>This table clearly shows that there is an increase in runtime with an increasing number of query sequences, which we’d of course expect. What we care about is how runtime is increasing as a function of number of query sequences. Let’s plot runtime versus the number of query sequences to help us understand that relationship.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Number of query seqs&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Runtime (s)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">local_alignment_search_runtimes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span>
+</pre></div>
+</div>
+<p>What we see here is pretty clearly a linear relationship: <span class="math notranslate nohighlight">\(runtime \approx constant \times number\ of\ query\ sequences\)</span>. This is because as we increase the number of query sequences, we’re increasing the number of pairwise alignments that we need to perform. If we have 5 queries and 10 reference sequences, we compute <span class="math notranslate nohighlight">\(5 \times 10 = 50\)</span> pairwise alignments. If we have 10 queries and 100 reference sequences, we compute <span class="math notranslate nohighlight">\(10 \times 100 = 1000\)</span> pairwise alignments. There are a few practical ways to reduce the runtime of a process like this.</p>
+<p>The first seems obvious, and even silly at first: perform fewer alignments. This could be achieved in a few ways. You could reduce the number of query sequences, though this might be something a researcher is resistant to: they have some collection of unknown sequences, and they want to know what they all are. You could alternatively reduce the number of reference sequences, but you might run into the same issues there: we wouldn’t want to exclude reference sequences that might provide us with useful information about our query sequences. Finally, we might be able to figure out some ways to perform fewer alignments by not searching all of the query sequences against all of the reference sequences. If we could come up with some procedure to approximate which pairwise alignments were likely to be good (i.e., high scoring) and which were likely to be bad (i.e., low scoring) that is faster than performing the pairwise alignments, we could apply that procedure and only align a pair of sequences when we expect to get a high score. That could potentially allow us to reduce the number of alignments we need to perform, and therefore the runtime of the algorithm.</p>
+<p>Another approach to reducing the runtime of this process would be to create a faster implementation of the algorithm (though at some point that won’t be possible anymore), use a faster computer, or run the process in parallel on multiple processors. All of these would be ways to reduce the runtime of the search by some factor <span class="math notranslate nohighlight">\(f\)</span>, where <span class="math notranslate nohighlight">\(new\ runtime \approx \frac{runtime}{f}\)</span>.</p>
+<p>In practice, for a production-scale sequence database search application like BLAST, we’d combine these approaches. In the next section we’ll explore ways to reduce the runtime of database searching for a fixed number of query sequences and a fixed number of reference sequences by reducing the number of pairwise alignments that the search function will perform.</p>
+</div>
+<div class="section" id="heuristic-algorithms-link-src-muardw">
+<h2><span class="section-number">2.6. </span>Heuristic algorithms <link src="mUArdw"/><a class="headerlink" href="#heuristic-algorithms-link-src-muardw" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned above, it just takes too long to search individual query sequences against a large database. This problem also isn’t going away anytime soon. While computers are getting faster (or cheaper), the size of our sequences collections are getting bigger because sequencing is getting cheaper. In fact, many people think that obtaining DNA sequences is getting cheaper faster than computers are getting cheaper. As our number of query sequences increases because we are able to obtain more for the same amount of money, and the size of our reference databases increases (because we’re continuously obtaining more sequence data) this will increasingly become a bigger problem. Figures 1 and 2, respectively, illustrate that these are both real-world issues. Notice that the axes are on a log scale in both cases.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">IFrame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;600&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;394&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=1844125885&amp;amp;format=interactive&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Figure 1: Genome sequencing costs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">IFrame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;763&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;371&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=2103353397&amp;amp;format=interactive&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Figure 2: Size of GenBank.</p>
+<p>One way that we can deal with this problem is by recognizing that most of the alignments that are performed in a database search are unlikely to be very good alignments. An algorithm developer could therefore improve runtime by defining a heuristic (or a rule) that is applied to determine which reference sequences are likely to result in good alignments, and only aligning the query against those. For it to be useful, making the decision to align or not (i.e., applying the heuristic) must be <em>much faster</em> than actually performing the pairwise alignment. The heuristic also needs to make <em>good</em> choices about which reference sequences to align the query against. If the algorithm chooses to not align against a specific reference, that reference is ruled out as a possible result of the database search. A good heuristic for sequence homology searching would therefore be very unlikely to exclude the best alignment(s). When thinking about heuristic algorithms in general, there are some important considerations:</p>
+<ol class="simple">
+<li><p>How often does the heuristic algorithm fail to get the right answer (in our case, does it make good choices about which reference sequences to align against)?</p></li>
+<li><p>How much faster is the heuristic than the “complete” approach, and is that reduction in runtime enough to justify not being guaranteed to get the best answer?</p></li>
+</ol>
+<p>We’ll now look at a few heuristics in the context of these questions.</p>
+<div class="section" id="random-reference-sequence-selection-link-src-beqxhf">
+<h3><span class="section-number">2.6.1. </span>Random reference sequence selection <link src="bEQxHf"/><a class="headerlink" href="#random-reference-sequence-selection-link-src-beqxhf" title="Permalink to this headline">¶</a></h3>
+<p>Our first heuristic will be a <a class="reference external" href="https://en.wikipedia.org/wiki/Straw_man">straw man</a> that we use as a baseline. We’ll select a random <span class="math notranslate nohighlight">\(p\%\)</span> of the reference sequences to align our query against. This will clearly result in a large decrease in the number of sequence alignments that we need to perform because we’ll go from performing <span class="math notranslate nohighlight">\(R_s\)</span> (the reference database size) sequence alignments to <span class="math notranslate nohighlight">\(p \times R_s\)</span> sequence alignments for each query sequence <span class="math notranslate nohighlight">\(q_i\)</span>.</p>
+<p>Here’s the source code for this. You can see that we’re just wrapping our <code class="docutils literal notranslate"><span class="pre">local_alignment_search</span></code> function in a function that samples down to <span class="math notranslate nohighlight">\(p\%\)</span> of the reference sequences.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_random</span>
+</pre></div>
+</div>
+<p>Let’s select some new queries and see how the results compare to our known taxonomies.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">heuristic_local_alignment_search_random</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Closest taxonomies for query </span><span class="si">%s</span><span class="s1"> (in order):&#39;</span> <span class="o">%</span> <span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reference taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Known taxonomy for query </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">q_id</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">q_id</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>What we need now is a way to know how often we get the “right answer”, and how long this heuristic algorithm takes relative to the complete algorithm. We therefore first need to define what the “right answer” is. How about this: if the most common taxonomy assignment resulting from the database search at <code class="docutils literal notranslate"><span class="pre">taxonomy_levels</span></code> levels of taxonomy (i.e., how deep or specific our assignment is) matches the known taxonomy, then our algorithm has achieved the right answer. We can vary <code class="docutils literal notranslate"><span class="pre">taxonomy_levels</span></code> to see how the different heuristics perform at different levels.</p>
+<p>Here’s what this would look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">evaluate_search</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">search_function</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">search_results</span> <span class="o">=</span> <span class="n">search_function</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">stop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">runtime</span> <span class="o">=</span> <span class="n">stop_time</span> <span class="o">-</span> <span class="n">start_time</span>
+<span class="gp">... </span>    <span class="n">per_query_runtime</span> <span class="o">=</span> <span class="n">runtime</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">q_known_taxonomy</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">q_id</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;; &#39;</span><span class="p">)[:</span><span class="n">taxonomy_levels</span><span class="p">])</span>
+<span class="gp">... </span>        <span class="n">q_observed_taxonomies</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">search_results</span><span class="p">[</span><span class="s1">&#39;reference taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">]:</span>
+<span class="gp">... </span>            <span class="n">q_observed_taxonomies</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;; &#39;</span><span class="p">)[:</span><span class="n">taxonomy_levels</span><span class="p">])]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="n">q_observed_taxonomy</span> <span class="o">=</span> <span class="n">q_observed_taxonomies</span><span class="o">.</span><span class="n">most_common</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">q_known_taxonomy</span><span class="p">,</span> <span class="n">q_observed_taxonomy</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Query ID&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">number_correct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">fraction_correct</span> <span class="o">=</span> <span class="n">number_correct</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">per_query_runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span>
+</pre></div>
+</div>
+<p>First let’s see how this works for our full database search algorithm. What’s the runtime, and how often do we get the correct answer? We’ll start with five levels of taxonomy (which corresponds to the family level). <strong>This step will take a couple of minutes to run, because it’s doing the full database search.</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">taxonomy_levels</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">local_alignment_search</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result details:&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q_id</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next let’s see how this compares to our random heuristic search algorithm. Try running this a few times, as you might get different answers due to different random selections of the database.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">heuristic_local_alignment_search_random_10</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_random</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">heuristic_local_alignment_search_random_10</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result details:&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q_id</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Again, what’s the runtime, and how often do we get the correct answer? Based on comparison to the full search, what do you think: is this a good heuristic?</p>
+<p>After performing many trials of the above searches, I get the correct genus-level assignment about half as often with the random reference database heuristic relative to the full database search. Your results might differ from that due to differences in the random selection of query and reference sequences. Try running all the cells in this section a few times.</p>
+<p>Go back to the beginning of this section and try running this check based on fewer levels of taxonomy (i.e., decreased taxonomic specificity, such as the phylum) and on more levels of taxonomy (i.e., increased taxonomic specificity, such as the species level). How does that impact how often we get the right answer?</p>
+</div>
+<div class="section" id="composition-based-reference-sequence-collection-link-src-p4vq4b">
+<h3><span class="section-number">2.6.2. </span>Composition-based reference sequence collection <link src="P4vQ4b"/><a class="headerlink" href="#composition-based-reference-sequence-collection-link-src-p4vq4b" title="Permalink to this headline">¶</a></h3>
+<p>While the random selection of database sequences can vastly reduce the runtime for database searching, we don’t get the right answer very often. Let’s try some heuristics that are a bit smarter. How about this: if the overall nucleotide composition of a query sequence is very different than the overall nucleotide composition of a reference sequence, it’s unlikely that the best alignment will result from that pairwise alignment, so don’t align the query to that reference sequence. Given that, how do we define “overall nucleotide composition” in a useful way?</p>
+<div class="section" id="gc-content-link-src-8yikfo">
+<h4><span class="section-number">2.6.2.1. </span>GC content <link src="8yiKFO"/><a class="headerlink" href="#gc-content-link-src-8yikfo" title="Permalink to this headline">¶</a></h4>
+<p>One metric of sequence composition that we can compute quickly (because remember, this has to be a lot faster than computing the alignment for it to be worth it) is GC content. Let’s define a heuristic that only performs a pairwise alignment for the reference sequences that have the most similar GC content to the query sequence. The number of alignments that we’ll perform will be defined as <code class="docutils literal notranslate"><span class="pre">database_subset_size</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">database_subset_size</span> <span class="o">=</span> <span class="mi">500</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_gc</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_gc</span>
+</pre></div>
+</div>
+<p>If we run our queries again, how often do we get the right answer? How much did we reduce runtime? Do you think this is a better or worse heuristic than what we implemented above?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">heuristic_local_alignment_search_gc_2</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_gc</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">heuristic_local_alignment_search_gc_2</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result details:&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q_id</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Try increasing and decreasing the number of sequences we’ll align by increasing or decreasing <code class="docutils literal notranslate"><span class="pre">database_subset_size</span></code>. How does this impact the runtime and fraction of time that we get the correct answer?</p>
+</div>
+<div class="section" id="kmer-content-link-src-qbltrv">
+<h4><span class="section-number">2.6.2.2. </span>kmer content <link src="QblTRV"/><a class="headerlink" href="#kmer-content-link-src-qbltrv" title="Permalink to this headline">¶</a></h4>
+<p>Another metric of sequence composition is <em>kmer composition</em>. A <span class="xref myst">kmer</span> is simply a word (or list of adjacent characters) of length <em>k</em> found within a sequence. Here are the kmer frequencies in a short DNA sequence. The <code class="docutils literal notranslate"><span class="pre">overlap=True</span></code> parameter here means that our kmers can overlap one another.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">skbio</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">(</span><span class="s1">&#39;ACCGTGACCAGTTACCAGTTTGACCAA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In our next heuristic, we’ll only align our query to the reference sequences with the largest fraction of the kmers that are observed in the query sequence are also present in the reference sequence. This makes a lot of sense to use as an alignment heuristic: we’re only aligning sequences when it looks like they’ll have multiple length-<code class="docutils literal notranslate"><span class="pre">k</span></code> stretches of nucleotides that are not interrupted by substitutions or insertion/deletion mutations.</p>
+<p>In our next heuristic, we’ll only align our query to the reference sequences with the largest fraction of the kmers that are observed in the query sequence. This makes a lot of sense to use as an alignment heuristic: we’re only aligning sequences when it looks like they’ll have multiple length-<code class="docutils literal notranslate"><span class="pre">k</span></code> stretches of nucleotides that are not interrupted by substitutions or insertion/deletion mutations.</p>
+<p>Here’s the source code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_kmers</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_kmers</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<p>Let’s apply this and see how it does. How does the runtime and fraction of correct assignments compare to our GC content-based search and our full database search?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
+<span class="gp">&gt;&gt;&gt; </span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_kmers</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">heuristic_local_alignment_search_kmers_50</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result details:&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q_id</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="further-optimizing-composition-based-approaches-by-pre-computing-reference-database-information-link-src-hqmzgf">
+<h4><span class="section-number">2.6.2.3. </span>Further optimizing composition-based approaches by pre-computing reference database information <link src="HQmZgF"/><a class="headerlink" href="#further-optimizing-composition-based-approaches-by-pre-computing-reference-database-information-link-src-hqmzgf" title="Permalink to this headline">¶</a></h4>
+<p>One important feature of composition-based approaches is that, because the reference database doesn’t change very often, we can pre-compute features of the reference sequences and re-use them. This can help us to vastly decrease the runtime of our heuristic searches. For example, the computation of all of the reference database kmer frequencies is a lot of work. If we can compute that outside of our database search, we can avoid doing that step for every database search, and therefore remove that computationally expensive (i.e., slow) step of the process.</p>
+<p>Here we’ll compute all of the reference database kmer frequencies. Notice that this step takes about a minute to complete. This is a minute of compute time that we can save on every database search!</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reference_db_kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]:</span> <span class="n">r</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>We’ll now pass our pre-computed kmer frequencies into our search function. How does the runtime and accuracy of this search compare to the searches above? This last database search that we’ve implemented here is very similar to how BLAST works.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
+<span class="gp">&gt;&gt;&gt; </span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_kmers</span><span class="p">,</span> <span class="n">reference_db_kmer_frequencies</span><span class="o">=</span><span class="n">reference_db_kmer_frequencies</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">heuristic_local_alignment_search_kmers_50</span><span class="p">,</span>
+<span class="gp">... </span>                                                  <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Result details:&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">q_id</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">q_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="determining-the-statistical-significance-of-a-pairwise-alignment-link-src-87c92f">
+<h2><span class="section-number">2.7. </span>Determining the statistical significance of a pairwise alignment <link src='87c92f'/><a class="headerlink" href="#determining-the-statistical-significance-of-a-pairwise-alignment-link-src-87c92f" title="Permalink to this headline">¶</a></h2>
+<p>One thing you may have noticed is that the score you get back for a pairwise alignment is hard to interpret. It’s dependent on the query and reference sequence lengths (and possibly their composition, depending on your substitution matrix). So an important question is how to determine <em>how good</em> a given pairwise alignment is. Here we’ll learn about a statistical approach for answering that.</p>
+<div class="section" id="metrics-of-alignment-quality-link-src-ydqcls">
+<h3><span class="section-number">2.7.1. </span>Metrics of alignment quality <link src="YdqCls"/><a class="headerlink" href="#metrics-of-alignment-quality-link-src-ydqcls" title="Permalink to this headline">¶</a></h3>
+<p>In the examples above, we compared features such as how long the alignment is (relevant for local but not global alignment), the pairwise similarity between the aligned query and reference, and the score. If you’ve used a system like BLAST, you’ll know that there are other values that are often reported about an alignment, like the number of substitutions, or the number of insertion/deletion (or gap) positions. None of these metrics are useful on their own. Let’s look at an example to see why.</p>
+<p>Imagine we’re aligning these two sequences:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GAAGCAGCAC</span>
+<span class="n">GAACAGAAC</span>
+</pre></div>
+</div>
+<p>If we tell our search algorithm that we’re interested in the alignment with the fewest number of substitutions, the following alignment would get us zero substitutions, but there are a lot of bases that look homologous which are not aligned.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GAAGCAGCAC</span><span class="o">-----</span>
+<span class="n">GAA</span><span class="o">------</span><span class="n">CAGAAC</span>
+</pre></div>
+</div>
+<p>On the other hand, if we want to find the alignment with the fewest number of gaps, this one would get us that result, but we now have a lot of substitution events, and some regions that clearly look misaligned (such as the <code class="docutils literal notranslate"><span class="pre">CAG</span></code> sequence in the middle of both).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GAAGCAGCAC</span>
+<span class="n">GAACAGA</span><span class="o">-</span><span class="n">AC</span>
+</pre></div>
+</div>
+<p>The alignment score that has been reported by our pairwise aligners helps us to balance these different features, and we can adjust the scoring scheme to weight things differently (e.g., so that gaps are penalized more or less than certain substitutions). The problem is that the scores are hard to interpret, particularly when we have only one or a few of them.</p>
+</div>
+<div class="section" id="false-positives-false-negatives-p-values-and-alpha-link-src-tjqwvy">
+<h3><span class="section-number">2.7.2. </span>False positives, false negatives, p-values, and alpha  <link src="TjqwVY"/><a class="headerlink" href="#false-positives-false-negatives-p-values-and-alpha-link-src-tjqwvy" title="Permalink to this headline">¶</a></h3>
+<p>Remember that an alignment of a pair of sequences represents a hypothesis about homology between those sequences. One way that we think about determining if an alignment is good or not is to ask: <em>what fraction of the time would I obtain a score at least this good if my sequences are not homologous?</em> This fraction is usually referred to as our <em>p-value</em>, and this is computed in many different ways. If our p-value is high (e.g., 25%), then our alignment is probably not very good since it means that many non-homologous pairs of sequences would achieve a score at least that high. If our p-value is low (say 0.001%), then our alignment is probably good since scores that high are achieved only infrequently.</p>
+<p>Our threshold for defining what we consider to be a high versus low p-value is dependent on how often we’re willing to be wrong. We would set this value, which is usually referred to as <span class="math notranslate nohighlight">\(\alpha\)</span>, to some fraction, and if our p-value is less than <span class="math notranslate nohighlight">\(\alpha\)</span>, we say that the alignment is statistically significant. If our p-value is greater than <span class="math notranslate nohighlight">\(\alpha\)</span>, we say that our alignment is not statistically significant.</p>
+<p>There are a couple of ways that we could be wrong when we do sequence homology searching, and we need to consider these when we determine what value we want to define as <span class="math notranslate nohighlight">\(\alpha\)</span>. First, we could say a pair of sequences are homologous when they’re not, which would be a <em>false positive</em> or a <em>type 1 error</em>. Or, we could say that a pair of sequences are not homologous when they are, which would be a <em>false negative</em>, or a <em>type 2 error</em>.</p>
+<p>If incurring a false positive about 5% of the time is acceptable (i.e., you’re ok with calling a pair of sequences homologous when they actually are not about one in twenty times) then you’d set your <span class="math notranslate nohighlight">\(\alpha\)</span> to 0.05. Setting <span class="math notranslate nohighlight">\(\alpha\)</span> to a value this high likely means that the method will err on the side of false positives, and only infrequently will it say that a pair of sequences are not homologous when they actually are (i.e., achieve a false negative). If <span class="math notranslate nohighlight">\(\alpha\)</span> were set to be very low on the other hand (say, <span class="math notranslate nohighlight">\(1 \times 10^{-50}\)</span>), then you will err on the side of false negatives. Only infrequently will you say that a pair of non-homologous sequences are homologous, but you might call many pairs of homologous sequences non-homologous. You should think of <span class="math notranslate nohighlight">\(\alpha\)</span> as a dial. If you turn the dial toward higher values, you’ll increase your false positive rate and decrease your false negative rate. If you turn the dial toward lower values, you’ll decrease your false positive rate and increase your false negative rate.</p>
+<p>There is not a hard-and-fast rule for whether false positives or false negatives are better, which makes choosing <span class="math notranslate nohighlight">\(\alpha\)</span> hard. It’s application specific, so you need to understand the biological question your asking when making this decision, and the ramifications of false positives versus false negatives. In general, when might you prefer to have false positives? When might you prefer to have false negatives?</p>
+</div>
+<div class="section" id="interpreting-alignment-scores-in-context-link-src-a0nqbh">
+<h3><span class="section-number">2.7.3. </span>Interpreting alignment scores in context <link src="a0nqBH"/><a class="headerlink" href="#interpreting-alignment-scores-in-context-link-src-a0nqbh" title="Permalink to this headline">¶</a></h3>
+<p>In this section, we are going to learn about how to interpret alignment scores by empirically determining if a pairwise alignment that we obtain is better than we would expect if the pair of sequences we’re working with were definitely not homologous. For a given pair of sequences that we want to align, we’re first going to align them and compute the score of the alignment. We’re then going to align many pairs of sequences that are similar to the query and reference, but that we know are not homologous. We’ll do this by shuffling or randomizing the order of the bases in the query sequences, and performing another pairwise alignment.</p>
+<p>First, we’ll define a function that can generate random sequences for us. This will take a scikit-bio sequence object (either <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code>, <code class="docutils literal notranslate"><span class="pre">skbio.RNA</span></code>, or <code class="docutils literal notranslate"><span class="pre">skbio.Protein</span></code>) and a length, and it will randomly generate a sequence of that type and length for us.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">random_sequence</span><span class="p">(</span><span class="n">moltype</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="n">alphabet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">moltype</span><span class="o">.</span><span class="n">nondegenerate_chars</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">alphabet</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">moltype</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can now run this a few times to generate some random sequences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we need a function that will shuffle the characters in a sequence, and give us a new sequence back. We’ll use this to generate a sequence that is similar (in length and composition) to our input sequence, but which we know is not homologous. We’ll use Pythons <code class="docutils literal notranslate"><span class="pre">random.shuffle</span></code> function, which randomly re-orders the order of the elements in a sequence, but keeps the composition and length of the sequence the same.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">shuffle_sequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">shuffle_sequence</span>
+</pre></div>
+</div>
+<p>Now we can define a random sequence and shuffle it. Notice how the sequences are different (in their order), but their compositions (e.g., length and GC content) are the same. Shuffling will change the order of the bases, but it won’t change the frequency at which each base is present - it’s exactly analogous to shuffling a deck of cards.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shuffle_sequence</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s generate a random query sequence and align it against itself to see what that score would be.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query_seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span><span class="p">,</span> <span class="n">actual_score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">local_pairwise_align_ssw</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score: </span><span class="si">%1.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">actual_score</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next let’s generate 99 random variants of that sequence with <code class="docutils literal notranslate"><span class="pre">shuffle_sequence</span></code> and compute the pairwise alignment for each of those variants against the query sequence. We’ll then look at the distribution of those scores.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">generate_random_score_distribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">generate_random_score_distribution</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">random_scores</span> <span class="o">=</span> <span class="n">generate_random_score_distribution</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">random_scores</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>How does the actual score of aligning the sequence to itself compare to the score of aligning it to many similar but non-homologous sequences? Let’s plot these to get a better idea.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">plot_score_distribution</span><span class="p">(</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">random_scores</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">random_scores</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Random scores&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">actual_score</span><span class="p">],</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">(),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Actual score&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="c1"># set the range of the x axis to be zero through 110% of the actual score</span>
+<span class="gp">... </span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">actual_score</span> <span class="o">+</span> <span class="n">actual_score</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">ax</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_score_distribution</span><span class="p">(</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">random_scores</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What does this tell us about our alignment score and therefore about our alignment? Is it good or bad?</p>
+<p>We finally have information that we can use to evaluate an alignment score, and therefore to evaluate the quality of an alignment. Let’s use this information to quantify the quality of the alignment by computing a p-value. As we described above, this is simply the probability that we would obtain an alignment score at least this good if the sequences being aligned are not homologous. Since we have a lot of scores now from sequences that are similar but not homologous, if we just count how many are at least as high as our actual score and divide by the number of scores we compute, that is an empirical (data-driven) way of determining our p-value.</p>
+<p>To determine if our alignment is statistically significant, we need to define <span class="math notranslate nohighlight">\(\alpha\)</span> before computing the p-value so the p-value does not impact our choice of <span class="math notranslate nohighlight">\(\alpha\)</span>. Let’s define <span class="math notranslate nohighlight">\(\alpha\)</span> as 0.05. This choice means if we obtain a p-value less than 0.05 we will consider the alignment statistically significant and accept the hypothesis that the sequences are homologous.</p>
+<p>Here’s what all of this looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">fraction_better_or_equivalent_alignments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">psource</span> <span class="n">fraction_better_or_equivalent_alignments</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="gp">... </span>      <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">99</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The fraction that we get back here is <code class="docutils literal notranslate"><span class="pre">0.01</span></code>, which is lower than <span class="math notranslate nohighlight">\(\alpha\)</span>, so we would accept the hypothesis that our sequences are homologous.</p>
+<p>A few notes on these empirically defined p-values. First, here’s what the formula for computing this looks like:</p>
+<p><span class="math notranslate nohighlight">\(p\ value = \frac{number\ of\ computed\ aligned\ scores\ greater\ than\ or\ equal\ to\ the\ actual\ alignment\ score}{number\ of\ alignment\ scores\ computed}\)</span></p>
+<p>The numerator and the denominator both include the actual alignment score, so the lowest p-value that can be achieved is <span class="math notranslate nohighlight">\(\frac{1}{99 + 1}\)</span>, where the <span class="math notranslate nohighlight">\(1\)</span> in the numerator corresponds to our actual alignment score (which is of course equal to itself), where the <span class="math notranslate nohighlight">\(99\)</span> in the denominator is the number of permutations, and the <span class="math notranslate nohighlight">\(1\)</span> in the denominator is a constant which corresponds the computation of the actual score. If we increase the number of permutations, say to 999, we could achieve greater precision (more significant digits) in our p-value.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="gp">... </span>      <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When we achieve the lowest possible value for a given test, as is the case here, we report the p-value as being less than that value, since we’ve yet to observe a random alignment score at least that high. For example, here we would report something like:</p>
+<p><em>The alignment of our query and reference sequence was statistically significant, as determined by comparing our actual alignment score to random variants (<span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>).</em></p>
+<p>Let’s now try this for some harder cases, where the query and subject sequences are not identical. First, let’s generate a longer subject sequence at random. Then, we’ll create a random query sequence and compare it. Since we’re doing this in two random steps, we know that these sequences are not homologous. Does the resulting p-value reflect that?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence2</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence2</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="gp">... </span>      <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span><span class="n">sequence2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We’ve now looked at two extremes: where sequences are obviously homologous (because they were the same), and where sequences are obviously not homologous (because they were both independently randomly generated). Next, we’ll explore the region between these, where this gets interesting. We’ll now create a partially randomized sequence to create a pair of sequences where the homology is more obscure. We’ll do this again using the Python <code class="docutils literal notranslate"><span class="pre">random</span></code> module, but this time we’ll introduce mutations only at some positions to create a pair of sequences that are approximately <code class="docutils literal notranslate"><span class="pre">percent_id</span></code> identical.</p>
+<p>Let’s define a function to do this, and then compute a sequence that is 95% identical to our <code class="docutils literal notranslate"><span class="pre">sequence1</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">partially_randomize_sequence</span><span class="p">(</span><span class="n">percent_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">percent_id</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="c1"># choose a base at random that is not the current base</span>
+<span class="gp">... </span>            <span class="c1"># i.e., simulate a substitution event</span>
+<span class="gp">... </span>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">choice</span><span class="p">([</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">nondegenerate_chars</span> <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">c</span><span class="p">]))</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">sequence</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1_95</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1_95</span>
+</pre></div>
+</div>
+<p>Notice how these sequences are almost identical, but have some differences. Let’s apply our approach to determine if it would identify these sequences as being homologous based on <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="gp">... </span>      <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence1_95</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>You likely got a significant p-value there, telling you that the sequences are homologous.</p>
+<p>Now let’s simulate much more distantly related sequences by introducing substitutions at many more sites.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1_25</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence1_25</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<span class="gp">... </span>      <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence1_25</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exploring-the-limit-of-detection-of-sequence-homology-searches-link-src-n8oggw">
+<h3><span class="section-number">2.7.4. </span>Exploring the limit of detection of sequence homology searches <link src="n8OGGW"/><a class="headerlink" href="#exploring-the-limit-of-detection-of-sequence-homology-searches-link-src-n8oggw" title="Permalink to this headline">¶</a></h3>
+<p>In the example above, we know that our input sequences are “homologous” because <code class="docutils literal notranslate"><span class="pre">sequence1_25</span></code> and <code class="docutils literal notranslate"><span class="pre">sequence1_95</span></code> are both derived from <code class="docutils literal notranslate"><span class="pre">sequence1</span></code>. Our method detected that homology for <code class="docutils literal notranslate"><span class="pre">sequence1_95</span></code>, when we simulated very closely related sequences, but not for <code class="docutils literal notranslate"><span class="pre">sequence1_25</span></code>, when we simulated much more distantly related sequences. This gives us an idea of the limit of detection of this method, and is a real-world problem that biologists face: as sequences are more divergent from one another, detecting homology becomes increasingly difficult.</p>
+<p>Lets run a simulation to gain some more insight into the limit of detection of this method. We’ll run this approach for pairs of sequences where we vary the <code class="docutils literal notranslate"><span class="pre">percent_id</span></code> parameter, and identify when our approach stops identifying sequence pairs as being homologous. This is important to know as a bioinformatician, because it tells us around what pairwise similarity we will no longer be able to identify homology using this approach.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># First, let&#39;s define the range of percent identities that we&#39;ll test</span>
+<span class="gp">... </span><span class="n">percent_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Then, we&#39;ll define the number of random sequences we&#39;ll test at each percent identity</span>
+<span class="gp">... </span><span class="n">num_trials</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Then, we&#39;ll define the sequence length that we want to work with, and num_trials random sequences</span>
+<span class="gp">... </span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">random_sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_trials</span><span class="p">)]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">percent_id</span> <span class="ow">in</span> <span class="n">percent_ids</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># at each percent_id, we&#39;ll track the p-values for each trial (random sequence)</span>
+<span class="gp">... </span>    <span class="n">p_values</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">random_sequences</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># partially randomize the sequence, compute its p-value, and record that p-value</span>
+<span class="gp">... </span>        <span class="n">sequence_at_percent_id</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="n">percent_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">p</span> <span class="o">=</span> <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">sequence_at_percent_id</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">p_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">percent_id</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">p_values</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">p_values</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Percent id between query and subject&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                               <span class="s2">&quot;Median p-value&quot;</span><span class="p">,</span> <span class="s2">&quot;Mean p-value&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>What does this simulation tell us about our limit of detection for homology (i.e., how similar must a pair of sequences be for us to reliably be able to identify homology between them)? Is this higher or lower than you expected?</p>
+<p>With respect to our simulation, I took a few shortcuts here to keep the runtime low. What are some things that could be improved to make this simulation more robust, if we weren’t as concerned about runtime?</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./algorithms"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="pairwise-alignment.html" title="previous page"><span class="section-number">1. </span>Pairwise sequence alignment <link src='a76822'/></a>
+    <a class='right-next' id="next-link" href="../developing/getting-started.html" title="next page"><span class="section-number">1. </span>Getting started with developing with QIIME 2</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>
