@@ -1,5 +1,5 @@
 ```{warning}
-Thanks for your interest in my QIIME 2 book projecvt. This book is in an early stage of development, and **I don't recommend using it yet**. The commands presented are not guaranteed to work with any particular version of QIIME 2, the content is not complete or copy-edited, and the structure or content make change dramatically without any advance warning. 
+Thanks for your interest in my QIIME 2 Jupyter Book project. This book is in an early stage of development, and **I don't recommend using it yet**. The commands presented are not guaranteed to work with any particular version of QIIME 2, the content is not complete or copy-edited, and the structure or content may change dramatically without any advance warning. 
 ```
 
 # Preface
