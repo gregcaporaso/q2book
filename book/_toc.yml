@@ -19,6 +19,7 @@
 
 - part: Back Matter
   chapters:
+  - file: back-matter/biological-information.md
   - file: back-matter/historical-context.md
   - file: back-matter/q2-origin-story.md
   - file: back-matter/glossary.md
