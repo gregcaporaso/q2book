@@ -282,6 +282,18 @@
   <a class="reference internal nav-link" href="#protein-sequences-are-encoded-in-a-base-4-system">
    1.4. Protein sequences are encoded in a base 4 system
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#decoding-protein-messages">
+     1.4.1. Decoding protein messages
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#limitations-of-this-analogy">
+     1.4.2. Limitations of this analogy
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#quantifying-information">
@@ -311,10 +323,10 @@
                 
   <div class="section" id="appendix-1-biological-information">
 <h1><span class="section-number">1. </span>Appendix 1: Biological Information<a class="headerlink" href="#appendix-1-biological-information" title="Permalink to this headline">¶</a></h1>
-<p>Biological systems and computer systems are analogous in ways that may not be immediately apparent. In this chapter we’ll briefly explore a relationship between the two: information processing is one of the most fundamental functions of both.</p>
+<p>Biological systems and computer systems are analogous in ways that may not be immediately apparent. In this chapter we’ll briefly explore a relationship between the two: information processing is fundamental to both.</p>
 <div class="section" id="central-dogma-of-molecular-biology">
 <h2><span class="section-number">1.1. </span>Central Dogma of Molecular Biology<a class="headerlink" href="#central-dogma-of-molecular-biology" title="Permalink to this headline">¶</a></h2>
-<p>The Central Dogma of Molecular Biology describes information flow in biological systems. It begins with DNA, a relatively long-lived information storage molecule, from which information typically flows in two directions: into new DNA molecules, during the process of replication, or into messenger RNA (mRNA), during the processing of transcription. mRNA is a relatively short-lived molecule that transfers information that is used to synthesize protein molecules by the ribosome. Proteins are often thought of as the building blocks of life. They serve a variety of purposes, ranging from molecular machines such as transmembrane ion transporters, to structural molecules like myosin, a major component of muscle fibers. There are some uncommon circumstances where information flows differently, for example some viruses can reverse transcribe RNA to DNA, but proteins seem to be a terminal output of this information flow. Once a protein has been created, we are aware of no process that can work backwards to re-create the RNA or DNA that encoded it.</p>
+<p>The Central Dogma of Molecular Biology describes information flow in biological systems. It begins with DNA, a relatively long-lived information storage molecule, from which information typically flows in two directions: into new DNA molecules, during the process of replication, or into messenger RNA (mRNA), during the processing of transcription. mRNA is a relatively short-lived molecule that transfers information that is used to synthesize protein molecules by the ribosome. Proteins are often thought of as the building blocks of life. They serve a variety of purposes, ranging from molecular machines such as transmembrane ion transporters, to structural molecules like myosin, a major component of muscle fibers. There are some uncommon circumstances where information flows differently, for example RNA viruses encode their genomes in RNA, which can be reverse transcribed to DNA in a host cell. Proteins do seem to be a terminal output of this information flow: once a protein has been created, we are aware of no natural process that can work backwards to re-create the RNA or DNA that encoded it.</p>
 <p>We’ll revisit these ideas at the end of this chapter, but first let’s establish some concepts that will help us to understand and even quantify information. These ideas have their roots in Boolean algebra and Information Theory. Bear with me while I introduce some concepts that may be new to you, and may initially seem unrelated.</p>
 <figure>
     <img src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/getting-started/images/central-dogma.png">
@@ -342,9 +354,9 @@
 <h2><span class="section-number">1.3. </span>Encoding messages in bits<a class="headerlink" href="#encoding-messages-in-bits" title="Permalink to this headline">¶</a></h2>
 <p>The messages encoded by bits can be nearly anything, provided that the sender of the message and the recipient of the message have agreed on a coding scheme which describes how a message can be encoded in bits or decoded from bits. The number of messages that can be sent using bits is a simple function of the number of places that are used. For example, if the only messages I want to transmit to you are “yes” and “no”, I could achieve that by transmitting a single bit of information. You and I could agree that “yes” will be represented by the bit 1, and “no” will be represented by the bit 0.</p>
 <p>Internally, computers send and receive messages that are encoded using electrical currents. To reduce errors in message transmission, the electrical currents are interpreted only as being off or on, such that a message may be transmitted as off-on-on. These two states, off and on, are often interpreted by computers as binary numbers, where zero is synonymous with off (no current) and one is synonymous with on (current). So our message of off-on-on could be read as the binary number 011, or the decimal number 3.</p>
-<p>To illustrate a useful system that operates on the transmission of one bit of information, I’ll describe a photosensor for an outdoor spotlight. In this example the photosensor is the sender of the message and the spotlight is the receiver of the message. The transmission of a zero from the photosensor to the spotlight could mean that it is currently light outside, and the transmission of a one could mean that it is currently dark outside. (The meanings of zero and one could be reversed: all that matters is that the sender and the receiver know what each value means.) The photosensor can monitor the available light, and send a message to the spotlight once per minute. If it is currently light outside, the photosensor will send a zero to the spotlight and the spotlight will turn off or remain off. If it is currently dark outside, the photosensor will send a one to the spotlight, and the spotlight will turn on or remain on. The photosensor is functioning as an on/off switch for the spotlight, transmitting one bit of information every minute.</p>
-<p>There are couple of important things to consider in this example. First, the meaning of “currently light outside” and “currently dark outside” are embodied in the photosensor. It must make a decision on whether it is light or dark on it’s own, because it is only transmitting one bit of information (zero equals light and one equals dark). The message it sends isn’t complex enough to describe how light or dark it currently is outside -it’s effectively only flipping a switch on or off.</p>
-<p>To enable the transmission of more complex messages more bits can be used. One bit allows us to transmit two messages: 0 and 1, which in our photosensor example are interpreted as <em>off</em> and <em>on</em>, respectively. If our message is based on two bits we can transmit four messages, 00, 01, 10, or 11. A real-world example of this could be a light switch with four states: off, low brightness, medium brightness, and high brightness. If our message is based on three bits, we can transmit eight messages, 000, 001, 010, 011, 100, 101, 110, or 111. There is a pattern emerging here. If <code class="docutils literal notranslate"><span class="pre">n</span></code> is number of bits that you have available to send a message, the number of distinct messages that you can send is <span class="math notranslate nohighlight">\(2^n\)</span>. To generalize this formula further, if the number of available digits in the system is <code class="docutils literal notranslate"><span class="pre">b</span></code>, and the number of places you can use in your message is <code class="docutils literal notranslate"><span class="pre">n</span></code>, then the number of messages that can be sent is <span class="math notranslate nohighlight">\(b^n\)</span>.</p>
+<p>To illustrate a useful system that operates on the transmission of one bit of information, I’ll describe a photosensor for an outdoor spotlight. In this example, the photosensor is the sender of the message and the spotlight is the receiver of the message. The transmission of a zero from the photosensor to the spotlight could mean that it is currently light outside, and the transmission of a one could mean that it is currently dark outside. (The meanings of zero and one could be reversed: all that matters is that the sender and the receiver know what each value means.) The photosensor can monitor the available light, and send a message to the spotlight once per minute. If it is currently light outside, the photosensor will send a zero to the spotlight and the spotlight will turn off or remain off. If it is currently dark outside, the photosensor will send a one to the spotlight, and the spotlight will turn on or remain on. The photosensor is functioning as an on/off switch for the spotlight, transmitting one bit of information every minute.</p>
+<p>There are couple of important things to consider in this example. First, the meaning of “currently light outside” and “currently dark outside” are embodied in the photosensor. It must make a decision on whether it is light or dark on it’s own, because it is only transmitting one bit of information (zero equals light and one equals dark). The message it sends isn’t complex enough to describe how light or dark it currently is outside - it’s effectively only flipping a switch on or off.</p>
+<p>To enable the transmission of more complex messages more bits can be used. One bit allows us to transmit two messages: 0 and 1, which in our photosensor example are interpreted as <em>off</em> and <em>on</em>, respectively. If our message is based on two bits we can transmit four messages, 00, 01, 10, or 11. A related example of this could be a light switch with four states: off, low brightness, medium brightness, and high brightness. If our message is based on three bits, we can transmit eight messages, 000, 001, 010, 011, 100, 101, 110, or 111. There is a pattern emerging here. If <code class="docutils literal notranslate"><span class="pre">n</span></code> is number of bits that you have available to send a message, the number of distinct messages that you can send is <span class="math notranslate nohighlight">\(2^n\)</span>. To generalize this formula further, if the number of available digits in the numerical system is <code class="docutils literal notranslate"><span class="pre">b</span></code>, and the number of places you can use in your message is <code class="docutils literal notranslate"><span class="pre">n</span></code>, then the number of messages that can be sent is <span class="math notranslate nohighlight">\(b^n\)</span>.</p>
 <p>In computer systems, the bit is the most fundamental unit of information. The next largest unit is the byte, which is composed of eight bits. How many messages can be encoded in one byte?</p>
 </div>
 <div class="section" id="protein-sequences-are-encoded-in-a-base-4-system">
@@ -358,35 +370,72 @@
     <figcaption>Figure 2: The vertebrate RNA genetic code. The corresponding DNA genetic code is identical, except that Us are replaced with Ts. (Figure attribution: NIH [Public domain], <a href="https://commons.wikimedia.org/wiki/File:06_chart_pu3.png">via Wikimedia Commons</a>.)</figcaption>
 </figure>
 <p>
-<p>The scikit-bio Python library has functionality for translating DNA sequences into protein sequences. We can apply that as follows:</p>
+<div class="section" id="decoding-protein-messages">
+<h3><span class="section-number">1.4.1. </span>Decoding protein messages<a class="headerlink" href="#decoding-protein-messages" title="Permalink to this headline">¶</a></h3>
+<p>We can use Figure 2 to decode blueprints for proteins from DNA or RNA molecules. In addition to the stop codons mentioned above, to determine what protein sequence is represented by a DNA or RNA sequence we also need to pay attention to start codons. Unlike stop codons, there aren’t codons that exclusively indicate the start of a protein coding region. The AUG codon in RNA (or ATG in DNA) indicates the start of a protein coding region. It also encodes the amino acid methionine, and the start codon is translated so the resulting protein will start with a methionine (which may be removed post-translationally). If an AUG codon appears in the middle of a protein coding sequence, it doesn’t have any special meaning (it only encodes methionine in that case). Let’s look at a few examples.</p>
+<p>Imagine we have the following RNA sequence.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUGUAUGAGGGUACUAAUUAA</span>
+</pre></div>
+</div>
+<p>The first thing I would do if I were trying to decode this message by hand is identify the start codon, which in turn defines where the codons are. I then try to find some way to visually delineate the breaks between the codons. On paper, I might draw a line between each pair of codons. Here I’ll insert spaces.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUG</span> <span class="n">UAU</span> <span class="n">GAG</span> <span class="n">GGU</span> <span class="n">ACU</span> <span class="n">AAU</span> <span class="n">UAA</span>
+</pre></div>
+</div>
+<p>Now I can look up each of these codons in the genetic code above, beginning with the start codon (which does get translated). If I look up <code class="docutils literal notranslate"><span class="pre">AUG</span></code> in Figure 2, I see that that encode for the amino acid <code class="docutils literal notranslate"><span class="pre">Met</span></code>, or Methionine. The next codon, <code class="docutils literal notranslate"><span class="pre">UAU</span></code>, encodes for the amino acid <code class="docutils literal notranslate"><span class="pre">Tyr</span></code>, or Tyrosine. If I continue through this sequence until I hit a stop codon, I end up with the protein sequence:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Met</span> <span class="o">-</span> <span class="n">Tyr</span> <span class="o">-</span> <span class="n">Glu</span> <span class="o">-</span> <span class="n">Gly</span> <span class="o">-</span> <span class="n">Thr</span> <span class="o">-</span> <span class="n">Asn</span>
+</pre></div>
+</div>
+<p>The final codon, <code class="docutils literal notranslate"><span class="pre">UAA</span></code>, is a stop codon. Stop codons don’t get translated into anything - they just terminate the message.</p>
+<p>In this example, our sequence started with the start codon and ended with a stop codon, but that’s not always going to be the case when you’re looking at an RNA sequence. Let’s work through another example to illustrate that.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CUUUUAUGCCUCGUCGUAGUGUGGAAUGAUGGCGUUC</span>
+</pre></div>
+</div>
+<p>Again, I’ll first identify where the start codon is and insert some spaces in the sequence to help me identify the codons.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CUUUU</span> <span class="n">AUG</span> <span class="n">CCU</span> <span class="n">CGU</span> <span class="n">CGU</span> <span class="n">AGU</span> <span class="n">GUG</span> <span class="n">GAA</span> <span class="n">UGA</span> <span class="n">UGG</span> <span class="n">CGU</span> <span class="n">UC</span>
+</pre></div>
+</div>
+<p>Here we see that there are a few bases before the start codon. I didn’t bother to split those bases up from one another since they’re not relevant to this task because they preceed the start codon. Without referring to Figure 2, I don’t yet know where the stop codon is in this sequence (or if there is one), so I started inserting spaces between my sequences beginning with the start codon, and I continued through the end of the sequence. Notice that I don’t have a full codon at the end of my sequence. Hopefully I’ll find a stop codon before I get to that point - if not, I have an incomplete and therefore probably useless message. Beginning again with my start codon, I decode the RNA sequence as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Met</span> <span class="o">-</span> <span class="n">Pro</span> <span class="o">-</span> <span class="n">Arg</span> <span class="o">-</span> <span class="n">Arg</span> <span class="o">-</span> <span class="n">Ser</span> <span class="o">-</span> <span class="n">Val</span> <span class="o">-</span> <span class="n">Glu</span> 
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">UGA</span></code> encodes a stop codon, this message ends before it reaches the end of the sequence. The bases following the stop codon are therefore not part of the protein message encoded by this DNA.</p>
+<p>Translating protein sequences by hand doesn’t scale very well. If I need to do this for longer sequences (generally proteins will be much longer than six or seven amino acids long), it would be a slow and error prone process. When faced with a task like this, once we understand what we’re trying to do, it’s helpful to identify (or develop, if necesary) software that can help us. The <a class="reference external" href="http://scikit-bio.org">scikit-bio</a> Python library has functionality for translating DNA or RNA sequences into protein sequences. We can use scikit-bio in a Python 3 program or terminal as follows:</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="https://www.python.org/">Python 3</a> is programming language that is widely used in bioinformatics. If you’re not familar with Python 3, don’t worry about it right now. In general, when I present Python 3 code as I’m doing here I’ll describe what it does.</p>
+<p>If you’d like to learn Python 3, one good resource is <a class="reference external" href="http://introtopython.org/">Introduction to Python</a> (but there are a lot of resources). scikit-bio is a collection of tools for bioinformatics for use with Python 3.</p>
+</div>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="tip admonition">
+<p class="admonition-title">Exercise</p>
+<p>How might you determine what biological sequence is presented here? Use tools on the Internet to try to figure it out.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">skbio</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># the following sequence is NCBI reference sequence NM_005368.3</span>
-<span class="o">...</span> <span class="n">protein</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">(</span>
-<span class="o">...</span>             <span class="s2">&quot;AAACCCCAGCTGTTGGGGCCAGGACACCCAGTGAGCCCATACTTGCTCTTTTTGTCTTCTTCAGACTGCGCCATGGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GCTCAGCGACGGGGAATGGCAGTTGGTGCTGAACGTCTGGGGGAAGGTGGAGGCTGACATCCCAGGCCATGGGCAGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;AAGTCCTCATCAGGCTCTTTAAGGGTCACCCAGAGACTCTGGAGAAGTTTGACAAGTTCAAGCACCTGAAGTCAGAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GACGAGATGAAGGCGTCTGAGGACTTAAAGAAGCATGGTGCCACCGTGCTCACCGCCCTGGGTGGCATCCTTAAGAA&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GAAGGGGCATCATGAGGCAGAGATTAAGCCCCTGGCACAGTCGCATGCCACCAAGCACAAGATCCCCGTGAAGTACC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;TGGAGTTCATCTCGGAATGCATCATCCAGGTTCTGCAGAGCAAGCATCCCGGGGACTTTGGTGCTGATGCCCAGGGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GCCATGAACAAGGCCCTGGAGCTGTTCCGGAAGGACATGGCCTCCAACTACAAGGAGCTGGGCTTCCAGGGCTAGGC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;CCCTGCCGCTCCCACCCCCACCCATCTGGGCCCCGGGTTCAAGAGAGAGCGGGGTCTGATCTCGTGTAGCCATATAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;AGTTTGCTTCTGAGTGTCTGCTTTGTTTAGTAGAGGTGGGCAGGAGGAGCTGAGGGGCTGGGGCTGGGGTGTTGAAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;TTGGCTTTGCATGCCCAGCGATGCGCCTCCCTGTGGGATGTCATCACCCTGGGAACCGGGAGTGGCCCTTGGCTCAC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;TGTGTTCTGCATGGTTTGGATCTGAATTAATTGTCCTTTCTTCTAAATCCCAACCGAACTTCTTCCAACCTCCAAAC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;TGGCTGTAACCCCAAATCCAAGCCATTAACTACACCTGACAGTAGCAATTGTCTGATTAATCACTGGCCCCTTGAAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;ACAGCAGAATGTCCCTTTGCAATGAGGAGGAGATCTGGGCTGGGCGGGCCAGCTGGGGAAGCATTTGACTATCTGGA&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;ACTTGTGTGTGCCTCCTCAGGTATGGCAGTGACTCACCTGGTTTTAATAAAACAACCTGCAACATCTCA&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># the following sequence is derived from NCBI reference sequence NM_005368.3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">protein</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">RNA</span><span class="p">(</span>
+<span class="o">...</span>             <span class="s2">&quot;AUGAAACCCCAGCUGUUGGGGCCAGGACACCCAGUGAGCCCAUACUUGCUCUUUUUGUCUUCUUCAGACUGCGCCAUGGG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;GCUCAGCGACGGGGAAUGGCAGUUGGUGCUGAACGUCUGGGGGAAGGUGGAGGCUGACAUCCCAGGCCAUGGGCAGG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;AAGUCCUCAUCAGGCUCUUUAAGGGUCACCCAGAGACUCUGGAGAAGUUUGACAAGUUCAAGCACCUGAAGUCAGAG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;GACGAGAUGAAGGCGUCUGAGGACUUAAAGAAGCAUGGUGCCACCGUGCUCACCGCCCUGGGUGGCAUCCUUAAGAA&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;GAAGGGGCAUCAUGAGGCAGAGAUUAAGCCCCUGGCACAGUCGCAUGCCACCAAGCACAAGAUCCCCGUGAAGUACC&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;UGGAGUUCAUCUCGGAAUGCAUCAUCCAGGUUCUGCAGAGCAAGCAUCCCGGGGACUUUGGUGCUGAUGCCCAGGGG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;GCCAUGAACAAGGCCCUGGAGCUGUUCCGGAAGGACAUGGCCUCCAACUACAAGGAGCUGGGCUUCCAGGGCUAGGC&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;CCCUGCCGCUCCCACCCCCACCCAUCUGGGCCCCGGGUUCAAGAGAGAGCGGGGUCUGAUCUCGUGUAGCCAUAUAG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;AGUUUGCUUCUGAGUGUCUGCUUUGUUUAGUAGAGGUGGGCAGGAGGAGCUGAGGGGCUGGGGCUGGGGUGUUGAAG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;UUGGCUUUGCAUGCCCAGCGAUGCGCCUCCCUGUGGGAUGUCAUCACCCUGGGAACCGGGAGUGGCCCUUGGCUCAC&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;UGUGUUCUGCAUGGUUUGGAUCUGAAUUAAUUGUCCUUUCUUCUAAAUCCCAACCGAACUUCUUCCAACCUCCAAAC&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;UGGCUGUAACCCCAAAUCCAAGCCAUUAACUACACCUGACAGUAGCAAUUGUCUGAUUAAUCACUGGCCCCUUGAAG&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;ACAGCAGAAUGUCCCUUUGCAAUGAGGAGGAGAUCUGGGCUGGGCGGGCCAGCUGGGGAAGCAUUUGACUAUCUGGA&quot;</span>
+<span class="o">...</span>             <span class="s2">&quot;ACUUGUGUGUGCCUCCUCAGGUAUGGCAGUGACUCACCUGGUUUUAAUAAAACAACCUGCAACAUCUCA&quot;</span>
 <span class="o">...</span>         <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="s1">&#39;require&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The above step translated a DNA sequence to a protein sequence, but it didn’t show the result. The view a nicely formatted summary of the result, we can view a representation of the variable as follows:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">protein</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">protein</span>
 </pre></div>
 </div>
 </div>
@@ -394,43 +443,42 @@
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Protein
 ---------------------------------------------------------------------
 Stats:
-    length: 178
+    length: 179
     has gaps: False
     has degenerates: False
     has definites: True
     has stops: False
 ---------------------------------------------------------------------
-0   KPQLLGPGHP VSPYLLFLSS SDCAMGLSDG EWQLVLNVWG KVEADIPGHG QEVLIRLFKG
-60  HPETLEKFDK FKHLKSEDEM KASEDLKKHG ATVLTALGGI LKKKGHHEAE IKPLAQSHAT
-120 KHKIPVKYLE FISECIIQVL QSKHPGDFGA DAQGAMNKAL ELFRKDMASN YKELGFQG
+0   MKPQLLGPGH PVSPYLLFLS SSDCAMGLSD GEWQLVLNVW GKVEADIPGH GQEVLIRLFK
+60  GHPETLEKFD KFKHLKSEDE MKASEDLKKH GATVLTALGG ILKKKGHHEA EIKPLAQSHA
+120 TKHKIPVKYL EFISECIIQV LQSKHPGDFG ADAQGAMNKA LELFRKDMAS NYKELGFQG
 </pre></div>
 </div>
 </div>
 </div>
-<p>If we just want the protein sequence itself, you can call <code class="docutils literal notranslate"><span class="pre">print</span></code> on the variable. How might you determine what this sequence is?</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">protein</span><span class="p">)</span>
-</pre></div>
+<p>The above step translated an RNA sequence to a protein sequence for us, and then displayed the result to the screen. One difference to note is that we previously used three-letter codes to represent amino acids, but scikit-bio uses one-letter codes to represent amino acids. One-letter codes are more commonly used in practice, since they’re more concise.</p>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KPQLLGPGHPVSPYLLFLSSSDCAMGLSDGEWQLVLNVWGKVEADIPGHGQEVLIRLFKGHPETLEKFDKFKHLKSEDEMKASEDLKKHGATVLTALGGILKKKGHHEAEIKPLAQSHATKHKIPVKYLEFISECIIQVLQSKHPGDFGADAQGAMNKALELFRKDMASNYKELGFQG
-</pre></div>
-</div>
-</div>
-</div>
-<p>Genomes contain messages other than protein sequences, so in reality the messages encoded by DNA in our genomes are more complex than a base 4 numerical system. For example, the structure that a chromosomal region adopts can impact whether genes in that region are expressed or not, which can have profound phenotypic impacts. This is a higher-level message that is encoded in our genomes. So, while in some ways we can relate the information contained in our genomes to the way information is stored in computers, our genomes are not just programs that are executed. Even the simplest cellular organisms are far more complex than the most complex machines of humankind! “An airplane is nothing if you compare it to a pelican,” observed Herman Dune.</p>
+<div class="section" id="limitations-of-this-analogy">
+<h3><span class="section-number">1.4.2. </span>Limitations of this analogy<a class="headerlink" href="#limitations-of-this-analogy" title="Permalink to this headline">¶</a></h3>
+<p>Genomes contain messages other than protein sequences, so in reality the messages encoded by DNA in our genomes are more complex than a base 4 numerical system. For example, the structure that a chromosomal region adopts can impact whether genes in that region are expressed or not, which can have profound phenotypic impacts. Similarly, variations in splicing of mRNA messages result in different proteins from the same DNA sequence. There are higher-level messages that are encoded in our genomes. So, while in some ways we can relate the information contained in our genomes to the way information is stored in computers, our genomes are not just programs that are executed. Even the simplest cellular organisms are far more complex than the most complex machines of humankind! “An airplane is nothing if you compare it to a pelican,” observed Herman Dune.</p>
 <p>Also ignored in this discussion is that additional characters are sometimes used to represent ambiguity in our knowledge of a DNA sequence, or to concisely represent more than one sequence. The <a class="reference external" href="https://en.wikipedia.org/wiki/Nucleic_acid_notation">IUPAC nucleic acid notation</a> is what we’ve been using in this chapter, where A, C, G, and T represent adenine, cytosine, guanine, and thymine, respectively. Other characters are definited in this notation. For example, N is defined to mean either A, C, G, or T, and is thus commonly encountered in readouts of DNA sequences at positions where the base couldn’t be determined. These <em>degenerate</em> characters couldn’t be represented in the base 4 numerical system we’ve been discussing here. They also don’t exist in nature - we just use them to talk about DNA sequences.</p>
+</div>
 </div>
 <div class="section" id="quantifying-information">
 <h2><span class="section-number">1.5. </span>Quantifying information<a class="headerlink" href="#quantifying-information" title="Permalink to this headline">¶</a></h2>
-<p>Information is a quantifiable concept, an idea that has its roots in Boolean algebra and in Claude Shannon’s work on Information Theory. The most basic unit of information is the <em>binary digit</em>, or <em>bit</em>, which has two possible states. Depending on the domain, the symbols representing these two states might be <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>, or <code class="docutils literal notranslate"><span class="pre">on</span></code> and <code class="docutils literal notranslate"><span class="pre">off</span></code>. When you answer a “yes/no” question in a conversation, or a “true/false” question on an exam, you’re providing one bit of information.</p>
-<p><em>Information</em> is technically defined as a sequence of symbols that can be interpreted as a message. To put these terms in the context of our examples above, our <em>message</em> is a decimal number, our <em>symbols</em> are 0 and 1, and the sequence is the ordered collection of symbols, such as <code class="docutils literal notranslate"><span class="pre">011</span></code>. The number of places (let’s call that <span class="math notranslate nohighlight">\(p\)</span>), and the number of symbols (let’s call that <span class="math notranslate nohighlight">\(n_{symbols}\)</span>) define the number of different messages (<span class="math notranslate nohighlight">\(n_{messages}\)</span>) that can be encoded as: <span class="math notranslate nohighlight">\(n_{messages} = n_{symbols}^p\)</span>.</p>
+<p>Information is a quantifiable concept, an idea that has its roots in Boolean algebra and in Claude Shannon’s work on Information Theory. As we discussed earlier, the most basic unit of information is the <em>binary digit</em>, or <em>bit</em>, which has two possible states. Depending on the domain, the symbols representing these two states might be <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> and <code class="docutils literal notranslate"><span class="pre">no</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>, or <code class="docutils literal notranslate"><span class="pre">on</span></code> and <code class="docutils literal notranslate"><span class="pre">off</span></code>. When you answer a “yes/no” question in a conversation, or a “true/false” question on an exam, you’re providing one bit of information.</p>
+<p><em>Information</em> is technically defined as a sequence of symbols that can be interpreted as a message. To put these terms in the context of our binary number examples above, our <em>message</em> is a decimal number, our <em>symbols</em> are 0 and 1, and the sequence is the ordered collection of symbols, such as <code class="docutils literal notranslate"><span class="pre">011</span></code>. The number of places (let’s call that <span class="math notranslate nohighlight">\(p\)</span>), and the number of symbols (let’s call that <span class="math notranslate nohighlight">\(n_{symbols}\)</span>) define the number of different messages (<span class="math notranslate nohighlight">\(n_{messages}\)</span>) that can be encoded as: <span class="math notranslate nohighlight">\(n_{messages} = n_{symbols}^p\)</span>.</p>
 <p>Let’s apply this formula to determine how many messages can be sent with one byte of information:</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Python 3, <code class="docutils literal notranslate"><span class="pre">**</span></code> is used to apply the exponentiation operation. For example, <code class="docutils literal notranslate"><span class="pre">2**3</span></code> represents <span class="math notranslate nohighlight">\(2^3\)</span>, so would be evaluated to the value <span class="math notranslate nohighlight">\(8\)</span>.</p>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">n_symbols</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># we&#39;ll use the two available binary numbers, 0 and 1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">n_symbols</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># we&#39;ll use the two available binary digits, 0 and 1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># because there are 8 places, or bits, in a byte</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">n_symbols</span><span class="o">**</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
@@ -459,11 +507,11 @@ Stats:
 </pre></div>
 </div>
 <p>Each level of structure contains some information about the other levels. For example, if we were to examine the primary structure of tRNAPhe, we might find that there are stretches of certain bases that could form stable base pairing interactions with each other. That could help us to make a prediction about the secondary structure of tRNAPhe. We could use that information, along with knowledge about the physics of nucleic acid molecules to make predictions about how the molecule would fold inside of a cell (i.e., its tertiary structure). If we knew the tertiary structure of a molecule with similar primary structure to tRNAPhe, that information would also be very helpful in predicting the tertiary structure of tRNAPhe because we expect nucleic acids or proteins with similar primary structures to also have similar secondary and tertiary structures, though this isn’t always the case.</p>
-<p>The primary and secondary structure of a molecule alone doesn’t currently allow us to make perfect predictions about the tertiary structure that a molecular will adopt. Personally, I think additional information is needed so this type of prediction won’t ever be entirely reliable. But this is a classic problem in bioinformatics.</p>
+<p>The primary and secondary structure of a molecule alone doesn’t currently allow us to make perfect predictions about the tertiary structure that a molecular will adopt. Personally, I think additional information is needed so this type of prediction won’t ever be entirely reliable, but predicting a molecule’s tertiary structure from its primary structure is a classic problem in bioinformatics.</p>
 </div>
 <div class="section" id="summary">
 <h2><span class="section-number">1.7. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
-<p>In this section we explored different numerical systems, and discussed relationships between how computers and organisms represent information.</p>
+<p>In this section we explored different numerical systems, including binary and decimal numerical systems. We additionally discussed relationships between how computers and organisms represent information, introduced the genetic code, and used the genetic code to decode protein messages from RNA sequences.</p>
 </div>
 </div>
 
