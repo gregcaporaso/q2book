@@ -31,41 +31,6 @@ If you'd like to learn more about the underlying algorithms used in microbiome r
 
 Part 3 is intended to be read sequentially. This will take you through different aspects of developing with QIIME 2. Most developers will be interested in creating plugins, so building, documenting, testing, and distributing QIIME 2 plugins is covered first. Building QIIME 2 plugins is a great way to get your bioinformatics tools in the hands of a lot of microbiome researchers. It comes with other benefits as well: QIIME 2's unique retrospective data provenance tracking system will be used whenever your plugins are run, ensuring reproducibility of the work and providing information that will help you provide technical support to users; your users will be able to access your functionality through any of QIIME 2's interfaces, which provide access to the same tools through interfaces geared toward users with different levels of computational sophisitcation; and QIIME 2 plugins are often published as stand-alone papers, so building QIIME 2 plugins can help you get the publications you may need to support your career. Part 3 also covers developing QIIME 2 interfaces. This content will help you integrate QIIME 2 as a component in another system you're developing, or allow you to implement your own ideas to make QIIME 2 more accessible. If you are considering wrapping QIIME 2 in another system, this content will give you tools to simplify that work through the QIIME 2 software development kit (SDK). QIIME 2 and the development team enthusiastically support your plugin and interface development efforts! Don't forget to get in touch on the forum with your QIIME 2 development questions.  
 
-## Outline (this is just a temporary holding place)
-
-1. Microbiome Bioinformatics with QIIME 2
-	* Getting started: ways to use QIIME 2; installing QIIME 2 (refer to online documentation); download some data; do something very simple with the command line. 
-	* A very brief first tutorial: a much-abbreviated version of a web-based overview tutorial, just allowing the user to do a few simple things; view provenance
-	* A first look at core concepts of QIIME 2: semantic types, data provenance, Actions (methods, visualizers, pipelines), Results (artifacts, visualizations), importing (briefly); q2cli; artifact API (redo something from the very brief tutorial with the Artifact API).  
-	* Importing: raw sequence data; other data. 
-	* Quality control with DADA2, Deblur, others? Introduction to the FeatureTable and ASVs. 
-	* To cluster, or not to cluster? Why would or wouldn't you want to do this? Historical perspective on why we started doing this; discussion of the types of clustering supported in QIIME 2. 
-	* Taxonomy assignment: approaches; limits of resolution; training custom reference databases; non-16S data (probably the first time this matters?); taxonomy barplots; why statistics is hard on this (and we'll come back to how to do stats in the differential abundance testing chapter)
-	* Alignment and phylogenetic reconstruction: why do we care about this? what is and isn't this tree good for?
-	* Working with feature tables: filtering, ...
-	* Count normalization: rarefaction and other methods
-	* Alpha diversity: common metrics defined with worked examples; non-phylogenetic versus phylogenetic metrics; statistics; visualizations, including alpha rarefaction plots. 
-	* Beta diversity: common metrics defined with worked examples; statistics; visualizations, including PCoA plots. 
-	* Differential abundance testing
-	* Longitudinal analysis
-	* Supervised classification
-	* Network analysis? 
-	* Analysis of other -omics data types with QIIME 2: what you can do now; what you'll be able to do in the future
-	* Integrated -omics analysis
-
-2. Understanding the algorithms (this content comes from IAB)
-	 * Pairwise sequence alignment
-	 * Multiple sequence alignment
-	 * Sequence database searching
-	 * Machine learning with Naive Bayes and Random Forest
-	 * Clustering methods
-
-3. Developing with QIIME 2
-	 * Architecture of QIIME 2
-	 * Building a simple plugin: qiime2.plugin, usage API
-	 * Building a more complex plugin: defining types, formats, and transformers
-	 * Building a simple interface: qiime2.sdk
-
 ## List of works cited
 
 ```{bibliography} ../references.bib
