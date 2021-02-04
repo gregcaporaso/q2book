@@ -1,72 +1,47 @@
 # An interactive overview of QIIME 2
 
-In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we're through that, let's jump in and do something really quickly with QIIME 2. In this chapter I'll present a workflow, which you should follow along with on your computer if possible, that will demultiplex sequences, apply quality control and build a feature table, and build five different interactive visualizations. The interactive that we'll build in this chapter are the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity, beta diversity, and taxonomic composition of your samples. Before you can apply these steps to your own data, you'll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in the next chapter. 
+In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we're through that, let's jump in and do something quick with QIIME 2. In this chapter I'll present a workflow, which you should follow along with on your computer if possible. In this workflow we'll download some real sequencing data and associated sample metadata, and apply some QIIME 2 methods and visualizers to it to see if it supports a hypothesis about the biological system being studied. The interactive visualizations that we'll build in this chapter are some of the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity of your samples. Before you can apply these steps to your own data, you'll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in {ref}`importing`. 
 
-## The data
+## The study
 
-For the purpose of getting a very quick overview of QIIME 2, we're going to work with a desert soil microbiome data set from the Atacama Desert in northern Chile. The Atacama desert is one of the most arid locations on the Earth. In many years it receives no rain at all. The data we'll use here is sampled along a gradient from the hyper-arid core of the desert to the western foothills of the Andes mountain range, where there is more moisture resulting from snowmelt in the mountains. 
+For the purpose of getting a very quick overview of QIIME 2, we're going to work with a desert soil microbiome data set that I was involved with generating to study the Atacama Desert in northern Chile {cite}`Neilson2017-bz`. The Atacama Desert is one of the most arid locations on the Earth: in many years the hyper-arid core of the desert receives no rain at all. The data we'll use here is sampled along a gradient from the hyper-arid core of the desert to the western foothills of the Andes mountain range, where there is more moisture resulting from snowmelt in the mountains. 
 
-I have a few hypotheses going into this analysis that we can validate when we analyze the data. First, I expect to see dessication resistant organisms dominating the samples in the hyper-arid core of the desert. Second, I hypothesize that there will be fewer types of microbes, whether I look at the genus level or higher taxonomic levels, in the hyper-arid samples than in the less arid samples. Third, I expect the samples from the hyper-arid sites to be more similar to each other in overall composition than they are to samples from the less arid sites. I'm formulating these ideas now, before I start analyzing the data, so I have an idea of what I expect to see. After analyzing the samples, I'll have a good idea of whether the data meets my expectations or whether something surprizing is going on.
+I have a few hypotheses going into this analysis that we can test when we analyze the data. I'm formulating these hypotheses now, before I start analyzing the data, so I have an idea of what I expect to see. After analyzing the samples, I'll have a good idea of whether the data supports my hypotheses or whether I'm surprised by the results. For the purpose of this introductory analysis I'm going to focus on one hypothesis. 
 
-We'll begin this analysis by downloading a QIIME 2 artifact that contains our demultiplexed sequence data. (As mentioned above, in the next chapter we'll cover generating this artifact from your sequencing data by importing it.) Do this as follows:
+ * Hypothesis: I hypothesize that there will be fewer types of microbes in the hyper-arid samples than in the less arid samples. 
+
+"Type of microbe" is a term that needs to be defined. What I mean by that is an arbitrary taxonomic grouping, such as genus, species, or strain. The data we'll work with in this chapter is 16S rRNA amplicon data. To keep the analysis in this chapter simple, we're not going to assign taxonomy to our amplicon sequences. The unit of taxonomy that we'll work with here is the highest resolution possible for a study based on amplicon data: the _amplicon sequence variant_, or ASV. Each unique 16S rRNA amplicon that we observe in this study will be treated as a different ASV, and thus a different "type of microbe". Due to the limits of resolution in a 16S rRNA amplicon study, this approximates genus or species but does not consistently represent a single named taxonomic level.
+
+## Downloading the data
+
+We'll begin this interactive overview by downloading a few files to work on. Do this as follows:
 
 ```bash
 
-wget \
-  -O "sample-metadata.tsv" \
-  "https://data.qiime2.org/2020.11/tutorials/atacama-soils/sample_metadata.tsv"
+curl -sL \
+  "https://data.qiime2.org/2020.11/tutorials/atacama-soils/sample_metadata.tsv" > \
+  "sample-metadata.tsv"
 
-wget \
-  -O "emp-paired-end-sequences.qza" \
-  "https://docs.qiime2.org/2020.11/data/tutorials/atacama-soils/emp-paired-end-sequences.qza"
-
-```  
+curl -sL \
+  "https://docs.qiime2.org/2020.11/data/tutorials/atacama-soils/demux.qza" > \
+  "demux.qza"
+```
 
 You'll see some output on the screen, and you should ultimately see that these two files were downloaded successfully. 
 
 ```{warning}
-If it seems like the download failed, remove any files that were generated by these commands and try to download them again. If you're still running into errors, you should feel free to post a question to the QIIME 2 Forum. In general, if you're confused about something in the book, or something isn't working for you, the QIIME 2 Forum is the best place to get help. Start by searching to see if anyone has asked a similar question that has been answered. If not, post your own question. It can be intimidating to post questions to online forums, but it can also be extremely helpful. Don't worry - the QIIME 2 community is very friendly and many of the people posting questions there have little or no experience using command line software before trying QIIME 2, so even if your question seems basic, you can rest assured that someone has had or will have almost the same question you're asking. 
+If it seems like the download failed, remove any files that were generated by these commands and try to download them again. If you're still running into errors, you should feel free to post a question to the [QIIME 2 Forum](https://forum.qiime2.org). In general, if you're confused about something in the book, or something isn't working for you, the QIIME 2 Forum is the best place to get help. Start by searching to see if anyone has asked a similar question that has been answered. If not, post your own question. It can be intimidating to post questions to online forums, but it can also be extremely helpful. Don't worry - the QIIME 2 community is very friendly and many of the people posting questions there had little or no experience using command line software before trying QIIME 2. Even if your question feels hopelessly basic, you can rest assured that someone has had or will have almost the same question you're asking. 
 ```
 
-The commands that you ran downloaded two files that will get us started on this analysis. The first, sample-metadata.tsv, is a tab-separated text file (the `.tsv` file extension tells you this). In QIIME 2, the sample metadata file maps sample identifiers to information about those samples. You should be able to open and view that file in a program such as Google Sheets (any text editor, such as NotePad, NotePad++, TextEdit, or TextMate, will also work, but the layout that will provided by a spreadsheet viewer will help you interpret the file contents). In this data set you'll see that sample metadata includes information such as the latitude and longitude where a sample was collected, whether that site was classified as hyper-arid, arid, or semi-arid. As you can imagine, that information is essential for letting us explore the hypotheses that I listed above. Sample metadata is absolutely essential to your analysis. We'll revisit this in a lot more detail a little bit later.
+The two `curl` commands that you just ran each downloaded a file that we'll use to get started on this analysis. The first, `sample-metadata.tsv`, is a tab-separated text file (the `.tsv` file extension tells you this). In QIIME 2, the sample metadata file maps sample identifiers to information about those samples. You should be able to open and view that file in a program such as Google Sheets (any text editor, such as NotePad, NotePad++, TextEdit, or TextMate, will also work, but the layout that will provided by a spreadsheet viewer will help you interpret the file contents). In this data set you'll see that sample metadata includes information such as the latitude and longitude where a sample was collected, whether that site was classified as hyper-arid, arid, or semi-arid. As you can imagine, that information is essential for letting us explore the hypotheses that I listed above. Sample metadata is absolutely essential to your analysis, a topic we'll revisit many times throughout this book.
 
-The second file that we downloaded above was our multiplexed sequence data. This is sequencing data as it came off an Illumina DNA sequencing instrument. At this stage, the sequences are all grouped together - they are not grouped by sample. Instead, during sample preparation (PCR specifically), a short DNA sequence referred to as an index or a barcode was added to sequences on a per-sample basis. For example, sample-1 might be assigned the barcode TGACCGTACGTA, and sample-2 might be assigned the barcode TGGTAGACCCGT. All sequences derived from sample-1 will have the sample-1 barcode associated with them, and all sequences derived from sample-2 will have the sample-2 barcode associated with them. One piece of sample metadata in our sample metadata file is the barcode sequence associated with each sample, and we can use the `q2-demux` plugin to assign sequences to samples. 
+The second file that we downloaded above is a QIIME 2 artifact containing our demultiplexed sequence data. This is sequencing data that has undergone some processing since it came off an Illumina DNA sequencing instrument. Specifically, the sequences have already been mapped to the samples they were observed in: a process referred to as demultiplexing. You can start a QIIME 2 analysis with data that is demultiplexed, as illustrated here, or data that is multiplexed. We'll discuss this more in {ref}`demultiplexing`. In this chapter we're starting with already demultiplexed data to keep this overview brief. 
 
-As a first analysis step with QIIME 2, demultiplex the sequence data with the following command:
+## Viewing summaries of sequencing run quality and demultiplexing
 
-```
-qiime demux emp-paired \
-  --i-seqs emp-paired-end-sequences.qza \
-  --m-barcodes-file sample-metadata.tsv \
-  --m-barcodes-column barcode-sequence \
-  --p-rev-comp-mapping-barcodes \
-  --o-per-sample-sequences demux.qza \
-  --o-error-correction-details demux-log.qza
-```
+As mentioned in the previous chapter, QIIME 2 artifacts such as the `demux.qza` file that you just downloaded are intermediary files in a QIIME 2 analysis. They're not meant to be directly viewed by humans. Generally when there is something important to view from a QIIME 2 artifact, such as a summary of the data, there will be a QIIME 2 visualizer that you can apply to that artifact. Some QIIME 2 visualizers are specific to a QIIME 2 artifact type, while others are more general purpose. We'll look at an example of each in this chapter.
 
-Since this is one of the first QIIME 2 commands that you've run (at least while reading this book) let's take a look at it in some detail. As we look at this command, I'm going to assume that you either have some command line software experience, or that you've read _the introductory chapter in this book on using the command line_. There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command's components are separated by spaces. The first space-separated component is `qiime`. This tells your computer that the QIIME 2 program should be run. The second space-separated component is `demux`. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the `q2-demux` plugin. The third space-separated component is `emp-paired`, which is an action in the q2-demux plugin. This action demultiplexes paired-end sequencing data that is formatted as is typical for Earth Microbiome Project (EMP) sequenced data (more on that later). As mentioned in the previous chapter, if you'd like to learn about this action, you could run the command `qiime demux emp-paired --help`, which will print help text to the screen. Finally, the `\` at the end of the line is worth mentioning now. When you're working on the command line, line breaks (i.e., the character that is received when you press the _Return_ key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can be long, it's helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like the command should be split across multiple lines. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation. The `\` character here simply means that the terminal shouldn't interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:
-
-``` 
-qiime demux emp-paired --i-seqs emp-paired-end-sequences.qza --m-barcodes-file sample-metadata.tsv --m-barcodes-column barcode-sequence --p-rev-comp-mapping-barcodes --o-per-sample-sequences demux.qza --o-error-correction-details demux-log.qza
-```
-
-That command will do the exact same thing as the one above. I think you'll agree though that the first variant, where the command is split across multiple lines, is easier to read. 
-
-After we specify the program (`qiime`), the plugin (`demux`), and the action (`emp-paired`) that we want to run, we provide options to that action to tell it what files we want it to operate on, what we want it to do exactly, and what we want the outputs to be called. These components of the command are specified on the remaining lines. Let's look at those now. 
-
-This action takes one QIIME 2 artifact as input, the mutliplexed sequences that we downloaded above. In the QIIME 2 command line interface, input artifacts are always specified with options beginning with `--i-`. This action also takes a metadata file and a metadata column, both of which are specified with options beginning with `--m-` (where the _m_ implies _metadata_). Here, these specify the file containing the metadata (that's the second file that we downloaded above) and column header in that file that contains the barcode sequences. If you have opened the `sample-metadata.tsv` file, you'll see that there is a column called `barcode-sequence`. This column could be called nearly anything (there are some rules for what column names are allowed that we'll cover later). As long as you specify the column name correctly when you call this action, it will know where to find the barcodes. Input and metadata parameters, in general, are files that you're providing to a QIIME 2 action for actions to be performed on. They will never be modified by QIIME 2 - they are only viewed or read. In this command we're also providing one parameter, specified by the option beginning with `--p-`. Parameters modify the behavior of an action, and parameters that don't take any values (such as this one) are often referred to as _flags_. We'll see examples of parameters that take a value later in this chapter. Finally, this command will generate two files as output, and we specify the paths (absolute or relative) where we want to store those files with output options. Output options always begin with `--o-` in QIIME 2. The first output created by this command was `demux.qza`, which contains our demultiplexed sequences (or sequences that have been grouped by sample). The second output created by this command is `demux-log.qza`. This is a log file that contains some details about this action. 
-
-As mentioned in the previous chapter, QIIME 2 artifacts such as the two `.qza` files that were generated by the previous command, are intermediary files in a QIIME 2 analysis. They're not meant to be directly viewed by humans. Generally when there is something interesting to view from a QIIME 2 artifact, there will be a visualizer to convert the intermeidary result into something that you can view. Here we'll apply two different visualizers that will allow us to look at the results that were generated. 
-
-The first visualizer we'll use is a very powerful and general purpose visualizer that you should always keep in mind. It's the `tabulate` visualizer in the `q2-metadata` plugin. This might not seem very intuitive at the moment, but many QIIME 2 artifacts that provide some information on a per-sample (or per-feature) basis can be used as if they are metadata. The power of this will become more clear in later chapters. We'll apply this to the log artifact that was generated as follows:
-
-```
-qiime metadata tabulate \
-  --m-input-file demux-log.qza \
-  --o-visualization demux-log.qzv
-```
-
-The next visualizer that we'll use is one that is specific to visualizing summaries of demultiplexed sequence data with quality scores. In addition to a summary of the demultiplexing run, it provides information on the quality of sequence data in the form of interactive visulizations. You can run this command as follows:
+The first visualizer that we'll use is one that is specific to visualizing summaries of demultiplexed sequence data with quality scores. In addition to a summary of the demultiplexing run, it provides information on the quality of sequence data in the form of interactive visualizations. You can run this command as follows:
 
 ```
 qiime demux summarize \
@@ -74,33 +49,62 @@ qiime demux summarize \
   --o-visualization demux.qzv
 ```
 
-Both of these commands should have run successfully for you. You'll know they did if you see text printed to the terminal saying something like:
+This command should run successfully for you. You'll know it did if you see text printed to the terminal saying something like:
 
 ```
 Saved Visualization to: demux.qzv
 ```
 
-The next step is viewing this visualizations. You can do this in a few ways, but the one I recommend right now is using [QIIME 2 View](https://view.qiime2.org). Open that page in your web browser now. You should see a big box on the screen where you can drop a QIIME 2 artifact or visualization to view it. Remember that artifacts don't really contain much of interest in terms of viewing by a human, so don't bother trying to view those now. We'll do that later. Instead, load the `demux.qzv` visualization in one browswer tab and the `demux-log.qzv` in another brower tab. As advertised, these will provide two different types of summaries of the demultiplexing run. `demux.qzv` is the more relevant visualization for us right now - notice that this visualization has two tabs within the page labelled _Overview_ and _Interactive Quality Plot_. The _Overview_ tab provides details on the sequence counts per sample (or the number of sequences per sample) for both the forward and reverse reads since this is a paired-end sequencing run. The median sequence per sample count is reasonably high here, but I notice when looking at the details on the bottom of the page that a lot of samples had very low sequence counts. This likely indicates an issue with DNA extraction or amplifcation of those samples. The _Interactive Quality Plot_ presents a summary of the sequence quality by sequence position. In general, this looks like a high quality sequencing run to me. 
-
+````{margin}
 ```{note}
-Feel free to spend a few minutes exploring these files, but don't worry too much about the details right now. We're going to discuss these plots, as well as demultiplexing in general, in a lot more detail in a couple of chapters. Remember, the goal of this chapter is just to do a few things quickly with QIIME 2.   
+[This video](https://t.co/eJbm03cnSa) on the QIIME 2 YouTube channel illustrates how to use QIIME 2 View. 
+```
+````
+
+The next step is viewing this visualization. You can do this in a few ways, but the one I recommend right now is using [QIIME 2 View](https://view.qiime2.org). Open that page in your web browser now. You should see a big box on the screen where you can drop a QIIME 2 artifact or visualization to view it. Load the `demux.qzv` visualization by dragging and dropping it onto that box. A QIIME 2 visualization should load.
+
+
+Notice that this visualization has two tabs within the page respectively labeled _Overview_ and _Interactive Quality Plot_. The _Overview_ tab provides a summary of the sequence counts per sample (i.e., the number of sequences that were obtained for each sample in the sequencing run) ({numref}`demux-1`). Because this is a paired-end sequencing run this is presented for both the forward and reverse reads. 
+
+The median sequence per sample count is 7118. This is a bit lower than I typically like to see for a 16S Illumina run. I notice when looking at the details on the bottom of the page though that a lot of samples had very low sequence counts. Scroll down in the visualization on QIIME 2 View to see the number of sequences obtained for each sample. The very low sequences counts (less than a few thousand, though this is subjective) likely indicates an issue with DNA extraction or amplification of those samples. 
+
+```{figure} ./images/demux-1.png
+---
+name: demux-1
+---
+Screenshot of `demux.qzv`.
 ```
 
-Since our sequence quality generally looks good, let's move on to the next step of our analysis: sequence quality control. QIIME 2 has a few options for performing quality control. Here we'll use the DADA2 denoising approach, which is available through the `q2-dada2` plugin. Go ahead and run this command, which will take up to about 10 minutes to complete, and then we'll talk about specifically what it's doing.
+The second tab in this visualization, _Interactive Quality Plot_, presents a summary of sequence quality scores (y-axis) by sequence position (x-axis). Open that tab in QIIME 2 View. A box plot is presented at each sequence position, where each box presents five values from [a seven-number summary](https://en.wikipedia.org/wiki/Seven-number_summary). As you hover over the boxes in that plot, the full seven-number summary will populate the table below the plot. The forward read quality plot, and a seven-number summary of the read quality at a single position, are presented in {numref}`demux-2`. This looks like a high quality sequencing run to me. 
+
+```{figure} ./images/demux-2.png
+---
+name: demux-2
+---
+Plot illustrating sequence quality by sequence position for forward sequencing reads. This plot and other information are presented in the _Interactive Quality Plot_ tab of `demux.qzv`.
+```
+
+Spend a few minutes exploring this visualization, but don't worry too much about the details right now. We're going to discuss these plots, as well as demultiplexing in general, in more detail in other chapters. Remember, the goal of this chapter is just to do a few things quickly with QIIME 2.   
+
+## Denoising the demultiplexed sequences
+
+Since our sequence quality generally looks good, let's move on to the next step of our analysis: sequence quality control. This will determine which sequences we'll include in our downstream analyses. QIIME 2 has a few options for performing quality control. Here we'll use the DADA2 denoising approach {cite}`Callahan2016-ga`, which we'll access through the `q2-dada2` plugin. Go ahead and run this command, which will take up to about 10 minutes to complete.
 
 ```
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs demux.qza \
   --p-trim-left 13 \
   --p-trunc-len 150 \
-  --o-table feature-table.qza \
-  --o-representative-sequences feature-sequences.qza \
-  --o-denoising-stats dada2-log.qza
+  --o-table asv-table.qza \
+  --o-representative-sequences asv-sequences.qza \
+  --o-denoising-stats denoising-stats.qza
 ```
 
-As you can tell from the first line of this command, we're calling the program `qiime`, the plugin `dada2`, and the action `denoise-single`. This runs DADA2's single-end read denoiser, which may seem like a surprising choice given that I previously mentioned that this is paired end data. The reason that I choose to use the single end denoiser here is that these are short sequence reads for the region of the 16S rRNA that we're sequencing. The region is about 350 bases long, but the sequencing run was a 2x150 run (where the 2 implies that it was paired end, for two reads, and 150 implies that 150 bases were read in each direction. This is generally considered to be too short for joining of paired end reads, so I'm not going to join them here.
+**TODO: Move detailed discussion of inputs, parameters, etc here since demux (where it was originally) is moving to the next chapter.**
 
-Your `denoise-single` command may have finished running by now. If not, take a break for a few minutes. Stretch your legs, go for a walk around the block, or grab a glass of water. Waiting for a long-running job (i.e., a command that is currently running) to finish is a great opportunity to break up your screen time.
+As you can tell from the first line of this command, we're calling the program `qiime`, the plugin `dada2`, and the action `denoise-single`. This runs DADA2's single-end read denoiser, which may seem like a surprising choice given that I previously mentioned that this is paired end data. The reason that I choose to use the single end denoiser here is that these are short sequence reads for the region of the 16S rRNA that we're sequencing. The region is about 350 bases long, but the sequencing run was a 2x150 run (where the 2 implies that it was paired end, for two reads, and 150 implies that 150 bases were read in each direction). These reads are too short for paired end joining for this region of the 16S, so I'm not going to join them here. (If we were to apply paired end joining with the `denoise-paired` action, the reads that failed to join would be excluded from the results. This would result in a bias for organisms with shorter 16S sequences, which would likely have a confusing impact on our findings.)
+
+Your `denoise-single` command may have finished running by now. If not, take a break for a few minutes. Stretch your legs, go for a walk around the block, or grab a glass of water. Waiting for a long-running job (e.g., the command that is currently running) to finish is a great opportunity to break up your screen time.
 
 ```{figure} https://imgs.xkcd.com/comics/compiling.png
 ---
@@ -108,24 +112,60 @@ height: 250px
 name: xkcd-compiling
 ---
 For programmers, waiting for code to compile is an excuse for a break. For data analysts, it's waiting for a long-running job to finish.
-``` 
+```
 
+## Viewing a summary of the denoising run
+
+The next visualizer that we'll use is a very powerful and general purpose visualizer that you should always keep in mind. It's the `tabulate` visualizer in the `q2-metadata` plugin. This might not seem very intuitive at the moment, but many QIIME 2 artifacts that provide some information on a per-sample basis can be used as if they are sample metadata. The power of this will become more clear in later chapters. We'll apply this to the log artifact that was generated as follows:
 
 ```
-qiime feature-table summarize \
-  --i-table table.qza \
-  --o-visualization table.qzv \
-  --m-sample-metadata-file sample-metadata.tsv
-
-qiime feature-table tabulate-seqs \
-  --i-data rep-seqs.qza \
-  --o-visualization rep-seqs.qzv
-
 qiime metadata tabulate \
   --m-input-file denoising-stats.qza \
   --o-visualization denoising-stats.qzv
 ```
 
+Load the resulting `.qzv` file with [QIIME 2 View](https://view.qiime2.org). You should see something that looks like {numref}`denoising-stats-1`. 
+
+```{figure} ./images/denoising-stats-1.png
+---
+name: denoising-stats-1
+---
+Screenshot of `denoising-stats.qzv`.
+```
+
+## Viewing the ASV sequences and ASV table summary
+
+Recall that the unit of taxonomy that we're working with in this chapter is the amplicon sequence variant (ASV). When DADA2 denoises the sequencing run, it defines the ASVs that were observed from the quality-controlled sequences. One of the outputs that it generates is the collection of the ASV sequences that were defined. In our example, that file is called  `asv-sequences.qza`. The `q2-feature-table` defines a special purpose visualizer for generating a human-readable list of the ASVs. You can run this as follows:
+
+```
+qiime feature-table tabulate-seqs \
+  --i-data asv-sequences.qza \
+  --o-visualization asv-sequences.qzv
+```
+
+Load `asv-sequences.qzv` using QIIME 2 View.  
+
+```
+qiime feature-table summarize \
+  --i-table asv-table.qza \
+  --o-visualization asv-table.qzv \
+  --m-sample-metadata-file sample-metadata.tsv
+```
+
+These are referred to  one of the outputs it generates is a "feature table". This table has samples on one axis, ASVs on the other axis, and the values in the table are the number of times an ASV was observed in a sample. 
+
+## Computing community richness at different depths of sequencing
+
+```
+qiime diversity alpha-rarefaction --i-table feature-table.qza --p-max-depth 10000 --m-metadata-file sample-metadata.tsv --o-visualization alpha-rarefaction.qzv
+```
+
 ## Exercises
 
-1. In this chapter we performed single-end denoising of the sequencing data. Try re-running the steps above, but with paired end denoising and see how your results differ. Instead of using `qiime dada2 denoise-single`, you can use `qiime dada2 denoise-paired` for this. Use the same trim and truncation values for the reverse reads as you use for the forward reads. Be sure to run `qiime dada2 denoise-paired --help` to learn how to use this command. The inputs and outputs are the same, but some of the parameters that you'll need to use differ. After running `qiime dada2 denoise-paired` the remaining commands will be identical to the ones that were used for analyzing the single-end data. What differs and what doesn't differ when you compare results for the two analysis workflows? 
+1. Use `qiime metadata tabulate` to generate a summary of the `demux-log.qza` file that was generated above. View the resulting `.qzv` with QIIME 2 View. (**TODO: this might be a little much for this stage of the analysis. It's also a big file, so it might overwhelm memory on the reader's system.**)
+
+## List of works cited
+
+```{bibliography} ../references.bib
+:filter: docname in docnames
+```
