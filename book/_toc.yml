@@ -6,6 +6,8 @@
   chapters:
   - file: using/getting-started
   - file: using/overview-tutorial
+  - file: using/importing
+  - file: using/demultiplexing
 
 - part: Understanding the algorithms
   chapters: 
