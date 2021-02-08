@@ -8,6 +8,7 @@
   - file: using/overview-tutorial
   - file: using/importing
   - file: using/demultiplexing
+  - file: using/denoising
 
 - part: Understanding the algorithms
   chapters: 
