@@ -125,6 +125,11 @@
    5. Denoising demultiplexed sequencing data
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/taxonomy.html">
+   6. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -135,13 +140,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../algorithms/pairwise-alignment.html">
    1. Pairwise sequence alignment
-   <link src="a76822"/>
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../algorithms/database-searching.html">
    2. Sequence homology searching
-   <link src="d22e6b"/>
   </a>
  </li>
 </ul>
@@ -358,11 +361,11 @@
 <p>Biological systems and computer systems are analogous in ways that may not be immediately apparent. In this chapter we’ll briefly explore a relationship between the two: information processing is fundamental to both.</p>
 <div class="section" id="central-dogma-of-molecular-biology">
 <h2><span class="section-number">1.1. </span>Central Dogma of Molecular Biology<a class="headerlink" href="#central-dogma-of-molecular-biology" title="Permalink to this headline">¶</a></h2>
-<p>The Central Dogma of Molecular Biology (<a class="reference internal" href="#central-dogma"><span class="std std-numref">Fig. 1.1</span></a>) describes information flow in biological systems. It begins with DNA, a relatively long-lived information storage molecule, from which information typically flows in two directions: into new DNA molecules, during the process of replication, or into messenger RNA (mRNA), during the processing of transcription. mRNA is a relatively short-lived molecule that transfers information that is used to synthesize protein molecules by the ribosome. Proteins are often thought of as the building blocks of life. They serve a variety of purposes, ranging from molecular machines such as transmembrane ion transporters, to structural molecules like myosin, a major component of muscle fibers. There are some uncommon circumstances where information flows differently, for example RNA viruses encode their genomes in RNA, which can be reverse transcribed to DNA in a host cell. Proteins do seem to be a terminal output of this information flow: once a protein has been created, we are aware of no natural process that can work backwards to re-create the RNA or DNA that encoded it.</p>
+<p>The Central Dogma of Molecular Biology (<a class="reference internal" href="#central-dogma"><span class="std std-numref">Fig. 1.3</span></a>) describes information flow in biological systems. It begins with DNA, a relatively long-lived information storage molecule, from which information typically flows in two directions: into new DNA molecules, during the process of replication, or into messenger RNA (mRNA), during the processing of transcription. mRNA is a relatively short-lived molecule that transfers information that is used to synthesize protein molecules by the ribosome. Proteins are often thought of as the building blocks of life. They serve a variety of purposes, ranging from molecular machines such as transmembrane ion transporters, to structural molecules like myosin, a major component of muscle fibers. There are some uncommon circumstances where information flows differently, for example RNA viruses encode their genomes in RNA, which can be reverse transcribed to DNA in a host cell. Proteins do seem to be a terminal output of this information flow: once a protein has been created, we are aware of no natural process that can work backwards to re-create the RNA or DNA that encoded it.</p>
 <p>We’ll revisit these ideas at the end of this chapter, but first let’s establish some concepts that will help us to understand and even quantify information. These ideas have their roots in Boolean algebra and Information Theory. Bear with me while I introduce some concepts that may be new to you, and may initially seem unrelated.</p>
 <div class="figure align-default" id="central-dogma">
 <a class="reference internal image-reference" href="../_images/central-dogma.png"><img alt="../_images/central-dogma.png" src="../_images/central-dogma.png" style="height: 400px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">The central dogma of molecular biology represents information flow in biological systems. Blue pathways are generally observed in cellular life. Red pathways are observed in special cases such as RNA viruses. (Figure attribution: Narayanese at English Wikipedia, Public domain <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Centraldogma_nodetails.png">via Wikimedia Commons</a>.</span><a class="headerlink" href="#central-dogma" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">The central dogma of molecular biology represents information flow in biological systems. Blue pathways are generally observed in cellular life. Red pathways are observed in special cases such as RNA viruses. (Figure attribution: Narayanese at English Wikipedia, Public domain <a class="reference external" href="https://commons.wikimedia.org/wiki/File:Centraldogma_nodetails.png">via Wikimedia Commons</a>.</span><a class="headerlink" href="#central-dogma" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="binary-and-decimal-numerical-systems">
@@ -402,10 +405,10 @@
 </div>
 <div class="section" id="decoding-binary-messages">
 <h3><span class="section-number">1.3.3. </span>Decoding binary messages<a class="headerlink" href="#decoding-binary-messages" title="Permalink to this headline">¶</a></h3>
-<p>A historically relevant coding scheme is <a class="reference external" href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> (<a class="reference internal" href="#ascii-table"><span class="std std-numref">Fig. 1.2</span></a>). ASCII is a mapping from numbers to common English keyboard characters (as well as some common control characters that are mostly irrelevant for modern computers). This coding scheme defines how seven bit messages could be used to encode messages that (exclusively) use these characters. For example, this table tells me that in the ASCII coding scheme, the binary number <code class="docutils literal notranslate"><span class="pre">1000001</span></code> encode the capitol A character. Note that this particular table doesn’t include leading zeros in binary numbers, so for example, <code class="docutils literal notranslate"><span class="pre">0111111</span></code> encodes the character <code class="docutils literal notranslate"><span class="pre">?</span></code>.</p>
+<p>A historically relevant coding scheme is <a class="reference external" href="https://en.wikipedia.org/wiki/ASCII">ASCII</a> (<a class="reference internal" href="#ascii-table"><span class="std std-numref">Fig. 1.4</span></a>). ASCII is a mapping from numbers to common English keyboard characters (as well as some common control characters that are mostly irrelevant for modern computers). This coding scheme defines how seven bit messages could be used to encode messages that (exclusively) use these characters. For example, this table tells me that in the ASCII coding scheme, the binary number <code class="docutils literal notranslate"><span class="pre">1000001</span></code> encode the capitol A character. Note that this particular table doesn’t include leading zeros in binary numbers, so for example, <code class="docutils literal notranslate"><span class="pre">0111111</span></code> encodes the character <code class="docutils literal notranslate"><span class="pre">?</span></code>.</p>
 <div class="figure align-default" id="ascii-table">
 <a class="reference internal image-reference" href="../_images/ascii-table.png"><img alt="../_images/ascii-table.png" src="../_images/ascii-table.png" style="height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1.2 </span><span class="caption-text">The ASCII code chart. Notice that numbers are presented in a few different numical systems in this table: decimal (base 10), hexadecimal (base 16), binary (base 2), and octal (base8). All of the binary numbers in this table are based on seven bits, but leading zeros in binary numbers are unfortunately not presented in this table, making it a little less convenient to look numbers up. (Figure attribution: Public domain <a href="https://commons.wikimedia.org/wiki/File:ASCII-Table.svg">via Wikimedia Commons</a>.)</span><a class="headerlink" href="#ascii-table" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.4 </span><span class="caption-text">The ASCII code chart. Notice that numbers are presented in a few different numical systems in this table: decimal (base 10), hexadecimal (base 16), binary (base 2), and octal (base8). All of the binary numbers in this table are based on seven bits, but leading zeros in binary numbers are unfortunately not presented in this table, making it a little less convenient to look numbers up. (Figure attribution: Public domain <a href="https://commons.wikimedia.org/wiki/File:ASCII-Table.svg">via Wikimedia Commons</a>.)</span><a class="headerlink" href="#ascii-table" title="Permalink to this image">¶</a></p>
 </div>
 <p>If we have a message composed of seven-bit binary numbers, as we know that a message is encoded in ASCII, we can use this table to decode it. For example, the following sequence of symbols:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1001000</span> <span class="mi">1100101</span> <span class="mi">1101100</span> <span class="mi">1101100</span> <span class="mi">1101111</span> <span class="mi">0100001</span>
@@ -429,11 +432,11 @@
 <p>Amino acids are in fact encoded by three nucleotide bases, and the three base messages are referred to as <em>codons</em>. The mapping of codons to amino acids is referred to as the <em>genetic code</em>. Each codon represents exactly one amino acid, with the exception of some, the <em>stop codons</em>, which indicate the end of a message. Because there are 64 codons but only twenty-one messages that need to be transmitted (the twenty amino acids and the “stop” signal), some amino acids and the stop signal are represented by more than one codon. This is referred to as the redundancy of the genetic code.</p>
 <div class="figure align-default" id="genetic-code">
 <a class="reference internal image-reference" href="../_images/genetic-code.png"><img alt="../_images/genetic-code.png" src="../_images/genetic-code.png" style="height: 500px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1.3 </span><span class="caption-text">The vertebrate RNA genetic code. The corresponding DNA genetic code is identical, except that Us are replaced with Ts. (Figure attribution: NIH, Public domain <a class="reference external" href="https://commons.wikimedia.org/wiki/File:06_chart_pu3.png">via Wikimedia Commons</a>.</span><a class="headerlink" href="#genetic-code" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.5 </span><span class="caption-text">The vertebrate RNA genetic code. The corresponding DNA genetic code is identical, except that Us are replaced with Ts. (Figure attribution: NIH, Public domain <a class="reference external" href="https://commons.wikimedia.org/wiki/File:06_chart_pu3.png">via Wikimedia Commons</a>.</span><a class="headerlink" href="#genetic-code" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="decoding-protein-messages">
 <h3><span class="section-number">1.4.1. </span>Decoding protein messages<a class="headerlink" href="#decoding-protein-messages" title="Permalink to this headline">¶</a></h3>
-<p>We can use <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.3</span></a> to decode blueprints for proteins from DNA or RNA molecules. In addition to the stop codons mentioned above, to determine what protein sequence is represented by a DNA or RNA sequence we also need to pay attention to start codons. Unlike stop codons, there aren’t codons that exclusively indicate the start of a protein coding region. The AUG codon in RNA (or ATG in DNA) indicates the start of a protein coding region. It also encodes the amino acid methionine, and the start codon is translated so the resulting protein will start with a methionine (which may be removed post-translationally). If an AUG codon appears in the middle of a protein coding sequence, it doesn’t have any special meaning (it only encodes methionine in that case). Let’s look at a few examples.</p>
+<p>We can use <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.5</span></a> to decode blueprints for proteins from DNA or RNA molecules. In addition to the stop codons mentioned above, to determine what protein sequence is represented by a DNA or RNA sequence we also need to pay attention to start codons. Unlike stop codons, there aren’t codons that exclusively indicate the start of a protein coding region. The AUG codon in RNA (or ATG in DNA) indicates the start of a protein coding region. It also encodes the amino acid methionine, and the start codon is translated so the resulting protein will start with a methionine (which may be removed post-translationally). If an AUG codon appears in the middle of a protein coding sequence, it doesn’t have any special meaning (it only encodes methionine in that case). Let’s look at a few examples.</p>
 <p>Imagine we have the following RNA sequence.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUGUAUGAGGGUACUAAUUAA</span>
 </pre></div>
@@ -442,7 +445,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AUG</span> <span class="n">UAU</span> <span class="n">GAG</span> <span class="n">GGU</span> <span class="n">ACU</span> <span class="n">AAU</span> <span class="n">UAA</span>
 </pre></div>
 </div>
-<p>Now I can look up each of these codons in the genetic code above, beginning with the start codon (which does get translated). If I look up <code class="docutils literal notranslate"><span class="pre">AUG</span></code> in <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.3</span></a>, I see that that encode for the amino acid <code class="docutils literal notranslate"><span class="pre">Met</span></code>, or Methionine. The next codon, <code class="docutils literal notranslate"><span class="pre">UAU</span></code>, encodes for the amino acid <code class="docutils literal notranslate"><span class="pre">Tyr</span></code>, or Tyrosine. If I continue through this sequence until I hit a stop codon, I end up with the protein sequence:</p>
+<p>Now I can look up each of these codons in the genetic code above, beginning with the start codon (which does get translated). If I look up <code class="docutils literal notranslate"><span class="pre">AUG</span></code> in <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.5</span></a>, I see that that encode for the amino acid <code class="docutils literal notranslate"><span class="pre">Met</span></code>, or Methionine. The next codon, <code class="docutils literal notranslate"><span class="pre">UAU</span></code>, encodes for the amino acid <code class="docutils literal notranslate"><span class="pre">Tyr</span></code>, or Tyrosine. If I continue through this sequence until I hit a stop codon, I end up with the protein sequence:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Met</span> <span class="o">-</span> <span class="n">Tyr</span> <span class="o">-</span> <span class="n">Glu</span> <span class="o">-</span> <span class="n">Gly</span> <span class="o">-</span> <span class="n">Thr</span> <span class="o">-</span> <span class="n">Asn</span>
 </pre></div>
 </div>
@@ -455,7 +458,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CUUUU</span> <span class="n">AUG</span> <span class="n">CCU</span> <span class="n">CGU</span> <span class="n">CGU</span> <span class="n">AGU</span> <span class="n">GUG</span> <span class="n">GAA</span> <span class="n">UGA</span> <span class="n">UGG</span> <span class="n">CGU</span> <span class="n">UC</span>
 </pre></div>
 </div>
-<p>Here we see that there are a few bases before the start codon. I didn’t bother to split those bases up from one another since they’re not relevant to this task because they preceed the start codon. Without referring to <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.3</span></a>, I don’t yet know where the stop codon is in this sequence (or if there is one), so I started inserting spaces between my sequences beginning with the start codon, and I continued through the end of the sequence. Notice that I don’t have a full codon at the end of my sequence. Hopefully I’ll find a stop codon before I get to that point - if not, I have an incomplete and therefore probably useless message. Beginning again with my start codon, I decode the RNA sequence as follows:</p>
+<p>Here we see that there are a few bases before the start codon. I didn’t bother to split those bases up from one another since they’re not relevant to this task because they preceed the start codon. Without referring to <a class="reference internal" href="#genetic-code"><span class="std std-numref">Fig. 1.5</span></a>, I don’t yet know where the stop codon is in this sequence (or if there is one), so I started inserting spaces between my sequences beginning with the start codon, and I continued through the end of the sequence. Notice that I don’t have a full codon at the end of my sequence. Hopefully I’ll find a stop codon before I get to that point - if not, I have an incomplete and therefore probably useless message. Beginning again with my start codon, I decode the RNA sequence as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Met</span> <span class="o">-</span> <span class="n">Pro</span> <span class="o">-</span> <span class="n">Arg</span> <span class="o">-</span> <span class="n">Arg</span> <span class="o">-</span> <span class="n">Ser</span> <span class="o">-</span> <span class="n">Val</span> <span class="o">-</span> <span class="n">Glu</span> 
 </pre></div>
 </div>
@@ -478,25 +481,25 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">skbio</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># the following sequence is derived from NCBI reference sequence NM_005368.3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">protein</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">RNA</span><span class="p">(</span>
-<span class="o">...</span>             <span class="s2">&quot;AUGAAACCCCAGCUGUUGGGGCCAGGACACCCAGUGAGCCCAUACUUGCUCUUUUUGUCUUCUUCAGACUGCGCCAUGGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GCUCAGCGACGGGGAAUGGCAGUUGGUGCUGAACGUCUGGGGGAAGGUGGAGGCUGACAUCCCAGGCCAUGGGCAGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;AAGUCCUCAUCAGGCUCUUUAAGGGUCACCCAGAGACUCUGGAGAAGUUUGACAAGUUCAAGCACCUGAAGUCAGAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GACGAGAUGAAGGCGUCUGAGGACUUAAAGAAGCAUGGUGCCACCGUGCUCACCGCCCUGGGUGGCAUCCUUAAGAA&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GAAGGGGCAUCAUGAGGCAGAGAUUAAGCCCCUGGCACAGUCGCAUGCCACCAAGCACAAGAUCCCCGUGAAGUACC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;UGGAGUUCAUCUCGGAAUGCAUCAUCCAGGUUCUGCAGAGCAAGCAUCCCGGGGACUUUGGUGCUGAUGCCCAGGGG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;GCCAUGAACAAGGCCCUGGAGCUGUUCCGGAAGGACAUGGCCUCCAACUACAAGGAGCUGGGCUUCCAGGGCUAGGC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;CCCUGCCGCUCCCACCCCCACCCAUCUGGGCCCCGGGUUCAAGAGAGAGCGGGGUCUGAUCUCGUGUAGCCAUAUAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;AGUUUGCUUCUGAGUGUCUGCUUUGUUUAGUAGAGGUGGGCAGGAGGAGCUGAGGGGCUGGGGCUGGGGUGUUGAAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;UUGGCUUUGCAUGCCCAGCGAUGCGCCUCCCUGUGGGAUGUCAUCACCCUGGGAACCGGGAGUGGCCCUUGGCUCAC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;UGUGUUCUGCAUGGUUUGGAUCUGAAUUAAUUGUCCUUUCUUCUAAAUCCCAACCGAACUUCUUCCAACCUCCAAAC&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;UGGCUGUAACCCCAAAUCCAAGCCAUUAACUACACCUGACAGUAGCAAUUGUCUGAUUAAUCACUGGCCCCUUGAAG&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;ACAGCAGAAUGUCCCUUUGCAAUGAGGAGGAGAUCUGGGCUGGGCGGGCCAGCUGGGGAAGCAUUUGACUAUCUGGA&quot;</span>
-<span class="o">...</span>             <span class="s2">&quot;ACUUGUGUGUGCCUCCUCAGGUAUGGCAGUGACUCACCUGGUUUUAAUAAAACAACCUGCAACAUCUCA&quot;</span>
-<span class="o">...</span>         <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="s1">&#39;require&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">protein</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio</span>
+<span class="c1"># the following sequence is derived from NCBI reference sequence NM_005368.3</span>
+<span class="n">protein</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">RNA</span><span class="p">(</span>
+            <span class="s2">&quot;AUGAAACCCCAGCUGUUGGGGCCAGGACACCCAGUGAGCCCAUACUUGCUCUUUUUGUCUUCUUCAGACUGCGCCAUGGG&quot;</span>
+            <span class="s2">&quot;GCUCAGCGACGGGGAAUGGCAGUUGGUGCUGAACGUCUGGGGGAAGGUGGAGGCUGACAUCCCAGGCCAUGGGCAGG&quot;</span>
+            <span class="s2">&quot;AAGUCCUCAUCAGGCUCUUUAAGGGUCACCCAGAGACUCUGGAGAAGUUUGACAAGUUCAAGCACCUGAAGUCAGAG&quot;</span>
+            <span class="s2">&quot;GACGAGAUGAAGGCGUCUGAGGACUUAAAGAAGCAUGGUGCCACCGUGCUCACCGCCCUGGGUGGCAUCCUUAAGAA&quot;</span>
+            <span class="s2">&quot;GAAGGGGCAUCAUGAGGCAGAGAUUAAGCCCCUGGCACAGUCGCAUGCCACCAAGCACAAGAUCCCCGUGAAGUACC&quot;</span>
+            <span class="s2">&quot;UGGAGUUCAUCUCGGAAUGCAUCAUCCAGGUUCUGCAGAGCAAGCAUCCCGGGGACUUUGGUGCUGAUGCCCAGGGG&quot;</span>
+            <span class="s2">&quot;GCCAUGAACAAGGCCCUGGAGCUGUUCCGGAAGGACAUGGCCUCCAACUACAAGGAGCUGGGCUUCCAGGGCUAGGC&quot;</span>
+            <span class="s2">&quot;CCCUGCCGCUCCCACCCCCACCCAUCUGGGCCCCGGGUUCAAGAGAGAGCGGGGUCUGAUCUCGUGUAGCCAUAUAG&quot;</span>
+            <span class="s2">&quot;AGUUUGCUUCUGAGUGUCUGCUUUGUUUAGUAGAGGUGGGCAGGAGGAGCUGAGGGGCUGGGGCUGGGGUGUUGAAG&quot;</span>
+            <span class="s2">&quot;UUGGCUUUGCAUGCCCAGCGAUGCGCCUCCCUGUGGGAUGUCAUCACCCUGGGAACCGGGAGUGGCCCUUGGCUCAC&quot;</span>
+            <span class="s2">&quot;UGUGUUCUGCAUGGUUUGGAUCUGAAUUAAUUGUCCUUUCUUCUAAAUCCCAACCGAACUUCUUCCAACCUCCAAAC&quot;</span>
+            <span class="s2">&quot;UGGCUGUAACCCCAAAUCCAAGCCAUUAACUACACCUGACAGUAGCAAUUGUCUGAUUAAUCACUGGCCCCUUGAAG&quot;</span>
+            <span class="s2">&quot;ACAGCAGAAUGUCCCUUUGCAAUGAGGAGGAGAUCUGGGCUGGGCGGGCCAGCUGGGGAAGCAUUUGACUAUCUGGA&quot;</span>
+            <span class="s2">&quot;ACUUGUGUGUGCCUCCUCAGGUAUGGCAGUGACUCACCUGGUUUUAAUAAAACAACCUGCAACAUCUCA&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="s1">&#39;require&#39;</span><span class="p">)</span>
+<span class="n">protein</span>
 </pre></div>
 </div>
 </div>
@@ -539,9 +542,9 @@ Stats:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">n_symbols</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># we&#39;ll use the two available binary digits, 0 and 1</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># because there are 8 places, or bits, in a byte</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">n_symbols</span><span class="o">**</span><span class="n">p</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_symbols</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># we&#39;ll use the two available binary digits, 0 and 1</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># because there are 8 places, or bits, in a byte</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n_symbols</span><span class="o">**</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -556,12 +559,12 @@ Stats:
 </div>
 <div class="section" id="the-genetic-code">
 <h2><span class="section-number">1.6. </span>The genetic code<a class="headerlink" href="#the-genetic-code" title="Permalink to this headline">¶</a></h2>
-<p>As mentioned above, the genetic code describes the mapping of codons to amino acids. This mapping is embodied in an organism’s <a class="reference external" href="http://pdb101.rcsb.org/motm/15">transfer RNA (tRNA)</a> molecules. As illustrated in <a class="reference internal" href="#trna"><span class="std std-numref">Fig. 1.4</span></a>, one end of the folded tRNA contains the “anticodon loop”, which is the complementary sequence to the mRNA’s codon. On the other end of the tRNA is the acceptor stem, which contains the amino acid attachment site. Through interaction with an <a class="reference external" href="https://pdb101.rcsb.org/motm/16">aminoacyl tRNA synthetase</a>, the amino acid corresponding to the anticodon is covalently linked to the acceptor stem. During translation, a tRNA’s anticodon pairs with a codon in a messenger RNA (mRNA) inside the ribosome and thereby provides the next amino acid needed for protein synthesis.</p>
+<p>As mentioned above, the genetic code describes the mapping of codons to amino acids. This mapping is embodied in an organism’s <a class="reference external" href="http://pdb101.rcsb.org/motm/15">transfer RNA (tRNA)</a> molecules. As illustrated in <a class="reference internal" href="#trna"><span class="std std-numref">Fig. 1.6</span></a>, one end of the folded tRNA contains the “anticodon loop”, which is the complementary sequence to the mRNA’s codon. On the other end of the tRNA is the acceptor stem, which contains the amino acid attachment site. Through interaction with an <a class="reference external" href="https://pdb101.rcsb.org/motm/16">aminoacyl tRNA synthetase</a>, the amino acid corresponding to the anticodon is covalently linked to the acceptor stem. During translation, a tRNA’s anticodon pairs with a codon in a messenger RNA (mRNA) inside the ribosome and thereby provides the next amino acid needed for protein synthesis.</p>
 <div class="figure align-default" id="trna">
 <a class="reference internal image-reference" href="../_images/trna.png"><img alt="../_images/trna.png" src="../_images/trna.png" style="height: 600px;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1.4 </span><span class="caption-text">The secondary and tertiary structure of a transfer RNA (tRNA) molecule. (Figure attribution: This image was obtained from <a class="reference external" href="https://openstax.org/books/microbiology/pages/1-introduction">OpenStax <em>Microbiology</em></a>, a free microbiology text book, and is licensed under CC-BY. OpenStax <i>Microbiology</i> can be accessed for free at https://openstax.org/books/microbiology/pages/1-introduction.)</span><a class="headerlink" href="#trna" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 1.6 </span><span class="caption-text">The secondary and tertiary structure of a transfer RNA (tRNA) molecule. (Figure attribution: This image was obtained from <a class="reference external" href="https://openstax.org/books/microbiology/pages/1-introduction">OpenStax <em>Microbiology</em></a>, a free microbiology text book, and is licensed under CC-BY. OpenStax <i>Microbiology</i> can be accessed for free at https://openstax.org/books/microbiology/pages/1-introduction.)</span><a class="headerlink" href="#trna" title="Permalink to this image">¶</a></p>
 </div>
-<p><a class="reference internal" href="#trna"><span class="std std-numref">Fig. 1.4</span></a> also illustrates two different views of the structure of a tRNA molecule. The secondary (<span class="math notranslate nohighlight">\(2^o\)</span>) structure is presented on the left, and the tertiary (<span class="math notranslate nohighlight">\(3^o\)</span>) structure is presented on the right. For a nucleic acid molecule, like tRNA, the secondary structure refers to the base pairing interactions in a folded molecule. The tertiary structure refers to the three-dimensional structure that the molecule takes inside of an organism. The primary (<span class="math notranslate nohighlight">\(1^o\)</span>) structure, which isn’t illustrated here, refers to the linear sequence of nucleotides in the tRNA molecule. The primary structure of a phenylalanine tRNA (i.e., tRNAPhe) from yeast in <a class="reference external" href="https://en.wikipedia.org/wiki/FASTA_format">FASTA format</a>, for example, is as follows.</p>
+<p><a class="reference internal" href="#trna"><span class="std std-numref">Fig. 1.6</span></a> also illustrates two different views of the structure of a tRNA molecule. The secondary (<span class="math notranslate nohighlight">\(2^o\)</span>) structure is presented on the left, and the tertiary (<span class="math notranslate nohighlight">\(3^o\)</span>) structure is presented on the right. For a nucleic acid molecule, like tRNA, the secondary structure refers to the base pairing interactions in a folded molecule. The tertiary structure refers to the three-dimensional structure that the molecule takes inside of an organism. The primary (<span class="math notranslate nohighlight">\(1^o\)</span>) structure, which isn’t illustrated here, refers to the linear sequence of nucleotides in the tRNA molecule. The primary structure of a phenylalanine tRNA (i.e., tRNAPhe) from yeast in <a class="reference external" href="https://en.wikipedia.org/wiki/FASTA_format">FASTA format</a>, for example, is as follows.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="mi">4</span><span class="n">TNA</span><span class="p">:</span><span class="n">A</span><span class="o">|</span><span class="n">PDBID</span><span class="o">|</span><span class="n">CHAIN</span><span class="o">|</span><span class="n">SEQUENCE</span>
 <span class="n">GCGGAUUUAGCUCAGUUGGGAGAGCGCCAGACUGAAGAUCUGGAGGUCCUGUGUUCGAUCCACAGAAUUCGCACCA</span>
 </pre></div>
@@ -613,7 +616,7 @@ Stats:
         
           By J Gregory Caporaso<br/>
         
-            &copy; Copyright 2020.<br/>
+            &copy; Copyright 2020-2021.<br/>
       </p>
     </div>
   </footer>
