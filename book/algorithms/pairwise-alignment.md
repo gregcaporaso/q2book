@@ -1,5 +1,5 @@
 
-# Pairwise sequence alignment <link src='a76822'/>
+# Pairwise sequence alignment 
 
 One of the most fundamental problems in bioinformatics is determining how "similar" a pair of biological sequences are. There are many applications for this, including inferring the function or source organism of an unknown gene sequence, developing hypotheses about the relatedness of organisms, or grouping sequences from closely related organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of [one of the most cited papers](https://www.ncbi.nlm.nih.gov/pubmed/2231712) in modern biology. In this chapter we'll explore why determining sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.
 
@@ -75,7 +75,7 @@ The *alignment* of these two sequences is clear if we print them  out, one on to
 
 Scanning through these two sequences, we can see that they are largely identical, with the exception of one ``-`` character, and about 25% *substitutions* of one base for another.
 
-## What is a sequence alignment? <link src='e63a4f'/>
+## What is a sequence alignment? 
 
 Let's take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution, a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as **mutations**. Some types of mutation events that can occur are:
 
@@ -105,7 +105,7 @@ One thing that's worth pointing out at this point is that because we don't know 
 
 In the next section we'll work through our first bioinformatics algorithm, in this case a very simple (and also simplistic) method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.
 
-## A simple procedure for aligning a pair of sequences <link src='86c6b7'/>
+## A simple procedure for aligning a pair of sequences 
 
 Let's define two sequences, ``seq1`` and ``seq2``, and develop an approach for aligning them.
 
@@ -126,7 +126,7 @@ Let's import the function ``show_F`` and then view its source code:
 
 Now let's look at how to align these sequences.
 
-### Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences. <link src="pf7Bf8"/>
+### Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences. 
 
 We'll create this matrix and initialize it with all zeros as follows:
 
@@ -138,7 +138,7 @@ We'll create this matrix and initialize it with all zeros as follows:
 >>> HTML(show_F(seq1, seq2, data))
 ```
 
-### Step 2: Add values to the cells in the matrix. <link src="fDXYPE"/>
+### Step 2: Add values to the cells in the matrix. 
 
 Next we'll add initial values to the cells so that if the characters at the corresponding row and column are the same, the value of the cell is changed from zero to one. We can then review the resulting matrix. For clarity, we'll have ``show_F`` hide the zero values.
 
@@ -151,7 +151,7 @@ Next we'll add initial values to the cells so that if the characters at the corr
 >>> HTML(show_F(seq1, seq2, data, hide_zeros=True))
 ```
 
-### Step 3: Identify the longest diagonals. <link src="AHda6V"/>
+### Step 3: Identify the longest diagonals. 
 
 Next we'll identify the longest stretches of non-zero characters, which we'll refer to here as the *diagonals*. Diagonals indicate segments of the two sequences that are identical and uninterrupted by mismatched characters (substitution events) or indel events.
 
@@ -177,7 +177,7 @@ We can identify the longest diagonals as follows:
 >>> HTML(show_F(seq1, seq2, summed_data, hide_zeros=True))
 ```
 
-### Step 4: Transcribe some of the possible alignments that arise from this process. <link src="PD0jSR"/>
+### Step 4: Transcribe some of the possible alignments that arise from this process. 
 
 We're going to gloss over how to do this algorithmically for the moment, as we'll come back to that in a lot of detail later in this chapter. Briefly, what we want to do is start with the longest diagonal and trace it backwards to transcribe the alignment by writing down the characters from each of the two sequences at every row and column corresponding to the diagonal that you're following. When we encounter a break in the diagonal, we find the next longest diagonal that starts in a cell that is up and/or to the left of the cell when the previous diagonal you were following ends. For every cell that you move straight upwards (non-diagonally), you'd insert a gap in the sequence on the horizontal axis of your matrix. For every cell that you move straight leftwards, you'd insert a gap in the sequence on the vertical axis of your matrix.
 
@@ -203,7 +203,7 @@ Why might the first alignment be the more biologically relevant one (meaning the
 
 **As an exercise**, go back to where we defined `seq1` and `seq2` and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.
 
-### Why this simple procedure is too simplistic <link src="jzshiO"/>
+### Why this simple procedure is too simplistic 
 
 I suggested above that you keep a list of assumptions that are made by this approach. Here are a couple of the very problematic ones.
 
@@ -216,7 +216,7 @@ Another important consideration as we think about algorithms for aligning pairs 
 
 Over the next several sections we'll explore ways of addressing the two issues noted above. We'll introduce the problem of the computational complexity of pairwise sequence alignment at the end of this chapter, and explore approaches for addressing that (i.e., making database searching faster) in the next chapter.
 
-## Differential scoring of matches and mismatches <link src='9f5e71'/>
+## Differential scoring of matches and mismatches 
 
 When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we're going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we'll discuss here are general to both. With protein sequences, we're aligning amino acid residues (or *residues*, for short) to one another, instead of nucleotides.
 
@@ -266,11 +266,11 @@ You can look up individual substitution scores as follows:
 Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s (Dayhoff, Schwartz, Orcutt (1978) <i>A Model of Evolutionary Change in Proteins.</i> Atlas of Protein Sequence and Structure) and by [Henikoff and Henikoff](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC50453/) in the early 1990s. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. [This](https://www.ncbi.nlm.nih.gov/pubmed/15286655) is a good article on the source of the widely used substitution matrices by Sean Eddy. We'll work with BLOSUM 50 here for the remainder of this chapter.
 
 
-## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm <link src='15efc2'/>
+## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm 
 
 We're next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by [Saul B. Needleman and Christian D. Wunsch in 1970](https://www.ncbi.nlm.nih.gov/pubmed/5420325), and is therefore referred to as *Needleman-Wunsch alignment*. This performs what is known as *global alignment*, meaning that both sequences are aligned from their first residue (or base) through their last residue (or base). We'll contrast this later in this chapter with local alignment.
 
-### Stepwise Needleman-Wunsch alignment <link src="Gn3Vj6"/>
+### Stepwise Needleman-Wunsch alignment 
 
 Needleman-Wunsch alignment is similar to the approach that we explored above. We'll work through the steps of the algorithm first, and then automate the process by defining Python functions that perform the steps for us given a pair of sequences.
 
@@ -285,7 +285,7 @@ We'll define two protein sequences to work with in this section. After working t
 >>> print(seq2)
 ```
 
-#### Step 1: Create blank matrices. <link src="hVbAxT"/>
+#### Step 1: Create blank matrices. 
 
 As we discussed earlier in this chapter, a pair of sequences can be aligned in different ways. Needleman-Wunsch provides the best alignment, as defined by its score. Here we'll compute two new matrices that together allow us to determine the highest alignment score given the sequences and the substitution matrix, and to transcribe the aligned sequences. These matrices are
  * the *dynamic programming matrix*, or $F$
@@ -313,7 +313,7 @@ Prior to initialization, $F$ and $T$ would look like the following.
 >>> HTML(show_T(seq1, seq2, T))
 ```
 
-#### Step 2: Compute $F$ and $T$. <link src="Tma9ea"/>
+#### Step 2: Compute $F$ and $T$. 
 
 The first row and column of $F$ are initialized using the following formulas. $d$ in these formulas is a value referred to as the *gap penalty*. This is a constant value that is subtracted from the score of the alignment every time a gap character has to be introduced to align the sequences. We'll use a constant value of $d=8$ (it's positive because we subtract it) for now, and explore its use more shortly. $i$ is the row number in $F$, and $j$ is the column number in $F$.
 
@@ -398,7 +398,7 @@ You can now apply this function to `seq1` and `seq2` to compute the dynamic prog
 >>> HTML(show_T(seq1[0], seq2[0], traceback_matrix))
 ```
 
-#### Step 3: Transcribe the alignment. <link src="AFAVLt"/>
+#### Step 3: Transcribe the alignment. 
 
 We can now use $F$ and $T$ to transcribe and score the alignment of sequences 1 and 2. To do this, we start at the bottom-right of the matrices and follow the arrows to cell $(0, 0)$.
 
@@ -428,7 +428,7 @@ You can then execute this as follows, and print out the resulting alignment. Com
 >>> print(score)
 ```
 
-### Automating Needleman-Wunsch alignment with Python <link src="B8xI7Y"/>
+### Automating Needleman-Wunsch alignment with Python 
 
 Calling the steps we just described is labor-intensive, and they don't change regardless of the protein sequences that we want to align. So, as a bioinformatics software developer, you'd want to make this functionality more easily accessible to users. To do that, you'd define a function that takes all of the necessary input and provides the aligned sequences and the score as output, without requiring the user to make several function calls.
 
@@ -448,11 +448,11 @@ Here's the scikit-bio implementation of Needleman-Wunsch alignment. How is its A
 >>> print(score)
 ```
 
-### A note on computing $F$ and $T$ <link src="QRabtd"/>
+### A note on computing $F$ and $T$ 
 
 Some applications of global alignment use both the alignment score and the aligned sequences, and some only use one or the other. As a result, some applications optimize this process by only keeping track of the information they need. For example, if you're working on a database search algorithm, you might only care about the score of the alignment. In this case you might not need to keep track of $T$, and could reduce the amount of memory that your software requires by not keeping track of it.
 
-## Global versus local alignment <link src='c80f21'/>
+## Global versus local alignment 
 
 The alignment we just constructed is a *global alignment*, meaning we align both sequences from their beginning through their end. This has some important specific applications: for example, if we have two full-length protein sequences, and we have a crystal structure for one of them, we can use global alignment to give us a direct mapping between all positions in both sequences.
 
@@ -460,7 +460,7 @@ This is in contrast to local alignment, where we have a pair of sequences that w
 
 Global and local alignment are both used for different applications. We'll next look at an algorithm for computing local alignments. You'll see that this is very similar to Needleman-Wunsch alignment.
 
-## Smith-Waterman local sequence alignment <link src='c9656e'/>
+## Smith-Waterman local sequence alignment 
 
 The algorithm that is most commonly used for performing local alignment was originally published by [Temple F. Smith and Michael S. Waterman in 1981](https://www.ncbi.nlm.nih.gov/pubmed/7265238), and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.
 
@@ -475,7 +475,7 @@ Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with th
 >>> print(seq2)
 ```
 
-### Step 1: Create blank matrices. <link src="Ew2bdO"/>
+### Step 1: Create blank matrices. 
 
 $F$ and $T$ are created in the same way for Smith-Waterman as for Needleman-Wunsch so prior to initialization, $F$ and $T$ would again look like the following.
 
@@ -493,7 +493,7 @@ $F$ and $T$ are created in the same way for Smith-Waterman as for Needleman-Wuns
 >>> HTML(show_T(seq1, seq2, T))
 ```
 
-### Step 2: Compute $F$ and $T$. <link src="qHCRuJ"/>
+### Step 2: Compute $F$ and $T$. 
 
 Computing $F$ and $T$ is slightly different for Smith-Waterman than for Needleman-Wunsch. First, initialization is easier. The following formulas are used for computing the first row and column of $F$.
 
@@ -563,7 +563,7 @@ We'll use the same function that we used above to compute the full $F$ and $T$ m
 >>> HTML(show_T(seq1[0], seq2[0], traceback_matrix))
 ```
 
-### Step 3: Transcribe the alignment. <link src="Yf5dZy"/>
+### Step 3: Transcribe the alignment. 
 
 There is one small difference in the traceback step between Smith-Waterman and Needleman-Wunsch. You should now begin tracing back from the cell with the highest value in $F$, rather than the bottom right cell of the matrix. We find this cell directly in the code below. As before, the alignment terminates when we hit a bullet (•) character, but in contrast to Needleman-Wunsch alignment, this can happen anywhere in the matrix, not only in $F(0, 0)$.
 
@@ -583,7 +583,7 @@ There is one small difference in the traceback step between Smith-Waterman and N
 >>> print(score)
 ```
 
-### Automating Smith-Waterman alignment with Python <link src="zX1OjN"/>
+### Automating Smith-Waterman alignment with Python 
 
 Again, we can define a *convenience function*, which will allow us to provide the required input and just get our aligned sequences back.
 
@@ -619,7 +619,7 @@ And we can take the *convenience function* one step further, and wrap `local_pai
 
 This was a lot of complicated material, so congratulations on making it this far. If you feel comfortable with everything we just went through, you now understand the basics of pairwise alignment, which is easily the most fundamental algorithm in bioinformatics. If you're not feeling totally comfortable with all of this, go back and re-read it. This time spend more time working out the individual steps with a pencil and paper by computing more cells in $F$ and $T$ as you go, and performing the traceback step manually. And don't get discouraged: we can describe the steps that need to be carried out to a computer with just a few lines of code, so it's nothing magical. Computing a pairwise alignment just involves the systematic application of a few well defined steps. You *will* be able to carry out those steps (a metric of your understanding of the algorithm) as long as you put a bit of effort into performing those steps.
 
-## Differential scoring of gaps <link src='976169'/>
+## Differential scoring of gaps 
 
 The second limitation of the our simple alignment algorithm (which we discussed [way back at the beginning of this chapter](alias://jzshiO)), and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn't ideal based on what we know about how insertion/deletion events occur (see [this discussion of replication slippage](http://www.ncbi.nlm.nih.gov/books/NBK21114/) if you're not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as *affine gap scoring*.
 
@@ -682,13 +682,13 @@ Here I define `seq1` to be slightly different than what I have above. Notice how
 
 As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won't need to write any code to do this, but rather you can adapt some of the commands that we've already used above. Don't forget about the ``help`` function - that's essential for learning how to use a function.
 
-## How long does pairwise sequence alignment take? <link src='ac446d'/>
+## How long does pairwise sequence alignment take? 
 
 The focus of this book is *applied* bioinformatics, and two of the practical considerations we need to think about when developing algorithms and applications is how long they'll take to run, and how much system memory (or RAM) they'll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.
 
 We just worked through a few algorithms for pairwise sequence alignment, and ran some toy examples based on short sequences. What if we wanted to scale this up to align much longer sequences, or to align relatively short sequences against a large database? In this section we'll explore the runtime of sequence alignment.
 
-### Comparing implementations of Smith-Waterman <link src="gFhVcP"/>
+### Comparing implementations of Smith-Waterman 
 
 To explore runtime, let's use the IPython [magic function](http://ipython.org/ipython-doc/dev/interactive/tutorial.html#magic-functions) called ``timeit``. This allows us to conveniently run a given command many times and reports the average time it takes to run. We'll use this to see how long local alignment takes to run. Note that we don't care about getting the actual alignment back for the moment. We just want the runtime in seconds.
 
@@ -727,7 +727,7 @@ How do the results look?
 
 If you were truly evaluating a new heuristic, you'd want to compare many different inputs with the heuristic and the full algorithm.  For now, just take it from me that ``local_pairwise_align_ssw`` is generally producing comparable results to ``local_pairwise_align_nucleotide``, and you can clearly see that it's running much faster. So, we'll use that implementation in this text when we need to perform fast local alignments.
 
-### Analyzing Smith-Waterman run time as a function of sequence length <link src="1gIcuj"/>
+### Analyzing Smith-Waterman run time as a function of sequence length 
 
 Next, let's apply this to pairs of sequences where we vary the length. We don't really care what the sequences are here, so we'll use [numpy's ``random`` module](http://docs.scipy.org/doc/numpy/reference/routines.random.html) to get random pairs of sequences.
 
@@ -820,6 +820,6 @@ One question you might have is whether developing a version of this algorithm wh
 
 Notice that the runtimes in the plot are smaller, but shape of the curve is the same. While parallelization can reduce the runtime of an algorithm, it won't change its *computational complexity* (or how its runtime scales as a function of its input size). You can explore the computational complexity of different types of algorithms in the [Big-O Cheat Sheet](http://bigocheatsheet.com/), though it's a fairly advanced introduction to the topic (and one that's usually covered in the second or third year for Computer Science majors).
 
-### Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman <link src="N9htIl"/>
+### Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman 
 
 These are pretty long sequences that we're working with here, and the runtime is still pretty reasonable (only a few seconds for DNA sequences around 100,000 bases), so that suggests this implementation of Smith-Waterman should work ok for aligning pairs of sequences, even if the sequences are fairly long. However, we're often interested in doing more than just pairwise alignment. For example, we may want to align many sequences to each other (which we'll explore in the Multiple Sequence Alignment chapter), or we may want to perform many pairwise alignments (which we'll explore in the Database Searching chapter). In the next chapter we'll begin exploring ways to address this scalability issue by approximating solutions to the problem.

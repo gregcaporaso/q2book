@@ -1,5 +1,5 @@
 
-# Sequence homology searching <link src='d22e6b'/>
+# Sequence homology searching 
 
 In this chapter we'll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We [previously defined homology](alias://e63a4f) between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it's very hard (really, impossible) to know what it is without more information.
 
@@ -14,7 +14,7 @@ Whose genome is the above sequence encoded in? What is its function? Take a minu
 
 In the context of database searching, a query sequence and a reference sequence that we hypothesize to be homologous can be identical to one another, or they can differ as a result of mutation events. When sequences differ, we're often then interested in how much they differ, or their pairwise similarity, which can help us identify the most closely related of several homologs in the reference database. There is an important distinction in the terms *homology* and *similarity*: homology is a discrete variable, and similarity is a continuous variable. A pair of biological sequences either *are* or *are not* derived from a common ancestor, but they can be more or less similar to each other. Saying that two sequences are 80% homologous doesn't make sense. What people generally mean when they say this is that two sequences are 80% similar, and as a result they are hypothesizing homology between the sequences.
 
-## Defining the problem <link src="P7kHdy"/>
+## Defining the problem 
 
 As mentioned above, if we want to perform a homology search we'll have one or more *query sequences*, and for each we want to know which sequence(s) in a reference database it is most similar to.
 
@@ -29,7 +29,7 @@ When our reference database starts getting hundreds of millions of bases long (a
 
 While we'll be aligning nucleotide sequences in this chapter, the same concepts apply to protein homology searching.
 
-## Loading annotated sequences <link src="gAKBxE"/>
+## Loading annotated sequences 
 
 The first thing we'll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we're going to work with are derived from the [Greengenes](http://greengenes.secondgenome.com/) database, and we're accessing them using the [QIIME default reference project](https://github.com/biocore/qiime-default-reference). Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial [ribosome](http://www.nature.com/scitable/definition/ribosome-194) (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it's one of about 200 genes that are encoded in the genomes of all known cellular organisms. We'll come back to this gene a few times in the book, notably in [Studying Biological Diversity](alias://2bb2cf). The sequences in Greengenes are taxonomically annotated, meaning that we'll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.
 
@@ -96,7 +96,7 @@ Let's inspect a couple of the query sequences that we'll work with.
 >>> queries[-1]
 ```
 
-## Defining the problem <link src="SZ9u3S"/>
+## Defining the problem 
 
 The problem that we are going to address here is as follows. We now have a query sequence ($q_i$) which is not taxonomically annotated (meaning we don't know the taxonomy of the organism whose genome it is found in), and a reference database ($R$) of taxonomically annotated sequences ($r_1, r_2, r_3, ... r_n$). We want to infer a taxonomic annotation for $q_i$. We'll do this by identifying the most similar sequence(s) in $R$ and associating their taxonomy with $q_i$. Because we actually do know the taxonomy of $q_i$ (to the extent that we trust the annotations in $R$), we can evaluate how well this approach works.
 
@@ -107,7 +107,7 @@ There are a few realistic features of the situation that we've set up here that 
 
 As we work through the next sections, imagine that we're exploring scaling this system up, so that instead of searching just one or a few query sequences against the reference database, we ultimately want to apply this to search millions of sequences against the database. This would be the real-world problem we faced if we had collected 16S rRNA sequences from the environment (which would of course be unannotated) using high-throughput DNA sequencing.
 
-## A complete homology search function <link src="0C9FCS"/>
+## A complete homology search function 
 
 Let's define a homology search function that aligns each provided query sequences $q_i$ with each of our reference database sequences ($r_1, r_2, r_3, ... r_n$). This function will take as input one or more query sequences, and the reference database. We'll call the top scoring alignments for each $q_i$ the *best hits*, and we'll specifically request some number (`n`) of best hits for each $q_i$. The output of this function will be a summary of the `n` best hits for each query sequence, including some technical information about the alignment and the taxonomy associated with the corresponding reference sequence. We'll then review the taxonomy annotations for our best hits, and from those make an inference about the taxonomy annotation for $q_i$.
 
@@ -158,7 +158,7 @@ Because we have taxonomic annotations for all of the Greengenes sequences (thoug
 ...     print()
 ```
 
-## Reducing the runtime for database searches <link src='0f9232'/>
+## Reducing the runtime for database searches 
 
 In the examples above, it's taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven't modified the database subsampling step) it is computing the $F$ and $T$ matrices described in [the Pairwise Alignment chapter](alias://a76822), and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn't change the fact that this doesn't scale to real-world applications because we'd have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.
 
@@ -230,7 +230,7 @@ Another approach to reducing the runtime of this process would be to create a fa
 
 In practice, for a production-scale sequence database search application like BLAST, we'd combine these approaches. In the next section we'll explore ways to reduce the runtime of database searching for a fixed number of query sequences and a fixed number of reference sequences by reducing the number of pairwise alignments that the search function will perform.
 
-## Heuristic algorithms <link src="mUArdw"/>
+## Heuristic algorithms 
 
 As mentioned above, it just takes too long to search individual query sequences against a large database. This problem also isn't going away anytime soon. While computers are getting faster (or cheaper), the size of our sequences collections are getting bigger because sequencing is getting cheaper. In fact, many people think that obtaining DNA sequences is getting cheaper faster than computers are getting cheaper. As our number of query sequences increases because we are able to obtain more for the same amount of money, and the size of our reference databases increases (because we're continuously obtaining more sequence data) this will increasingly become a bigger problem. Figures 1 and 2, respectively, illustrate that these are both real-world issues. Notice that the axes are on a log scale in both cases.
 
@@ -255,7 +255,7 @@ One way that we can deal with this problem is by recognizing that most of the al
 
 We'll now look at a few heuristics in the context of these questions.
 
-### Random reference sequence selection <link src="bEQxHf"/>
+### Random reference sequence selection 
 
 Our first heuristic will be a [straw man](https://en.wikipedia.org/wiki/Straw_man) that we use as a baseline. We'll select a random $p\%$ of the reference sequences to align our query against. This will clearly result in a large decrease in the number of sequence alignments that we need to perform because we'll go from performing $R_s$ (the reference database size) sequence alignments to $p \times R_s$ sequence alignments for each query sequence $q_i$.
 
@@ -365,11 +365,11 @@ After performing many trials of the above searches, I get the correct genus-leve
 
 Go back to the beginning of this section and try running this check based on fewer levels of taxonomy (i.e., decreased taxonomic specificity, such as the phylum) and on more levels of taxonomy (i.e., increased taxonomic specificity, such as the species level). How does that impact how often we get the right answer?
 
-### Composition-based reference sequence collection <link src="P4vQ4b"/>
+### Composition-based reference sequence collection 
 
 While the random selection of database sequences can vastly reduce the runtime for database searching, we don't get the right answer very often. Let's try some heuristics that are a bit smarter. How about this: if the overall nucleotide composition of a query sequence is very different than the overall nucleotide composition of a reference sequence, it's unlikely that the best alignment will result from that pairwise alignment, so don't align the query to that reference sequence. Given that, how do we define "overall nucleotide composition" in a useful way?
 
-#### GC content <link src="8yiKFO"/>
+#### GC content 
 
 One metric of sequence composition that we can compute quickly (because remember, this has to be a lot faster than computing the alignment for it to be worth it) is GC content. Let's define a heuristic that only performs a pairwise alignment for the reference sequences that have the most similar GC content to the query sequence. The number of alignments that we'll perform will be defined as ``database_subset_size``.
 
@@ -403,7 +403,7 @@ If we run our queries again, how often do we get the right answer? How much did 
 
 Try increasing and decreasing the number of sequences we'll align by increasing or decreasing ``database_subset_size``. How does this impact the runtime and fraction of time that we get the correct answer?
 
-#### kmer content <link src="QblTRV"/>
+#### kmer content 
 
 Another metric of sequence composition is *kmer composition*. A [kmer](alias://C7hMX5) is simply a word (or list of adjacent characters) of length *k* found within a sequence. Here are the kmer frequencies in a short DNA sequence. The ``overlap=True`` parameter here means that our kmers can overlap one another.
 
@@ -450,7 +450,7 @@ Let's apply this and see how it does. How does the runtime and fraction of corre
 ...     print()
 ```
 
-#### Further optimizing composition-based approaches by pre-computing reference database information <link src="HQmZgF"/>
+#### Further optimizing composition-based approaches by pre-computing reference database information 
 
 One important feature of composition-based approaches is that, because the reference database doesn't change very often, we can pre-compute features of the reference sequences and re-use them. This can help us to vastly decrease the runtime of our heuristic searches. For example, the computation of all of the reference database kmer frequencies is a lot of work. If we can compute that outside of our database search, we can avoid doing that step for every database search, and therefore remove that computationally expensive (i.e., slow) step of the process.
 
@@ -481,11 +481,11 @@ We'll now pass our pre-computed kmer frequencies into our search function. How d
 ...     print()
 ```
 
-## Determining the statistical significance of a pairwise alignment <link src='87c92f'/>
+## Determining the statistical significance of a pairwise alignment 
 
 One thing you may have noticed is that the score you get back for a pairwise alignment is hard to interpret. It's dependent on the query and reference sequence lengths (and possibly their composition, depending on your substitution matrix). So an important question is how to determine *how good* a given pairwise alignment is. Here we'll learn about a statistical approach for answering that.
 
-### Metrics of alignment quality <link src="YdqCls"/>
+### Metrics of alignment quality 
 
 In the examples above, we compared features such as how long the alignment is (relevant for local but not global alignment), the pairwise similarity between the aligned query and reference, and the score. If you've used a system like BLAST, you'll know that there are other values that are often reported about an alignment, like the number of substitutions, or the number of insertion/deletion (or gap) positions. None of these metrics are useful on their own. Let's look at an example to see why.
 
@@ -512,7 +512,7 @@ GAACAGA-AC
 
 The alignment score that has been reported by our pairwise aligners helps us to balance these different features, and we can adjust the scoring scheme to weight things differently (e.g., so that gaps are penalized more or less than certain substitutions). The problem is that the scores are hard to interpret, particularly when we have only one or a few of them.
 
-### False positives, false negatives, p-values, and alpha  <link src="TjqwVY"/>
+### False positives, false negatives, p-values, and alpha  
 
 Remember that an alignment of a pair of sequences represents a hypothesis about homology between those sequences. One way that we think about determining if an alignment is good or not is to ask: *what fraction of the time would I obtain a score at least this good if my sequences are not homologous?* This fraction is usually referred to as our *p-value*, and this is computed in many different ways. If our p-value is high (e.g., 25%), then our alignment is probably not very good since it means that many non-homologous pairs of sequences would achieve a score at least that high. If our p-value is low (say 0.001%), then our alignment is probably good since scores that high are achieved only infrequently.
 
@@ -524,7 +524,7 @@ If incurring a false positive about 5% of the time is acceptable (i.e., you're o
 
 There is not a hard-and-fast rule for whether false positives or false negatives are better, which makes choosing $\alpha$ hard. It's application specific, so you need to understand the biological question your asking when making this decision, and the ramifications of false positives versus false negatives. In general, when might you prefer to have false positives? When might you prefer to have false negatives?
 
-### Interpreting alignment scores in context <link src="a0nqBH"/>
+### Interpreting alignment scores in context 
 
 In this section, we are going to learn about how to interpret alignment scores by empirically determining if a pairwise alignment that we obtain is better than we would expect if the pair of sequences we're working with were definitely not homologous. For a given pair of sequences that we want to align, we're first going to align them and compute the score of the alignment. We're then going to align many pairs of sequences that are similar to the query and reference, but that we know are not homologous. We'll do this by shuffling or randomizing the order of the bases in the query sequences, and performing another pairwise alignment.
 
@@ -715,7 +715,7 @@ Now let's simulate much more distantly related sequences by introducing substitu
 ...       fraction_better_or_equivalent_alignments(sequence1, sequence1_25))
 ```
 
-### Exploring the limit of detection of sequence homology searches <link src="n8OGGW"/>
+### Exploring the limit of detection of sequence homology searches 
 
 In the example above, we know that our input sequences are "homologous" because `sequence1_25` and `sequence1_95` are both derived from `sequence1`. Our method detected that homology for `sequence1_95`, when we simulated very closely related sequences, but not for ``sequence1_25``, when we simulated much more distantly related sequences. This gives us an idea of the limit of detection of this method, and is a real-world problem that biologists face: as sequences are more divergent from one another, detecting homology becomes increasingly difficult.
 
