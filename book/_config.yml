@@ -7,8 +7,11 @@
 # Book settings
 title                       : q2book
 author                      : J Gregory Caporaso 
-copyright                   : "2020" 
+copyright                   : "2020-2021" 
 logo                        : logo.png 
 
 parse:
     myst_extended_syntax: true
+
+execute:
+  timeout: 120
