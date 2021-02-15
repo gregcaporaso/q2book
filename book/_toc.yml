@@ -9,6 +9,7 @@
   - file: using/importing
   - file: using/demultiplexing
   - file: using/denoising
+  - file: using/taxonomy
 
 - part: Understanding the algorithms
   chapters: 
