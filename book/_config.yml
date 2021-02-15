@@ -15,3 +15,4 @@ parse:
 
 execute:
   timeout: 120
+  execute_notebooks: cache
