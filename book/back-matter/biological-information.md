@@ -181,25 +181,25 @@ How might you determine what biological sequence is presented here? Use tools on
 ````
 
 ```{code-cell}
->>> import skbio
->>> # the following sequence is derived from NCBI reference sequence NM_005368.3
->>> protein = skbio.RNA(
-...             "AUGAAACCCCAGCUGUUGGGGCCAGGACACCCAGUGAGCCCAUACUUGCUCUUUUUGUCUUCUUCAGACUGCGCCAUGGG"
-...             "GCUCAGCGACGGGGAAUGGCAGUUGGUGCUGAACGUCUGGGGGAAGGUGGAGGCUGACAUCCCAGGCCAUGGGCAGG"
-...             "AAGUCCUCAUCAGGCUCUUUAAGGGUCACCCAGAGACUCUGGAGAAGUUUGACAAGUUCAAGCACCUGAAGUCAGAG"
-...             "GACGAGAUGAAGGCGUCUGAGGACUUAAAGAAGCAUGGUGCCACCGUGCUCACCGCCCUGGGUGGCAUCCUUAAGAA"
-...             "GAAGGGGCAUCAUGAGGCAGAGAUUAAGCCCCUGGCACAGUCGCAUGCCACCAAGCACAAGAUCCCCGUGAAGUACC"
-...             "UGGAGUUCAUCUCGGAAUGCAUCAUCCAGGUUCUGCAGAGCAAGCAUCCCGGGGACUUUGGUGCUGAUGCCCAGGGG"
-...             "GCCAUGAACAAGGCCCUGGAGCUGUUCCGGAAGGACAUGGCCUCCAACUACAAGGAGCUGGGCUUCCAGGGCUAGGC"
-...             "CCCUGCCGCUCCCACCCCCACCCAUCUGGGCCCCGGGUUCAAGAGAGAGCGGGGUCUGAUCUCGUGUAGCCAUAUAG"
-...             "AGUUUGCUUCUGAGUGUCUGCUUUGUUUAGUAGAGGUGGGCAGGAGGAGCUGAGGGGCUGGGGCUGGGGUGUUGAAG"
-...             "UUGGCUUUGCAUGCCCAGCGAUGCGCCUCCCUGUGGGAUGUCAUCACCCUGGGAACCGGGAGUGGCCCUUGGCUCAC"
-...             "UGUGUUCUGCAUGGUUUGGAUCUGAAUUAAUUGUCCUUUCUUCUAAAUCCCAACCGAACUUCUUCCAACCUCCAAAC"
-...             "UGGCUGUAACCCCAAAUCCAAGCCAUUAACUACACCUGACAGUAGCAAUUGUCUGAUUAAUCACUGGCCCCUUGAAG"
-...             "ACAGCAGAAUGUCCCUUUGCAAUGAGGAGGAGAUCUGGGCUGGGCGGGCCAGCUGGGGAAGCAUUUGACUAUCUGGA"
-...             "ACUUGUGUGUGCCUCCUCAGGUAUGGCAGUGACUCACCUGGUUUUAAUAAAACAACCUGCAACAUCUCA"
-...         ).translate(stop='require')
->>> protein
+import skbio
+# the following sequence is derived from NCBI reference sequence NM_005368.3
+protein = skbio.RNA(
+            "AUGAAACCCCAGCUGUUGGGGCCAGGACACCCAGUGAGCCCAUACUUGCUCUUUUUGUCUUCUUCAGACUGCGCCAUGGG"
+            "GCUCAGCGACGGGGAAUGGCAGUUGGUGCUGAACGUCUGGGGGAAGGUGGAGGCUGACAUCCCAGGCCAUGGGCAGG"
+            "AAGUCCUCAUCAGGCUCUUUAAGGGUCACCCAGAGACUCUGGAGAAGUUUGACAAGUUCAAGCACCUGAAGUCAGAG"
+            "GACGAGAUGAAGGCGUCUGAGGACUUAAAGAAGCAUGGUGCCACCGUGCUCACCGCCCUGGGUGGCAUCCUUAAGAA"
+            "GAAGGGGCAUCAUGAGGCAGAGAUUAAGCCCCUGGCACAGUCGCAUGCCACCAAGCACAAGAUCCCCGUGAAGUACC"
+            "UGGAGUUCAUCUCGGAAUGCAUCAUCCAGGUUCUGCAGAGCAAGCAUCCCGGGGACUUUGGUGCUGAUGCCCAGGGG"
+            "GCCAUGAACAAGGCCCUGGAGCUGUUCCGGAAGGACAUGGCCUCCAACUACAAGGAGCUGGGCUUCCAGGGCUAGGC"
+            "CCCUGCCGCUCCCACCCCCACCCAUCUGGGCCCCGGGUUCAAGAGAGAGCGGGGUCUGAUCUCGUGUAGCCAUAUAG"
+            "AGUUUGCUUCUGAGUGUCUGCUUUGUUUAGUAGAGGUGGGCAGGAGGAGCUGAGGGGCUGGGGCUGGGGUGUUGAAG"
+            "UUGGCUUUGCAUGCCCAGCGAUGCGCCUCCCUGUGGGAUGUCAUCACCCUGGGAACCGGGAGUGGCCCUUGGCUCAC"
+            "UGUGUUCUGCAUGGUUUGGAUCUGAAUUAAUUGUCCUUUCUUCUAAAUCCCAACCGAACUUCUUCCAACCUCCAAAC"
+            "UGGCUGUAACCCCAAAUCCAAGCCAUUAACUACACCUGACAGUAGCAAUUGUCUGAUUAAUCACUGGCCCCUUGAAG"
+            "ACAGCAGAAUGUCCCUUUGCAAUGAGGAGGAGAUCUGGGCUGGGCGGGCCAGCUGGGGAAGCAUUUGACUAUCUGGA"
+            "ACUUGUGUGUGCCUCCUCAGGUAUGGCAGUGACUCACCUGGUUUUAAUAAAACAACCUGCAACAUCUCA"
+        ).translate(stop='require')
+protein
 ```
 
 The above step translated an RNA sequence to a protein sequence for us, and then displayed the result to the screen. One difference to note is that we previously used three-letter codes to represent amino acids, but scikit-bio uses one-letter codes to represent amino acids. One-letter codes are more commonly used in practice, since they're more concise. 
@@ -225,9 +225,9 @@ In Python 3, `**` is used to apply the exponentiation operation. For example, `2
 ````
 
 ```{code-cell}
->>> n_symbols = 2 # we'll use the two available binary digits, 0 and 1
->>> p = 8 # because there are 8 places, or bits, in a byte
->>> print(n_symbols**p)
+n_symbols = 2 # we'll use the two available binary digits, 0 and 1
+p = 8 # because there are 8 places, or bits, in a byte
+print(n_symbols**p)
 ```
 
 Since bases in a DNA sequence are represented with four characters, each position in a sequence contains two bits of information. We know this because we could represent all four bases using two places in a binary number. For example, 00 could represent A, 01 could represent C, 01 could represent G, and 11 could represent T. These assignments of binary numbers to DNA bases is arbitrary.) In other words, if we have two symbols and two places, we can send four messages ($2^2=4$), so one base of DNA represents 2 bits of information. A DNA sequence that is 100 bases long would therefore contain 200 bits of information.

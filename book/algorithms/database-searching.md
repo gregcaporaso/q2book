@@ -21,8 +21,8 @@ As mentioned above, if we want to perform a homology search we'll have one or mo
 Sequence homology searching can be implemented in a few ways. In this chapter, we'll use the local alignment function that we worked with in [the Pairwise Alignment chapter](alias://a76822), ``local_pairwise_align_ssw``, run it many times to search one *query* sequence against many *reference* sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to ``help``:
 
 ```python
->>> from skbio.alignment import local_pairwise_align_ssw
->>> help(local_pairwise_align_ssw)
+from skbio.alignment import local_pairwise_align_ssw
+help(local_pairwise_align_ssw)
 ```
 
 When our reference database starts getting hundreds of millions of bases long (as would be the case if we were searching against 97% OTUs from the [Greengenes small-subunit ribosomal RNA (SSU rRNA) reference database](http://www.ncbi.nlm.nih.gov/pubmed/22134646)), billions of bases long (as would be the case if we were searching against [the human genome](https://genome.ucsc.edu/cgi-bin/hgGateway)) or trillions of bases long (as would be the case if we were searching against the [NCBI non-redundant nucleotide database](http://www.ncbi.nlm.nih.gov/refseq/)), runtime becomes an important consideration. For that reason, learning about *heuristic algorithms* is an essential part of learning about sequence homology searching. Heuristic algorithms apply some rules (i.e., heuristics) to approximate the correct solution to a problem in a fraction of the runtime that would be required if we wanted to be guaranteed to find the correct solution. Heuristic algorithms are very common in bioinformatics, and we'll use them in several other places in this book.
@@ -36,39 +36,39 @@ The first thing we'll do as we learn about sequence homology searching is load s
 First, let's load Greengenes into a list of ``skbio.DNA`` sequence objects, and associate the taxonomy of each sequence as sequence metadata.
 
 ```python
->>> %pylab inline
-...
->>> from IPython.core import page
->>> page.page = print
+%pylab inline
+
+from IPython.core import page
+page.page = print
 ```
 
 ```python
->>> from iab.algorithms import load_taxonomy_reference_database
-...
->>> %psource load_taxonomy_reference_database
+from iab.algorithms import load_taxonomy_reference_database
+
+%psource load_taxonomy_reference_database
 ```
 
 ```python
->>> reference_taxonomy, reference_db = load_taxonomy_reference_database()
+reference_taxonomy, reference_db = load_taxonomy_reference_database()
 ```
 
 Next, we'll just inspect a couple of the sequences we loaded. Notice how the specificity of our taxonomic annotations (i.e., how many taxonomic levels are annotated and unknown) differs for different sequences.
 
 ```python
->>> reference_db[0]
+reference_db[0]
 ```
 
 ```python
->>> reference_db[-1]
+reference_db[-1]
 ```
 
 For the sake of runtime, we're going to work through this chapter using a random sample of sequences from this database. Here we'll use Python's [random module](https://docs.python.org/3/library/random.html) to select sequences at random.
 
 ```python
->>> import random
-...
->>> reference_db = random.sample(reference_db, k=5000)
->>> print("%s sequences are present in the subsampled database." % len(reference_db))
+import random
+
+reference_db = random.sample(reference_db, k=5000)
+print("%s sequences are present in the subsampled database." % len(reference_db))
 ```
 
 We'll also extract some sequences from Greengenes to use as query sequences in our database searches. This time we won't annotate them (to simulate not knowing what organisms they're from). We'll also trim these sequences so they're shorter than the full length references. This will simulate obtaining a partial gene sequence, as is most common with the current sequencing technologies (as of this writing), but will also help to make the examples run faster.
@@ -76,24 +76,24 @@ We'll also extract some sequences from Greengenes to use as query sequences in o
 Note that some of our query sequences may also be in our subsampled reference database and some won't. This is realistic: sometimes we're working with sequences that are exact matches to known sequences, and sometimes we're working with sequences that don't match any known sequences (or at least any in the reference database that we're working with).
 
 ```python
->>> from iab.algorithms import load_taxonomy_query_sequences
-...
->>> %psource load_taxonomy_query_sequences
+from iab.algorithms import load_taxonomy_query_sequences
+
+%psource load_taxonomy_query_sequences
 ```
 
 ```python
->>> queries = load_taxonomy_query_sequences()
->>> queries = random.sample(queries, k=50)
+queries = load_taxonomy_query_sequences()
+queries = random.sample(queries, k=50)
 ```
 
 Let's inspect a couple of the query sequences that we'll work with.
 
 ```python
->>> queries[0]
+queries[0]
 ```
 
 ```python
->>> queries[-1]
+queries[-1]
 ```
 
 ## Defining the problem 
@@ -114,9 +114,9 @@ Let's define a homology search function that aligns each provided query sequence
 Spend a minute looking at this function and try to understand what it's doing.
 
 ```python
->>> from iab.algorithms import local_alignment_search
-...
->>> %psource local_alignment_search
+from iab.algorithms import local_alignment_search
+
+%psource local_alignment_search
 ```
 
 Now let's perform some database searches. You can run the remaining code cells in this section a few times to experiment with searching different query sequences against the same reference database.
@@ -124,14 +124,14 @@ Now let's perform some database searches. You can run the remaining code cells i
 This next cell, which is the one that actually performs the database searches, will take a little bit of time to run (maybe up to a minute or two). There is some code in this cell that will track the runtime. As it's running, think about how many query sequences we're searching against how many reference sequences, and refer back to the number of sequences in the full reference database. Does this strategy seem scalable to millions of sequences, which as mentioned above might be our ultimate goal? When you know the per-sequence runtime of this search, estimate how long it would take to do this in seconds for one million sequences. Convert the time in seconds to a unit that will be more meaningful to you.
 
 ```python
->>> import time
-...
->>> start_time = time.time()
->>> current_queries = random.sample(queries, k=4)
->>> results = local_alignment_search(current_queries, reference_db)
->>> stop_time = time.time()
->>> print("Runtime: %1.4f sec per query" % ((stop_time - start_time) / len(current_queries)))
->>> results
+import time
+
+start_time = time.time()
+current_queries = random.sample(queries, k=4)
+results = local_alignment_search(current_queries, reference_db)
+stop_time = time.time()
+print("Runtime: %1.4f sec per query" % ((stop_time - start_time) / len(current_queries)))
+results
 ```
 
 Now, let's try to answer our initial question: what is the most likely taxonomic annotation for each of our query sequences? Spend a few minutes reviewing this information, and write down what you think the most likely taxonomic annotation is for each of the query sequences. Here are some hints to help you out:
@@ -141,21 +141,21 @@ Now, let's try to answer our initial question: what is the most likely taxonomic
  * As you look at each of the reference taxonomy annotations below, refer back to the table above to look at the percent similarity between each query and reference, and maybe the length of the alignments and their scores. These values give you an idea of how confident you should be in each of your taxonomic annotations.
 
 ```python
->>> for q in current_queries:
-...     q_id = q.metadata['id']
-...     print('Closest taxonomies for query %s (in order):' % q_id)
-...     for e in results['reference taxonomy'][q_id]:
-...         print(' ', e)
-...     print()
+for q in current_queries:
+    q_id = q.metadata['id']
+    print('Closest taxonomies for query %s (in order):' % q_id)
+    for e in results['reference taxonomy'][q_id]:
+        print(' ', e)
+    print()
 ```
 
 Because we have taxonomic annotations for all of the Greengenes sequences (though as you probably have noticed by now, they differ in their specificity), we can next look at taxonomy associated with each of our queries in Greengenes. How do your annotations compare to those from Greengenes, which we'll print out in the next cell?
 
 ```python
->>> for q in current_queries:
-...     q_id = q.metadata['id']
-...     print('Known taxonomy for query %s:\n %s' % (q_id, reference_taxonomy[q_id]))
-...     print()
+for q in current_queries:
+    q_id = q.metadata['id']
+    print('Known taxonomy for query %s:\n %s' % (q_id, reference_taxonomy[q_id]))
+    print()
 ```
 
 ## Reducing the runtime for database searches 
@@ -165,49 +165,49 @@ In the examples above, it's taking on the order of 5-15 seconds to search a sing
 As we discussed in the previous chapter, the run time of pairwise alignment scales quadratically with sequence length. Database searching, at least in the example we're exploring in this chapter, is a bit of a different problem however. Our sequence lengths aren't changing, but rather it takes a long time because we're performing a computationally expensive step, pairwise alignment, many times. Our database is fixed in that the number of sequences in it doesn't change and the sequences themselves don't change. Our query sequences are all exactly the same length in this example (remember that we set that above, when we sliced a single region from reference database sequences to create our query sequences). Let's explore how the runtime of this database search scales under these constraints.
 
 ```python
->>> import pandas as pd
->>> import itertools
-...
->>> def tabulate_local_alignment_search_runtime(queries, reference_db, n_query_sequences,
-...                                             n_reference_sequences, search_function):
-...     data = []
-...     # we'll iterate over the pairs of number of query sequences
-...     # and number of reference sequences, and compute the runtime
-...     # of the database search three times for each pair (so we
-...     # have some idea of the variance in the runtimes). this is
-...     # achieved here with a nested for loop (i.e., a for loop
-...     # within a for loop).
-...     for nq, nr in itertools.product(n_query_sequences, n_reference_sequences):
-...         for i in range(3):
-...             # select nq query sequences at random
-...             current_queries = random.sample(queries, k=nq)
-...             # select nr reference sequences at random
-...             temp_reference_db = random.sample(reference_db, k=nr)
-...             # run the search and store its runtime
-...             start_time = time.time()
-...             _ = search_function(current_queries, temp_reference_db)
-...             stop_time = time.time()
-...             median_query_sequence_len = np.median([len(q) for q in current_queries])
-...             median_reference_sequence_len = np.median([len(r) for r in temp_reference_db])
-...             data.append((nq, nr, median_query_sequence_len, median_reference_sequence_len,
-...                          stop_time - start_time))
-...     runtimes = pd.DataFrame(data=np.asarray(data),
-...                             columns=["Number of query seqs", "Number of reference seqs",
-...                                      "Median query seq length", "Median reference seq length",
-...                                      "Runtime (s)"] )
-...     return runtimes
-...
->>> # we'll temporarily work with a smaller reference database
-... # so this will run a lot faster. this will be of fixed size.
-... n_reference_sequences = [100]
->>> # since our database is smaller, we can work with some slightly
-... # larger numbers of sequences.
-... n_query_sequences = [1, 5, 10, 15]
-...
->>> local_alignment_search_runtimes = tabulate_local_alignment_search_runtime(queries, reference_db,
-...                                                                           n_query_sequences, n_reference_sequences,
-...                                                                           local_alignment_search)
->>> local_alignment_search_runtimes
+import pandas as pd
+import itertools
+
+def tabulate_local_alignment_search_runtime(queries, reference_db, n_query_sequences,
+                                            n_reference_sequences, search_function):
+    data = []
+    # we'll iterate over the pairs of number of query sequences
+    # and number of reference sequences, and compute the runtime
+    # of the database search three times for each pair (so we
+    # have some idea of the variance in the runtimes). this is
+    # achieved here with a nested for loop (i.e., a for loop
+    # within a for loop).
+    for nq, nr in itertools.product(n_query_sequences, n_reference_sequences):
+        for i in range(3):
+            # select nq query sequences at random
+            current_queries = random.sample(queries, k=nq)
+            # select nr reference sequences at random
+            temp_reference_db = random.sample(reference_db, k=nr)
+            # run the search and store its runtime
+            start_time = time.time()
+            _ = search_function(current_queries, temp_reference_db)
+            stop_time = time.time()
+            median_query_sequence_len = np.median([len(q) for q in current_queries])
+            median_reference_sequence_len = np.median([len(r) for r in temp_reference_db])
+            data.append((nq, nr, median_query_sequence_len, median_reference_sequence_len,
+                         stop_time - start_time))
+    runtimes = pd.DataFrame(data=np.asarray(data),
+                            columns=["Number of query seqs", "Number of reference seqs",
+                                     "Median query seq length", "Median reference seq length",
+                                     "Runtime (s)"] )
+    return runtimes
+
+# we'll temporarily work with a smaller reference database
+# so this will run a lot faster. this will be of fixed size.
+n_reference_sequences = [100]
+# since our database is smaller, we can work with some slightly
+# larger numbers of sequences.
+n_query_sequences = [1, 5, 10, 15]
+
+local_alignment_search_runtimes = tabulate_local_alignment_search_runtime(queries, reference_db,
+                                                                          n_query_sequences, n_reference_sequences,
+                                                                          local_alignment_search)
+local_alignment_search_runtimes
 ```
 
 This table shows that we've tried a few variations on number of query sequences but kept the number of reference sequences constant. There is no variance in the query sequence length, and there is a relatively small amount of variance in reference sequence length (they're all of the same order of magnitude). There is also relatively little variance in runtime for fixed numbers of query and reference sequences.
@@ -215,11 +215,11 @@ This table shows that we've tried a few variations on number of query sequences 
 This table clearly shows that there is an increase in runtime with an increasing number of query sequences, which we'd of course expect. What we care about is how runtime is increasing as a function of number of query sequences. Let's plot runtime versus the number of query sequences to help us understand that relationship.
 
 ```python
->>> import seaborn as sns
->>> ax = sns.regplot(x="Number of query seqs", y="Runtime (s)", data=local_alignment_search_runtimes)
->>> ax.set_xlim(0)
->>> ax.set_ylim(0)
->>> ax
+import seaborn as sns
+ax = sns.regplot(x="Number of query seqs", y="Runtime (s)", data=local_alignment_search_runtimes)
+ax.set_xlim(0)
+ax.set_ylim(0)
+ax
 ```
 
 What we see here is pretty clearly a linear relationship: $runtime \approx constant \times number\ of\ query\ sequences$. This is because as we increase the number of query sequences, we're increasing the number of pairwise alignments that we need to perform. If we have 5 queries and 10 reference sequences, we compute $5 \times 10 = 50$ pairwise alignments. If we have 10 queries and 100 reference sequences, we compute $10 \times 100 = 1000$ pairwise alignments. There are a few practical ways to reduce the runtime of a process like this.
@@ -235,15 +235,15 @@ In practice, for a production-scale sequence database search application like BL
 As mentioned above, it just takes too long to search individual query sequences against a large database. This problem also isn't going away anytime soon. While computers are getting faster (or cheaper), the size of our sequences collections are getting bigger because sequencing is getting cheaper. In fact, many people think that obtaining DNA sequences is getting cheaper faster than computers are getting cheaper. As our number of query sequences increases because we are able to obtain more for the same amount of money, and the size of our reference databases increases (because we're continuously obtaining more sequence data) this will increasingly become a bigger problem. Figures 1 and 2, respectively, illustrate that these are both real-world issues. Notice that the axes are on a log scale in both cases.
 
 ```python
->>> import IPython.display
->>> IPython.display.IFrame(width="600", height="394", src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=1844125885&amp;format=interactive")
+import IPython.display
+IPython.display.IFrame(width="600", height="394", src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=1844125885&amp;format=interactive")
 ```
 
 Figure 1: Genome sequencing costs.
 
 ```python
->>> import IPython.display
->>> IPython.display.IFrame(width="763", height="371", src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=2103353397&amp;format=interactive")
+import IPython.display
+IPython.display.IFrame(width="763", height="371", src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=2103353397&amp;format=interactive")
 ```
 
 Figure 2: Size of GenBank.
@@ -262,31 +262,31 @@ Our first heuristic will be a [straw man](https://en.wikipedia.org/wiki/Straw_ma
 Here's the source code for this. You can see that we're just wrapping our ``local_alignment_search`` function in a function that samples down to $p\%$ of the reference sequences.
 
 ```python
->>> from iab.algorithms import heuristic_local_alignment_search_random
->>> %psource heuristic_local_alignment_search_random
+from iab.algorithms import heuristic_local_alignment_search_random
+%psource heuristic_local_alignment_search_random
 ```
 
 Let's select some new queries and see how the results compare to our known taxonomies.
 
 ```python
->>> current_queries = random.sample(queries, k=10)
+current_queries = random.sample(queries, k=10)
 ```
 
 ```python
->>> results = heuristic_local_alignment_search_random(current_queries, reference_db, p=0.10)
-...
->>> for q in current_queries:
-...     q_id = q.metadata['id']
-...     print('Closest taxonomies for query %s (in order):' % q_id)
-...     for e in results['reference taxonomy'][q_id]:
-...         print(' ', e)
-...     print()
+results = heuristic_local_alignment_search_random(current_queries, reference_db, p=0.10)
+
+for q in current_queries:
+    q_id = q.metadata['id']
+    print('Closest taxonomies for query %s (in order):' % q_id)
+    for e in results['reference taxonomy'][q_id]:
+        print(' ', e)
+    print()
 ```
 
 ```python
->>> for q in current_queries:
-...     q_id = q.metadata['id']
-...     print('Known taxonomy for query %s:\n %s' % (q_id, reference_taxonomy[q_id]))
+for q in current_queries:
+    q_id = q.metadata['id']
+    print('Known taxonomy for query %s:\n %s' % (q_id, reference_taxonomy[q_id]))
 ```
 
 What we need now is a way to know how often we get the "right answer", and how long this heuristic algorithm takes relative to the complete algorithm. We therefore first need to define what the "right answer" is. How about this: if the most common taxonomy assignment resulting from the database search at `taxonomy_levels` levels of taxonomy (i.e., how deep or specific our assignment is) matches the known taxonomy, then our algorithm has achieved the right answer. We can vary `taxonomy_levels` to see how the different heuristics perform at different levels.
@@ -294,69 +294,69 @@ What we need now is a way to know how often we get the "right answer", and how l
 Here's what this would look like:
 
 ```python
->>> import collections
-...
->>> def evaluate_search(queries, reference_db, reference_taxonomy, search_function, taxonomy_levels, n=5, aligner=local_pairwise_align_ssw):
-...     start_time = time.time()
-...     search_results = search_function(current_queries, reference_db, n=n, aligner=aligner)
-...     stop_time = time.time()
-...     runtime = stop_time - start_time
-...     per_query_runtime = runtime/len(queries)
-...     data = []
-...     indices = []
-...     for q in queries:
-...         q_id = q.metadata['id']
-...         indices.append(q_id)
-...         q_known_taxonomy = tuple(reference_taxonomy[q_id].split('; ')[:taxonomy_levels])
-...         q_observed_taxonomies = collections.Counter()
-...         for e in search_results['reference taxonomy'][q_id]:
-...             q_observed_taxonomies[tuple(e.split('; ')[:taxonomy_levels])] += 1
-...         q_observed_taxonomy = q_observed_taxonomies.most_common()[0][0]
-...         data.append((q_known_taxonomy, q_observed_taxonomy))
-...     index = pd.Index(indices, name='Query ID')
-...     data = pd.DataFrame(data, index=index, columns=['Known taxonomy', 'Observed taxonomy'])
-...     number_correct = np.sum(data['Known taxonomy'] == data['Observed taxonomy'])
-...     fraction_correct = number_correct / data.shape[0]
-...     return per_query_runtime, fraction_correct, data
+import collections
+
+def evaluate_search(queries, reference_db, reference_taxonomy, search_function, taxonomy_levels, n=5, aligner=local_pairwise_align_ssw):
+    start_time = time.time()
+    search_results = search_function(current_queries, reference_db, n=n, aligner=aligner)
+    stop_time = time.time()
+    runtime = stop_time - start_time
+    per_query_runtime = runtime/len(queries)
+    data = []
+    indices = []
+    for q in queries:
+        q_id = q.metadata['id']
+        indices.append(q_id)
+        q_known_taxonomy = tuple(reference_taxonomy[q_id].split('; ')[:taxonomy_levels])
+        q_observed_taxonomies = collections.Counter()
+        for e in search_results['reference taxonomy'][q_id]:
+            q_observed_taxonomies[tuple(e.split('; ')[:taxonomy_levels])] += 1
+        q_observed_taxonomy = q_observed_taxonomies.most_common()[0][0]
+        data.append((q_known_taxonomy, q_observed_taxonomy))
+    index = pd.Index(indices, name='Query ID')
+    data = pd.DataFrame(data, index=index, columns=['Known taxonomy', 'Observed taxonomy'])
+    number_correct = np.sum(data['Known taxonomy'] == data['Observed taxonomy'])
+    fraction_correct = number_correct / data.shape[0]
+    return per_query_runtime, fraction_correct, data
 ```
 
 First let's see how this works for our full database search algorithm. What's the runtime, and how often do we get the correct answer? We'll start with five levels of taxonomy (which corresponds to the family level). **This step will take a couple of minutes to run, because it's doing the full database search.**
 
 ```python
->>> taxonomy_levels = 5
+taxonomy_levels = 5
 ```
 
 ```python
->>> runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
-...                                                   local_alignment_search, taxonomy_levels=taxonomy_levels)
->>> print('%1.2f seconds per query sequence' % runtime)
->>> print('%1.2f%% correct answers' % (fraction_correct * 100.0))
->>> print('Result details:')
->>> for q_id in data.index:
-...     print(q_id)
-...     print(' ', data['Known taxonomy'][q_id])
-...     print(' ', data['Observed taxonomy'][q_id])
-...     print()
+runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
+                                                  local_alignment_search, taxonomy_levels=taxonomy_levels)
+print('%1.2f seconds per query sequence' % runtime)
+print('%1.2f%% correct answers' % (fraction_correct * 100.0))
+print('Result details:')
+for q_id in data.index:
+    print(q_id)
+    print(' ', data['Known taxonomy'][q_id])
+    print(' ', data['Observed taxonomy'][q_id])
+    print()
 ```
 
 Next let's see how this compares to our random heuristic search algorithm. Try running this a few times, as you might get different answers due to different random selections of the database.
 
 ```python
->>> import functools
-...
->>> heuristic_local_alignment_search_random_10 = functools.partial(heuristic_local_alignment_search_random, p=0.10)
-...
->>> runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
-...                                                   heuristic_local_alignment_search_random_10, taxonomy_levels=taxonomy_levels)
-...
->>> print('%1.2f seconds per query sequence' % runtime)
->>> print('%1.2f%% correct answers' % (fraction_correct * 100.0))
->>> print('Result details:')
->>> for q_id in data.index:
-...     print(q_id)
-...     print(' ', data['Known taxonomy'][q_id])
-...     print(' ', data['Observed taxonomy'][q_id])
-...     print()
+import functools
+
+heuristic_local_alignment_search_random_10 = functools.partial(heuristic_local_alignment_search_random, p=0.10)
+
+runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
+                                                  heuristic_local_alignment_search_random_10, taxonomy_levels=taxonomy_levels)
+
+print('%1.2f seconds per query sequence' % runtime)
+print('%1.2f%% correct answers' % (fraction_correct * 100.0))
+print('Result details:')
+for q_id in data.index:
+    print(q_id)
+    print(' ', data['Known taxonomy'][q_id])
+    print(' ', data['Observed taxonomy'][q_id])
+    print()
 ```
 
 Again, what's the runtime, and how often do we get the correct answer? Based on comparison to the full search, what do you think: is this a good heuristic?
@@ -374,31 +374,31 @@ While the random selection of database sequences can vastly reduce the runtime f
 One metric of sequence composition that we can compute quickly (because remember, this has to be a lot faster than computing the alignment for it to be worth it) is GC content. Let's define a heuristic that only performs a pairwise alignment for the reference sequences that have the most similar GC content to the query sequence. The number of alignments that we'll perform will be defined as ``database_subset_size``.
 
 ```python
->>> database_subset_size = 500
+database_subset_size = 500
 ```
 
 ```python
->>> from iab.algorithms import heuristic_local_alignment_search_gc
-...
->>> %psource heuristic_local_alignment_search_gc
+from iab.algorithms import heuristic_local_alignment_search_gc
+
+%psource heuristic_local_alignment_search_gc
 ```
 
 If we run our queries again, how often do we get the right answer? How much did we reduce runtime? Do you think this is a better or worse heuristic than what we implemented above?
 
 ```python
->>> heuristic_local_alignment_search_gc_2 = functools.partial(heuristic_local_alignment_search_gc, database_subset_size=database_subset_size)
-...
->>> runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
-...                                                   heuristic_local_alignment_search_gc_2, taxonomy_levels=taxonomy_levels)
-...
->>> print('%1.2f seconds per query sequence' % runtime)
->>> print('%1.2f%% correct answers' % (fraction_correct * 100.0))
->>> print('Result details:')
->>> for q_id in data.index:
-...     print(q_id)
-...     print(' ', data['Known taxonomy'][q_id])
-...     print(' ', data['Observed taxonomy'][q_id])
-...     print()
+heuristic_local_alignment_search_gc_2 = functools.partial(heuristic_local_alignment_search_gc, database_subset_size=database_subset_size)
+
+runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
+                                                  heuristic_local_alignment_search_gc_2, taxonomy_levels=taxonomy_levels)
+
+print('%1.2f seconds per query sequence' % runtime)
+print('%1.2f%% correct answers' % (fraction_correct * 100.0))
+print('Result details:')
+for q_id in data.index:
+    print(q_id)
+    print(' ', data['Known taxonomy'][q_id])
+    print(' ', data['Observed taxonomy'][q_id])
+    print()
 ```
 
 Try increasing and decreasing the number of sequences we'll align by increasing or decreasing ``database_subset_size``. How does this impact the runtime and fraction of time that we get the correct answer?
@@ -408,9 +408,9 @@ Try increasing and decreasing the number of sequences we'll align by increasing 
 Another metric of sequence composition is *kmer composition*. A [kmer](alias://C7hMX5) is simply a word (or list of adjacent characters) of length *k* found within a sequence. Here are the kmer frequencies in a short DNA sequence. The ``overlap=True`` parameter here means that our kmers can overlap one another.
 
 ```python
->>> import skbio
-...
->>> skbio.DNA('ACCGTGACCAGTTACCAGTTTGACCAA').kmer_frequencies(k=5, overlap=True)
+import skbio
+
+skbio.DNA('ACCGTGACCAGTTACCAGTTTGACCAA').kmer_frequencies(k=5, overlap=True)
 ```
 
 In our next heuristic, we'll only align our query to the reference sequences with the largest fraction of the kmers that are observed in the query sequence are also present in the reference sequence. This makes a lot of sense to use as an alignment heuristic: we're only aligning sequences when it looks like they'll have multiple length-``k`` stretches of nucleotides that are not interrupted by substitutions or insertion/deletion mutations.
@@ -421,33 +421,33 @@ In our next heuristic, we'll only align our query to the reference sequences wit
 Here's the source code:
 
 ```python
->>> from iab.algorithms import heuristic_local_alignment_search_kmers
-...
->>> %psource heuristic_local_alignment_search_kmers
+from iab.algorithms import heuristic_local_alignment_search_kmers
+
+%psource heuristic_local_alignment_search_kmers
 ```
 
 ```python
->>> k = 7
+k = 7
 ```
 
 Let's apply this and see how it does. How does the runtime and fraction of correct assignments compare to our GC content-based search and our full database search?
 
 ```python
->>> heuristic_local_alignment_search_kmers_50 = \
->>> functools.partial(heuristic_local_alignment_search_kmers, k=k, database_subset_size=database_subset_size)
-...
->>> runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
-...                                                   heuristic_local_alignment_search_kmers_50,
-...                                                   taxonomy_levels=taxonomy_levels)
-...
->>> print('%1.2f seconds per query sequence' % runtime)
->>> print('%1.2f%% correct answers' % (fraction_correct * 100.0))
->>> print('Result details:')
->>> for q_id in data.index:
-...     print(q_id)
-...     print(' ', data['Known taxonomy'][q_id])
-...     print(' ', data['Observed taxonomy'][q_id])
-...     print()
+heuristic_local_alignment_search_kmers_50 = \
+functools.partial(heuristic_local_alignment_search_kmers, k=k, database_subset_size=database_subset_size)
+
+runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
+                                                  heuristic_local_alignment_search_kmers_50,
+                                                  taxonomy_levels=taxonomy_levels)
+
+print('%1.2f seconds per query sequence' % runtime)
+print('%1.2f%% correct answers' % (fraction_correct * 100.0))
+print('Result details:')
+for q_id in data.index:
+    print(q_id)
+    print(' ', data['Known taxonomy'][q_id])
+    print(' ', data['Observed taxonomy'][q_id])
+    print()
 ```
 
 #### Further optimizing composition-based approaches by pre-computing reference database information 
@@ -457,28 +457,28 @@ One important feature of composition-based approaches is that, because the refer
 Here we'll compute all of the reference database kmer frequencies. Notice that this step takes about a minute to complete. This is a minute of compute time that we can save on every database search!
 
 ```python
->>> reference_db_kmer_frequencies = {r.metadata['id']: r.kmer_frequencies(k=k, overlap=True) for r in reference_db}
+reference_db_kmer_frequencies = {r.metadata['id']: r.kmer_frequencies(k=k, overlap=True) for r in reference_db}
 ```
 
 We'll now pass our pre-computed kmer frequencies into our search function. How does the runtime and accuracy of this search compare to the searches above? This last database search that we've implemented here is very similar to how BLAST works.
 
 ```python
->>> heuristic_local_alignment_search_kmers_50 = \
->>>  functools.partial(heuristic_local_alignment_search_kmers, reference_db_kmer_frequencies=reference_db_kmer_frequencies,
-...                    k=k, database_subset_size=database_subset_size)
-...
->>> runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
-...                                                   heuristic_local_alignment_search_kmers_50,
-...                                                   taxonomy_levels=taxonomy_levels)
-...
->>> print('%1.2f seconds per query sequence' % runtime)
->>> print('%1.2f%% correct answers' % (fraction_correct * 100.0))
->>> print('Result details:')
->>> for q_id in data.index:
-...     print(q_id)
-...     print(' ', data['Known taxonomy'][q_id])
-...     print(' ', data['Observed taxonomy'][q_id])
-...     print()
+heuristic_local_alignment_search_kmers_50 = \
+ functools.partial(heuristic_local_alignment_search_kmers, reference_db_kmer_frequencies=reference_db_kmer_frequencies,
+                   k=k, database_subset_size=database_subset_size)
+
+runtime, fraction_correct, data = evaluate_search(current_queries, reference_db, reference_taxonomy,
+                                                  heuristic_local_alignment_search_kmers_50,
+                                                  taxonomy_levels=taxonomy_levels)
+
+print('%1.2f seconds per query sequence' % runtime)
+print('%1.2f%% correct answers' % (fraction_correct * 100.0))
+print('Result details:')
+for q_id in data.index:
+    print(q_id)
+    print(' ', data['Known taxonomy'][q_id])
+    print(' ', data['Observed taxonomy'][q_id])
+    print()
 ```
 
 ## Determining the statistical significance of a pairwise alignment 
@@ -531,79 +531,79 @@ In this section, we are going to learn about how to interpret alignment scores b
 First, we'll define a function that can generate random sequences for us. This will take a scikit-bio sequence object (either ``skbio.DNA``, ``skbio.RNA``, or ``skbio.Protein``) and a length, and it will randomly generate a sequence of that type and length for us.
 
 ```python
->>> import random
->>> def random_sequence(moltype, length):
-...     result = []
-...     alphabet = list(moltype.nondegenerate_chars)
-...     for e in range(length):
-...         result.append(random.choice(alphabet))
-...     return moltype(''.join(result))
+import random
+def random_sequence(moltype, length):
+    result = []
+    alphabet = list(moltype.nondegenerate_chars)
+    for e in range(length):
+        result.append(random.choice(alphabet))
+    return moltype(''.join(result))
 ```
 
 We can now run this a few times to generate some random sequences:
 
 ```python
->>> random_sequence(skbio.DNA, 50)
+random_sequence(skbio.DNA, 50)
 ```
 
 ```python
->>> random_sequence(skbio.DNA, 50)
+random_sequence(skbio.DNA, 50)
 ```
 
 Next, we need a function that will shuffle the characters in a sequence, and give us a new sequence back. We'll use this to generate a sequence that is similar (in length and composition) to our input sequence, but which we know is not homologous. We'll use Pythons `random.shuffle` function, which randomly re-orders the order of the elements in a sequence, but keeps the composition and length of the sequence the same.
 
 ```python
->>> from iab.algorithms import shuffle_sequence
->>> %psource shuffle_sequence
+from iab.algorithms import shuffle_sequence
+%psource shuffle_sequence
 ```
 
 Now we can define a random sequence and shuffle it. Notice how the sequences are different (in their order), but their compositions (e.g., length and GC content) are the same. Shuffling will change the order of the bases, but it won't change the frequency at which each base is present - it's exactly analogous to shuffling a deck of cards.
 
 ```python
->>> seq = random_sequence(skbio.DNA, 50)
->>> seq
+seq = random_sequence(skbio.DNA, 50)
+seq
 ```
 
 ```python
->>> shuffle_sequence(seq)
+shuffle_sequence(seq)
 ```
 
 Let's generate a random query sequence and align it against itself to see what that score would be.
 
 ```python
->>> query_seq = random_sequence(skbio.DNA, 50)
->>> _, actual_score, _ = local_pairwise_align_ssw(query_seq, query_seq)
->>> print("Score: %1.2f" % actual_score)
+query_seq = random_sequence(skbio.DNA, 50)
+_, actual_score, _ = local_pairwise_align_ssw(query_seq, query_seq)
+print("Score: %1.2f" % actual_score)
 ```
 
 Next let's generate 99 random variants of that sequence with ``shuffle_sequence`` and compute the pairwise alignment for each of those variants against the query sequence. We'll then look at the distribution of those scores.
 
 ```python
->>> from iab.algorithms import generate_random_score_distribution
->>> %psource generate_random_score_distribution
+from iab.algorithms import generate_random_score_distribution
+%psource generate_random_score_distribution
 ```
 
 ```python
->>> random_scores = generate_random_score_distribution(query_seq, query_seq, 99)
->>> print(random_scores)
+random_scores = generate_random_score_distribution(query_seq, query_seq, 99)
+print(random_scores)
 ```
 
 How does the actual score of aligning the sequence to itself compare to the score of aligning it to many similar but non-homologous sequences? Let's plot these to get a better idea.
 
 ```python
->>> import seaborn as sns
-...
->>> def plot_score_distribution(actual_score, random_scores):
-...     ax = sns.distplot(random_scores, kde=False, label="Random scores", color="b")
-...     ax.plot([actual_score, actual_score], ax.get_ylim(), '--', label="Actual score")
-...     # set the range of the x axis to be zero through 110% of the actual score
-...     ax.set_xlim(0, actual_score + actual_score * 0.1)
-...     ax.legend(loc=9, fontsize='large')
-...     return ax
+import seaborn as sns
+
+def plot_score_distribution(actual_score, random_scores):
+    ax = sns.distplot(random_scores, kde=False, label="Random scores", color="b")
+    ax.plot([actual_score, actual_score], ax.get_ylim(), '--', label="Actual score")
+    # set the range of the x axis to be zero through 110% of the actual score
+    ax.set_xlim(0, actual_score + actual_score * 0.1)
+    ax.legend(loc=9, fontsize='large')
+    return ax
 ```
 
 ```python
->>> plot_score_distribution(actual_score, random_scores)
+plot_score_distribution(actual_score, random_scores)
 ```
 
 What does this tell us about our alignment score and therefore about our alignment? Is it good or bad?
@@ -615,13 +615,13 @@ To determine if our alignment is statistically significant, we need to define $\
 Here's what all of this looks like:
 
 ```python
->>> from iab.algorithms import fraction_better_or_equivalent_alignments
->>> %psource fraction_better_or_equivalent_alignments
+from iab.algorithms import fraction_better_or_equivalent_alignments
+%psource fraction_better_or_equivalent_alignments
 ```
 
 ```python
->>> print("Fraction of alignment scores at least as good as the alignment score: %r" %
-...       fraction_better_or_equivalent_alignments(query_seq, query_seq, 99))
+print("Fraction of alignment scores at least as good as the alignment score: %r" %
+      fraction_better_or_equivalent_alignments(query_seq, query_seq, 99))
 ```
 
 The fraction that we get back here is ``0.01``, which is lower than $\alpha$, so we would accept the hypothesis that our sequences are homologous.
@@ -633,8 +633,8 @@ $p\ value = \frac{number\ of\ computed\ aligned\ scores\ greater\ than\ or\ equa
 The numerator and the denominator both include the actual alignment score, so the lowest p-value that can be achieved is $\frac{1}{99 + 1}$, where the $1$ in the numerator corresponds to our actual alignment score (which is of course equal to itself), where the $99$ in the denominator is the number of permutations, and the $1$ in the denominator is a constant which corresponds the computation of the actual score. If we increase the number of permutations, say to 999, we could achieve greater precision (more significant digits) in our p-value.
 
 ```python
->>> print("Fraction of alignment scores at least as good as the alignment score: %r" %
-...       fraction_better_or_equivalent_alignments(query_seq, query_seq, 999))
+print("Fraction of alignment scores at least as good as the alignment score: %r" %
+      fraction_better_or_equivalent_alignments(query_seq, query_seq, 999))
 ```
 
 When we achieve the lowest possible value for a given test, as is the case here, we report the p-value as being less than that value, since we've yet to observe a random alignment score at least that high. For example, here we would report something like:
@@ -644,18 +644,18 @@ When we achieve the lowest possible value for a given test, as is the case here,
 Let's now try this for some harder cases, where the query and subject sequences are not identical. First, let's generate a longer subject sequence at random. Then, we'll create a random query sequence and compare it. Since we're doing this in two random steps, we know that these sequences are not homologous. Does the resulting p-value reflect that?
 
 ```python
->>> sequence1 = random_sequence(skbio.DNA, 250)
->>> sequence1
+sequence1 = random_sequence(skbio.DNA, 250)
+sequence1
 ```
 
 ```python
->>> sequence2 = random_sequence(skbio.DNA, 250)
->>> sequence2
+sequence2 = random_sequence(skbio.DNA, 250)
+sequence2
 ```
 
 ```python
->>> print("Fraction of alignment scores at least as good as the alignment score: %r" %
-...       fraction_better_or_equivalent_alignments(sequence1,sequence2))
+print("Fraction of alignment scores at least as good as the alignment score: %r" %
+      fraction_better_or_equivalent_alignments(sequence1,sequence2))
 ```
 
 We've now looked at two extremes: where sequences are obviously homologous (because they were the same), and where sequences are obviously not homologous (because they were both independently randomly generated). Next, we'll explore the region between these, where this gets interesting. We'll now create a partially randomized sequence to create a pair of sequences where the homology is more obscure. We'll do this again using the Python ``random`` module, but this time we'll introduce mutations only at some positions to create a pair of sequences that are approximately ``percent_id`` identical.
@@ -663,35 +663,35 @@ We've now looked at two extremes: where sequences are obviously homologous (beca
 Let's define a function to do this, and then compute a sequence that is 95% identical to our ``sequence1``.
 
 ```python
->>> def partially_randomize_sequence(percent_id, sequence):
-...     result = []
-...     for c in sequence:
-...         if random.random() < percent_id:
-...             result.append(str(c))
-...         else:
-...             # choose a base at random that is not the current base
-...             # i.e., simulate a substitution event
-...             result.append(choice([r for r in sequence.nondegenerate_chars if r != c]))
-...     return sequence.__class__(''.join(result))
+def partially_randomize_sequence(percent_id, sequence):
+    result = []
+    for c in sequence:
+        if random.random() < percent_id:
+            result.append(str(c))
+        else:
+            # choose a base at random that is not the current base
+            # i.e., simulate a substitution event
+            result.append(choice([r for r in sequence.nondegenerate_chars if r != c]))
+    return sequence.__class__(''.join(result))
 ```
 
 ```python
->>> sequence1_95 = partially_randomize_sequence(0.95, sequence1)
+sequence1_95 = partially_randomize_sequence(0.95, sequence1)
 ```
 
 ```python
->>> sequence1
+sequence1
 ```
 
 ```python
->>> sequence1_95
+sequence1_95
 ```
 
 Notice how these sequences are almost identical, but have some differences. Let's apply our approach to determine if it would identify these sequences as being homologous based on $\alpha = 0.05$.
 
 ```python
->>> print("Fraction of alignment scores at least as good as the alignment score: %r" %
-...       fraction_better_or_equivalent_alignments(sequence1, sequence1_95))
+print("Fraction of alignment scores at least as good as the alignment score: %r" %
+      fraction_better_or_equivalent_alignments(sequence1, sequence1_95))
 ```
 
 You likely got a significant p-value there, telling you that the sequences are homologous.
@@ -699,20 +699,20 @@ You likely got a significant p-value there, telling you that the sequences are h
 Now let's simulate much more distantly related sequences by introducing substitutions at many more sites.
 
 ```python
->>> sequence1_25 = partially_randomize_sequence(0.25, sequence1)
+sequence1_25 = partially_randomize_sequence(0.25, sequence1)
 ```
 
 ```python
->>> sequence1
+sequence1
 ```
 
 ```python
->>> sequence1_25
+sequence1_25
 ```
 
 ```python
->>> print("Fraction of alignment scores at least as good as the alignment score: %r" %
-...       fraction_better_or_equivalent_alignments(sequence1, sequence1_25))
+print("Fraction of alignment scores at least as good as the alignment score: %r" %
+      fraction_better_or_equivalent_alignments(sequence1, sequence1_25))
 ```
 
 ### Exploring the limit of detection of sequence homology searches 
@@ -722,27 +722,27 @@ In the example above, we know that our input sequences are "homologous" because 
 Lets run a simulation to gain some more insight into the limit of detection of this method. We'll run this approach for pairs of sequences where we vary the ``percent_id`` parameter, and identify when our approach stops identifying sequence pairs as being homologous. This is important to know as a bioinformatician, because it tells us around what pairwise similarity we will no longer be able to identify homology using this approach.
 
 ```python
->>> # First, let's define the range of percent identities that we'll test
-... percent_ids = np.arange(0.0, 1.0, 0.05)
->>> # Then, we'll define the number of random sequences we'll test at each percent identity
-... num_trials = 20
->>> # Then, we'll define the sequence length that we want to work with, and num_trials random sequences
-... sequence_length = 150
->>> random_sequences = [random_sequence(skbio.DNA, sequence_length) for i in range(num_trials)]
-...
->>> results = []
-...
->>> for percent_id in percent_ids:
-...     # at each percent_id, we'll track the p-values for each trial (random sequence)
-...     p_values = []
-...     for sequence in random_sequences:
-...         # partially randomize the sequence, compute its p-value, and record that p-value
-...         sequence_at_percent_id = partially_randomize_sequence(percent_id, sequence)
-...         p = fraction_better_or_equivalent_alignments(sequence, sequence_at_percent_id)
-...         p_values.append(p)
-...     results.append((percent_id, np.median(p_values), np.mean(p_values)))
->>> pd.DataFrame(results, columns=["Percent id between query and subject",
-...                                "Median p-value", "Mean p-value"])
+# First, let's define the range of percent identities that we'll test
+percent_ids = np.arange(0.0, 1.0, 0.05)
+# Then, we'll define the number of random sequences we'll test at each percent identity
+num_trials = 20
+# Then, we'll define the sequence length that we want to work with, and num_trials random sequences
+sequence_length = 150
+random_sequences = [random_sequence(skbio.DNA, sequence_length) for i in range(num_trials)]
+
+results = []
+
+for percent_id in percent_ids:
+    # at each percent_id, we'll track the p-values for each trial (random sequence)
+    p_values = []
+    for sequence in random_sequences:
+        # partially randomize the sequence, compute its p-value, and record that p-value
+        sequence_at_percent_id = partially_randomize_sequence(percent_id, sequence)
+        p = fraction_better_or_equivalent_alignments(sequence, sequence_at_percent_id)
+        p_values.append(p)
+    results.append((percent_id, np.median(p_values), np.mean(p_values)))
+pd.DataFrame(results, columns=["Percent id between query and subject",
+                               "Median p-value", "Mean p-value"])
 ```
 
 What does this simulation tell us about our limit of detection for homology (i.e., how similar must a pair of sequences be for us to reliably be able to identify homology between them)? Is this higher or lower than you expected?
