@@ -15,16 +15,15 @@ kernelspec:
 
 # Pairwise sequence alignment 
 
-One of the most fundamental problems in bioinformatics is determining how "similar" a pair of biological sequences are. There are many applications for this, including inferring the function or source organism of an unknown gene sequence, developing hypotheses about the relatedness of organisms, or grouping sequences from closely related organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of [one of the most cited papers](https://www.ncbi.nlm.nih.gov/pubmed/2231712) in modern biology. In this chapter we'll explore why determining sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.
+One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of [one of the most cited papers](https://www.ncbi.nlm.nih.gov/pubmed/2231712) in modern biology. In this chapter we'll explore why determining biological sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.
 
-Imagine you have three sequences - call them ``r1``and ``r2`` (*r* is for *reference*) and ``q1`` (*q* is for *query*) - and you want to know whether ``q1`` is more similar to ``r1`` or ``r2``. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the [Hamming distance](http://en.wikipedia.org/wiki/Hamming_distance) between them) to figure this out. Here's what this would look like.
+Imagine you have three sequences - call them ``r1``and ``r2`` (*r* is for *reference*) and ``q1`` (*q* is for *query*) - and you want to know whether ``q1`` is more similar to ``r1`` or ``r2``. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the [Hamming distance](http://en.wikipedia.org/wiki/Hamming_distance) between them) to figure this out. Here's what this would look like using an implementation of Hamming distance from the SciPy Python library.
 
 ```{code-cell}
 :tag: [hide-cell]
 %pylab inline
 
 import numpy as np
-from IPython.core.display import HTML
 from IPython.core import page
 page.page = print
 ```
@@ -42,13 +41,7 @@ print(r2)
 print(q1)
 ```
 
-Here we just stored 3 sequences as variables. Now we're going to compute the hamming distance between them using the function ``hamming()``. Don't forget we can look at what any function does by using ``%psource``. Let's see what the ``hamming()`` function looks like (don't worry if some parts of it aren't entirely clear just yet):
-
-```{code-cell}
-%psource hamming
-```
-
-Let's find out if our query ("q1") is closer to reference 1 or reference 2 based on the hamming distance:
+Here we just stored 3 sequences as variables. Now we're going to compute the hamming distance between them using the function ``hamming()`` to assess whether our query ("q1") is closer to reference 1 or reference 2 based on the hamming distance:
 
 ```{code-cell}
 print(hamming(r1, q1))
@@ -70,7 +63,7 @@ print(hamming(r1, q2))
 
 This change had a big effect on the distance between the two sequences. In this case, the deletion event at the beginning of ``q2`` has shifted that sequence relative to ``r1``, which resulted in many of the bases "downstream" of the deleted base being different. However the sequences do still seem fairly similar, so perhaps this relatively large distance isn't biologically justified.
 
-What we'd really want to do is have a way to indicate that a deletion seems to have occurred in ``q2``. Let's define ``q3``, where we use a ``-`` character to indicate a deletion with respect to ``r1``. This results in what seems like a more reasonable distance between the two sequences:
+What we'd really want to do is have a way to indicate that a deletion seems to have occurred in ``q2``. Let's define ``q3``, where we use a ``-`` character to indicate a deletion with respect to ``r1``. This results in what seems like a more relevant distance between the two sequences:
 
 ```{code-cell}
 q3 = DNA("-TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA")
@@ -94,7 +87,7 @@ Scanning through these two sequences, we can see that they are largely identical
 
 ## What is a sequence alignment? 
 
-Let's take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution, a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as **mutations**. Some types of mutation events that can occur are:
+Let's take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as **mutations**. Some types of mutation events that can occur are:
 
 * **substitutions**, where one base (or amino acid, in protein sequences) is replaced with another;
 * **insertions**, where one or more contiguous bases are inserted into a sequence;
@@ -111,9 +104,9 @@ name: pairwise-alignment-1
 Sequence evolution and pairwise sequence alignment. Abbreviation key: *indel*: insertion or deletion event has occurred since the last common ancestor; *sub*: substitution event has occurred since the last common ancestor; *nc*: no change has occurred since the last common ancestor.
 ```
 
-**The goal of pairwise sequence alignment is, given two sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.** In practice, we develop this hypothesis by aligning the sequences to one another inserting gaps as necessary, in a way that maximizes their similarity. This is a **maximum parsimony** approach (an application of [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)), where we assume that the simplest explanation (the one involving the fewest or least extreme mutation events) is the most likely.
+**The goal of pairwise sequence alignment is, given two sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.** In practice, we develop this hypothesis by aligning the sequences to one another inserting gaps as necessary, in a way that maximizes their similarity. This is a **maximum parsimony** approach (an application of [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.
 
-In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in {numref}`pairwise-alignment-1`c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct 100 million years ago – and even if not extinct, it would no longer be the same).
+In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in {numref}`pairwise-alignment-1`c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct 100 million years ago).
 
 {numref}`pairwise-alignment-1`d-f illustrates three possible alignments of these two sequences. Just as the notes you made about which types of mutation events may have happened at which positions represents your *hypothesis* about the evolutionary events that took place, a sequence alignment that you might get from a computer program such as BLAST is also only a hypothesis. Which do you think is the most likely alignment of these sequences (note that there may not be a single best answer)?
 
@@ -121,23 +114,31 @@ You can think of an alignment as a table ({numref}`pairwise-alignment-1`g), wher
 
 One thing that's worth pointing out at this point is that because we don't know what the ancestral sequence was, when we encounter a gap in a pairwise alignment, we generally won't know whether a deletion occurred in one sequence, or an insertion occurred in the other. For that reason, you will often see the term **indel** used to refer to these insertion or deletion events.
 
-In the next section we'll work through our first bioinformatics algorithm, in this case a very simple (and also simplistic) method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.
+In the next section we'll work through an accessible but overly simplistic method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.
 
-## A simple procedure for aligning a pair of sequences 
+## A first algorithm for aligning a pair of sequences 
 
-Let's define two sequences, ``seq1`` and ``seq2``, and develop an approach for aligning them.
+Let's define two sequences, ``seq1`` and ``seq2`` and then work through an approach for aligning them.
 
 ```{code-cell}
 seq1 = DNA("ACCGGTGGAACCGGTAACACCCAC")
 seq2 = DNA("ACCGGTAACCGGTTAACACCCAC")
 ```
 
-I'm going to use a function in the following cells called ``show_F`` to display a table that we're going to use to develop our alignment. Once a function has been imported, you can view the source code for that function. This will be useful as we begin to explore some of the algorithms that are in use throughout these notebooks. You should spend time reading the source code examples in this book until you're sure that you understand what's happening, especially if your goal is to develop bioinformatics software. Reading other people's code is a good way to improve your own.
+### Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences. 
 
-Let's import the function ``show_F`` and then view its source code:
+We'll create this matrix and initialize it with all zeros as follows:
 
 ```{code-cell}
-:tags: [hide-input]
+num_rows = len(seq2)
+num_cols = len(seq1)
+data = np.zeros(shape=(num_rows, num_cols), dtype=np.int)
+```
+
+In this chapter I'll use a function called `show_F` to display matrices like this.
+
+```{code-cell}
+:tags: [hide-cell]
 
 import tabulate
 
@@ -150,7 +151,7 @@ def show_F(h_sequence, v_sequence, data, hide_zeros=False, nonzero_val=None):
         row_headers = [" "] + row_headers
         col_headers = [" "] + col_headers
     for h, d in zip(row_headers, data):
-        current_row = ["<b>%s</b>" % h]
+        current_row = [h]
         for e in d:
             if e == 0:
                 if hide_zeros:
@@ -164,22 +165,10 @@ def show_F(h_sequence, v_sequence, data, hide_zeros=False, nonzero_val=None):
                     current_row.append(e)
         rows.append(current_row)
     return tabulate.tabulate(rows, headers=col_headers, tablefmt='html')
-
-%psource show_F
 ```
 
-Now let's look at how to align these sequences.
-
-### Step 1: Create a blank matrix where the rows and columns represent the positions in the sequences. 
-
-We'll create this matrix and initialize it with all zeros as follows:
-
 ```{code-cell}
-num_rows = len(seq2)
-num_cols = len(seq1)
-data = np.zeros(shape=(num_rows, num_cols), dtype=np.int)
-
-HTML(show_F(seq1, seq2, data))
+show_F(seq1, seq2, data)
 ```
 
 ### Step 2: Add values to the cells in the matrix. 
@@ -192,7 +181,7 @@ for row_number, row_character in enumerate(seq2):
         if row_character == col_character:
             data[row_number, col_number] = 1
 
-HTML(show_F(seq1, seq2, data, hide_zeros=True))
+show_F(seq1, seq2, data, hide_zeros=True)
 ```
 
 ### Step 3: Identify the longest diagonals. 
@@ -216,14 +205,19 @@ for i in range(1, summed_data.shape[0]):
         if summed_data[i, j] > 0:
             summed_data[i, j] += summed_data[i-1][j-1]
 
-# Identify the longest diagonal
-print("The longest diagonal is %d characters long." % summed_data.max())
-HTML(show_F(seq1, seq2, summed_data, hide_zeros=True))
+show_F(seq1, seq2, summed_data, hide_zeros=True)
+```
+
+Next, we'll identify the length of the longest diagonal.
+
+```
+longest_diagonal_length = summed_data.max()
+print("The longest diagonal is %d characters long." % longest_diagonal_length)
 ```
 
 ### Step 4: Transcribe some of the possible alignments that arise from this process. 
 
-We're going to gloss over how to do this algorithmically for the moment, as we'll come back to that in a lot of detail later in this chapter. Briefly, what we want to do is start with the longest diagonal and trace it backwards to transcribe the alignment by writing down the characters from each of the two sequences at every row and column corresponding to the diagonal that you're following. When we encounter a break in the diagonal, we find the next longest diagonal that starts in a cell that is up and/or to the left of the cell when the previous diagonal you were following ends. For every cell that you move straight upwards (non-diagonally), you'd insert a gap in the sequence on the horizontal axis of your matrix. For every cell that you move straight leftwards, you'd insert a gap in the sequence on the vertical axis of your matrix.
+I'm going to summarize how to do this algorithmically for the moment, and we'll come back to this in more detail later in this chapter. Briefly, what we want to do is start with the longest diagonal and trace it backwards to transcribe the alignment by writing down the characters from each of the two sequences at every row and column corresponding to the diagonal that you're following. When we encounter a break in the diagonal, we find the next longest diagonal that starts in a cell that is up and/or to the left of the cell when the previous diagonal you were following ends. For every cell that you move straight upwards (non-diagonally), we insert a gap in the sequence on the horizontal axis of your matrix. For every cell that you move straight leftwards, you'd insert a gap in the sequence on the vertical axis of your matrix.
 
 We'd also generally compute a score for an alignment to help us figure out which alignments are better than others. For now, let's add one for every match, and subtract one for every mismatch.
 
@@ -243,9 +237,13 @@ ACCGGTGGAACCGGTAACACCCAC
 ACCGGT--------TAACACCCAC
 ```
 
+```{admonition} Food for thought
 Why might the first alignment be the more biologically relevant one (meaning the one that is more likely to represent that true evolutionary history of this pair of molecules)? Why might the second be the more biologically relevant one?
+```
 
-**As an exercise**, go back to where we defined `seq1` and `seq2` and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.
+```{admonition} Interactive exercise
+If you're reading this chapter interactively, go back to where we defined `seq1` and `seq2` and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.
+```
 
 ### Why this simple procedure is too simplistic 
 
@@ -254,7 +252,7 @@ I suggested above that you keep a list of assumptions that are made by this appr
 1. We're scoring all matches as 1 and all mismatches as 0. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What's a more biologically meaningful way to do this (think about protein sequences here)?
 2. Similarly, every gap that is introduced results in the same penalty being incurred. Based on what we know about how insertion/deletion events occur, what do you think is a more biologically meaningful way to do this?
 
-All scoring schemes have limitations, and you should remember that when you're working with software that generates alignments for you (e.g., systems such as [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi)). Especially as you're getting started in bioinformatics, it's easy to forget that and just accept the result from computer software as "the right answer". You'll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won't do your work for you. Their answers are based on models (for example, how we model matches, mismatches and gaps here) and as you're learning here, the models are not perfect. Be skeptical!
+All scoring schemes have limitations, and you should remember that when you're working with software that generates alignments for you (e.g., systems such as [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi)). Especially as you're getting started in bioinformatics, it's easy to forget that and just accept the result from computer software as "the right answer". You'll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won't do your work for you. Their answers are based on models (in this example, how we model matches, mismatches, and gaps) and as you're learning here, the models are not perfect. Be skeptical of automated approaches to solve complex problems! 
 
 Another important consideration as we think about algorithms for aligning pairs of sequences is how long an algorithm will take to run as a function of the input it's provided (or in technical terminology, the [computational complexity](http://bigocheatsheet.com/) of the algorithm). When searching a sequence against a database (for example, to get an idea of what its function is), you may have billions of bases to search against, which would correspond to billions of columns in one of the matrices we just computed. Computers are fast, but the data sets you're going to be working with are very large and in many cases growing exponentially in size over time. Working in bioinformatics, it's inevitable that you're going to begin to discover the limitations of the algorithms and software you use. Runtime and memory requirements are the usual culprits. Because the data sets are getting bigger more quickly than computers are getting faster (at least as of this writing), just waiting for computers to get faster won't work. We need smart people who understand some computer science and some biology to design clever algorithms, software, and analytic techniques to enable the next generation of advances that technologies like high-throughput DNA sequencing are promising. (And there are a lot of people who want to spend good money to pay people who can do these things, so keep reading!)
 
@@ -284,7 +282,7 @@ To score matches and mismatches differently based on which pair of amino acid re
 def show_substitution_matrix(headers, data):
     rows = []
     for h, d in zip(headers, data):
-        current_row = ["<b>%s</b>" % h]
+        current_row = [h]
         for e in d:
             current_row.append(e)
         rows.append(current_row)
@@ -324,7 +322,7 @@ for aa1 in aas:
     data.append(row)
 
 aa_labels = ''.join(aas)
-HTML(show_substitution_matrix(aa_labels, data))
+show_substitution_matrix(aa_labels, data)
 ```
 
 Look at the scores in this matrix in the context of details about the biochemistry of the amino acids (see the molecular structures [on Wikipedia](http://en.wikipedia.org/wiki/Amino_acid) or in any general microbiology or biochemistry text). Does a positive score represent a more or less favorable substitution? Confirm that the scores match your intuition for some similar and dissimilar amino acids.
@@ -381,7 +379,7 @@ Prior to initialization, $F$ and $T$ would look like the following.
 num_rows = len(seq2) + 1
 num_cols = len(seq1) + 1
 F = np.zeros(shape=(num_rows, num_cols), dtype=np.int)
-HTML(show_F(seq1, seq2, F))
+show_F(seq1, seq2, F)
 ```
 
 ```{code-cell}
@@ -400,7 +398,7 @@ def show_T(h_sequence, v_sequence, data):
 
 ```{code-cell}
 T = np.full(shape=(num_rows, num_cols), fill_value=" ", dtype=np.str)
-HTML(show_T(seq1, seq2, T))
+show_T(seq1, seq2, T)
 ```
 
 #### Step 2: Compute $F$ and $T$. 
@@ -428,7 +426,7 @@ for i in range(1, num_rows):
 for j in range(1, num_cols):
     F[0][j] = F[0][j-1] - d
 
-HTML(show_F(seq1, seq2, F))
+show_F(seq1, seq2, F)
 ```
 
 Initializing $T$ would result in the following.
@@ -441,7 +439,7 @@ for i in range(1, num_rows):
 for j in range(1, num_cols):
     T[0][j] = "←"
 
-HTML(show_T(seq1, seq2, T))
+show_T(seq1, seq2, T)
 ```
 
 Next, we'll compute the scores for all of the other cells in $F$, starting at position $(1, 1)$. In Needleman-Wunsch alignment, the score $F$ for cell $(i, j)$ (when $i > 0$ and $j > 0$) is computed as the maximum of three possible values. $s$ refers to the substitution matrix, and $c_i$ and $c_j$ refer to characters in `seq1` and `seq2`.
@@ -525,11 +523,11 @@ seq2 = TabularMSA([seq2])
 nw_matrix, traceback_matrix = _compute_score_and_traceback_matrices(
     seq1, seq2, 8, 8, blosum50)
 
-HTML(show_F(seq1[0], seq2[0], nw_matrix))
+show_F(seq1[0], seq2[0], nw_matrix)
 ```
 
 ```{code-cell}
-HTML(show_T(seq1[0], seq2[0], traceback_matrix))
+show_T(seq1[0], seq2[0], traceback_matrix)
 ```
 
 #### Step 3: Transcribe the alignment. 
@@ -617,7 +615,7 @@ $F$ and $T$ are created in the same way for Smith-Waterman as for Needleman-Wuns
 num_rows = len(seq2) + 1
 num_cols = len(seq1) + 1
 F = np.zeros(shape=(num_rows, num_cols), dtype=np.int)
-HTML(show_F(seq1, seq2, F))
+show_F(seq1, seq2, F)
 ```
 
 ```{code-cell}
@@ -637,7 +635,7 @@ def show_T(h_sequence, v_sequence, data):
 
 ```{code-cell}
 T = np.full(shape=(num_rows, num_cols), fill_value=" ", dtype=np.str)
-HTML(show_T(seq1, seq2, T))
+show_T(seq1, seq2, T)
 ```
 
 ### Step 2: Compute $F$ and $T$. 
@@ -663,7 +661,7 @@ for i in range(1, num_rows):
 for j in range(1, num_cols):
     F[0][j] = 0
 
-HTML(show_F(seq1, seq2, F))
+show_F(seq1, seq2, F)
 ```
 
 Because none of the values that were just added to $F$ depend on any other cells in $F$, initializing $T$ would result in the following.
@@ -676,7 +674,7 @@ for i in range(1, num_rows):
 for j in range(1, num_cols):
     T[0][j] = "•"
 
-HTML(show_T(seq1, seq2, T))
+show_T(seq1, seq2, T)
 ```
 
 We'd next want to compute the remaining cells in $F$ and $T$. This proceeds exactly the same as for Needleman-Wunsch, except that there is one additional term in the scoring function:
@@ -703,11 +701,11 @@ sw_matrix, traceback_matrix = _compute_score_and_traceback_matrices(
     seq1, seq2, 8, 8, blosum50, new_alignment_score=0.0,
     init_matrices_f=_init_matrices_sw)
 
-HTML(show_F(seq1[0], seq2[0], sw_matrix))
+show_F(seq1[0], seq2[0], sw_matrix)
 ```
 
 ```{code-cell}
-HTML(show_T(seq1[0], seq2[0], traceback_matrix))
+show_T(seq1[0], seq2[0], traceback_matrix)
 ```
 
 ### Step 3: Transcribe the alignment. 
@@ -793,11 +791,11 @@ seq2 = TabularMSA([Protein("PAWHEAE")])
 
 sw_matrix, traceback_matrix = _compute_score_and_traceback_matrices(seq1, seq2, 8, 1, blosum50)
 
-HTML(show_F(seq1[0], seq2[0], sw_matrix))
+show_F(seq1[0], seq2[0], sw_matrix)
 ```
 
 ```{code-cell}
-HTML(show_T(seq1[0], seq2[0], traceback_matrix))
+show_T(seq1[0], seq2[0], traceback_matrix)
 ```
 
 While we just looked at Smith-Waterman alignment with affine gap scoring, Needleman-Wunsch is adapted in the same way for affine gap scoring.
