@@ -20,7 +20,7 @@ One of the most fundamental problems in bioinformatics is determining how simila
 Imagine you have three sequences - call them ``r1``and ``r2`` (*r* is for *reference*) and ``q1`` (*q* is for *query*) - and you want to know whether ``q1`` is more similar to ``r1`` or ``r2``. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the [Hamming distance](http://en.wikipedia.org/wiki/Hamming_distance) between them) to figure this out. Here's what this would look like using an implementation of Hamming distance from the SciPy Python library.
 
 ```{code-cell}
-:tag: [hide-cell]
+:tags: [hide-cell]
 %pylab inline
 
 import numpy as np
