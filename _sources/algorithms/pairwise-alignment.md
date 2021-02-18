@@ -15,83 +15,104 @@ kernelspec:
 
 # Pairwise sequence alignment 
 
-One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of [one of the most cited papers](https://www.ncbi.nlm.nih.gov/pubmed/2231712) in modern biology. In this chapter we'll explore why determining biological sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.
+One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology {cite}`Altschul1990-ds`. In this chapter we'll explore why determining biological sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.
 
-Imagine you have three sequences - call them ``r1``and ``r2`` (*r* is for *reference*) and ``q1`` (*q* is for *query*) - and you want to know whether ``q1`` is more similar to ``r1`` or ``r2``. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the [Hamming distance](http://en.wikipedia.org/wiki/Hamming_distance) between them) to figure this out. Here's what this would look like using an implementation of Hamming distance from the SciPy Python library.
+Imagine you have three protein sequences - call them ``r1``and ``r2`` (*r* is for *reference*) and ``q1`` (*q* is for *query*) - and you want to know whether ``q1`` is more similar to ``r1`` or ``r2``. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the [Hamming distance](http://en.wikipedia.org/wiki/Hamming_distance) between them) to figure this out. Here's what this would look like using an implementation of Hamming distance from the SciPy Python library.
 
 ```{code-cell}
-:tag: [hide-cell]
+:tags: [hide-cell]
+
+# This cell performs some configuration for this notebook. It's hidden by
+# default because it's not relevant to the content of this chapter. You'll
+# occasionally notice that I hide this type of information so it's not 
+# distracting.
+
 %pylab inline
 
-import numpy as np
 from IPython.core import page
 page.page = print
 ```
 
 ```{code-cell}
 from scipy.spatial.distance import hamming
-from skbio import DNA
+import skbio
 
-r1 = DNA("ACCCAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGACACACGGGGATTAA")
-r2 = DNA("ACCGAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGAGACACGGCGATTAA")
-q1 = DNA("TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA")
+# NCBI Reference Sequence: NP_000508.1 (human hemoglobin subunit A)
+r1 = skbio.Protein("MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR")
+
+# NCBI Reference Sequence: NP_001004376.1 (chicken hemoglobin subunit A)
+r2 = skbio.Protein("MVLSAADKNNVKGIFTKIAGHAEEYGAETLERMFTTYPPTKTYFPHFDLSHGSAQIKGHGKKVVAALIEAANHIDDIAGTLSKLSDLHAHKLRVDPVNFKLLGQCFLVVVAIHHPAALTPEVHASLDKFLCAVGTVLTAKYR")
+
+# GenBank: QFF91579.1 (sei whale hemoglobin subunit A)
+q1 = skbio.Protein("MVLFPADKSNVKATWAKIGNHGAEYGAEALERMFMNFPSTKTYFPHFDLGHDSAQVKGHGKKVADALTKAAGHMDNLLDALSDLSDLHAHKLRVDPVNFKLLSHCLLVTLALHLPAEFTPSVHASLDKFLASVSTVLTSKYR")
 
 print(r1)
 print(r2)
 print(q1)
 ```
 
-Here we just stored 3 sequences as variables. Now we're going to compute the hamming distance between them using the function ``hamming()`` to assess whether our query ("q1") is closer to reference 1 or reference 2 based on the hamming distance:
+Here we stored 3 protein sequences as variables. Now we're going to compute the hamming distance between them using the function ``hamming()`` to assess whether our query ("q1") is closer to reference 1 or reference 2 based on the hamming distance:
 
 ```{code-cell}
 print(hamming(r1, q1))
 print(hamming(r2, q1))
 ```
 
-In this case, ``q1`` has a smaller distance to ``r1`` than it does to ``r2``, so ``q1`` is more similar to ``r1`` than ``r2``. But it's not always that simple.
+In this case, ``q1`` has a smaller distance to ``r1`` than it does to ``r2``, so ``q1`` is more similar to ``r1`` than ``r2``. The comments lines above each sequence describe the source organisms. The Hamming distances between these sequences align with our understanding of the evolutionary distances between these organisms. The whale hemoglobin has a smaller Hamming distance (i.e., it's more similar) to the human hemoglobin sequence than to the chicken hemoglobin sequences. Whales and humans are both mammals while chickens are birds, thus whales are humans are more closely related to one another than either is to birds. If we hypothesized that whales were more closely related to humans than chickens, this finding would have supported that hypothesis. Relating sequence similarity to evolutionary history isn't always that simple though unfortunately. 
 
-Here we've assumed that only *substitution events* have occurred, meaning one DNA base was substituted with another. Let's define ``q2``, which is the same as ``q1`` except that a single base has been deleted at the beginning of the sequence, and a single base has been inserted at the end of the sequence.
+Here we've assumed that only *substitution events* have occurred, meaning one DNA base was substituted with another. Let's define ``q2``, which is one base shorter than `r1`, `r2`, and `q1`. Because Hamming distance requires that input sequences are of equal length, I'm going to add a `-` character to the end of `q2`. The Hamming distance computation will score that as a single base difference. 
 
 ```{code-cell}
-q2 = DNA("TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT")
+# NCBI Reference Sequence: XP_028905054.1 (platypus hemoglobin subunit A); 
+# a "-" character was added to the end of this sequence to make it the same
+# length as r1 and r2, enabling us to compute Hamming distances
 
-print(q1)
-print(q2)
+q2 = skbio.Protein("MLTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSALSALSDLHAHKLRVDPVNFKLLAHCILVVLARHCPGEFTPSAHAAMDKFLSKVATVLTSKYR-")
 
 print(hamming(r1, q2))
+print(hamming(r2, q2))
 ```
 
-This change had a big effect on the distance between the two sequences. In this case, the deletion event at the beginning of ``q2`` has shifted that sequence relative to ``r1``, which resulted in many of the bases "downstream" of the deleted base being different. However the sequences do still seem fairly similar, so perhaps this relatively large distance isn't biologically justified.
+These distances are much larger than the ones we previously obtained! That is because there seems to have been a deletion event in this platypus hemoglobin sequence relative to the human, whale, and chicken sequences. While the distances suggest that platypus (another mammal) is more similar to the human than the chicken, the distances are so much larger than before (including the original distance between whale and chicken) that I don't have any confidence in the distances. (In a subsequent chapter we'll discuss evaluating the statistical significance of pairwise sequence alignments.)
 
-What we'd really want to do is have a way to indicate that a deletion seems to have occurred in ``q2``. Let's define ``q3``, where we use a ``-`` character to indicate a deletion with respect to ``r1``. This results in what seems like a more relevant distance between the two sequences:
+By visually comparing the platypus sequences to the reference sequences, I have a hypothesis about which amino acid was deleted in the platypus sequence. Notice that the human and chicken sequences both begin with `MVL`, while the platypus sequence begins with `ML`. I'm going to define a new sequence that I'll call `q2_aligned`, where I move the `-` character that I added to the end of the `q2` to the spot where I hypothesize that the deletion occurred - between the `M` and the `L` at the beginning of the sequence. My hope is that this will align the more similar sequence positions to one another throughout the rest of the protein sequences.
 
 ```{code-cell}
-q3 = DNA("-TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA")
+# NCBI Reference Sequence: XP_028905054.1 (platypus hemoglobin subunit A); 
+# I manually aligned this sequence to r1 and r2
 
-print(q1)
-print(q3)
+q2_aligned = skbio.Protein("M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSALSALSDLHAHKLRVDPVNFKLLAHCILVVLARHCPGEFTPSAHAAMDKFLSKVATVLTSKYR")
 
-print(hamming(r1, q3))
+print(hamming(r1, q2_aligned))
+print(hamming(r2, q2_aligned))
 ```
 
-What we've done here is create a pairwise alignment of ``r1`` and ``q3``. In other words, we've **aligned** positions to maximize the similarity of the two sequences, using the ``-`` to fill in spaces where one character is missing with respect to that location in the other sequence. We refer to ``-`` characters in aligned sequences as **gap characters**, or gaps.
+Now when I compute the Hamming distances, they look a lot more similar to those that I computed earlier. Notice that the Hamming distance between the platypus sequence and the human sequence is larger than the Hamming distance between the human and the whale, but smaller than the Hamming distance between the platypus and the chicken. Again, this aligns with our understanding of the evolutionary history: platypi (yep, _platypi_ is actually the plural form of platypus!) diverged from most other mammals very early in the history of mammals. This is a profound concept that we risk taking for granted now. Comparing organisms' DNA, RNA, and protein sequences can serve as a molecular clock that can inform us about the relative evolutionary distances between those organisms. This technique revolutionized our understanding of the evolutionary history of life on Earth! 
+
+What we've done here is create a **pairwise alignment** of `r1` and `q2_aligned` and of `r2` and `q2_aligned` and then computed Hamming distances between each pair of aligned sequences. In other words, we've **aligned** positions to maximize the similarity of the two sequences, using the ``-`` to fill in spaces where one character is missing with respect to that location in the other sequence. We refer to ``-`` characters in aligned sequences as **gap characters**, or gaps.
 
 The *alignment* of these two sequences is clear if we print them  out, one on top of the other:
 
 ```{code-cell}
 print(r1)
-print(q3)
+print(q2_aligned)
 ```
 
-Scanning through these two sequences, we can see that they are largely identical, with the exception of one ``-`` character, and about 25% *substitutions* of one base for another.
+Scanning through these two sequences, we can see that they are largely identical, with the exception of one ``-`` character, and about 27% *substitutions* of one amino acid for another.
 
 ## What is a sequence alignment? 
 
-Let's take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as **mutations**. Some types of mutation events that can occur are:
+Let's now take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as **mutations**. Some types of mutation events that can occur are:
 
-* **substitutions**, where one base (or amino acid, in protein sequences) is replaced with another;
-* **insertions**, where one or more contiguous bases are inserted into a sequence;
-* and **deletions**, where one or more contiguous bases are deleted from a sequence.
+````{margin}
+```{note}
+In protein coding regions of genomes, substitutions may or may not result in a change in the resulting protein. These mutations would be referred to as non-synonymous or synonymous mutations, respectively. Insertions or deletions will change the resulting protein, and the size of the insertion or deletion (i.e., the number of bases inserted or deleted) determines how impactful the mutation is on the resulting protein sequence. 
+```
+````
+
+* **substitutions**, where one DNA base is replaced with another;
+* **insertions**, where one or more contiguous DNA bases are inserted into a sequence;
+* and **deletions**, where one or more contiguous DNA bases are deleted from a sequence.
 
 (Other types of mutation events can occur, but we're going to focus on these for now.)
 
@@ -104,9 +125,11 @@ name: pairwise-alignment-1
 Sequence evolution and pairwise sequence alignment. Abbreviation key: *indel*: insertion or deletion event has occurred since the last common ancestor; *sub*: substitution event has occurred since the last common ancestor; *nc*: no change has occurred since the last common ancestor.
 ```
 
-**The goal of pairwise sequence alignment is, given two sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.** In practice, we develop this hypothesis by aligning the sequences to one another inserting gaps as necessary, in a way that maximizes their similarity. This is a **maximum parsimony** approach (an application of [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.
+**The goal of pairwise sequence alignment is, given two DNA, RNA, or protein sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.** Depending on the available data and/or the goals of the experiment, you may end up performing pairwise alignment on DNA sequences, RNA sequences, or protein sequences. In general, the same procedures (or algorithms) apply to all of these cases though there are some parameters that vary with the type of molecule that you're working with. 
 
-In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in {numref}`pairwise-alignment-1`c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct 100 million years ago).
+In practice, we develop a pairwise alignment hypothesis by aligning the sequences to one another, inserting gap characters as necessary, in a way that maximizes their similarity. This is a **maximum parsimony** approach (an application of [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.
+
+In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in {numref}`pairwise-alignment-1`c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct tens or hundreds or even thousands of millions of years ago).
 
 {numref}`pairwise-alignment-1`d-f illustrates three possible alignments of these two sequences. Just as the notes you made about which types of mutation events may have happened at which positions represents your *hypothesis* about the evolutionary events that took place, a sequence alignment that you might get from a computer program such as BLAST is also only a hypothesis. Which do you think is the most likely alignment of these sequences (note that there may not be a single best answer)?
 
@@ -118,9 +141,10 @@ In the next section we'll work through an accessible but overly simplistic metho
 
 ## A first algorithm for aligning a pair of sequences 
 
-Let's define two sequences, ``seq1`` and ``seq2`` and then work through an approach for aligning them.
+Let's define two sequences, ``seq1`` and ``seq2`` and then work through an approach for aligning them. In this section we'll work with DNA sequences, and in subsequent sections we'll work with protein sequences. Again, the algorithms are largely the same. Throughout this book and your own work we'll sometimes align DNA or RNA sequences, and sometimes align protein sequences.
 
 ```{code-cell}
+from skbio import DNA
 seq1 = DNA("ACCGGTGGAACCGGTAACACCCAC")
 seq2 = DNA("ACCGGTAACCGGTTAACACCCAC")
 ```
@@ -130,12 +154,14 @@ seq2 = DNA("ACCGGTAACCGGTTAACACCCAC")
 We'll create this matrix and initialize it with all zeros as follows:
 
 ```{code-cell}
+import numpy as np
+
 num_rows = len(seq2)
 num_cols = len(seq1)
 data = np.zeros(shape=(num_rows, num_cols), dtype=np.int)
 ```
 
-In this chapter I'll use a function called `show_F` to display matrices like this.
+In this chapter I'll use a function called `show_F` to display matrices like this. (I'll define `F` a little later, so this function name will make more sense then.)
 
 ```{code-cell}
 :tags: [hide-cell]
@@ -210,7 +236,7 @@ show_F(seq1, seq2, summed_data, hide_zeros=True)
 
 Next, we'll identify the length of the longest diagonal.
 
-```
+```{code-cell}
 longest_diagonal_length = summed_data.max()
 print("The longest diagonal is %d characters long." % longest_diagonal_length)
 ```
@@ -249,10 +275,10 @@ If you're reading this chapter interactively, go back to where we defined `seq1`
 
 I suggested above that you keep a list of assumptions that are made by this approach. Here are a couple of the very problematic ones.
 
-1. We're scoring all matches as 1 and all mismatches as 0. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What's a more biologically meaningful way to do this (think about protein sequences here)?
+1. We're scoring all matches as 1 and all mismatches as -1. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What's a more biologically meaningful way to do this (think about protein sequences here)?
 2. Similarly, every gap that is introduced results in the same penalty being incurred. Based on what we know about how insertion/deletion events occur, what do you think is a more biologically meaningful way to do this?
 
-All scoring schemes have limitations, and you should remember that when you're working with software that generates alignments for you (e.g., systems such as [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi)). Especially as you're getting started in bioinformatics, it's easy to forget that and just accept the result from computer software as "the right answer". You'll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won't do your work for you. Their answers are based on models (for example, how we model matches, mismatches and gaps here) and as you're learning here, the models are not perfect. Be skeptical!
+All scoring schemes have limitations, and you should remember that when you're working with software that generates alignments for you (e.g., systems such as [BLAST](http://blast.ncbi.nlm.nih.gov/Blast.cgi)). Especially as you're getting started in bioinformatics, it's easy to forget that and just accept the result from computer software as "the right answer". You'll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won't do your work for you. Their answers are based on models (in this example, how we model matches, mismatches, and gaps) and as you're learning here, the models are not perfect. Be skeptical of automated approaches to solve complex problems! 
 
 Another important consideration as we think about algorithms for aligning pairs of sequences is how long an algorithm will take to run as a function of the input it's provided (or in technical terminology, the [computational complexity](http://bigocheatsheet.com/) of the algorithm). When searching a sequence against a database (for example, to get an idea of what its function is), you may have billions of bases to search against, which would correspond to billions of columns in one of the matrices we just computed. Computers are fast, but the data sets you're going to be working with are very large and in many cases growing exponentially in size over time. Working in bioinformatics, it's inevitable that you're going to begin to discover the limitations of the algorithms and software you use. Runtime and memory requirements are the usual culprits. Because the data sets are getting bigger more quickly than computers are getting faster (at least as of this writing), just waiting for computers to get faster won't work. We need smart people who understand some computer science and some biology to design clever algorithms, software, and analytic techniques to enable the next generation of advances that technologies like high-throughput DNA sequencing are promising. (And there are a lot of people who want to spend good money to pay people who can do these things, so keep reading!)
 
@@ -308,10 +334,7 @@ blosum50 = {'A': {'A': 5, 'C': -1, 'D': -2, 'E': -1, 'F': -3, 'G': 0, 'H': -2, '
 'V': {'A': 0, 'C': -1, 'D': -4, 'E': -3, 'F': -1, 'G': -4, 'H': -4, 'I': 4, 'K': -3, 'L': 1, 'M': 1, 'N': -3, 'P': -3, 'Q': -3, 'R': -3, 'S': -2, 'T': 0, 'V': 5, 'W': -3, 'Y': -1},
 'W': {'A': -3, 'C': -5, 'D': -5, 'E': -3, 'F': 1, 'G': -3, 'H': -3, 'I': -3, 'K': -3, 'L': -2, 'M': -1, 'N': -4, 'P': -4, 'Q': -1, 'R': -3, 'S': -4, 'T': -3, 'V': -3, 'W': 15, 'Y': 2},
 'Y': {'A': -2, 'C': -3, 'D': -3, 'E': -2, 'F': 4, 'G': -3, 'H': 2, 'I': -1, 'K': -2, 'L': -1, 'M': 0, 'N': -2, 'P': -3, 'Q': -1, 'R': -1, 'S': -2, 'T': -2, 'V': -1, 'W': 2, 'Y': 8}}
-```
 
-
-```{code-cell}
 aas = list(blosum50.keys())
 aas.sort()
 data = []
@@ -322,12 +345,17 @@ for aa1 in aas:
     data.append(row)
 
 aa_labels = ''.join(aas)
+```
+
+```{code-cell}
 show_substitution_matrix(aa_labels, data)
 ```
 
+```{admonition} Food for thought
 Look at the scores in this matrix in the context of details about the biochemistry of the amino acids (see the molecular structures [on Wikipedia](http://en.wikipedia.org/wiki/Amino_acid) or in any general microbiology or biochemistry text). Does a positive score represent a more or less favorable substitution? Confirm that the scores match your intuition for some similar and dissimilar amino acids.
+```
 
-You can look up individual substitution scores as follows:
+You can look up individual substitution scores in this matrix as follows:
 
 ```{code-cell}
 print(blosum50['A']['G'])
@@ -339,18 +367,23 @@ print(blosum50['A']['A'])
 print(blosum50['W']['W'])
 ```
 
-Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s (Dayhoff, Schwartz, Orcutt (1978) <i>A Model of Evolutionary Change in Proteins.</i> Atlas of Protein Sequence and Structure) and by [Henikoff and Henikoff](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC50453/) in the early 1990s. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. [This](https://www.ncbi.nlm.nih.gov/pubmed/15286655) is a good article on the source of the widely used substitution matrices by Sean Eddy. We'll work with BLOSUM 50 here for the remainder of this chapter.
-
+Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s {cite}`M_O_Dayhoff1978-lc` and by Steven Henikoff and Jorja Henikoff in the early 1990s {cite}`Henikoff1992-kn`. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) {cite}`Eddy2004-eu` presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We'll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.
 
 ## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm 
 
-We're next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by [Saul B. Needleman and Christian D. Wunsch in 1970](https://www.ncbi.nlm.nih.gov/pubmed/5420325), and is therefore referred to as *Needleman-Wunsch alignment*. This performs what is known as *global alignment*, meaning that both sequences are aligned from their first residue (or base) through their last residue (or base). We'll contrast this later in this chapter with local alignment.
+````{margin}
+```{admonition} What is an "amino acid residue"?
+When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or **residues** for short.
+```
+````
+
+We're next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 {cite}`Needleman1970-fk`, and is therefore referred to as *Needleman-Wunsch alignment*. This performs what is known as *global alignment*, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We'll contrast this later in this chapter with local alignment.
 
 ### Stepwise Needleman-Wunsch alignment 
 
 Needleman-Wunsch alignment is similar to the approach that we explored above. We'll work through the steps of the algorithm first, and then automate the process by defining Python functions that perform the steps for us given a pair of sequences.
 
-We'll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we're starting with are the same that are used in Chapter 2 of [Biological Sequence Analysis](http://amzn.to/1IYUEz2).
+We'll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we're starting with are the same that are used in Chapter 2 of _Biological Sequence Analysis_ {cite}`Durbin1998-oc`.
 
 ```{code-cell}
 from skbio import Protein
@@ -594,9 +627,9 @@ Global and local alignment are both used for different applications. We'll next 
 
 ## Smith-Waterman local sequence alignment 
 
-The algorithm that is most commonly used for performing local alignment was originally published by [Temple F. Smith and Michael S. Waterman in 1981](https://www.ncbi.nlm.nih.gov/pubmed/7265238), and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.
+The algorithm that is most commonly used for performing local alignment was originally published by Temple F. Smith and Michael S. Waterman (1981) {cite}`Smith1981-ye`, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.
 
-Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small important differences. We'll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We'll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.
+Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small but important differences. We'll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We'll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.
 
 ```{code-cell}
 from skbio import Protein
@@ -766,7 +799,7 @@ This was a lot of complicated material, so congratulations on making it this far
 
 ## Differential scoring of gaps 
 
-The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn't ideal based on what we know about how insertion/deletion events occur (see [this discussion of replication slippage](http://www.ncbi.nlm.nih.gov/books/NBK21114/) if you're not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as *affine gap scoring*.
+The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn't ideal based on what we know about how insertion/deletion events occur (see [this discussion of replication slippage](http://www.ncbi.nlm.nih.gov/books/NBK21114/) {cite}`Brown2002-lb` if you're not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as *affine gap scoring*.
 
 To score gap extensions differently from gap creations (or gap opens), we need to modify the terms corresponding to the addition of gaps in our scoring function. When we compute the score corresponding to a gap in our alignment (i.e., where we'd insert either a ↑ or a ← in $T$), we should incur a *gap extension penalty* if the value in $T$ that the new arrow will point to is the same type of arrow. Otherwise, we should incur the *gap open penalty*. If we represent our gap open penalty as $d^0$, and our gap extend penalty as $d^e$, our scoring scheme would look now like the following:
 
@@ -825,11 +858,13 @@ print(aln)
 print(score)
 ```
 
-As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won't need to write any code to do this, but rather you can adapt some of the commands that we've already used above. Don't forget about the ``help`` function - that's essential for learning how to use a function.
+```{admonition} Interactive exercise
+As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won't need to write any code to do this, but rather you can adapt some of the commands that we've already used above. Don't forget about the `help()` function - that's essential for learning how to use a function.
+```
 
 ## How long does pairwise sequence alignment take? 
 
-The focus of this book is *applied* bioinformatics, and two of the practical considerations we need to think about when developing algorithms and applications is how long they'll take to run, and how much system memory (or RAM) they'll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.
+Two of the practical considerations we need to think about when developing algorithms and applications is how long they'll take to run, and how much system memory (or RAM) they'll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.
 
 We just worked through a few algorithms for pairwise sequence alignment, and ran some toy examples based on short sequences. What if we wanted to scale this up to align much longer sequences, or to align relatively short sequences against a large database? In this section we'll explore the runtime of sequence alignment.
 
@@ -968,3 +1003,9 @@ Notice that the runtimes in the plot are smaller, but shape of the curve is the 
 ### Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman 
 
 These are pretty long sequences that we're working with here, and the runtime is still pretty reasonable (only a few seconds for DNA sequences around 100,000 bases), so that suggests this implementation of Smith-Waterman should work ok for aligning pairs of sequences, even if the sequences are fairly long. However, we're often interested in doing more than just pairwise alignment. For example, we may want to align many sequences to each other (which we'll explore in the Multiple Sequence Alignment chapter), or we may want to perform many pairwise alignments (which we'll explore in the Database Searching chapter). In the next chapter we'll begin exploring ways to address this scalability issue by approximating solutions to the problem.
+
+## List of works cited
+
+```{bibliography} ../references.bib
+:filter: docname in docnames
+```

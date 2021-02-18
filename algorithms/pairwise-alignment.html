@@ -259,7 +259,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/algorithms/pairwise-alignment.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/algorithms/pairwise-alignment.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../_static/images/logo_binder.svg"
@@ -388,12 +388,12 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
+    <a class="reference internal nav-link" href="#id8">
      1.6.1. Step 1: Create blank matrices.
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
+    <a class="reference internal nav-link" href="#id9">
      1.6.2. Step 2: Compute
      <span class="math notranslate nohighlight">
       \(F\)
@@ -406,7 +406,7 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id3">
+    <a class="reference internal nav-link" href="#id10">
      1.6.3. Step 3: Transcribe the alignment.
     </a>
    </li>
@@ -444,6 +444,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#list-of-works-cited">
+   1.9. List of works cited
+  </a>
+ </li>
 </ul>
 
         </nav>
@@ -457,13 +462,17 @@
                 
   <div class="section" id="pairwise-sequence-alignment">
 <h1><span class="section-number">1. </span>Pairwise sequence alignment<a class="headerlink" href="#pairwise-sequence-alignment" title="Permalink to this headline">¶</a></h1>
-<p>One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/2231712">one of the most cited papers</a> in modern biology. In this chapter we’ll explore why determining biological sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
-<p>Imagine you have three sequences - call them <code class="docutils literal notranslate"><span class="pre">r1</span></code>and <code class="docutils literal notranslate"><span class="pre">r2</span></code> (<em>r</em> is for <em>reference</em>) and <code class="docutils literal notranslate"><span class="pre">q1</span></code> (<em>q</em> is for <em>query</em>) - and you want to know whether <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> or <code class="docutils literal notranslate"><span class="pre">r2</span></code>. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the <a class="reference external" href="http://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> between them) to figure this out. Here’s what this would look like using an implementation of Hamming distance from the SciPy Python library.</p>
-<div class="cell docutils container">
+<p>One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology <a class="bibtex reference internal" href="#altschul1990-ds" id="id1">[AGM+90]</a>. In this chapter we’ll explore why determining biological sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
+<p>Imagine you have three protein sequences - call them <code class="docutils literal notranslate"><span class="pre">r1</span></code>and <code class="docutils literal notranslate"><span class="pre">r2</span></code> (<em>r</em> is for <em>reference</em>) and <code class="docutils literal notranslate"><span class="pre">q1</span></code> (<em>q</em> is for <em>query</em>) - and you want to know whether <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> or <code class="docutils literal notranslate"><span class="pre">r2</span></code>. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the <a class="reference external" href="http://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> between them) to figure this out. Here’s what this would look like using an implementation of Hamming distance from the SciPy Python library.</p>
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pylab</span> inline
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell performs some configuration for this notebook. It&#39;s hidden by</span>
+<span class="c1"># default because it&#39;s not relevant to the content of this chapter. You&#39;ll</span>
+<span class="c1"># occasionally notice that I hide this type of information so it&#39;s not </span>
+<span class="c1"># distracting.</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="o">%</span><span class="k">pylab</span> inline
+
 <span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
 </pre></div>
@@ -478,11 +487,16 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">hamming</span>
-<span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">DNA</span>
+<span class="kn">import</span> <span class="nn">skbio</span>
 
-<span class="n">r1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCCAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGACACACGGGGATTAA&quot;</span><span class="p">)</span>
-<span class="n">r2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGAGACACGGCGATTAA&quot;</span><span class="p">)</span>
-<span class="n">q1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA&quot;</span><span class="p">)</span>
+<span class="c1"># NCBI Reference Sequence: NP_000508.1 (human hemoglobin subunit A)</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR&quot;</span><span class="p">)</span>
+
+<span class="c1"># NCBI Reference Sequence: NP_001004376.1 (chicken hemoglobin subunit A)</span>
+<span class="n">r2</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;MVLSAADKNNVKGIFTKIAGHAEEYGAETLERMFTTYPPTKTYFPHFDLSHGSAQIKGHGKKVVAALIEAANHIDDIAGTLSKLSDLHAHKLRVDPVNFKLLGQCFLVVVAIHHPAALTPEVHASLDKFLCAVGTVLTAKYR&quot;</span><span class="p">)</span>
+
+<span class="c1"># GenBank: QFF91579.1 (sei whale hemoglobin subunit A)</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;MVLFPADKSNVKATWAKIGNHGAEYGAEALERMFMNFPSTKTYFPHFDLGHDSAQVKGHGKKVADALTKAAGHMDNLLDALSDLSDLHAHKLRVDPVNFKLLSHCLLVTLALHLPAEFTPSVHASLDKFLASVSTVLTSKYR&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r2</span><span class="p">)</span>
@@ -491,14 +505,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ACCCAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGACACACGGGGATTAA
-ACCGAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGAGACACGGCGATTAA
-TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR
+MVLSAADKNNVKGIFTKIAGHAEEYGAETLERMFTTYPPTKTYFPHFDLSHGSAQIKGHGKKVVAALIEAANHIDDIAGTLSKLSDLHAHKLRVDPVNFKLLGQCFLVVVAIHHPAALTPEVHASLDKFLCAVGTVLTAKYR
+MVLFPADKSNVKATWAKIGNHGAEYGAEALERMFMNFPSTKTYFPHFDLGHDSAQVKGHGKKVADALTKAAGHMDNLLDALSDLSDLHAHKLRVDPVNFKLLSHCLLVTLALHLPAEFTPSVHASLDKFLASVSTVLTSKYR
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here we just stored 3 sequences as variables. Now we’re going to compute the hamming distance between them using the function <code class="docutils literal notranslate"><span class="pre">hamming()</span></code> to assess whether our query (“q1”) is closer to reference 1 or reference 2 based on the hamming distance:</p>
+<p>Here we stored 3 protein sequences as variables. Now we’re going to compute the hamming distance between them using the function <code class="docutils literal notranslate"><span class="pre">hamming()</span></code> to assess whether our query (“q1”) is closer to reference 1 or reference 2 based on the hamming distance:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q1</span><span class="p">))</span>
@@ -507,78 +521,87 @@ TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2542372881355932
-0.2711864406779661
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.16901408450704225
+0.31690140845070425
 </pre></div>
 </div>
 </div>
 </div>
-<p>In this case, <code class="docutils literal notranslate"><span class="pre">q1</span></code> has a smaller distance to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than it does to <code class="docutils literal notranslate"><span class="pre">r2</span></code>, so <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than <code class="docutils literal notranslate"><span class="pre">r2</span></code>. But it’s not always that simple.</p>
-<p>Here we’ve assumed that only <em>substitution events</em> have occurred, meaning one DNA base was substituted with another. Let’s define <code class="docutils literal notranslate"><span class="pre">q2</span></code>, which is the same as <code class="docutils literal notranslate"><span class="pre">q1</span></code> except that a single base has been deleted at the beginning of the sequence, and a single base has been inserted at the end of the sequence.</p>
+<p>In this case, <code class="docutils literal notranslate"><span class="pre">q1</span></code> has a smaller distance to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than it does to <code class="docutils literal notranslate"><span class="pre">r2</span></code>, so <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than <code class="docutils literal notranslate"><span class="pre">r2</span></code>. The comments lines above each sequence describe the source organisms. The Hamming distances between these sequences align with our understanding of the evolutionary distances between these organisms. The whale hemoglobin has a smaller Hamming distance (i.e., it’s more similar) to the human hemoglobin sequence than to the chicken hemoglobin sequences. Whales and humans are both mammals while chickens are birds, thus whales are humans are more closely related to one another than either is to birds. If we hypothesized that whales were more closely related to humans than chickens, this finding would have supported that hypothesis. Relating sequence similarity to evolutionary history isn’t always that simple though unfortunately.</p>
+<p>Here we’ve assumed that only <em>substitution events</em> have occurred, meaning one DNA base was substituted with another. Let’s define <code class="docutils literal notranslate"><span class="pre">q2</span></code>, which is one base shorter than <code class="docutils literal notranslate"><span class="pre">r1</span></code>, <code class="docutils literal notranslate"><span class="pre">r2</span></code>, and <code class="docutils literal notranslate"><span class="pre">q1</span></code>. Because Hamming distance requires that input sequences are of equal length, I’m going to add a <code class="docutils literal notranslate"><span class="pre">-</span></code> character to the end of <code class="docutils literal notranslate"><span class="pre">q2</span></code>. The Hamming distance computation will score that as a single base difference.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NCBI Reference Sequence: XP_028905054.1 (platypus hemoglobin subunit A); </span>
+<span class="c1"># a &quot;-&quot; character was added to the end of this sequence to make it the same</span>
+<span class="c1"># length as r1 and r2, enabling us to compute Hamming distances</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q2</span><span class="p">)</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;MLTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSALSALSDLHAHKLRVDPVNFKLLAHCILVVLARHCPGEFTPSAHAAMDKFLSKVATVLTSKYR-&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">q2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
-TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
-0.7288135593220338
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9084507042253521
+0.9225352112676056
 </pre></div>
 </div>
 </div>
 </div>
-<p>This change had a big effect on the distance between the two sequences. In this case, the deletion event at the beginning of <code class="docutils literal notranslate"><span class="pre">q2</span></code> has shifted that sequence relative to <code class="docutils literal notranslate"><span class="pre">r1</span></code>, which resulted in many of the bases “downstream” of the deleted base being different. However the sequences do still seem fairly similar, so perhaps this relatively large distance isn’t biologically justified.</p>
-<p>What we’d really want to do is have a way to indicate that a deletion seems to have occurred in <code class="docutils literal notranslate"><span class="pre">q2</span></code>. Let’s define <code class="docutils literal notranslate"><span class="pre">q3</span></code>, where we use a <code class="docutils literal notranslate"><span class="pre">-</span></code> character to indicate a deletion with respect to <code class="docutils literal notranslate"><span class="pre">r1</span></code>. This results in what seems like a more relevant distance between the two sequences:</p>
+<p>These distances are much larger than the ones we previously obtained! That is because there seems to have been a deletion event in this platypus hemoglobin sequence relative to the human, whale, and chicken sequences. While the distances suggest that platypus (another mammal) is more similar to the human than the chicken, the distances are so much larger than before (including the original distance between whale and chicken) that I don’t have any confidence in the distances. (In a subsequent chapter we’ll discuss evaluating the statistical significance of pairwise sequence alignments.)</p>
+<p>By visually comparing the platypus sequences to the reference sequences, I have a hypothesis about which amino acid was deleted in the platypus sequence. Notice that the human and chicken sequences both begin with <code class="docutils literal notranslate"><span class="pre">MVL</span></code>, while the platypus sequence begins with <code class="docutils literal notranslate"><span class="pre">ML</span></code>. I’m going to define a new sequence that I’ll call <code class="docutils literal notranslate"><span class="pre">q2_aligned</span></code>, where I move the <code class="docutils literal notranslate"><span class="pre">-</span></code> character that I added to the end of the <code class="docutils literal notranslate"><span class="pre">q2</span></code> to the spot where I hypothesize that the deletion occurred - between the <code class="docutils literal notranslate"><span class="pre">M</span></code> and the <code class="docutils literal notranslate"><span class="pre">L</span></code> at the beginning of the sequence. My hope is that this will align the more similar sequence positions to one another throughout the rest of the protein sequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q3</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;-TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NCBI Reference Sequence: XP_028905054.1 (platypus hemoglobin subunit A); </span>
+<span class="c1"># I manually aligned this sequence to r1 and r2</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">q1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q3</span><span class="p">)</span>
+<span class="n">q2_aligned</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">Protein</span><span class="p">(</span><span class="s2">&quot;M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSALSALSDLHAHKLRVDPVNFKLLAHCILVVLARHCPGEFTPSAHAAMDKFLSKVATVLTSKYR&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">q2_aligned</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hamming</span><span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">q2_aligned</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TTCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
--TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
-0.2542372881355932
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2746478873239437
+0.34507042253521125
 </pre></div>
 </div>
 </div>
 </div>
-<p>What we’ve done here is create a pairwise alignment of <code class="docutils literal notranslate"><span class="pre">r1</span></code> and <code class="docutils literal notranslate"><span class="pre">q3</span></code>. In other words, we’ve <strong>aligned</strong> positions to maximize the similarity of the two sequences, using the <code class="docutils literal notranslate"><span class="pre">-</span></code> to fill in spaces where one character is missing with respect to that location in the other sequence. We refer to <code class="docutils literal notranslate"><span class="pre">-</span></code> characters in aligned sequences as <strong>gap characters</strong>, or gaps.</p>
+<p>Now when I compute the Hamming distances, they look a lot more similar to those that I computed earlier. Notice that the Hamming distance between the platypus sequence and the human sequence is larger than the Hamming distance between the human and the whale, but smaller than the Hamming distance between the platypus and the chicken. Again, this aligns with our understanding of the evolutionary history: platypi (yep, <em>platypi</em> is actually the plural form of platypus!) diverged from most other mammals very early in the history of mammals. This is a profound concept that we risk taking for granted now. Comparing organisms’ DNA, RNA, and protein sequences can serve as a molecular clock that can inform us about the relative evolutionary distances between those organisms. This technique revolutionized our understanding of the evolutionary history of life on Earth!</p>
+<p>What we’ve done here is create a <strong>pairwise alignment</strong> of <code class="docutils literal notranslate"><span class="pre">r1</span></code> and <code class="docutils literal notranslate"><span class="pre">q2_aligned</span></code> and of <code class="docutils literal notranslate"><span class="pre">r2</span></code> and <code class="docutils literal notranslate"><span class="pre">q2_aligned</span></code> and then computed Hamming distances between each pair of aligned sequences. In other words, we’ve <strong>aligned</strong> positions to maximize the similarity of the two sequences, using the <code class="docutils literal notranslate"><span class="pre">-</span></code> to fill in spaces where one character is missing with respect to that location in the other sequence. We refer to <code class="docutils literal notranslate"><span class="pre">-</span></code> characters in aligned sequences as <strong>gap characters</strong>, or gaps.</p>
 <p>The <em>alignment</em> of these two sequences is clear if we print them  out, one on top of the other:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">q3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q2_aligned</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ACCCAGGTTAACGGTGACCAGGTACCAGAAGGGTACCAGGTAGGACACACGGGGATTAA
--TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCA
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR
+M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSALSALSDLHAHKLRVDPVNFKLLAHCILVVLARHCPGEFTPSAHAAMDKFLSKVATVLTSKYR
 </pre></div>
 </div>
 </div>
 </div>
-<p>Scanning through these two sequences, we can see that they are largely identical, with the exception of one <code class="docutils literal notranslate"><span class="pre">-</span></code> character, and about 25% <em>substitutions</em> of one base for another.</p>
+<p>Scanning through these two sequences, we can see that they are largely identical, with the exception of one <code class="docutils literal notranslate"><span class="pre">-</span></code> character, and about 27% <em>substitutions</em> of one amino acid for another.</p>
 <div class="section" id="what-is-a-sequence-alignment">
 <h2><span class="section-number">1.1. </span>What is a sequence alignment?<a class="headerlink" href="#what-is-a-sequence-alignment" title="Permalink to this headline">¶</a></h2>
-<p>Let’s take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as <strong>mutations</strong>. Some types of mutation events that can occur are:</p>
+<p>Let’s now take a minute to think about sequence evolution and what a biological sequence alignment actually is. Over the course of biological evolution a DNA sequence changes, most frequently due to random errors in replication (or the copying of a DNA sequence). These replication errors are referred to as <strong>mutations</strong>. Some types of mutation events that can occur are:</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In protein coding regions of genomes, substitutions may or may not result in a change in the resulting protein. These mutations would be referred to as non-synonymous or synonymous mutations, respectively. Insertions or deletions will change the resulting protein, and the size of the insertion or deletion (i.e., the number of bases inserted or deleted) determines how impactful the mutation is on the resulting protein sequence.</p>
+</div>
+</div>
 <ul class="simple">
-<li><p><strong>substitutions</strong>, where one base (or amino acid, in protein sequences) is replaced with another;</p></li>
-<li><p><strong>insertions</strong>, where one or more contiguous bases are inserted into a sequence;</p></li>
-<li><p>and <strong>deletions</strong>, where one or more contiguous bases are deleted from a sequence.</p></li>
+<li><p><strong>substitutions</strong>, where one DNA base is replaced with another;</p></li>
+<li><p><strong>insertions</strong>, where one or more contiguous DNA bases are inserted into a sequence;</p></li>
+<li><p>and <strong>deletions</strong>, where one or more contiguous DNA bases are deleted from a sequence.</p></li>
 </ul>
 <p>(Other types of mutation events can occur, but we’re going to focus on these for now.)</p>
 <p><a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a> illustrates how one ancestral DNA sequence (<a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>a), over time, might evolve into two derived sequences (<a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>b). When two or more sequences are derived from a single ancestral sequence, as is the case in this example, those sequences are said to be <strong>homologs</strong> of one another, or homologous sequences. On a piece of paper, make a hypothesis about which of these types of mutation events occurred where over our hypothetical evolution of these sequences.</p>
@@ -586,8 +609,9 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 <img alt="../_images/pairwise-alignment-1.png" src="../_images/pairwise-alignment-1.png" />
 <p class="caption"><span class="caption-number">Fig. 1.1 </span><span class="caption-text">Sequence evolution and pairwise sequence alignment. Abbreviation key: <em>indel</em>: insertion or deletion event has occurred since the last common ancestor; <em>sub</em>: substitution event has occurred since the last common ancestor; <em>nc</em>: no change has occurred since the last common ancestor.</span><a class="headerlink" href="#pairwise-alignment-1" title="Permalink to this image">¶</a></p>
 </div>
-<p><strong>The goal of pairwise sequence alignment is, given two sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.</strong> In practice, we develop this hypothesis by aligning the sequences to one another inserting gaps as necessary, in a way that maximizes their similarity. This is a <strong>maximum parsimony</strong> approach (an application of <a class="reference external" href="https://en.wikipedia.org/wiki/Occam%27s_razor">Occam’s razor</a>), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.</p>
-<p>In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in <a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct 100 million years ago).</p>
+<p><strong>The goal of pairwise sequence alignment is, given two DNA, RNA, or protein sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.</strong> Depending on the available data and/or the goals of the experiment, you may end up performing pairwise alignment on DNA sequences, RNA sequences, or protein sequences. In general, the same procedures (or algorithms) apply to all of these cases though there are some parameters that vary with the type of molecule that you’re working with.</p>
+<p>In practice, we develop a pairwise alignment hypothesis by aligning the sequences to one another, inserting gap characters as necessary, in a way that maximizes their similarity. This is a <strong>maximum parsimony</strong> approach (an application of <a class="reference external" href="https://en.wikipedia.org/wiki/Occam%27s_razor">Occam’s razor</a>), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.</p>
+<p>In nearly all cases, the only sequences we have to work with are the modern (derived) sequences, as illustrated in <a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>c. The ancestral sequence is not something we have access to (for example, because the organism whose genome it was present in went extinct tens or hundreds or even thousands of millions of years ago).</p>
 <p><a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>d-f illustrates three possible alignments of these two sequences. Just as the notes you made about which types of mutation events may have happened at which positions represents your <em>hypothesis</em> about the evolutionary events that took place, a sequence alignment that you might get from a computer program such as BLAST is also only a hypothesis. Which do you think is the most likely alignment of these sequences (note that there may not be a single best answer)?</p>
 <p>You can think of an alignment as a table (<a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>g), where the rows are sequences and the columns are positions in those sequences. When you have two or more aligned sequences, there will, by definition, always be the same number of columns in each row. Each column in your alignment represents a hypothesis about the evolutionary events that occurred at that position since the last ancestor of the aligned sequences (the sequence in <a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>a in our example). The specific hypotheses represented by each column in the <a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>d alignment are explicitly annotated in <a class="reference internal" href="#pairwise-alignment-1"><span class="std std-numref">Fig. 1.1</span></a>g.</p>
 <p>One thing that’s worth pointing out at this point is that because we don’t know what the ancestral sequence was, when we encounter a gap in a pairwise alignment, we generally won’t know whether a deletion occurred in one sequence, or an insertion occurred in the other. For that reason, you will often see the term <strong>indel</strong> used to refer to these insertion or deletion events.</p>
@@ -595,10 +619,11 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 </div>
 <div class="section" id="a-first-algorithm-for-aligning-a-pair-of-sequences">
 <h2><span class="section-number">1.2. </span>A first algorithm for aligning a pair of sequences<a class="headerlink" href="#a-first-algorithm-for-aligning-a-pair-of-sequences" title="Permalink to this headline">¶</a></h2>
-<p>Let’s define two sequences, <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> and then work through an approach for aligning them.</p>
+<p>Let’s define two sequences, <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> and then work through an approach for aligning them. In this section we’ll work with DNA sequences, and in subsequent sections we’ll work with protein sequences. Again, the algorithms are largely the same. Throughout this book and your own work we’ll sometimes align DNA or RNA sequences, and sometimes align protein sequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seq1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGGTGGAACCGGTAACACCCAC&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">DNA</span>
+<span class="n">seq1</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGGTGGAACCGGTAACACCCAC&quot;</span><span class="p">)</span>
 <span class="n">seq2</span> <span class="o">=</span> <span class="n">DNA</span><span class="p">(</span><span class="s2">&quot;ACCGGTAACCGGTTAACACCCAC&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -609,14 +634,16 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 <p>We’ll create this matrix and initialize it with all zeros as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">num_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
 <span class="n">num_cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>In this chapter I’ll use a function called <code class="docutils literal notranslate"><span class="pre">show_F</span></code> to display matrices like this.</p>
+<p>In this chapter I’ll use a function called <code class="docutils literal notranslate"><span class="pre">show_F</span></code> to display matrices like this. (I’ll define <code class="docutils literal notranslate"><span class="pre">F</span></code> a little later, so this function name will make more sense then.)</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tabulate</span>
@@ -791,9 +818,18 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 </table></div></div>
 </div>
 <p>Next, we’ll identify the length of the longest diagonal.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">longest_diagonal_length</span> <span class="o">=</span> <span class="n">summed_data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">longest_diagonal_length</span> <span class="o">=</span> <span class="n">summed_data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The longest diagonal is </span><span class="si">%d</span><span class="s2"> characters long.&quot;</span> <span class="o">%</span> <span class="n">longest_diagonal_length</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The longest diagonal is 10 characters long.
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="step-4-transcribe-some-of-the-possible-alignments-that-arise-from-this-process">
@@ -825,10 +861,10 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 <h3><span class="section-number">1.2.5. </span>Why this simple procedure is too simplistic<a class="headerlink" href="#why-this-simple-procedure-is-too-simplistic" title="Permalink to this headline">¶</a></h3>
 <p>I suggested above that you keep a list of assumptions that are made by this approach. Here are a couple of the very problematic ones.</p>
 <ol class="simple">
-<li><p>We’re scoring all matches as 1 and all mismatches as 0. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What’s a more biologically meaningful way to do this (think about protein sequences here)?</p></li>
+<li><p>We’re scoring all matches as 1 and all mismatches as -1. This suggests that all matches are equally likely, and all mismatches are equally unlikely. What’s a more biologically meaningful way to do this (think about protein sequences here)?</p></li>
 <li><p>Similarly, every gap that is introduced results in the same penalty being incurred. Based on what we know about how insertion/deletion events occur, what do you think is a more biologically meaningful way to do this?</p></li>
 </ol>
-<p>All scoring schemes have limitations, and you should remember that when you’re working with software that generates alignments for you (e.g., systems such as <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a>). Especially as you’re getting started in bioinformatics, it’s easy to forget that and just accept the result from computer software as “the right answer”. You’ll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won’t do your work for you. Their answers are based on models (for example, how we model matches, mismatches and gaps here) and as you’re learning here, the models are not perfect. Be skeptical!</p>
+<p>All scoring schemes have limitations, and you should remember that when you’re working with software that generates alignments for you (e.g., systems such as <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a>). Especially as you’re getting started in bioinformatics, it’s easy to forget that and just accept the result from computer software as “the right answer”. You’ll need to determine if you agree with the result that a computational system gives you, which will involve examining the result in the context of what you know about the biology of the systems your studying. Algorithms such as the one we just explored are there to help you do your work, but they won’t do your work for you. Their answers are based on models (in this example, how we model matches, mismatches, and gaps) and as you’re learning here, the models are not perfect. Be skeptical of automated approaches to solve complex problems!</p>
 <p>Another important consideration as we think about algorithms for aligning pairs of sequences is how long an algorithm will take to run as a function of the input it’s provided (or in technical terminology, the <a class="reference external" href="http://bigocheatsheet.com/">computational complexity</a> of the algorithm). When searching a sequence against a database (for example, to get an idea of what its function is), you may have billions of bases to search against, which would correspond to billions of columns in one of the matrices we just computed. Computers are fast, but the data sets you’re going to be working with are very large and in many cases growing exponentially in size over time. Working in bioinformatics, it’s inevitable that you’re going to begin to discover the limitations of the algorithms and software you use. Runtime and memory requirements are the usual culprits. Because the data sets are getting bigger more quickly than computers are getting faster (at least as of this writing), just waiting for computers to get faster won’t work. We need smart people who understand some computer science and some biology to design clever algorithms, software, and analytic techniques to enable the next generation of advances that technologies like high-throughput DNA sequencing are promising. (And there are a lot of people who want to spend good money to pay people who can do these things, so keep reading!)</p>
 <p>Over the next several sections we’ll explore ways of addressing the two issues noted above. We’ll introduce the problem of the computational complexity of pairwise sequence alignment at the end of this chapter, and explore approaches for addressing that (i.e., making database searching faster) in the next chapter.</p>
 </div>
@@ -875,13 +911,8 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
 <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
 <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blosum50</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">aas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blosum50</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="n">aas</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">aa1</span> <span class="ow">in</span> <span class="n">aas</span><span class="p">:</span>
@@ -891,7 +922,13 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
     <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
 <span class="n">aa_labels</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">aas</span><span class="p">)</span>
-<span class="n">show_substitution_matrix</span><span class="p">(</span><span class="n">aa_labels</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_substitution_matrix</span><span class="p">(</span><span class="n">aa_labels</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -924,8 +961,11 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 </tbody>
 </table></div></div>
 </div>
+<div class="admonition-food-for-thought admonition">
+<p class="admonition-title">Food for thought</p>
 <p>Look at the scores in this matrix in the context of details about the biochemistry of the amino acids (see the molecular structures <a class="reference external" href="http://en.wikipedia.org/wiki/Amino_acid">on Wikipedia</a> or in any general microbiology or biochemistry text). Does a positive score represent a more or less favorable substitution? Confirm that the scores match your intuition for some similar and dissimilar amino acids.</p>
-<p>You can look up individual substitution scores as follows:</p>
+</div>
+<p>You can look up individual substitution scores in this matrix as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">blosum50</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="s1">&#39;G&#39;</span><span class="p">])</span>
@@ -948,15 +988,22 @@ TCCAGGTAAACGGTGACCAGGTACCAGTTGCGTTTGTTGTAGGAGACACGGGGACCCAT
 </div>
 </div>
 </div>
-<p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s (Dayhoff, Schwartz, Orcutt (1978) <i>A Model of Evolutionary Change in Proteins.</i> Atlas of Protein Sequence and Structure) and by <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC50453/">Henikoff and Henikoff</a> in the early 1990s. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/15286655">This</a> is a good article on the source of the widely used substitution matrices by Sean Eddy. We’ll work with BLOSUM 50 here for the remainder of this chapter.</p>
+<p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s <a class="bibtex reference internal" href="#m-o-dayhoff1978-lc" id="id2">[MOD78]</a> and by Steven Henikoff and Jorja Henikoff in the early 1990s <a class="bibtex reference internal" href="#henikoff1992-kn" id="id3">[HH92]</a>. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) <a class="bibtex reference internal" href="#eddy2004-eu" id="id4">[Edd04]</a> presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We’ll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.</p>
 </div>
 <div class="section" id="a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm">
 <h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm<a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm" title="Permalink to this headline">¶</a></h2>
-<p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/5420325">Saul B. Needleman and Christian D. Wunsch in 1970</a>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first residue (or base) through their last residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-what-is-an-amino-acid-residue admonition">
+<p class="admonition-title">What is an “amino acid residue”?</p>
+<p>When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or <strong>residues</strong> for short.</p>
+</div>
+</div>
+<p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 <a class="bibtex reference internal" href="#needleman1970-fk" id="id5">[NW70]</a>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
 <div class="section" id="stepwise-needleman-wunsch-alignment">
 <h3><span class="section-number">1.4.1. </span>Stepwise Needleman-Wunsch alignment<a class="headerlink" href="#stepwise-needleman-wunsch-alignment" title="Permalink to this headline">¶</a></h3>
 <p>Needleman-Wunsch alignment is similar to the approach that we explored above. We’ll work through the steps of the algorithm first, and then automate the process by defining Python functions that perform the steps for us given a pair of sequences.</p>
-<p>We’ll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we’re starting with are the same that are used in Chapter 2 of <a class="reference external" href="http://amzn.to/1IYUEz2">Biological Sequence Analysis</a>.</p>
+<p>We’ll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we’re starting with are the same that are used in Chapter 2 of <em>Biological Sequence Analysis</em> <a class="bibtex reference internal" href="#durbin1998-oc" id="id6">[Dur98]</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">Protein</span>
@@ -1461,9 +1508,7 @@ F(i, j) = max \left(\begin{align}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HEAGAWGHE-E
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-PA--W-HEAE
+-PA--W-HEAE
 1.0
 </pre></div>
 </div>
@@ -1639,8 +1684,8 @@ HEAGAWGHE-E
 </div>
 <div class="section" id="smith-waterman-local-sequence-alignment">
 <h2><span class="section-number">1.6. </span>Smith-Waterman local sequence alignment<a class="headerlink" href="#smith-waterman-local-sequence-alignment" title="Permalink to this headline">¶</a></h2>
-<p>The algorithm that is most commonly used for performing local alignment was originally published by <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/7265238">Temple F. Smith and Michael S. Waterman in 1981</a>, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.</p>
-<p>Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small important differences. We’ll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We’ll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.</p>
+<p>The algorithm that is most commonly used for performing local alignment was originally published by Temple F. Smith and Michael S. Waterman (1981) <a class="bibtex reference internal" href="#smith1981-ye" id="id7">[SW81]</a>, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.</p>
+<p>Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small but important differences. We’ll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We’ll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">Protein</span>
@@ -1659,8 +1704,8 @@ PAWHEAE
 </div>
 </div>
 </div>
-<div class="section" id="id1">
-<h3><span class="section-number">1.6.1. </span>Step 1: Create blank matrices.<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3><span class="section-number">1.6.1. </span>Step 1: Create blank matrices.<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p><span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are created in the same way for Smith-Waterman as for Needleman-Wunsch so prior to initialization, <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> would again look like the following.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1729,8 +1774,8 @@ PAWHEAE
 </table></div></div>
 </div>
 </div>
-<div class="section" id="id2">
-<h3><span class="section-number">1.6.2. </span>Step 2: Compute <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>.<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3><span class="section-number">1.6.2. </span>Step 2: Compute <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>.<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>Computing <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> is slightly different for Smith-Waterman than for Needleman-Wunsch. First, initialization is easier. The following formulas are used for computing the first row and column of <span class="math notranslate nohighlight">\(F\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1870,8 +1915,8 @@ F(i, j) = max \left(\begin{align}
 </table></div></div>
 </div>
 </div>
-<div class="section" id="id3">
-<h3><span class="section-number">1.6.3. </span>Step 3: Transcribe the alignment.<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3><span class="section-number">1.6.3. </span>Step 3: Transcribe the alignment.<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <p>There is one small difference in the traceback step between Smith-Waterman and Needleman-Wunsch. You should now begin tracing back from the cell with the highest value in <span class="math notranslate nohighlight">\(F\)</span>, rather than the bottom right cell of the matrix. We find this cell directly in the code below. As before, the alignment terminates when we hit a bullet (•) character, but in contrast to Needleman-Wunsch alignment, this can happen anywhere in the matrix, not only in <span class="math notranslate nohighlight">\(F(0, 0)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2070,7 +2115,7 @@ HEAGAWGHEE-
 </div>
 <div class="section" id="differential-scoring-of-gaps">
 <h2><span class="section-number">1.7. </span>Differential scoring of gaps<a class="headerlink" href="#differential-scoring-of-gaps" title="Permalink to this headline">¶</a></h2>
-<p>The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn’t ideal based on what we know about how insertion/deletion events occur (see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK21114/">this discussion of replication slippage</a> if you’re not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as <em>affine gap scoring</em>.</p>
+<p>The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn’t ideal based on what we know about how insertion/deletion events occur (see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK21114/">this discussion of replication slippage</a> <span class="bibtex" id="id11">[Brown2002-lb]</span> if you’re not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as <em>affine gap scoring</em>.</p>
 <p>To score gap extensions differently from gap creations (or gap opens), we need to modify the terms corresponding to the addition of gaps in our scoring function. When we compute the score corresponding to a gap in our alignment (i.e., where we’d insert either a ↑ or a ← in <span class="math notranslate nohighlight">\(T\)</span>), we should incur a <em>gap extension penalty</em> if the value in <span class="math notranslate nohighlight">\(T\)</span> that the new arrow will point to is the same type of arrow. Otherwise, we should incur the <em>gap open penalty</em>. If we represent our gap open penalty as <span class="math notranslate nohighlight">\(d^0\)</span>, and our gap extend penalty as <span class="math notranslate nohighlight">\(d^e\)</span>, our scoring scheme would look now like the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -2237,7 +2282,9 @@ Stats:
 ----------------------
 ---HEAGAWGFHEE
 PAWHEAE-------
-18.0
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18.0
 </pre></div>
 </div>
 </div>
@@ -2264,11 +2311,14 @@ HEAGAWGFHEE-
 </div>
 </div>
 </div>
-<p>As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won’t need to write any code to do this, but rather you can adapt some of the commands that we’ve already used above. Don’t forget about the <code class="docutils literal notranslate"><span class="pre">help</span></code> function - that’s essential for learning how to use a function.</p>
+<div class="admonition-interactive-exercise admonition">
+<p class="admonition-title">Interactive exercise</p>
+<p>As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won’t need to write any code to do this, but rather you can adapt some of the commands that we’ve already used above. Don’t forget about the <code class="docutils literal notranslate"><span class="pre">help()</span></code> function - that’s essential for learning how to use a function.</p>
+</div>
 </div>
 <div class="section" id="how-long-does-pairwise-sequence-alignment-take">
 <h2><span class="section-number">1.8. </span>How long does pairwise sequence alignment take?<a class="headerlink" href="#how-long-does-pairwise-sequence-alignment-take" title="Permalink to this headline">¶</a></h2>
-<p>The focus of this book is <em>applied</em> bioinformatics, and two of the practical considerations we need to think about when developing algorithms and applications is how long they’ll take to run, and how much system memory (or RAM) they’ll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.</p>
+<p>Two of the practical considerations we need to think about when developing algorithms and applications is how long they’ll take to run, and how much system memory (or RAM) they’ll require. Both of these can be limiting factors for applications that require sequence alignments, so a lot of effort is spent understanding how to optimize sequence alignment.</p>
 <p>We just worked through a few algorithms for pairwise sequence alignment, and ran some toy examples based on short sequences. What if we wanted to scale this up to align much longer sequences, or to align relatively short sequences against a large database? In this section we’ll explore the runtime of sequence alignment.</p>
 <div class="section" id="comparing-implementations-of-smith-waterman">
 <h3><span class="section-number">1.8.1. </span>Comparing implementations of Smith-Waterman<a class="headerlink" href="#comparing-implementations-of-smith-waterman" title="Permalink to this headline">¶</a></h3>
@@ -2286,7 +2336,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>86.4 ms ± 753 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>87 ms ± 606 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2301,7 +2351,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>326 µs ± 3.01 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>339 µs ± 4.26 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2381,10 +2431,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GGTGCAACAT
-GGCACGATGA
-ACAAGCCCGCCTACTAGTGCGACGG
-CCTAATAAACACCTACGGCCACAACCACTACCCTTATGAGGAAAGAGTCT
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AAGGGCATTT
+GGATATTTTT
+GCAACTGGTCGATAACCGCAGAATC
+GAGCAACTTTACAACTGACAAGTAGTGGGTTCGACGCGCTCTCATCACAT
 </pre></div>
 </div>
 </div>
@@ -2453,32 +2503,32 @@ CCTAATAAACACCTACGGCCACAACCACTACCCTTATGAGGAAAGAGTCT
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.149746</td>
+      <td>0.153172</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>0.867554</td>
+      <td>0.888513</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>1.854683</td>
+      <td>1.910921</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>3.069465</td>
+      <td>3.169320</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>4.551545</td>
+      <td>4.672621</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>6.409920</td>
+      <td>6.557770</td>
     </tr>
   </tbody>
 </table>
@@ -2503,10 +2553,10 @@ CCTAATAAACACCTACGGCCACAACCACTACCCTTATGAGGAAAGAGTCT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff9a93b7198&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fcca0d56668&gt;
 </pre></div>
 </div>
-<img alt="../_images/pairwise-alignment_96_1.png" src="../_images/pairwise-alignment_96_1.png" />
+<img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
 </div>
 </div>
 <p>This looks to be a <a class="reference external" href="http://en.wikipedia.org/wiki/Quadratic_time">quadratic relationship</a>: the increase in runtime is proportional to the square of sequence length. If you think back to the computation of <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span>, this makes sense. If our sequences are each five bases long, our matrices will have five rows and five columns, so <span class="math notranslate nohighlight">\(5 \times 5 = 25\)</span> cells that need to be filled in by performing some numeric computations. If we double our sequences lengths to ten, our matrices will have ten rows and ten columns, so <span class="math notranslate nohighlight">\(10 \times 10 = 100\)</span> cells that need to be filled in. Because each of the numeric computations take roughly the same amount of time (you can take that on faith, or prove it to yourself using <code class="docutils literal notranslate"><span class="pre">timeit</span></code>), when we double our sequence length we have four times as many cells to compute.</p>
@@ -2527,10 +2577,10 @@ CCTAATAAACACCTACGGCCACAACCACTACCCTTATGAGGAAAGAGTCT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff99964b470&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fccb0d3ebe0&gt;
 </pre></div>
 </div>
-<img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
+<img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />
 </div>
 </div>
 <p>Notice that the runtimes in the plot are smaller, but shape of the curve is the same. While parallelization can reduce the runtime of an algorithm, it won’t change its <em>computational complexity</em> (or how its runtime scales as a function of its input size). You can explore the computational complexity of different types of algorithms in the <a class="reference external" href="http://bigocheatsheet.com/">Big-O Cheat Sheet</a>, though it’s a fairly advanced introduction to the topic (and one that’s usually covered in the second or third year for Computer Science majors).</p>
@@ -2539,6 +2589,33 @@ CCTAATAAACACCTACGGCCACAACCACTACCCTTATGAGGAAAGAGTCT
 <h3><span class="section-number">1.8.3. </span>Conclusions on the scalability of pairwise sequence alignment with Smith-Waterman<a class="headerlink" href="#conclusions-on-the-scalability-of-pairwise-sequence-alignment-with-smith-waterman" title="Permalink to this headline">¶</a></h3>
 <p>These are pretty long sequences that we’re working with here, and the runtime is still pretty reasonable (only a few seconds for DNA sequences around 100,000 bases), so that suggests this implementation of Smith-Waterman should work ok for aligning pairs of sequences, even if the sequences are fairly long. However, we’re often interested in doing more than just pairwise alignment. For example, we may want to align many sequences to each other (which we’ll explore in the Multiple Sequence Alignment chapter), or we may want to perform many pairwise alignments (which we’ll explore in the Database Searching chapter). In the next chapter we’ll begin exploring ways to address this scalability issue by approximating solutions to the problem.</p>
 </div>
+</div>
+<div class="section" id="list-of-works-cited">
+<h2><span class="section-number">1.9. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
+<p id="bibtex-bibliography-algorithms/pairwise-alignment-0"><dl class="citation">
+<dt class="bibtex label" id="altschul1990-ds"><span class="brackets"><a class="fn-backref" href="#id1">AGM+90</a></span></dt>
+<dd><p>S F Altschul, W Gish, W Miller, E W Myers, and D J Lipman. Basic local alignment search tool. <em>J. Mol. Biol.</em>, 215(3):403–410, October 1990.</p>
+</dd>
+<dt class="bibtex label" id="durbin1998-oc"><span class="brackets"><a class="fn-backref" href="#id6">Dur98</a></span></dt>
+<dd><p>Richard Durbin. <em>Biological Sequence Analysis (Probabilistic Models of Proteins and Nucleic Acids)</em>. Cambridge University Press, 1 edition, April 1998.</p>
+</dd>
+<dt class="bibtex label" id="eddy2004-eu"><span class="brackets"><a class="fn-backref" href="#id4">Edd04</a></span></dt>
+<dd><p>Sean R Eddy. Where did the BLOSUM62 alignment score matrix come from? <em>Nat. Biotechnol.</em>, 22(8):1035–1036, August 2004.</p>
+</dd>
+<dt class="bibtex label" id="henikoff1992-kn"><span class="brackets"><a class="fn-backref" href="#id3">HH92</a></span></dt>
+<dd><p>S Henikoff and J G Henikoff. Amino acid substitution matrices from protein blocks. <em>Proc. Natl. Acad. Sci. U. S. A.</em>, 89(22):10915–10919, November 1992.</p>
+</dd>
+<dt class="bibtex label" id="m-o-dayhoff1978-lc"><span class="brackets"><a class="fn-backref" href="#id2">MOD78</a></span></dt>
+<dd><p>R M Schwartz M. O. Dayhoff. Chapter 22: a model of evolutionary change in proteins. In <em>in Atlas of Protein Sequence and Structure</em>. 1978.</p>
+</dd>
+<dt class="bibtex label" id="needleman1970-fk"><span class="brackets"><a class="fn-backref" href="#id5">NW70</a></span></dt>
+<dd><p>S B Needleman and C D Wunsch. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J. Mol. Biol.</em>, 48(3):443–453, March 1970.</p>
+</dd>
+<dt class="bibtex label" id="smith1981-ye"><span class="brackets"><a class="fn-backref" href="#id7">SW81</a></span></dt>
+<dd><p>T F Smith and M S Waterman. Identification of common molecular subsequences. <em>J. Mol. Biol.</em>, 147(1):195–197, March 1981.</p>
+</dd>
+</dl>
+</p>
 </div>
 </div>
 

@@ -17,14 +17,16 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-show_F(seq1, seq2, data)
+seq1 = DNA("ACCGGTGGAACCGGTAACACCCAC")
+seq2 = DNA("ACCGGTAACCGGTTAACACCCAC")
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m<ipython-input-9-ed4f9676d741>[0m in [0;36m<module>[0;34m[0m
-[0;32m----> 1[0;31m [0mshow_F[0m[0;34m([0m[0mseq1[0m[0;34m,[0m [0mseq2[0m[0;34m,[0m [0mdata[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;31mNameError[0m: name 'show_F' is not defined
-NameError: name 'show_F' is not defined
+[0;32m<ipython-input-7-ce609b4b669e>[0m in [0;36m<module>[0;34m[0m
+[0;32m----> 1[0;31m [0mseq1[0m [0;34m=[0m [0mDNA[0m[0;34m([0m[0;34m"ACCGGTGGAACCGGTAACACCCAC"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      2[0m [0mseq2[0m [0;34m=[0m [0mDNA[0m[0;34m([0m[0;34m"ACCGGTAACCGGTTAACACCCAC"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mNameError[0m: name 'DNA' is not defined
+NameError: name 'DNA' is not defined
 
