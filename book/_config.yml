@@ -11,7 +11,21 @@ copyright                   : "2020-2021"
 logo                        : logo.png 
 
 parse:
-    myst_extended_syntax: true
+  # defaults from https://jupyterbook.org/customize/config.html (2020-02-19)
+  myst_enable_extensions:
+    # - amsmath
+    - colon_fence
+    # - deflist
+    - dollarmath
+    # - html_admonition
+    # - html_image
+    - linkify
+    # - replacements
+    # - smartquotes
+    - substitution
+
+  myst_url_schemes          : [mailto, http, https]
+
 
 execute:
   timeout: 120
@@ -25,3 +39,6 @@ repository:
 launch_buttons:
   notebook_interface: "classic" # "jupyterlab" doesn't yet support markdown notebooks
   binderhub_url: "https://mybinder.org"
+
+bibtex_bibfiles:
+   - references.bib

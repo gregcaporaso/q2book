@@ -225,7 +225,7 @@ qiime diversity alpha-rarefaction \
   --o-visualization alpha-rarefaction.qzv
 ```
 
-Within the interactive visualization, samples can be grouped into metadata categories to facilitate visual comparisons. In the sample metadata column select _vegetation_ to group samples based on whether they are observed in sites containing or not containing vegetation. You should see a view that looks something like {numref}`alpha-rarefaction-1.png`.
+Within the interactive visualization, samples can be grouped into metadata categories to facilitate visual comparisons. In the sample metadata column select _vegetation_ to group samples based on whether they are observed in sites containing or not containing vegetation. You should see a view that looks something like {numref}`alpha-rarefaction-1`.
 
 ```{figure} ./images/alpha-rarefaction-1.png
 ---
