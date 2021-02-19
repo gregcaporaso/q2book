@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2. Sequence homology searching &#8212; q2book</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -45,8 +45,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -54,6 +52,8 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="1. Getting started with developing with QIIME 2" href="../developing/getting-started.html" />
@@ -360,7 +360,7 @@
                 
   <div class="section" id="sequence-homology-searching">
 <h1><span class="section-number">2. </span>Sequence homology searching<a class="headerlink" href="#sequence-homology-searching" title="Permalink to this headline">¶</a></h1>
-<p>In this chapter we’ll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We <span class="xref myst">previously defined homology</span> between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it’s very hard (really, impossible) to know what it is without more information.</p>
+<p>In this chapter we’ll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We previously defined homology between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it’s very hard (really, impossible) to know what it is without more information.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">mystery</span><span class="o">-</span><span class="n">sequence1</span>
 <span class="n">PQITLWQRPLVTIRIGGQLKEALLDTGADDTVLEEMNLPGKWKPKMIGGIGGFIKVRQYDQIPVEIAHKAIGTVLVGPTPVNIIGRNLLTQIGATLNF</span>
 </pre></div>
@@ -371,7 +371,7 @@
 <div class="section" id="defining-the-problem">
 <h2><span class="section-number">2.1. </span>Defining the problem<a class="headerlink" href="#defining-the-problem" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned above, if we want to perform a homology search we’ll have one or more <em>query sequences</em>, and for each we want to know which sequence(s) in a reference database it is most similar to.</p>
-<p>Sequence homology searching can be implemented in a few ways. In this chapter, we’ll use the local alignment function that we worked with in <span class="xref myst">the Pairwise Alignment chapter</span>, <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code>, run it many times to search one <em>query</em> sequence against many <em>reference</em> sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
+<p>Sequence homology searching can be implemented in a few ways. In this chapter, we’ll use the local alignment function that we worked with in the Pairwise Alignment chapter, <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code>, run it many times to search one <em>query</em> sequence against many <em>reference</em> sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
 <span class="n">help</span><span class="p">(</span><span class="n">local_pairwise_align_ssw</span><span class="p">)</span>
 </pre></div>
@@ -381,7 +381,7 @@
 </div>
 <div class="section" id="loading-annotated-sequences">
 <h2><span class="section-number">2.2. </span>Loading annotated sequences<a class="headerlink" href="#loading-annotated-sequences" title="Permalink to this headline">¶</a></h2>
-<p>The first thing we’ll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we’re going to work with are derived from the <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a> database, and we’re accessing them using the <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial <a class="reference external" href="http://www.nature.com/scitable/definition/ribosome-194">ribosome</a> (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it’s one of about 200 genes that are encoded in the genomes of all known cellular organisms. We’ll come back to this gene a few times in the book, notably in <span class="xref myst">Studying Biological Diversity</span>. The sequences in Greengenes are taxonomically annotated, meaning that we’ll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.</p>
+<p>The first thing we’ll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we’re going to work with are derived from the <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a> database, and we’re accessing them using the <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial <a class="reference external" href="http://www.nature.com/scitable/definition/ribosome-194">ribosome</a> (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it’s one of about 200 genes that are encoded in the genomes of all known cellular organisms. The sequences in Greengenes are taxonomically annotated, meaning that we’ll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.</p>
 <p>First, let’s load Greengenes into a list of <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code> sequence objects, and associate the taxonomy of each sequence as sequence metadata.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
 
@@ -485,7 +485,7 @@
 </div>
 <div class="section" id="reducing-the-runtime-for-database-searches">
 <h2><span class="section-number">2.5. </span>Reducing the runtime for database searches<a class="headerlink" href="#reducing-the-runtime-for-database-searches" title="Permalink to this headline">¶</a></h2>
-<p>In the examples above, it’s taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven’t modified the database subsampling step) it is computing the <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> matrices described in <span class="xref myst">the Pairwise Alignment chapter</span>, and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn’t change the fact that this doesn’t scale to real-world applications because we’d have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.</p>
+<p>In the examples above, it’s taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven’t modified the database subsampling step) it is computing the <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> matrices described in the Pairwise Alignment chapter, and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn’t change the fact that this doesn’t scale to real-world applications because we’d have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.</p>
 <p>As we discussed in the previous chapter, the run time of pairwise alignment scales quadratically with sequence length. Database searching, at least in the example we’re exploring in this chapter, is a bit of a different problem however. Our sequence lengths aren’t changing, but rather it takes a long time because we’re performing a computationally expensive step, pairwise alignment, many times. Our database is fixed in that the number of sequences in it doesn’t change and the sequences themselves don’t change. Our query sequences are all exactly the same length in this example (remember that we set that above, when we sliced a single region from reference database sequences to create our query sequences). Let’s explore how the runtime of this database search scales under these constraints.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
@@ -692,7 +692,7 @@
 </div>
 <div class="section" id="kmer-content">
 <h4><span class="section-number">2.6.2.2. </span>kmer content<a class="headerlink" href="#kmer-content" title="Permalink to this headline">¶</a></h4>
-<p>Another metric of sequence composition is <em>kmer composition</em>. A <span class="xref myst">kmer</span> is simply a word (or list of adjacent characters) of length <em>k</em> found within a sequence. Here are the kmer frequencies in a short DNA sequence. The <code class="docutils literal notranslate"><span class="pre">overlap=True</span></code> parameter here means that our kmers can overlap one another.</p>
+<p>Another metric of sequence composition is <em>kmer composition</em>. A kmer is simply a word (or list of adjacent characters) of length <em>k</em> found within a sequence. Here are the kmer frequencies in a short DNA sequence. The <code class="docutils literal notranslate"><span class="pre">overlap=True</span></code> parameter here means that our kmers can overlap one another.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio</span>
 
 <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">(</span><span class="s1">&#39;ACCGTGACCAGTTACCAGTTTGACCAA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1012,7 +1012,7 @@
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     

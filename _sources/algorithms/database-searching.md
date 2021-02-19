@@ -1,7 +1,7 @@
 
 # Sequence homology searching 
 
-In this chapter we'll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We [previously defined homology](alias://e63a4f) between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it's very hard (really, impossible) to know what it is without more information.
+In this chapter we'll talk about using pairwise alignment to search databases of biological sequences with the goal of identifying sequence homology. We previously defined homology between a pair of sequences to mean that those sequences are derived from a common ancestral sequence. Homology searching is an essential part of making inferences about where a biological sequence came from, and/or what it does. In most cases, if you have an unannotated biological sequence, such as the following protein sequence, it's very hard (really, impossible) to know what it is without more information.
 
 ```
 >mystery-sequence1
@@ -18,7 +18,7 @@ In the context of database searching, a query sequence and a reference sequence 
 
 As mentioned above, if we want to perform a homology search we'll have one or more *query sequences*, and for each we want to know which sequence(s) in a reference database it is most similar to.
 
-Sequence homology searching can be implemented in a few ways. In this chapter, we'll use the local alignment function that we worked with in [the Pairwise Alignment chapter](alias://a76822), ``local_pairwise_align_ssw``, run it many times to search one *query* sequence against many *reference* sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to ``help``:
+Sequence homology searching can be implemented in a few ways. In this chapter, we'll use the local alignment function that we worked with in the Pairwise Alignment chapter, ``local_pairwise_align_ssw``, run it many times to search one *query* sequence against many *reference* sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to ``help``:
 
 ```python
 from skbio.alignment import local_pairwise_align_ssw
@@ -31,7 +31,7 @@ While we'll be aligning nucleotide sequences in this chapter, the same concepts 
 
 ## Loading annotated sequences 
 
-The first thing we'll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we're going to work with are derived from the [Greengenes](http://greengenes.secondgenome.com/) database, and we're accessing them using the [QIIME default reference project](https://github.com/biocore/qiime-default-reference). Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial [ribosome](http://www.nature.com/scitable/definition/ribosome-194) (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it's one of about 200 genes that are encoded in the genomes of all known cellular organisms. We'll come back to this gene a few times in the book, notably in [Studying Biological Diversity](alias://2bb2cf). The sequences in Greengenes are taxonomically annotated, meaning that we'll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.
+The first thing we'll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we're going to work with are derived from the [Greengenes](http://greengenes.secondgenome.com/) database, and we're accessing them using the [QIIME default reference project](https://github.com/biocore/qiime-default-reference). Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial [ribosome](http://www.nature.com/scitable/definition/ribosome-194) (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it's one of about 200 genes that are encoded in the genomes of all known cellular organisms. The sequences in Greengenes are taxonomically annotated, meaning that we'll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.
 
 First, let's load Greengenes into a list of ``skbio.DNA`` sequence objects, and associate the taxonomy of each sequence as sequence metadata.
 
@@ -160,7 +160,7 @@ for q in current_queries:
 
 ## Reducing the runtime for database searches 
 
-In the examples above, it's taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven't modified the database subsampling step) it is computing the $F$ and $T$ matrices described in [the Pairwise Alignment chapter](alias://a76822), and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn't change the fact that this doesn't scale to real-world applications because we'd have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.
+In the examples above, it's taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven't modified the database subsampling step) it is computing the $F$ and $T$ matrices described in the Pairwise Alignment chapter, and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn't change the fact that this doesn't scale to real-world applications because we'd have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.
 
 As we discussed in the previous chapter, the run time of pairwise alignment scales quadratically with sequence length. Database searching, at least in the example we're exploring in this chapter, is a bit of a different problem however. Our sequence lengths aren't changing, but rather it takes a long time because we're performing a computationally expensive step, pairwise alignment, many times. Our database is fixed in that the number of sequences in it doesn't change and the sequences themselves don't change. Our query sequences are all exactly the same length in this example (remember that we set that above, when we sliced a single region from reference database sequences to create our query sequences). Let's explore how the runtime of this database search scales under these constraints.
 
@@ -405,7 +405,7 @@ Try increasing and decreasing the number of sequences we'll align by increasing 
 
 #### kmer content 
 
-Another metric of sequence composition is *kmer composition*. A [kmer](alias://C7hMX5) is simply a word (or list of adjacent characters) of length *k* found within a sequence. Here are the kmer frequencies in a short DNA sequence. The ``overlap=True`` parameter here means that our kmers can overlap one another.
+Another metric of sequence composition is *kmer composition*. A kmer is simply a word (or list of adjacent characters) of length *k* found within a sequence. Here are the kmer frequencies in a short DNA sequence. The ``overlap=True`` parameter here means that our kmers can overlap one another.
 
 ```python
 import skbio

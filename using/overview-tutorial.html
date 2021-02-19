@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2. An interactive overview of QIIME 2 &#8212; q2book</title>
     
-  <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.3da636dd464baa7582d2.js">
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -45,8 +45,6 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -332,7 +330,7 @@
 <p>In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we’re through that, let’s jump in and do something quick with QIIME 2. In this chapter I’ll present a workflow, which you should follow along with on your computer if possible. In this workflow we’ll download some real sequencing data and associated sample metadata, and apply some QIIME 2 methods and visualizers to it to see if it supports a hypothesis about the biological system being studied. The interactive visualizations that we’ll build in this chapter are some of the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity of your samples. Before you can apply these steps to your own data, you’ll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in <a class="reference internal" href="importing.html#importing"><span class="std std-ref">Importing data into QIIME 2</span></a>.</p>
 <div class="section" id="the-study">
 <h2><span class="section-number">2.1. </span>The study<a class="headerlink" href="#the-study" title="Permalink to this headline">¶</a></h2>
-<p>For the purpose of getting a very quick overview of QIIME 2, we’re going to work with a desert soil microbiome data set that I was involved with generating to study the Atacama Desert in northern Chile <a class="bibtex reference internal" href="#neilson2017-bz" id="id1">[NCC+17]</a>. The Atacama Desert is one of the most arid locations on the Earth: in many years the hyper-arid core of the desert receives no rain at all. The data we’ll use here is sampled along a gradient from the hyper-arid core of the desert to the western foothills of the Andes mountain range, where there is more moisture resulting from snowmelt in the mountains.</p>
+<p>For the purpose of getting a very quick overview of QIIME 2, we’re going to work with a desert soil microbiome data set that I was involved with generating to study the Atacama Desert in northern Chile <span id="id1">[<a class="reference internal" href="#id10"><span>NCC+17</span></a>]</span>. The Atacama Desert is one of the most arid locations on the Earth: in many years the hyper-arid core of the desert receives no rain at all. The data we’ll use here is sampled along a gradient from the hyper-arid core of the desert to the western foothills of the Andes mountain range, where there is more moisture resulting from snowmelt in the mountains.</p>
 <p>I have a few hypotheses going into this analysis that we can test when we analyze the data. I’m formulating these hypotheses now, before I start analyzing the data, so I have an idea of what I expect to see. After analyzing the samples, I’ll have a good idea of whether the data supports my hypotheses or whether I’m surprised by the results. For the purpose of this introductory analysis I’m going to focus on one hypothesis.</p>
 <ul class="simple">
 <li><p>Hypothesis: There will be fewer types of microbes in the hyper-arid samples than in the less arid samples.</p></li>
@@ -402,7 +400,7 @@ curl -sL <span class="se">\</span>
 </div>
 <div class="section" id="denoising-the-demultiplexed-sequences">
 <h2><span class="section-number">2.4. </span>Denoising the demultiplexed sequences<a class="headerlink" href="#denoising-the-demultiplexed-sequences" title="Permalink to this headline">¶</a></h2>
-<p>Since our sequence quality generally looks good, let’s move on to the next step of our analysis: denoising the sequences (i.e., performing sequence quality control). QIIME 2 has a few options for denoising sequences. Here we’ll use the DADA2 denoising approach <a class="bibtex reference internal" href="#callahan2016-ga" id="id2">[CMR+16]</a>, which we’ll access through the <code class="docutils literal notranslate"><span class="pre">q2-dada2</span></code> plugin. Go ahead and run this command, which may take up to about 10 minutes to complete.</p>
+<p>Since our sequence quality generally looks good, let’s move on to the next step of our analysis: denoising the sequences (i.e., performing sequence quality control). QIIME 2 has a few options for denoising sequences. Here we’ll use the DADA2 denoising approach <span id="id2">[<a class="reference internal" href="#id12"><span>CMR+16</span></a>]</span>, which we’ll access through the <code class="docutils literal notranslate"><span class="pre">q2-dada2</span></code> plugin. Go ahead and run this command, which may take up to about 10 minutes to complete.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">dada2</span> <span class="n">denoise</span><span class="o">-</span><span class="n">single</span> \
   <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">demultiplexed</span><span class="o">-</span><span class="n">seqs</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
   <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">trim</span><span class="o">-</span><span class="n">left</span> <span class="mi">13</span> \
@@ -496,7 +494,7 @@ curl -sL <span class="se">\</span>
   <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">alpha</span><span class="o">-</span><span class="n">rarefaction</span><span class="o">.</span><span class="n">qzv</span>
 </pre></div>
 </div>
-<p>Within the interactive visualization, samples can be grouped into metadata categories to facilitate visual comparisons. In the sample metadata column select <em>vegetation</em> to group samples based on whether they are observed in sites containing or not containing vegetation. You should see a view that looks something like <code class="xref std std-numref docutils literal notranslate"><span class="pre">alpha-rarefaction-1.png</span></code>.</p>
+<p>Within the interactive visualization, samples can be grouped into metadata categories to facilitate visual comparisons. In the sample metadata column select <em>vegetation</em> to group samples based on whether they are observed in sites containing or not containing vegetation. You should see a view that looks something like <a class="reference internal" href="#alpha-rarefaction-1"><span class="std std-numref">Fig. 2.8</span></a>.</p>
 <div class="figure align-default" id="alpha-rarefaction-1">
 <img alt="../_images/alpha-rarefaction-1.png" src="../_images/alpha-rarefaction-1.png" />
 <p class="caption"><span class="caption-number">Fig. 2.8 </span><span class="caption-text">Simplified screenshot of <code class="docutils literal notranslate"><span class="pre">alpha-rarefaction.qzv</span></code>.</span><a class="headerlink" href="#alpha-rarefaction-1" title="Permalink to this image">¶</a></p>
@@ -546,11 +544,11 @@ curl -sL <span class="se">\</span>
 </div>
 <div class="section" id="list-of-works-cited">
 <h2><span class="section-number">2.11. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
-<p id="bibtex-bibliography-using/overview-tutorial-0"><dl class="citation">
-<dt class="bibtex label" id="callahan2016-ga"><span class="brackets"><a class="fn-backref" href="#id2">CMR+16</a></span></dt>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id2">CMR+16</a></span></dt>
 <dd><p>Benjamin J Callahan, Paul J McMurdie, Michael J Rosen, Andrew W Han, Amy Jo A Johnson, and Susan P Holmes. DADA2: high-resolution sample inference from illumina amplicon data. <em>Nat. Methods</em>, May 2016.</p>
 </dd>
-<dt class="bibtex label" id="neilson2017-bz"><span class="brackets"><a class="fn-backref" href="#id1">NCC+17</a></span></dt>
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id1">NCC+17</a></span></dt>
 <dd><p>Julia W Neilson, Katy Califf, Cesar Cardona, Audrey Copeland, Will van Treuren, Karen L Josephson, Rob Knight, Jack A Gilbert, Jay Quade, J Gregory Caporaso, and Raina M Maier. Significant impacts of increasing aridity on the arid soil microbiome. <em>mSystems</em>, May 2017.</p>
 </dd>
 </dl>
@@ -607,7 +605,7 @@ curl -sL <span class="se">\</span>
     </div>
 
     
-  <script src="../_static/js/index.3da636dd464baa7582d2.js"></script>
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     
