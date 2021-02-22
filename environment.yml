@@ -435,4 +435,5 @@ dependencies:
   - pip:
     - jupyter-book
     - ghp-import
+    - calysto_bash
 prefix: /home/jgc53/.conda/envs/q2book

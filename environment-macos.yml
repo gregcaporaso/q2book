@@ -352,4 +352,5 @@ dependencies:
   - pip:
     - jupyter-book
     - ghp-import
+    - calysto_bash
 prefix: /Users/gregcaporaso/miniconda3/envs/q2book
