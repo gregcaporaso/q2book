@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>5. Denoising demultiplexed sequencing data &#8212; q2book</title>
+    <title>1. Reading this book &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6. Taxonomic annotation and analysis of sequences" href="taxonomy.html" />
-    <link rel="prev" title="4. Demultiplexing a sequencing run" href="demultiplexing.html" />
+    <link rel="next" title="1. Getting started with using QIIME 2" href="../using/getting-started.html" />
+    <link rel="prev" title="Preface" href="preface.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -87,7 +87,7 @@
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="../front-matter/preface.html">
+  <a class="reference internal" href="preface.html">
    Preface
   </a>
  </li>
@@ -97,9 +97,9 @@
   Front Matter
  </span>
 </p>
-<ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../front-matter/reading.html">
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    1. Reading this book
   </a>
  </li>
@@ -109,34 +109,34 @@
   Microbiome Bioinformatics with QIIME 2
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="getting-started.html">
+  <a class="reference internal" href="../using/getting-started.html">
    1. Getting started with using QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="overview-tutorial.html">
+  <a class="reference internal" href="../using/overview-tutorial.html">
    2. An interactive overview of QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="importing.html">
+  <a class="reference internal" href="../using/importing.html">
    3. Importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="demultiplexing.html">
+  <a class="reference internal" href="../using/demultiplexing.html">
    4. Demultiplexing a sequencing run
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/denoising.html">
    5. Denoising demultiplexed sequencing data
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="taxonomy.html">
+  <a class="reference internal" href="../using/taxonomy.html">
    6. Taxonomic annotation and analysis of sequences
   </a>
  </li>
@@ -239,9 +239,12 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/front-matter/reading.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/using/denoising.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/front-matter/reading.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -261,10 +264,51 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/front-matter/reading.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-interactively-with-binder">
+   1.1. Reading interactively with Binder
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conventions">
+   1.2. Conventions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#special-text-blocks">
+   1.3. Special text blocks
+  </a>
+ </li>
+</ul>
+
+        </nav>
         
     </div>
 </div>
@@ -273,8 +317,83 @@
         
               <div>
                 
-  <div class="section" id="denoising-demultiplexed-sequencing-data">
-<span id="denoising"></span><h1><span class="section-number">5. </span>Denoising demultiplexed sequencing data<a class="headerlink" href="#denoising-demultiplexed-sequencing-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="reading-this-book">
+<h1><span class="section-number">1. </span>Reading this book<a class="headerlink" href="#reading-this-book" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="reading-interactively-with-binder">
+<h2><span class="section-number">1.1. </span>Reading interactively with Binder<a class="headerlink" href="#reading-interactively-with-binder" title="Permalink to this headline">¶</a></h2>
+<p>This book can be read statically or interactively. The simplest way to read interactively is with <a class="reference external" href="https://mybinder.org/">Binder</a>. When chapters are available to read interactively, you’ll see a rocket ship icon toward the top-right of the page. The current page can be read interactively, allowing you to execute the following code block (making any modifications you choose to make). If you’d like to try it out, click the rocket ship icon, and then the Launch Binder box that pops up beneath it.</p>
+<p>Code blocks will be presented throughout the book. If you’re reading a static version of the book, the output of running the code will be presented below the code block. If you’re reading an interactive version of the book, you’ll have to run the code cell to see the output.</p>
+<p>Here’s an example Python 3 code cell that imports the scikit-bio library and prints some information to the screen.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">art</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>*                                                    *
+               _ _    _ _          _     _
+              (_) |  (_) |        | |   (_)
+      ___  ___ _| | ___| |_ ______| |__  _  ___
+     / __|/ __| | |/ / | __|______| &#39;_ \| |/ _ \
+     \__ \ (__| |   &lt;| | |_       | |_) | | (_) |
+     |___/\___|_|_|\_\_|\__|      |_.__/|_|\___/
+
+*                                                    *
+
+
+
+           Opisthokonta
+                   \  Amoebozoa
+                    \ /
+                     *    Euryarchaeota
+                      \     |_ Crenarchaeota
+                       \   *
+                        \ /
+                         *
+                        /
+                       /
+                      /
+                     *
+                    / \
+                   /   \
+        Proteobacteria  \
+                       Cyanobacteria
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="conventions">
+<h2><span class="section-number">1.2. </span>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h2>
+<p>Text formats:</p>
+<ul class="simple">
+<li><p><strong>bolded text</strong> indicates new terms that are being introduced. These will ultimately show up in the glossary as well.</p></li>
+<li><p><em>italicized text</em> is used for emphasizing import ideas.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed-width</span> <span class="pre">text</span></code> is used to indicate literal values, for example file names or parameters that are used by a command.</p></li>
+</ul>
+</div>
+<div class="section" id="special-text-blocks">
+<h2><span class="section-number">1.3. </span>Special text blocks<a class="headerlink" href="#special-text-blocks" title="Permalink to this headline">¶</a></h2>
+<p>Throughout the text, you’ll sometimes see blocks of text that stand out as follows:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Spending a few minutes coding every day is a great way to build your skills and confidence!</p>
+</div>
+<p>These are intended to share ideas related to what is being presented in the text. I’ll use a few types of these special text blocks:</p>
+<ul class="simple">
+<li><p>Video: a video is available that may help you understand this content.</p></li>
+<li><p>Tip: an idea that may help you in your learning.</p></li>
+<li><p>Warning: a common error that is encountered.</p></li>
+<li><p>Note: a idea that is related to the content being presented, but is a bit off topic relative to the current discussion.</p></li>
+<li><p>Food for thought: a question or topic to think about related to the current content</p></li>
+<li><p>Interactive exercise: a suggestion for something to experiment to help you develop your understanding of the current content</p></li>
+<li><p>Jargon: discussed a term that is common among microbiome or bioinformatics practitioners, but which may not be immediately clear to beginners.</p></li>
+</ul>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -290,7 +409,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./using"
+            path: "./front-matter"
         },
         predefinedOutput: true
     }
@@ -305,8 +424,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="demultiplexing.html" title="previous page"><span class="section-number">4. </span>Demultiplexing a sequencing run</a>
-    <a class='right-next' id="next-link" href="taxonomy.html" title="next page"><span class="section-number">6. </span>Taxonomic annotation and analysis of sequences</a>
+    <a class='left-prev' id="prev-link" href="preface.html" title="previous page">Preface</a>
+    <a class='right-next' id="next-link" href="../using/getting-started.html" title="next page"><span class="section-number">1. </span>Getting started with using QIIME 2</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
