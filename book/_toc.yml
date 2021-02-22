@@ -2,6 +2,10 @@
 - file: front-matter/preface
   numbered: true
 
+- part: Front Matter
+  chapters:
+  - file: front-matter/reading
+
 - part: Microbiome Bioinformatics with QIIME 2
   chapters:
   - file: using/getting-started
