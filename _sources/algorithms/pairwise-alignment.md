@@ -122,10 +122,10 @@ In protein coding regions of genomes, substitutions may or may not result in a c
 ---
 name: pairwise-alignment-1
 ---
-Sequence evolution and pairwise sequence alignment. Abbreviation key: *indel*: insertion or deletion event has occurred since the last common ancestor; *sub*: substitution event has occurred since the last common ancestor; *nc*: no change has occurred since the last common ancestor.
+Sequence evolution and pairwise sequence alignment. Abbreviation key: indel: insertion or deletion event has occurred since the last common ancestor; *sub*: substitution event has occurred since the last common ancestor; *nc*: no change has occurred since the last common ancestor.
 ```
 
-**The goal of pairwise sequence alignment is, given two DNA, RNA, or protein sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position.** Depending on the available data and/or the goals of the experiment, you may end up performing pairwise alignment on DNA sequences, RNA sequences, or protein sequences. In general, the same procedures (or algorithms) apply to all of these cases though there are some parameters that vary with the type of molecule that you're working with. 
+_The goal of pairwise sequence alignment is, given two DNA, RNA, or protein sequences, to generate a hypothesis about which sequence positions derived from a common ancestral sequence position._ Depending on the available data and/or the goals of the experiment, you may end up performing pairwise alignment on DNA sequences, RNA sequences, or protein sequences. In general, the same procedures (or algorithms) apply to all of these cases though there are some parameters that vary with the type of molecule that you're working with. 
 
 In practice, we develop a pairwise alignment hypothesis by aligning the sequences to one another, inserting gap characters as necessary, in a way that maximizes their similarity. This is a **maximum parsimony** approach (an application of [Occam's razor](https://en.wikipedia.org/wiki/Occam%27s_razor)), where we assume that the simplest explanation (the one involving the fewest or most common mutation events) is the most likely.
 
@@ -286,7 +286,7 @@ Over the next several sections we'll explore ways of addressing the two issues n
 
 ## Differential scoring of matches and mismatches 
 
-When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we're going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we'll discuss here are general to both. With protein sequences, we're aligning amino acid residues (or *residues*, for short) to one another, instead of nucleotides.
+When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we're going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we'll discuss here are general to both. With protein sequences, we're aligning **amino acid residues** (or **residues**, for short) to one another, instead of nucleotides.
 
 First, let's talk about why two-value scoring schemes are too simplistic for protein alignment. In a protein, each amino acid residue is contributing to the structure and/or function of the protein. A given amino acid residue may contribute a charge to an enzyme that helps it to bind its substrate, it may introduce structural stability or instability in a protein, or provide spacing between different functional domains of the protein. Substitutions between amino acids that have similar chemical or physical properties tend to be better tolerated (i.e., less detrimental to the function of the protein) than substitutions between amino acids with different chemical or physical properties. It therefore makes sense to account for the chemical and physical properties of the amino acids being aligned when scoring matches and mismatches.
 
@@ -372,7 +372,7 @@ Early work on defining protein substitution matrices was performed by Margaret D
 ## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm 
 
 ````{margin}
-```{admonition} What is an "amino acid residue"?
+```{admonition} Jargon: What is an "amino acid residue"?
 When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or **residues** for short.
 ```
 ````
@@ -397,8 +397,8 @@ print(seq2)
 #### Step 1: Create blank matrices. 
 
 As we discussed earlier in this chapter, a pair of sequences can be aligned in different ways. Needleman-Wunsch provides the best alignment, as defined by its score. Here we'll compute two new matrices that together allow us to determine the highest alignment score given the sequences and the substitution matrix, and to transcribe the aligned sequences. These matrices are
- * the *dynamic programming matrix*, or $F$
- * and the *traceback matrix*, or $T$.
+ * the **dynamic programming matrix**, or $F$
+ * and the **traceback matrix**, or $T$.
 
 $F$ and $T$ are defined at the same time.
 
@@ -436,7 +436,7 @@ show_T(seq1, seq2, T)
 
 #### Step 2: Compute $F$ and $T$. 
 
-The first row and column of $F$ are initialized using the following formulas. $d$ in these formulas is a value referred to as the *gap penalty*. This is a constant value that is subtracted from the score of the alignment every time a gap character has to be introduced to align the sequences. We'll use a constant value of $d=8$ (it's positive because we subtract it) for now, and explore its use more shortly. $i$ is the row number in $F$, and $j$ is the column number in $F$.
+The first row and column of $F$ are initialized using the following formulas. $d$ in these formulas is a value referred to as the **gap penalty**. This is a constant value that is subtracted from the score of the alignment every time a gap character has to be introduced to align the sequences. We'll use a constant value of $d=8$ (it's positive because we subtract it) for now, and explore its use more shortly. $i$ is the row number in $F$, and $j$ is the column number in $F$.
 
 $$
 \begin{align}
@@ -763,7 +763,7 @@ print(score)
 
 ### Automating Smith-Waterman alignment with Python 
 
-Again, we can define a *convenience function*, which will allow us to provide the required input and just get our aligned sequences back.
+Again, we can define a function, which will allow us to provide the required input and just get our aligned sequences back.
 
 ```{code-cell}
 from skbio.alignment import local_pairwise_align
@@ -771,7 +771,7 @@ from skbio.alignment import local_pairwise_align
 %psource local_pairwise_align
 ```
 
-And we can take the *convenience function* one step further, and wrap `local_pairwise_align` and `global_pairwise_align` up in a more general `align` function, which takes a boolean parameter (i.e., `True` or `False`) indicating where we want a local or global alignment.
+And we can take the function one step further, and wrap `local_pairwise_align` and `global_pairwise_align` up in a more general `align` function, which takes a boolean parameter (i.e., `True` or `False`) indicating where we want a local or global alignment.
 
 ```{code-cell}
 def align(sequence1, sequence2, gap_penalty, substitution_matrix, local):
@@ -833,7 +833,7 @@ show_T(seq1[0], seq2[0], traceback_matrix)
 
 While we just looked at Smith-Waterman alignment with affine gap scoring, Needleman-Wunsch is adapted in the same way for affine gap scoring.
 
-The convenience functions we worked with above all take ``gap_open_penalty`` and ``gap_extend_penalty``, which we can see by calling ``help`` on the function. So, we can use those functions to explore sequence alignment with affine gap scoring.
+The functions we worked with above all take ``gap_open_penalty`` and ``gap_extend_penalty``, which we can see by calling ``help`` on the function. So, we can use those functions to explore sequence alignment with affine gap scoring.
 
 ```{code-cell}
 help(global_pairwise_align)

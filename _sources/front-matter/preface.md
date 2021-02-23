@@ -19,7 +19,7 @@ The technologies that are enabling work in microbiome science are the same that 
 My focus for the past decade has been on developing tools to empower researchers to analyze their microbiome data. This work is centered around the QIIME microbiome bioinformatics platform, and currently QIIME 2. The original QIIME, now referred to as [QIIME 1](http://qiime.org), was published in 2010 {cite}`qiime1` and has been [cited tens of thousands of times in the primary literature](https://scholar.google.com/scholar?cites=16903127068530972426&as_sdt=805&sciodt=0,3&hl=en). QIIME 2, which was published in July of 2019 {cite}`qiime2`, [succeeded QIIME 1 on 1 January 2018](https://qiime.wordpress.com/2018/01/03/qiime-2-has-succeeded-qiime-1/). QIIME 2 is better than QIIME 1 in all ways, and QIIME 1 is no longer actively supported. If you have previously used QIIME 1, you should invest time in learning and switching to QIIME 2. If you're new to QIIME, start with QIIME 2. (When I refer to _QIIME_ in this book, without specifying whether I'm referring to QIIME 1 or QIIME 2, I'm refering to the platform generally.)
 
 ````{margin}
-```{note}
+```{admonition} Video
 Watch [this video](https://www.youtube.com/watch?v=M2iXewkYHE0) for a high-level overview of the QIIME 2 platform.
 ```
 ````
@@ -28,7 +28,7 @@ QIIME 2 has large and growing user and developer communities, and these communit
 
 The QIIME 2 project is popular, essential to microbiome research, and (as of this writing) stablely funded through federal and other grants. Time spent reading this book and learning QIIME 2 will help you to advance your microbiome research projects. This book can be used for self-learning, as a companion text in [QIIME 2 workshops](https://workshops.qiime2.org) including our [free online workshop](https://forum.qiime2.org/t/microbiome-bioinformatics-with-qiime-2-free-online-workshop/18244/2), or even as a text in university courses that cover QIIME 2. 
 
-So grab a cup of coffee and let's get started! ☕
+So grab a cup of your favorite hot beverage and let's get started! ☕
 
 ## Using this book
 Part 1 of this book, _Microbiome Bioinformatics with QIIME 2_, is intended to be read sequentially. This section will teach you everything you need to know to get started using QIIME 2 for your own microbiome research, using example data sets along the way. As you learn to use the tools, you'll be introduced to underlying theory in microbiome bioinformatics. I also sprinkle in tips and tricks on how to get more out of QIIME 2, including how I use QIIME 2, so you'll be a QIIME 2 power user by the time you're done!  
