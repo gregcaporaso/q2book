@@ -11,7 +11,7 @@ copyright                   : "2020-2021"
 logo                        : logo.png 
 
 parse:
-  # defaults from https://jupyterbook.org/customize/config.html (2020-02-19)
+  # defaults from https://jupyterbook.org/customize/config.html (2021-02-19)
   myst_enable_extensions:
     # - amsmath
     - colon_fence
@@ -29,7 +29,8 @@ parse:
 
 execute:
   timeout: 120
-  execute_notebooks: cache
+  execute_notebooks: force # set to cache, pending https://github.com/executablebooks/jupyter-book/issues/1239
+  run_in_temp: true
 
 repository:
   url                       : https://github.com/gregcaporaso/q2book
