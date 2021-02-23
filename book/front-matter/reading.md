@@ -43,8 +43,9 @@ Text formats:
 
 Throughout the text, you'll sometimes see blocks of text that stand out as follows:
 
-```{tip}
-Spending a few minutes coding every day is a great way to build your skills and confidence!
+```{admonition} Tip: Learn programming a little at a time
+:class: tip
+Spending a few minutes coding every day is a great way to build your programming skills, empower your own research, and make you more competitive for future career opportunities. Python 3 and R are great languages to get started with for bioinformatics, but just about any language will be fine for learning. 
 ```
 
 These are intended to share ideas related to what is being presented in the text. I'll use a few types of these special text blocks:
