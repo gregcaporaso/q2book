@@ -184,23 +184,28 @@
 </p>
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/importing-examples.html">
+   1. Examples illustrating importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/biological-information.html">
-   1. Appendix 1: Biological Information
+   2. Appendix 1: Biological Information
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/microbiome-methods.html">
-   2. Appendix 2: A brief introduction to methods in microbiome science
+   3. Appendix 2: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/q2-origin-story.html">
-   3. Appendix 3: History of the QIIME platform
+   4. Appendix 3: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/glossary.html">
-   4. Glossary
+   5. Glossary
   </a>
  </li>
 </ul>
@@ -883,6 +888,13 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 <div class="section" id="differential-scoring-of-matches-and-mismatches">
 <h2><span class="section-number">1.3. </span>Differential scoring of matches and mismatches<a class="headerlink" href="#differential-scoring-of-matches-and-mismatches" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-jargon-what-is-an-amino-acid-residue admonition">
+<p class="admonition-title">Jargon: What is an “amino acid residue”?</p>
+<p>When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or <strong>residues</strong> for short.</p>
+</div>
+</div>
 <p>When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we’re going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we’ll discuss here are general to both. With protein sequences, we’re aligning <strong>amino acid residues</strong> (or <strong>residues</strong>, for short) to one another, instead of nucleotides.</p>
 <p>First, let’s talk about why two-value scoring schemes are too simplistic for protein alignment. In a protein, each amino acid residue is contributing to the structure and/or function of the protein. A given amino acid residue may contribute a charge to an enzyme that helps it to bind its substrate, it may introduce structural stability or instability in a protein, or provide spacing between different functional domains of the protein. Substitutions between amino acids that have similar chemical or physical properties tend to be better tolerated (i.e., less detrimental to the function of the protein) than substitutions between amino acids with different chemical or physical properties. It therefore makes sense to account for the chemical and physical properties of the amino acids being aligned when scoring matches and mismatches.</p>
 <p>Let’s take the sodium-potassium pump as an example (<a class="reference internal" href="#pdb-1"><span class="std std-numref">Fig. 1.2</span></a>). This molecule is described in the Protein Data Bank’s (PDB) <em>Molecule of the Month</em> series. Spend a couple of minutes reading about it <a class="reference external" href="http://pdb101.rcsb.org/motm/118">here</a>.</p>
@@ -1004,13 +1016,6 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 <div class="section" id="a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm">
 <h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm<a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm" title="Permalink to this headline">¶</a></h2>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition-jargon-what-is-an-amino-acid-residue admonition">
-<p class="admonition-title">Jargon: What is an “amino acid residue”?</p>
-<p>When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or <strong>residues</strong> for short.</p>
-</div>
-</div>
 <p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 <span id="id5">[<a class="reference internal" href="#id26"><span>NW70</span></a>]</span>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
 <div class="section" id="stepwise-needleman-wunsch-alignment">
 <h3><span class="section-number">1.4.1. </span>Stepwise Needleman-Wunsch alignment<a class="headerlink" href="#stepwise-needleman-wunsch-alignment" title="Permalink to this headline">¶</a></h3>
@@ -2346,7 +2351,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>87.9 ms ± 751 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>106 ms ± 304 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2361,7 +2366,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>379 µs ± 4.69 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>473 µs ± 4.72 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2441,10 +2446,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TGTAGAGTAC
-GAAGTTGCTC
-ACCGAACAGGCGTTCGAGCTCGACT
-AACAGACTTAATTTTCAGCCACTTTTAGCCGAATGTTCTCCAGGTACTGG
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CGTGATTCTA
+GAGTTCTAAG
+CATTCGGCCGCCTCTGCAACTGCAT
+CTCGTGCTACGCTGCAGCATCTCCTTCTTCAACTGCGACTACGCGATTTT
 </pre></div>
 </div>
 </div>
@@ -2513,32 +2518,32 @@ AACAGACTTAATTTTCAGCCACTTTTAGCCGAATGTTCTCCAGGTACTGG
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.169170</td>
+      <td>0.204987</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.014485</td>
+      <td>1.217467</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>2.419999</td>
+      <td>2.693945</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>3.559503</td>
+      <td>4.297414</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>5.127912</td>
+      <td>6.280729</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>7.370245</td>
+      <td>8.637180</td>
     </tr>
   </tbody>
 </table>
@@ -2563,7 +2568,7 @@ AACAGACTTAATTTTCAGCCACTTTTAGCCGAATGTTCTCCAGGTACTGG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f53653a7128&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f37b0fb44e0&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2587,7 +2592,7 @@ AACAGACTTAATTTTCAGCCACTTTTAGCCGAATGTTCTCCAGGTACTGG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f536537f1d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f37b0f7ed68&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />

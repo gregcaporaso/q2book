@@ -286,6 +286,12 @@ Over the next several sections we'll explore ways of addressing the two issues n
 
 ## Differential scoring of matches and mismatches 
 
+````{margin}
+```{admonition} Jargon: What is an "amino acid residue"?
+When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or **residues** for short.
+```
+````
+
 When aligning nucleotide sequences, using a simple two-value scoring scheme (where  all matches are scored with one value and all mismatches with another value) is common, but this approach is overly simplistic for protein sequences. In this section, we're going to switch gears to talking about protein alignment. The most commonly used algorithms are the same for nucleotides and proteins, so most of the ideas that we'll discuss here are general to both. With protein sequences, we're aligning **amino acid residues** (or **residues**, for short) to one another, instead of nucleotides.
 
 First, let's talk about why two-value scoring schemes are too simplistic for protein alignment. In a protein, each amino acid residue is contributing to the structure and/or function of the protein. A given amino acid residue may contribute a charge to an enzyme that helps it to bind its substrate, it may introduce structural stability or instability in a protein, or provide spacing between different functional domains of the protein. Substitutions between amino acids that have similar chemical or physical properties tend to be better tolerated (i.e., less detrimental to the function of the protein) than substitutions between amino acids with different chemical or physical properties. It therefore makes sense to account for the chemical and physical properties of the amino acids being aligned when scoring matches and mismatches.
@@ -370,12 +376,6 @@ print(blosum50['W']['W'])
 Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s {cite}`M_O_Dayhoff1978-lc` and by Steven Henikoff and Jorja Henikoff in the early 1990s {cite}`Henikoff1992-kn`. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) {cite}`Eddy2004-eu` presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We'll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.
 
 ## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm 
-
-````{margin}
-```{admonition} Jargon: What is an "amino acid residue"?
-When amino acids are joined to create a protein molecule, they are covalently linked to other amino acids. As a result, they can no longer technically be classified as amino acids. We therefore refer to them as residues of amino acids, or **residues** for short.
-```
-````
 
 We're next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 {cite}`Needleman1970-fk`, and is therefore referred to as *Needleman-Wunsch alignment*. This performs what is known as *global alignment*, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We'll contrast this later in this chapter with local alignment.
 

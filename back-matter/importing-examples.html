@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Taxonomic annotation and analysis of sequences &#8212; q2book</title>
+    <title>1. Examples illustrating importing data into QIIME 2 &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. Pairwise sequence alignment" href="../algorithms/pairwise-alignment.html" />
-    <link rel="prev" title="5. Denoising demultiplexed sequencing data" href="denoising.html" />
+    <link rel="next" title="2. Appendix 1: Biological Information" href="biological-information.html" />
+    <link rel="prev" title="2. Building a first plugin" href="../developing/first-plugin.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -109,34 +109,34 @@
   Microbiome Bioinformatics with QIIME 2
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="getting-started.html">
+  <a class="reference internal" href="../using/getting-started.html">
    1. Getting started with using QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="overview-tutorial.html">
+  <a class="reference internal" href="../using/overview-tutorial.html">
    2. An interactive overview of QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="importing.html">
+  <a class="reference internal" href="../using/importing.html">
    3. Importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="demultiplexing.html">
+  <a class="reference internal" href="../using/demultiplexing.html">
    4. Demultiplexing a sequencing run
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="denoising.html">
+  <a class="reference internal" href="../using/denoising.html">
    5. Denoising demultiplexed sequencing data
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/taxonomy.html">
    6. Taxonomic annotation and analysis of sequences
   </a>
  </li>
@@ -180,29 +180,29 @@
   Back Matter
  </span>
 </p>
-<ul class="nav sidenav_l1">
- <li class="toctree-l1">
-  <a class="reference internal" href="../back-matter/importing-examples.html">
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    1. Examples illustrating importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../back-matter/biological-information.html">
+  <a class="reference internal" href="biological-information.html">
    2. Appendix 1: Biological Information
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../back-matter/microbiome-methods.html">
+  <a class="reference internal" href="microbiome-methods.html">
    3. Appendix 2: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+  <a class="reference internal" href="q2-origin-story.html">
    4. Appendix 3: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../back-matter/glossary.html">
+  <a class="reference internal" href="glossary.html">
    5. Glossary
   </a>
  </li>
@@ -244,9 +244,12 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/back-matter/importing-examples.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/using/taxonomy.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/back-matter/importing-examples.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -266,10 +269,46 @@
 
         <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/back-matter/importing-examples.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
     </div>
 
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discovering-the-available-importable-semantic-types">
+   1.1. Discovering the available importable semantic types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#discovering-the-available-importable-formats">
+   1.2. Discovering the available importable formats
+  </a>
+ </li>
+</ul>
+
+        </nav>
         
     </div>
 </div>
@@ -278,8 +317,152 @@
         
               <div>
                 
-  <div class="section" id="taxonomic-annotation-and-analysis-of-sequences">
-<span id="taxonomy"></span><h1><span class="section-number">6. </span>Taxonomic annotation and analysis of sequences<a class="headerlink" href="#taxonomic-annotation-and-analysis-of-sequences" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="examples-illustrating-importing-data-into-qiime-2">
+<span id="importing-examples"></span><h1><span class="section-number">1. </span>Examples illustrating importing data into QIIME 2<a class="headerlink" href="#examples-illustrating-importing-data-into-qiime-2" title="Permalink to this headline">¶</a></h1>
+<p>This document will ultimately pull content from the <a class="reference external" href="https://docs.qiime2.org/2020.11/tutorials/importing/">QIIME 2 documentation’s importing guide</a>. Refer there for now.</p>
+<div class="section" id="discovering-the-available-importable-semantic-types">
+<h2><span class="section-number">1.1. </span>Discovering the available importable semantic types<a class="headerlink" href="#discovering-the-available-importable-semantic-types" title="Permalink to this headline">¶</a></h2>
+<p>Plugins define semantic types, so the semantic types that can be imported depends on what plugins you have installed. To discover what semantic types can be imported in your QIIME 2 deployment, you can run the following command:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime tools import --show-importable-types
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bowtie2Index
+DeblurStats
+DistanceMatrix
+EMPPairedEndSequences
+EMPSingleEndSequences
+ErrorCorrectionDetails
+FeatureData[AlignedSequence]
+FeatureData[Differential]
+FeatureData[Importance]
+FeatureData[PairedEndSequence]
+FeatureData[Sequence]
+FeatureData[Taxonomy]
+FeatureTable[Balance]
+FeatureTable[Composition]
+FeatureTable[Design]
+FeatureTable[Frequency]
+FeatureTable[PercentileNormalized]
+FeatureTable[PresenceAbsence]
+FeatureTable[RelativeFrequency]
+Hierarchy
+MultiplexedPairedEndBarcodeInSequence
+MultiplexedSingleEndBarcodeInSequence
+PCoAResults
+Phylogeny[Rooted]
+Phylogeny[Unrooted]
+Placements
+QualityFilterStats
+RawSequences
+SampleData[AlphaDiversity]
+SampleData[BooleanSeries]
+SampleData[ClassifierPredictions]
+SampleData[DADA2Stats]
+SampleData[FirstDifferences]
+SampleData[JoinedSequencesWithQuality]
+SampleData[PairedEndSequencesWithQuality]
+SampleData[Probabilities]
+SampleData[RegressorPredictions]
+SampleData[SequencesWithQuality]
+SampleData[Sequences]
+SampleEstimator[Classifier]
+SampleEstimator[Regressor]
+SeppReferenceDatabase
+TaxonomicClassifier
+UchimeStats
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="discovering-the-available-importable-formats">
+<h2><span class="section-number">1.2. </span>Discovering the available importable formats<a class="headerlink" href="#discovering-the-available-importable-formats" title="Permalink to this headline">¶</a></h2>
+<p>Plugins define file types (or formats) as well. To discover what formats can be imported from in your QIIME 2 deployment, you can run the following command:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime tools import --show-importable-formats
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AlignedDNAFASTAFormat
+AlignedDNASequencesDirectoryFormat
+AlphaDiversityDirectoryFormat
+AlphaDiversityFormat
+BIOMV100DirFmt
+BIOMV100Format
+BIOMV210DirFmt
+BIOMV210Format
+BooleanSeriesDirectoryFormat
+BooleanSeriesFormat
+Bowtie2IndexDirFmt
+CasavaOneEightLanelessPerSampleDirFmt
+CasavaOneEightSingleLanePerSampleDirFmt
+DADA2StatsDirFmt
+DADA2StatsFormat
+DNAFASTAFormat
+DNASequencesDirectoryFormat
+DeblurStatsDirFmt
+DeblurStatsFmt
+DifferentialDirectoryFormat
+DifferentialFormat
+DistanceMatrixDirectoryFormat
+EMPPairedEndCasavaDirFmt
+EMPPairedEndDirFmt
+EMPSingleEndCasavaDirFmt
+EMPSingleEndDirFmt
+ErrorCorrectionDetailsDirFmt
+FastqGzFormat
+FirstDifferencesDirectoryFormat
+FirstDifferencesFormat
+HeaderlessTSVTaxonomyDirectoryFormat
+HeaderlessTSVTaxonomyFormat
+ImportanceDirectoryFormat
+ImportanceFormat
+LSMatFormat
+MultiplexedPairedEndBarcodeInSequenceDirFmt
+MultiplexedSingleEndBarcodeInSequenceDirFmt
+NewickDirectoryFormat
+NewickFormat
+OrdinationDirectoryFormat
+OrdinationFormat
+PairedDNASequencesDirectoryFormat
+PairedEndFastqManifestPhred33
+PairedEndFastqManifestPhred33V2
+PairedEndFastqManifestPhred64
+PairedEndFastqManifestPhred64V2
+PlacementsDirFmt
+PlacementsFormat
+PredictionsDirectoryFormat
+PredictionsFormat
+ProbabilitiesDirectoryFormat
+ProbabilitiesFormat
+QIIME1DemuxDirFmt
+QIIME1DemuxFormat
+QualityFilterStatsDirFmt
+QualityFilterStatsFmt
+SampleEstimatorDirFmt
+SeppReferenceDirFmt
+SingleEndFastqManifestPhred33
+SingleEndFastqManifestPhred33V2
+SingleEndFastqManifestPhred64
+SingleEndFastqManifestPhred64V2
+SingleLanePerSamplePairedEndFastqDirFmt
+SingleLanePerSampleSingleEndFastqDirFmt
+TSVTaxonomyDirectoryFormat
+TSVTaxonomyFormat
+TaxonomicClassiferTemporaryPickleDirFmt
+UchimeStatsDirFmt
+UchimeStatsFmt
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -291,16 +474,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "calysto_bash"
         },
         kernelOptions: {
-            kernelName: "python3",
-            path: "./using"
+            kernelName: "calysto_bash",
+            path: "./back-matter"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'calysto_bash'</script>
 
               </div>
               
@@ -310,8 +493,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="denoising.html" title="previous page"><span class="section-number">5. </span>Denoising demultiplexed sequencing data</a>
-    <a class='right-next' id="next-link" href="../algorithms/pairwise-alignment.html" title="next page"><span class="section-number">1. </span>Pairwise sequence alignment</a>
+    <a class='left-prev' id="prev-link" href="../developing/first-plugin.html" title="previous page"><span class="section-number">2. </span>Building a first plugin</a>
+    <a class='right-next' id="next-link" href="biological-information.html" title="next page"><span class="section-number">2. </span>Appendix 1: Biological Information</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
