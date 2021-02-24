@@ -27,6 +27,7 @@
 
 - part: Back Matter
   chapters:
+  - file: back-matter/importing-examples
   - file: back-matter/biological-information
   - file: back-matter/microbiome-methods
   - file: back-matter/q2-origin-story
