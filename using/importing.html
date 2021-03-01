@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -44,7 +44,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -223,21 +223,21 @@
           
 <main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
     
-    <div class="row topbar fixed-top container-xl">
-    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
-    </div>
-    <div class="col pl-2 topbar-main">
-        
-        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-            <i class="fas fa-bars"></i>
-            <i class="fas fa-arrow-left"></i>
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        
-        
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
 <div class="dropdown-buttons-trigger">
     <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
             class="fas fa-download"></i></button>
@@ -255,22 +255,22 @@
     </div>
 </div>
 
-        <!-- Source interaction buttons -->
+            <!-- Source interaction buttons -->
 
 
-        <!-- Full screen (wrap in <a> to have style consistency -->
-        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-                title="Fullscreen mode"><i
-                    class="fas fa-expand"></i></button></a>
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
 
-        <!-- Launch buttons -->
+            <!-- Launch buttons -->
 
-    </div>
+        </div>
 
-    <!-- Table of contents -->
-    <div class="d-none d-md-block col-md-2 bd-toc show">
-        
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
         <div class="tocsection onthispage pt-5 pb-3">
             <i class="fas fa-list"></i> Contents
         </div>
@@ -282,14 +282,113 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-can-be-imported-in-qiime-2">
-   3.2. What can be imported in QIIME 2?
+  <a class="reference internal nav-link" href="#determining-how-to-import-your-data">
+   3.2. Determining how to import your data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discussion-and-instructions-for-importing-specific-data">
+     3.2.1. Discussion and instructions for importing specific data
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-raw-sequence-data">
+       3.2.1.1. Importing raw sequence data
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#differentiating-multiplexed-and-demultiplexed-data">
+         3.2.1.1.1. Differentiating multiplexed and demultiplexed data
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#importing-demultiplexed-data">
+         3.2.1.1.2. Importing demultiplexed data
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#importing-multiplexed-data">
+         3.2.1.1.3. Importing multiplexed data
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-a-featuretable">
+       3.2.1.2. Importing a
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FeatureTable
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-reference-data">
+       3.2.1.3. Importing reference data
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-phylogenetic-trees">
+       3.2.1.4. Importing phylogenetic trees
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#importing-phylogeny-rooted">
+         3.2.1.4.1. Importing
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Phylogeny[Rooted]
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#importing-phylogeny-unrooted">
+         3.2.1.4.2. Importing
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           Phylogeny[Unrooted]
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-featuredata">
+       3.2.1.5. Importing
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         FeatureData
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#importing-sampledata">
+       3.2.1.6. Importing
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         SampleData
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   3.3. Summary
   </a>
  </li>
 </ul>
 
         </nav>
         
+        </div>
     </div>
 </div>
     <div id="main-content" class="row">
@@ -299,12 +398,12 @@
                 
   <div class="section" id="importing-data-into-qiime-2">
 <span id="importing"></span><h1><span class="section-number">3. </span>Importing data into QIIME 2<a class="headerlink" href="#importing-data-into-qiime-2" title="Permalink to this headline">¶</a></h1>
-<p>A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates <a class="reference internal" href="getting-started.html#getting-started-archives"><span class="std std-ref">QIIME 2 archives</span></a> from data in other formats, such as fastq or biom. To import data into QIIME 2, you need to define the <a class="reference internal" href="getting-started.html#getting-started-semantic-types"><span class="std std-ref">file type and semantic type</span></a> of the data.</p>
-<p>I’ll be honest with you: in addition to being the first step in a user’s QIIME 2 analysis, importing is often the most challenging step. The reason it’s challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the <a class="reference external" href="http://etetoolkit.org/">ete3 phylogenetic analysis and visualization toolkit</a> recognizes (as of this writing) <a class="reference external" href="http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode">11 different variants of the newick file format</a>. A newick file doesn’t include information in it on which of these variants it is, so it’s up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2.</p>
-<p>This chapter will provide an overview of importing data into QIIME 2, focused on a few of the most commonly imported formats. After reading this content, you can find examples of importing additional data types in <a class="reference internal" href="../back-matter/importing-examples.html#importing-examples"><span class="std std-ref">Examples illustrating importing data into QIIME 2</span></a>.</p>
+<p>A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates <a class="reference internal" href="getting-started.html#getting-started-archives"><span class="std std-ref">QIIME 2 archives</span></a> from data in other file formats, such as fastq or biom. To import data into QIIME 2, you need to define the <a class="reference internal" href="getting-started.html#getting-started-types"><span class="std std-ref">file type and semantic type</span></a> of the data.</p>
+<p>I’ll get straight to the point: in addition to being the first step in a user’s QIIME 2 analysis, importing is often the most challenging step. The reason it’s challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the <a class="reference external" href="http://etetoolkit.org/">ete3 phylogenetic analysis and visualization toolkit</a> recognizes (as of this writing) <a class="reference external" href="http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode">11 different variants of the newick file format</a>. A newick file doesn’t include information in it on which of these variants it is, so it’s up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2.</p>
+<p>This chapter will provide an overview of importing data into QIIME 2, focused on the most common importing tasks.</p>
 <div class="section" id="why-is-importing-necessary">
 <h2><span class="section-number">3.1. </span>Why is importing necessary?<a class="headerlink" href="#why-is-importing-necessary" title="Permalink to this headline">¶</a></h2>
-<p>More directly relevant for importing data into QIIME 2 is the fastq file format. The fastq file format stores sequence and associated sequence quality information, and uses a clever approach for storing quality information that enables the quality to be represented in the same number of characters as the sequence itself. For example, here is a single sequence and quality record from a fastq file:</p>
+<p>Importing fastq files is the most common importing task among QIIME 2 users, so I’ll discuss why importing is necessary using fastq as an example. Fastq files store sequence and associated sequence quality information. They use a clever approach for representing quality information that enables the quality information to be represented in the same number of characters as the sequence itself. For example, here is a single sequence and quality record from a fastq file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@M00176</span><span class="p">:</span><span class="mi">65</span><span class="p">:</span><span class="mi">000000000</span><span class="o">-</span><span class="n">A41FR</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">1101</span><span class="p">:</span><span class="mi">9905</span><span class="p">:</span><span class="mi">3163</span> <span class="mi">1</span><span class="p">:</span><span class="n">N</span><span class="p">:</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span>
 <span class="n">AACCAGCACCTCAAGTGGTCAGGATGATTATTGGGCCTAAAGCATCCGTAGCCGGATCTGTAAGTTTTCGGTTAAATCTGTACGCTCAACGTACAGGCTGCCGGGAATACTGCAGATCTAGGGAGTGGGAGAGGTAGACGGTACTCGGTAG</span>
 <span class="o">+</span>
@@ -318,16 +417,70 @@
 <p>If you’d like to learn more about the <code class="docutils literal notranslate"><span class="pre">fastq</span></code> format, see the <a class="reference external" href="http://scikit-bio.org/docs/latest/generated/skbio.io.format.fastq.html">scikit-bio documentation</a> and the <a class="reference external" href="https://en.wikipedia.org/wiki/FASTQ_format">Wikipedia entry</a>.</p>
 </div>
 </div>
-<p>The line beginning with the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> symbol indicates the beginning of a new sequence record. It is followed by an identifier for this sequence that, in this example, was generated during an Illumina MiSeq sequencing run. The next line contains the sequence. The line beginning with the <code class="docutils literal notranslate"><span class="pre">+</span></code> symbol indicates the end of the sequence, and the last line indicates the quality of each base call in the sequence. Each of the characters on this line represents an encoded Phred quality score. For example, in this fastq file <code class="docutils literal notranslate"><span class="pre">A</span></code> might represent a quality score of 32, and <code class="docutils literal notranslate"><span class="pre">H</span></code> might represent a quality score of 39. You can refer to a simple translation table <a class="reference external" href="https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm">such as this one</a>, to decode the quality scores. That seems simple enough - so what’s the problem? Well, in another fastq file, <code class="docutils literal notranslate"><span class="pre">A</span></code> might represent a quality score of 1, and <code class="docutils literal notranslate"><span class="pre">H</span></code> might represent a quality score of 8. Again, you could look those values up in a different translation table. But the problem is that the fastq file itself doesn’t contain explicit information about what encoding scheme was used, so when trying to interpret the information in the file, without additional context you won’t know if <code class="docutils literal notranslate"><span class="pre">A</span></code> represents a high quality base call or a low quality base call. Ouch! There are some approaches that can be applied to infer how scores are encoded, but they are not completely reliable and it can be computationally expensive to figure out. Again, the burden is on the person working with the fastq file to know <a class="reference external" href="https://en.wikipedia.org/wiki/FASTQ_format#Encoding">which encoding scheme</a> is used.</p>
-<p>One of the core design goals of QIIME 2 was that it should keep track of the meaning of data in the files it’s using, like how quality scores are encoded in fastq files. This removes that burden from the user, and ensures that someone who encounters the data at a later time (for example, you or your boss in five years) will know how to interpret it. Continuing with the example of fastq files, because the quality score encoding scheme isn’t stored in fastq files, that means that QIIME 2 needs to keep track of it alongside the data. That’s where our QIIME 2 artifacts come in. Remember, these are just <code class="docutils literal notranslate"><span class="pre">.zip</span></code> files with a different extension (<code class="docutils literal notranslate"><span class="pre">.qza</span></code>). They can store the fastq data (in the <code class="docutils literal notranslate"><span class="pre">data/</span></code> directory), but also metadata that explicitly defines how quality scores are encoded. When a user imports fastq files into QIIME 2,they must tell QIIME 2 what encoding scheme is used and QIIME 2 can then keep track of it from there. Importing data is when you provide this information to QIIME 2.</p>
+<p>The line beginning with the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> symbol indicates the beginning of a new sequence record. It is followed by an identifier for this sequence that, in this example, was generated during an Illumina MiSeq sequencing run. The next line contains the sequence. The line beginning with the <code class="docutils literal notranslate"><span class="pre">+</span></code> symbol indicates the end of the sequence, and the last line indicates the quality of each base call in the sequence. Each of the characters on this line represents an encoded Phred quality score. For example, in this fastq file <code class="docutils literal notranslate"><span class="pre">A</span></code> might represent a quality score of 32, and <code class="docutils literal notranslate"><span class="pre">H</span></code> might represent a quality score of 39. You can refer to a simple translation table <a class="reference external" href="https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm">such as this one</a>, to decode the quality scores. That seems simple enough - so what’s the problem? Well, it starts with the fact that the encoding of these quality characters isn’t necessarily the same across different fastq files. In another fastq file, <code class="docutils literal notranslate"><span class="pre">A</span></code> might represent a quality score of 1, and <code class="docutils literal notranslate"><span class="pre">H</span></code> might represent a quality score of 8. You could look again those values up in a translation table, but it would have to be a different translation table this time. The major problem here though is that the fastq file itself doesn’t contain explicit information about what encoding scheme was used. When trying to interpret the information in the file, without additional context you won’t know if <code class="docutils literal notranslate"><span class="pre">A</span></code> represents a high quality base call or a low quality base call. Ouch! There are some approaches that can be applied to infer how scores are encoded, but they are not completely reliable and it can be computationally expensive to figure out. The burden is on the person working with the fastq file to know <a class="reference external" href="https://en.wikipedia.org/wiki/FASTQ_format#Encoding">which encoding scheme</a> is used.</p>
+<p>One of the core design goals of QIIME 2 was that it should keep track of the meaning of data in the files it’s using, such as how quality scores are encoded in fastq files. This removes that burden from the user, and ensures that someone who encounters the data at a later time (for example, you or your boss in five years) will know how to interpret it. Continuing with the example of fastq files, because the quality score encoding scheme isn’t stored in fastq files, that means that QIIME 2 needs to keep track of it alongside the data. That’s where our QIIME 2 artifacts come in. Remember, these are just <code class="docutils literal notranslate"><span class="pre">.zip</span></code> files with a different extension (<code class="docutils literal notranslate"><span class="pre">.qza</span></code>). They store the fastq data (in the <code class="docutils literal notranslate"><span class="pre">data/</span></code> directory), but also metadata that explicitly defines how quality scores are encoded. When a user imports fastq files into QIIME 2, they must tell the system what encoding scheme is used. QIIME 2 will keep track of it from there, and until you choose to export fastq files from a QIIME 2 artifact you will unambiguously know what encoding scheme is used in your fastq files.</p>
+<p>Importing is the step when you must provide specific information about your data to QIIME 2, and sometimes that information can be challenging to compile. The good news is we’re here to help on the QIIME 2 Forum and we frequently help users navigate this tricky step. You can find the most recent questions about importing data on the QIIME 2 Forum <a class="reference external" href="https://forum.qiime2.org/tag/import">under the <code class="docutils literal notranslate"><span class="pre">import</span></code> tag</a>. We’re also working on tools that will simplify the most common types of data imports in QIIME 2. Because of the huge number of file formats in bioinformatics though, it’s not a trivial task.</p>
 </div>
-<div class="section" id="what-can-be-imported-in-qiime-2">
-<h2><span class="section-number">3.2. </span>What can be imported in QIIME 2?<a class="headerlink" href="#what-can-be-imported-in-qiime-2" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">tools</span> <span class="kn">import</span>
-</pre></div>
+<div class="section" id="determining-how-to-import-your-data">
+<h2><span class="section-number">3.2. </span>Determining how to import your data<a class="headerlink" href="#determining-how-to-import-your-data" title="Permalink to this headline">¶</a></h2>
+<p>When you import data into QIIME 2 you must provide the semantic type of the data and the file format (or file type) that the data is represented in. These concepts <a class="reference internal" href="getting-started.html#getting-started-types"><span class="std std-ref">were contrasted earlier</span></a> - refer back to that discussion now if you need to.</p>
+<p>While most users begin their QIIME 2 analysis with raw sequencing data, you can import data at any step of a QIIME 2 analysis. For example, another common approach users take is importing feature tables from <code class="docutils literal notranslate"><span class="pre">.biom</span></code> files. This might happen if a user wishes to process their raw data with another analysis tool, but then use QIIME 2 for visual data exploration and statistical analysis.</p>
+<p>The first step in determining how to import your data is figuring out what it is that you’re trying to import. <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 3.1</span></a> presents a flow chart that will get you get started. Follow the references in the flow chart to other sections in this chapter. If you suspect that you may have a particular type of data but are not sure, refer to the section that the flowchart would direct you to if you had that type of data. Each section will begin with a definition the type of data.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><a class="reference internal" href="../back-matter/importing-examples.html#importing-examples-available-semantic-types"><span class="std std-ref">The list of available semantic types is a bit overwhelming</span></a>, but when you’re first getting started there are only a few that are very relevant.</p>
 </div>
-<p>Importable types</p>
-<p>Importable formats</p>
+</div>
+<div class="figure align-default" id="importing-1">
+<img alt="../_images/importing-1.png" src="../_images/importing-1.png" />
+<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Flowchart illustrating initial decisions made during importing. Pointers such as “See Importing SampleData” reference other sections of this chapter or book.</span><a class="headerlink" href="#importing-1" title="Permalink to this image">¶</a></p>
+<div class="legend">
+</div>
+</div>
+<div class="section" id="discussion-and-instructions-for-importing-specific-data">
+<h3><span class="section-number">3.2.1. </span>Discussion and instructions for importing specific data<a class="headerlink" href="#discussion-and-instructions-for-importing-specific-data" title="Permalink to this headline">¶</a></h3>
+<p>In this section I discuss and present instructions for importing specific types of data into QIIME 2. You don’t need to read this section all the way through - I recommend that you identify the section that is relevant to your current need using <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 3.1</span></a>, focus on that section, and then move on from importing. Since there are a lot of QIIME 2 specific details needed for importing, it’s unlikely that you’ll retain more than what you immediately need so just treat this section as reference material.</p>
+<div class="section" id="importing-raw-sequence-data">
+<h4><span class="section-number">3.2.1.1. </span>Importing raw sequence data<a class="headerlink" href="#importing-raw-sequence-data" title="Permalink to this headline">¶</a></h4>
+<p>Raw sequencing data refers to data that has undergone no processing or minimal processing since it was generated on the sequencing instrument. As of this writing, this is most commonly represented in <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> files in one of a few different fastq format variants. <code class="docutils literal notranslate"><span class="pre">.sff</span></code> files, and pairs of <code class="docutils literal notranslate"><span class="pre">.fasta</span></code> and <code class="docutils literal notranslate"><span class="pre">.qual</span></code> files are other raw sequencing data formats.</p>
+<div class="section" id="differentiating-multiplexed-and-demultiplexed-data">
+<h5><span class="section-number">3.2.1.1.1. </span>Differentiating multiplexed and demultiplexed data<a class="headerlink" href="#differentiating-multiplexed-and-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+</div>
+<div class="section" id="importing-demultiplexed-data">
+<h5><span class="section-number">3.2.1.1.2. </span>Importing demultiplexed data<a class="headerlink" href="#importing-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+</div>
+<div class="section" id="importing-multiplexed-data">
+<h5><span class="section-number">3.2.1.1.3. </span>Importing multiplexed data<a class="headerlink" href="#importing-multiplexed-data" title="Permalink to this headline">¶</a></h5>
+</div>
+</div>
+<div class="section" id="importing-a-featuretable">
+<h4><span class="section-number">3.2.1.2. </span>Importing a <code class="docutils literal notranslate"><span class="pre">FeatureTable</span></code><a class="headerlink" href="#importing-a-featuretable" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="importing-reference-data">
+<h4><span class="section-number">3.2.1.3. </span>Importing reference data<a class="headerlink" href="#importing-reference-data" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="importing-phylogenetic-trees">
+<h4><span class="section-number">3.2.1.4. </span>Importing phylogenetic trees<a class="headerlink" href="#importing-phylogenetic-trees" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="importing-phylogeny-rooted">
+<h5><span class="section-number">3.2.1.4.1. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Rooted]</span></code><a class="headerlink" href="#importing-phylogeny-rooted" title="Permalink to this headline">¶</a></h5>
+</div>
+<div class="section" id="importing-phylogeny-unrooted">
+<h5><span class="section-number">3.2.1.4.2. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Unrooted]</span></code><a class="headerlink" href="#importing-phylogeny-unrooted" title="Permalink to this headline">¶</a></h5>
+</div>
+</div>
+<div class="section" id="importing-featuredata">
+<h4><span class="section-number">3.2.1.5. </span>Importing <code class="docutils literal notranslate"><span class="pre">FeatureData</span></code><a class="headerlink" href="#importing-featuredata" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="importing-sampledata">
+<h4><span class="section-number">3.2.1.6. </span>Importing <code class="docutils literal notranslate"><span class="pre">SampleData</span></code><a class="headerlink" href="#importing-sampledata" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">3.3. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>QIIME 2 is more explicit about the meaning and format of data than most bioinformatics tools, and as a result we’ve had to invent some language to describe these things. This creates a bit of a circular dependency when you’re just getting started: experience with QIIME 2 helps you to understand how to import data, but you have to import data to get experience with QIIME 2. As you gain experience with QIIME 2, you’ll learn its language of semantic types and you’ll be less dependent on the flow charts and other information in this chapter. You’ll probably still refer back to importing documentation from time to time though - I certainly do.</p>
 </div>
 </div>
 
@@ -353,15 +506,15 @@
 
               </div>
               
-        </div>
-    </div>
-    
-    
-    <div class='prev-next-bottom'>
         
+        <div class='prev-next-bottom'>
+            
     <a class='left-prev' id="prev-link" href="overview-tutorial.html" title="previous page"><span class="section-number">2. </span>An interactive overview of QIIME 2</a>
     <a class='right-next' id="next-link" href="demultiplexing.html" title="next page"><span class="section-number">4. </span>Demultiplexing a sequencing run</a>
 
+        </div>
+        
+        </div>
     </div>
     <footer class="footer mt-5 mt-md-0">
     <div class="container">

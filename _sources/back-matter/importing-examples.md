@@ -17,6 +17,7 @@ kernelspec:
 
 This document will ultimately pull content from the [QIIME 2 documentation's importing guide](https://docs.qiime2.org/2020.11/tutorials/importing/). Refer there for now. 
 
+(importing-examples:available-semantic-types)=
 ## Discovering the available importable semantic types
 
 Plugins define semantic types, so the semantic types that can be imported depends on what plugins you have installed. To discover what semantic types can be imported in your QIIME 2 deployment, you can run the following command:
