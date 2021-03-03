@@ -246,7 +246,10 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/algorithms/database-searching.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/algorithms/database-searching.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
@@ -267,6 +270,23 @@
                         class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/algorithms/database-searching.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
 
         </div>
 
@@ -390,62 +410,298 @@
 <h2><span class="section-number">2.1. </span>Defining the problem<a class="headerlink" href="#defining-the-problem" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned above, if we want to perform a homology search we’ll have one or more <em>query sequences</em>, and for each we want to know which sequence(s) in a reference database it is most similar to.</p>
 <p>Sequence homology searching can be implemented in a few ways. In this chapter, we’ll use the local alignment function that we worked with in the Pairwise Alignment chapter, <code class="docutils literal notranslate"><span class="pre">local_pairwise_align_ssw</span></code>, run it many times to search one <em>query</em> sequence against many <em>reference</em> sequences, and investigate the highest scoring alignment(s) to identify the best database match. Remember that you can always get help with a function by passing it as an argument to <code class="docutils literal notranslate"><span class="pre">help</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
 <span class="n">help</span><span class="p">(</span><span class="n">local_pairwise_align_ssw</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function local_pairwise_align_ssw in module skbio.alignment._pairwise:
+
+local_pairwise_align_ssw(sequence1, sequence2, **kwargs)
+    Align query and target sequences with Striped Smith-Waterman.
+    
+    State: Experimental as of 0.4.0.
+    
+    Parameters
+    ----------
+    sequence1 : DNA, RNA, or Protein
+        The first unaligned sequence
+    sequence2 : DNA, RNA, or Protein
+        The second unaligned sequence
+    
+    Returns
+    -------
+    tuple
+        ``TabularMSA`` object containing the aligned sequences, alignment score
+        (float), and start/end positions of each input sequence (iterable
+        of two-item tuples). Note that start/end positions are indexes into the
+        unaligned sequences.
+    
+    Notes
+    -----
+    This is a wrapper for the SSW package [1]_.
+    
+    For a complete list of optional keyword-arguments that can be provided,
+    see ``skbio.alignment.StripedSmithWaterman``.
+    
+    The following kwargs will not have any effect: `suppress_sequences`,
+    `zero_index`, and `protein`
+    
+    If an alignment does not meet a provided filter, `None` will be returned.
+    
+    References
+    ----------
+    .. [1] Zhao, Mengyao, Wan-Ping Lee, Erik P. Garrison, &amp; Gabor T.
+       Marth. &quot;SSW Library: An SIMD Smith-Waterman C/C++ Library for
+       Applications&quot;. PLOS ONE (2013). Web. 11 July 2014.
+       http://www.plosone.org/article/info:doi/10.1371/journal.pone.0082138
+    
+    See Also
+    --------
+    skbio.alignment.StripedSmithWaterman
+</pre></div>
+</div>
+</div>
 </div>
 <p>When our reference database starts getting hundreds of millions of bases long (as would be the case if we were searching against 97% OTUs from the <a class="reference external" href="http://www.ncbi.nlm.nih.gov/pubmed/22134646">Greengenes small-subunit ribosomal RNA (SSU rRNA) reference database</a>), billions of bases long (as would be the case if we were searching against <a class="reference external" href="https://genome.ucsc.edu/cgi-bin/hgGateway">the human genome</a>) or trillions of bases long (as would be the case if we were searching against the <a class="reference external" href="http://www.ncbi.nlm.nih.gov/refseq/">NCBI non-redundant nucleotide database</a>), runtime becomes an important consideration. For that reason, learning about <em>heuristic algorithms</em> is an essential part of learning about sequence homology searching. Heuristic algorithms apply some rules (i.e., heuristics) to approximate the correct solution to a problem in a fraction of the runtime that would be required if we wanted to be guaranteed to find the correct solution. Heuristic algorithms are very common in bioinformatics, and we’ll use them in several other places in this book.</p>
 <p>While we’ll be aligning nucleotide sequences in this chapter, the same concepts apply to protein homology searching.</p>
 </div>
 <div class="section" id="loading-annotated-sequences">
 <h2><span class="section-number">2.2. </span>Loading annotated sequences<a class="headerlink" href="#loading-annotated-sequences" title="Permalink to this headline">¶</a></h2>
-<p>The first thing we’ll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we’re going to work with are derived from the <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a> database, and we’re accessing them using the <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial <a class="reference external" href="http://www.nature.com/scitable/definition/ribosome-194">ribosome</a> (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it’s one of about 200 genes that are encoded in the genomes of all known cellular organisms. The sequences in Greengenes are taxonomically annotated, meaning that we’ll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We’re accessing Greengenes sequences here through the <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. The QIIME default reference project isn’t actually used by recent versions of QIIME but it’s a convenient resource for accessing a collection of 16S sequences from Python. This resource is handy if you need some sequences for experimental purposes, but is outdated and shouldn’t be used in practice.</p>
+</div>
+</div>
+<p>The first thing we’ll do as we learn about sequence homology searching is load some annotated sequences. The sequences that we’re going to work with are derived from the <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a> database. Greengenes is a database of 16S rRNA gene sequences, a component of the archaeal and bacterial <a class="reference external" href="http://www.nature.com/scitable/definition/ribosome-194">ribosome</a> (the molecular machine that drives translation of mRNA to proteins). This gene is of a lot of interest to biologists because it’s one of about 200 genes that are encoded in the genomes of all known cellular organisms. The sequences in Greengenes are taxonomically annotated, meaning that we’ll have a collection of gene sequences and the taxonomic identity of the organism whose genome the sequence is found in. If we search an unannotated 16S rRNA query sequence against this database, we can make inferences about what organism our query sequence is from.</p>
 <p>First, let’s load Greengenes into a list of <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code> sequence objects, and associate the taxonomy of each sequence as sequence metadata.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell performs some configuration for this notebook. It&#39;s hidden by</span>
+<span class="c1"># default because it&#39;s not relevant to the content of this chapter. You&#39;ll</span>
+<span class="c1"># occasionally notice that I hide this type of information so it&#39;s not </span>
+<span class="c1"># distracting.</span>
+
+<span class="o">%</span><span class="k">pylab</span> inline
 
 <span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
 <span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">load_taxonomy_reference_database</span>
-
-<span class="o">%</span><span class="n">psource</span> <span class="n">load_taxonomy_reference_database</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Populating the interactive namespace from numpy and matplotlib
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">()</span>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime_default_reference</span> <span class="k">as</span> <span class="nn">qdr</span>
+<span class="kn">import</span> <span class="nn">skbio</span>
+
+<span class="k">def</span> <span class="nf">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># Load the taxonomic data</span>
+    <span class="n">reference_taxonomy</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_taxonomy</span><span class="p">()):</span>
+        <span class="n">seq_id</span><span class="p">,</span> <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">seq_tax</span>
+
+    <span class="c1"># Load the reference sequences, and associate the taxonomic annotation with</span>
+    <span class="c1"># each as metadata</span>
+    <span class="n">reference_db</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+            <span class="c1"># For the purpose of this lesson, we&#39;re going to ignore sequences that contain</span>
+            <span class="c1"># degenerate characters (i.e., characters other than A, C, G, or T)</span>
+            <span class="k">continue</span>
+        <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">seq_tax</span>
+        <span class="n">reference_db</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> sequences were loaded from the reference database.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span>
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>88452 sequences were loaded from the reference database.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Next, we’ll just inspect a couple of the sequences we loaded. Notice how the specificity of our taxonomic annotations (i.e., how many taxonomic levels are annotated and unknown) differs for different sequences.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+-----------------------------------------------------------------------
+Metadata:
+    &#39;description&#39;: &#39;&#39;
+    &#39;id&#39;: &#39;1111883&#39;
+    &#39;taxonomy&#39;: &#39;k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__;
+                 g__; s__&#39;
+Stats:
+    length: 1428
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 61.90%
+-----------------------------------------------------------------------
+0    GCTGGCGGCG TGCCTAACAC ATGTAAGTCG AACGGGACTG GGGGCAACTC CAGTTCAGTG
+60   GCAGACGGGT GCGTAACACG TGAGCAACTT GTCCGACGGC GGGGGATAGC CGGCCCAACG
+...
+1320 GCCGCGGTGA ATACGTTCCC GGGCCTTGTA CACACCGCCC GTCACGCCAT GGAAGCCGGA
+1380 GGGACCCGAA ACCGGTGGGC CAACCGCAAG GGGGCAGCCG TCTAAGGT
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+----------------------------------------------------------------------
+Metadata:
+    &#39;description&#39;: &#39;&#39;
+    &#39;id&#39;: &#39;4483258&#39;
+    &#39;taxonomy&#39;: &#39;k__Archaea; p__Crenarchaeota; c__Thermoprotei;
+                 o__Thermoproteales; f__Thermoproteaceae; g__; s__&#39;
+Stats:
+    length: 2123
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 58.36%
+----------------------------------------------------------------------
+0    CTGGTTGATC CTGCCGGACC CGACCGCTAT CGGGGTGGGG CTTAGCCATG CGAGTCAAGC
+60   GCCCCAGGGA CCCGCTGGGG TGCGGCGCAC GGCTCAGTAA CACGTGGCCA ACCTACCCTC
+...
+2040 ATAATCTCCT TATTGTCTGA TCCTTATGCA TTTTCCTTTG GCCCATCCCG TGAATACGCG
+2100 CGGTGAATAC GTCCCTGCCC CTT
+</pre></div>
+</div>
+</div>
 </div>
 <p>For the sake of runtime, we’re going to work through this chapter using a random sample of sequences from this database. Here we’ll use Python’s <a class="reference external" href="https://docs.python.org/3/library/random.html">random module</a> to select sequences at random.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">reference_db</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">reference_db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> sequences are present in the subsampled database.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>We’ll also extract some sequences from Greengenes to use as query sequences in our database searches. This time we won’t annotate them (to simulate not knowing what organisms they’re from). We’ll also trim these sequences so they’re shorter than the full length references. This will simulate obtaining a partial gene sequence, as is most common with the current sequencing technologies (as of this writing), but will also help to make the examples run faster.</p>
-<p>Note that some of our query sequences may also be in our subsampled reference database and some won’t. This is realistic: sometimes we’re working with sequences that are exact matches to known sequences, and sometimes we’re working with sequences that don’t match any known sequences (or at least any in the reference database that we’re working with).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">load_taxonomy_query_sequences</span>
-
-<span class="o">%</span><span class="n">psource</span> <span class="n">load_taxonomy_query_sequences</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5000 sequences are present in the subsampled database.
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span> <span class="o">=</span> <span class="n">load_taxonomy_query_sequences</span><span class="p">()</span>
+</div>
+</div>
+<p>We’ll also extract some sequences from Greengenes to use as query sequences in our database searches. This time we won’t annotate them (to simulate not knowing what organisms they’re from). We’ll also trim these sequences so they’re shorter than the full length references. This will simulate obtaining a partial gene sequence, as is most common with the current sequencing technologies (as of this writing), but will also help to make the examples run faster.</p>
+<p>Note that some of our query sequences may also be in our subsampled reference database and some won’t. This is realistic: sometimes we’re working with sequences that are exact matches to known sequences, and sometimes we’re working with sequences that don’t match any known sequences (or at least any in the reference database that we’re working with).</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_taxonomy_query_sequences</span><span class="p">(</span><span class="n">start_position</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+            <span class="c1"># For the purpose of this lesson, we&#39;re going to ignore sequences that contain</span>
+            <span class="c1"># degenerate characters (i.e., characters other than A, C, G, or T)</span>
+            <span class="k">continue</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">start_position</span><span class="p">:</span><span class="n">start_position</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">queries</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span> <span class="o">=</span> <span class="n">load_taxonomy_query_sequences</span><span class="p">()</span>
 <span class="n">queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>Let’s inspect a couple of the query sequences that we’ll work with.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Metadata:
+    &#39;description&#39;: &#39;&#39;
+    &#39;id&#39;: &#39;265986&#39;
+Stats:
+    length: 200
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 55.50%
+---------------------------------------------------------------------
+0   CCTGCCGTAT GCAGGGGGAC AACAGTTGGA AACGGCTGCT AATACCGCAT AAGCCTACAG
+60  TACCGCATGG TACAGAAGGA AAAGATTTAT CGGCATACGA TGGACCCGCG TCTGATTAGC
+120 TGGTTGGTGA GGTAACGGCC CACCAAGGCG ACGATCAGTA GCCGACCTGA GAGGGTGACC
+180 GGCCACATTG GGACTGAGAC
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Metadata:
+    &#39;description&#39;: &#39;&#39;
+    &#39;id&#39;: &#39;683853&#39;
+Stats:
+    length: 200
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 45.50%
+---------------------------------------------------------------------
+0   ACGCGTATGC AATCTACCTT GTACAGGGGA ATAGCCCAGA GAAATTTGGA TTAATGCCCC
+60  ATAGTATATA ACCTTCGCAT GTTGGTTATA TTAAAGTTCC AACGGTACAA GATGAGCATG
+120 CGTCCTATTA GTTAGTTGGT AAGGTAACGG CTTACCAAGA CGATGATGGG TAGGGGTCCT
+180 GAGAGGGAGA TCCCCCACAC
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="id1">
@@ -462,14 +718,53 @@
 <h2><span class="section-number">2.4. </span>A complete homology search function<a class="headerlink" href="#a-complete-homology-search-function" title="Permalink to this headline">¶</a></h2>
 <p>Let’s define a homology search function that aligns each provided query sequences <span class="math notranslate nohighlight">\(q_i\)</span> with each of our reference database sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, ... r_n\)</span>). This function will take as input one or more query sequences, and the reference database. We’ll call the top scoring alignments for each <span class="math notranslate nohighlight">\(q_i\)</span> the <em>best hits</em>, and we’ll specifically request some number (<code class="docutils literal notranslate"><span class="pre">n</span></code>) of best hits for each <span class="math notranslate nohighlight">\(q_i\)</span>. The output of this function will be a summary of the <code class="docutils literal notranslate"><span class="pre">n</span></code> best hits for each query sequence, including some technical information about the alignment and the taxonomy associated with the corresponding reference sequence. We’ll then review the taxonomy annotations for our best hits, and from those make an inference about the taxonomy annotation for <span class="math notranslate nohighlight">\(q_i\)</span>.</p>
 <p>Spend a minute looking at this function and try to understand what it’s doing.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">local_alignment_search</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">skbio.alignment</span> <span class="kn">import</span> <span class="n">local_pairwise_align_ssw</span>
 
-<span class="o">%</span><span class="n">psource</span> <span class="n">local_alignment_search</span>
+<span class="k">def</span> <span class="nf">local_alignment_search</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                           <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="c1"># first we&#39;ll compute all of the alignments and their associated scores</span>
+        <span class="n">hits</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+            <span class="n">aln</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+            <span class="n">hits</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">score</span><span class="p">,</span> <span class="n">aln</span><span class="p">,</span>
+                         <span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">]])</span>
+        <span class="c1"># then we reverse-sort them by score, and return the n highest</span>
+        <span class="c1"># scoring alignments (this needs to be updated so we only</span>
+        <span class="c1"># ever keep track of the n highest scoring alignments)</span>
+        <span class="n">best_hits</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">hits</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">best_hits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># if there are no hits, log that information</span>
+            <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="s2">&quot;no matches&quot;</span><span class="p">))</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;n/a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># otherwise compile and track some information about the n</span>
+            <span class="c1"># best hits</span>
+            <span class="k">for</span> <span class="n">r_id</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">aln</span><span class="p">,</span> <span class="n">r_tax</span> <span class="ow">in</span> <span class="n">best_hits</span><span class="p">:</span>
+                <span class="n">percent_similarity</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">aln</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">aln</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+                <span class="n">aln_length</span> <span class="o">=</span> <span class="n">aln</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">r_id</span><span class="p">))</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r_tax</span><span class="p">,</span> <span class="n">percent_similarity</span><span class="p">,</span>
+                                <span class="n">aln_length</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">,</span> <span class="s1">&#39;reference&#39;</span><span class="p">])</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;reference taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;percent similarity&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;alignment length&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>Now let’s perform some database searches. You can run the remaining code cells in this section a few times to experiment with searching different query sequences against the same reference database.</p>
 <p>This next cell, which is the one that actually performs the database searches, will take a little bit of time to run (maybe up to a minute or two). There is some code in this cell that will track the runtime. As it’s running, think about how many query sequences we’re searching against how many reference sequences, and refer back to the number of sequences in the full reference database. Does this strategy seem scalable to millions of sequences, which as mentioned above might be our ultimate goal? When you know the per-sequence runtime of this search, estimate how long it would take to do this in seconds for one million sequences. Convert the time in seconds to a unit that will be more meaningful to you.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -479,13 +774,202 @@
 <span class="n">results</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Runtime: 4.5078 sec per query
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>reference taxonomy</th>
+      <th>percent similarity</th>
+      <th>alignment length</th>
+      <th>score</th>
+    </tr>
+    <tr>
+      <th>query</th>
+      <th>reference</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">521275</th>
+      <th>338145</th>
+      <td>k__Bacteria; p__Actinobacteria; c__Coriobacter...</td>
+      <td>89.949749</td>
+      <td>199</td>
+      <td>294</td>
+    </tr>
+    <tr>
+      <th>296320</th>
+      <td>k__Bacteria; p__Actinobacteria; c__Coriobacter...</td>
+      <td>85.365854</td>
+      <td>205</td>
+      <td>261</td>
+    </tr>
+    <tr>
+      <th>252821</th>
+      <td>k__Bacteria; p__Actinobacteria; c__Actinobacte...</td>
+      <td>83.854167</td>
+      <td>192</td>
+      <td>225</td>
+    </tr>
+    <tr>
+      <th>268199</th>
+      <td>k__Bacteria; p__Actinobacteria; c__OPB41; o__;...</td>
+      <td>81.347150</td>
+      <td>193</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <th>681605</th>
+      <td>k__Bacteria; p__Actinobacteria; c__Actinobacte...</td>
+      <td>81.592040</td>
+      <td>201</td>
+      <td>203</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">160618</th>
+      <th>1138332</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Gammaproteo...</td>
+      <td>84.158416</td>
+      <td>202</td>
+      <td>236</td>
+    </tr>
+    <tr>
+      <th>1136899</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Deltaproteo...</td>
+      <td>84.210526</td>
+      <td>190</td>
+      <td>228</td>
+    </tr>
+    <tr>
+      <th>513028</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Deltaproteo...</td>
+      <td>81.862745</td>
+      <td>204</td>
+      <td>220</td>
+    </tr>
+    <tr>
+      <th>779327</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Deltaproteo...</td>
+      <td>81.553398</td>
+      <td>206</td>
+      <td>211</td>
+    </tr>
+    <tr>
+      <th>4411700</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Deltaproteo...</td>
+      <td>80.769231</td>
+      <td>208</td>
+      <td>206</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">4379558</th>
+      <th>4353087</th>
+      <td>k__Bacteria; p__Chloroflexi; c__Anaerolineae; ...</td>
+      <td>83.500000</td>
+      <td>200</td>
+      <td>233</td>
+    </tr>
+    <tr>
+      <th>1114475</th>
+      <td>k__Bacteria; p__Chloroflexi; c__Anaerolineae; ...</td>
+      <td>80.597015</td>
+      <td>201</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <th>105415</th>
+      <td>k__Bacteria; p__Chloroflexi; c__Anaerolineae; ...</td>
+      <td>79.207921</td>
+      <td>202</td>
+      <td>182</td>
+    </tr>
+    <tr>
+      <th>837946</th>
+      <td>k__Bacteria; p__Chloroflexi; c__Anaerolineae; ...</td>
+      <td>87.596899</td>
+      <td>129</td>
+      <td>178</td>
+    </tr>
+    <tr>
+      <th>4269487</th>
+      <td>k__Bacteria; p__Chloroflexi; c__Anaerolineae; ...</td>
+      <td>90.517241</td>
+      <td>116</td>
+      <td>177</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">1772340</th>
+      <th>332856</th>
+      <td>k__Bacteria; p__Bacteroidetes; c__Bacteroidia;...</td>
+      <td>90.000000</td>
+      <td>200</td>
+      <td>300</td>
+    </tr>
+    <tr>
+      <th>3506234</th>
+      <td>k__Bacteria; p__Bacteroidetes; c__Bacteroidia;...</td>
+      <td>90.000000</td>
+      <td>200</td>
+      <td>300</td>
+    </tr>
+    <tr>
+      <th>3970647</th>
+      <td>k__Bacteria; p__Bacteroidetes; c__Bacteroidia;...</td>
+      <td>89.000000</td>
+      <td>200</td>
+      <td>290</td>
+    </tr>
+    <tr>
+      <th>4478993</th>
+      <td>k__Bacteria; p__Bacteroidetes; c__Bacteroidia;...</td>
+      <td>88.500000</td>
+      <td>200</td>
+      <td>285</td>
+    </tr>
+    <tr>
+      <th>4060332</th>
+      <td>k__Bacteria; p__Bacteroidetes; c__Bacteroidia;...</td>
+      <td>88.000000</td>
+      <td>200</td>
+      <td>280</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <p>Now, let’s try to answer our initial question: what is the most likely taxonomic annotation for each of our query sequences? Spend a few minutes reviewing this information, and write down what you think the most likely taxonomic annotation is for each of the query sequences. Here are some hints to help you out:</p>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">k</span></code>, <code class="docutils literal notranslate"><span class="pre">p</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">o</span></code>, <code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">g</span></code>, and <code class="docutils literal notranslate"><span class="pre">s</span></code> refer to <em>kingdom</em>, <em>phylum</em>, <em>class</em>, <em>order</em>, <em>family</em>, <em>genus</em>, and <em>species</em>, respectively. If you see an annotation for a reference sequence that looks like <code class="docutils literal notranslate"><span class="pre">g__</span></code>, that means that the genus is unknown for that sequence.</p></li>
 <li><p>Just as the reference taxonomy annotations don’t always go down to the species level, your taxonomic annotations don’t have to either. Not assigning at a given level implies that you’re uncertain about what the annotation should be at that level, and it’s usually better just to indicate that you’re uncertain rather than make a bad guess. If you’re uncertain of what the species is, assign the query <code class="docutils literal notranslate"><span class="pre">s__</span></code> and try to decide what the most likely genus is. If you’re uncertain of the genus, assign <code class="docutils literal notranslate"><span class="pre">g__</span></code>, and try to decide what the most likely family is…</p></li>
 <li><p>As you look at each of the reference taxonomy annotations below, refer back to the table above to look at the percent similarity between each query and reference, and maybe the length of the alignments and their scores. These values give you an idea of how confident you should be in each of your taxonomic annotations.</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
     <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Closest taxonomies for query </span><span class="si">%s</span><span class="s1"> (in order):&#39;</span> <span class="o">%</span> <span class="n">q_id</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reference taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">]:</span>
@@ -493,19 +977,73 @@
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 521275 (in order):
+  k__Bacteria; p__Actinobacteria; c__Coriobacteriia; o__Coriobacteriales; f__Coriobacteriaceae; g__; s__
+  k__Bacteria; p__Actinobacteria; c__Coriobacteriia; o__Coriobacteriales; f__Coriobacteriaceae; g__Atopobium; s__
+  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__; g__; s__
+  k__Bacteria; p__Actinobacteria; c__OPB41; o__; f__; g__; s__
+  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Actinosynnemataceae; g__; s__
+
+Closest taxonomies for query 160618 (in order):
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfobacterales; f__Desulfobacteraceae; g__Desulfococcus; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfobacterales; f__Desulfobacteraceae; g__Desulfococcus; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfobacterales; f__Desulfobacteraceae; g__Desulfococcus; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfuromonadales; f__Geobacteraceae; g__; s__
+
+Closest taxonomies for query 4379558 (in order):
+  k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__OPB11; f__; g__; s__
+  k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__DRC31; f__; g__; s__
+  k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__; f__; g__; s__
+  k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__DRC31; f__; g__; s__
+  k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__OPB11; f__; g__; s__
+
+Closest taxonomies for query 1772340 (in order):
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__Dysgonomonas; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__; s__
+</pre></div>
+</div>
+</div>
+</div>
 <p>Because we have taxonomic annotations for all of the Greengenes sequences (though as you probably have noticed by now, they differ in their specificity), we can next look at taxonomy associated with each of our queries in Greengenes. How do your annotations compare to those from Greengenes, which we’ll print out in the next cell?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
     <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Known taxonomy for query </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">q_id</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">q_id</span><span class="p">]))</span>
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 521275:
+ k__Bacteria; p__Actinobacteria; c__Coriobacteriia; o__Coriobacteriales; f__Coriobacteriaceae; g__; s__
+
+Known taxonomy for query 160618:
+ k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__AF420338; f__; g__; s__
+
+Known taxonomy for query 4379558:
+ k__Bacteria; p__Chloroflexi; c__Anaerolineae; o__OPB11; f__; g__; s__
+
+Known taxonomy for query 1772340:
+ k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__Dysgonomonas; s__
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="reducing-the-runtime-for-database-searches">
 <h2><span class="section-number">2.5. </span>Reducing the runtime for database searches<a class="headerlink" href="#reducing-the-runtime-for-database-searches" title="Permalink to this headline">¶</a></h2>
 <p>In the examples above, it’s taking on the order of 5-15 seconds to search a single sequence against our subset of Greengenes. This makes sense when you think about the computations that are being performed. For every sequence in our reference database (5000, if you haven’t modified the database subsampling step) it is computing the <span class="math notranslate nohighlight">\(F\)</span> and <span class="math notranslate nohighlight">\(T\)</span> matrices described in the Pairwise Alignment chapter, and then tracing back the matrix to compute the aligned sequences. Given all of that, the fact that computation only takes 5-15 seconds is pretty incredible. However, that doesn’t change the fact that this doesn’t scale to real-world applications because we’d have to wait way too long for results. Performing all pairwise alignments is prohibitively expensive for database searching.</p>
 <p>As we discussed in the previous chapter, the run time of pairwise alignment scales quadratically with sequence length. Database searching, at least in the example we’re exploring in this chapter, is a bit of a different problem however. Our sequence lengths aren’t changing, but rather it takes a long time because we’re performing a computationally expensive step, pairwise alignment, many times. Our database is fixed in that the number of sequences in it doesn’t change and the sequences themselves don’t change. Our query sequences are all exactly the same length in this example (remember that we set that above, when we sliced a single region from reference database sequences to create our query sequences). Let’s explore how the runtime of this database search scales under these constraints.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="k">def</span> <span class="nf">tabulate_local_alignment_search_runtime</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">n_query_sequences</span><span class="p">,</span>
@@ -550,14 +1088,152 @@
 <span class="n">local_alignment_search_runtimes</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Number of query seqs</th>
+      <th>Number of reference seqs</th>
+      <th>Median query seq length</th>
+      <th>Median reference seq length</th>
+      <th>Runtime (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1429.5</td>
+      <td>0.095524</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1439.0</td>
+      <td>0.091798</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1437.5</td>
+      <td>0.086832</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1446.5</td>
+      <td>0.546826</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1431.0</td>
+      <td>0.452991</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1427.5</td>
+      <td>0.446139</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>10.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1446.5</td>
+      <td>0.927887</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>10.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1419.5</td>
+      <td>0.909176</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>10.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1427.5</td>
+      <td>0.900926</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>15.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1421.0</td>
+      <td>1.371740</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>15.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1427.5</td>
+      <td>1.465020</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>15.0</td>
+      <td>100.0</td>
+      <td>200.0</td>
+      <td>1402.5</td>
+      <td>1.392713</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <p>This table shows that we’ve tried a few variations on number of query sequences but kept the number of reference sequences constant. There is no variance in the query sequence length, and there is a relatively small amount of variance in reference sequence length (they’re all of the same order of magnitude). There is also relatively little variance in runtime for fixed numbers of query and reference sequences.</p>
 <p>This table clearly shows that there is an increase in runtime with an increasing number of query sequences, which we’d of course expect. What we care about is how runtime is increasing as a function of number of query sequences. Let’s plot runtime versus the number of query sequences to help us understand that relationship.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Number of query seqs&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Runtime (s)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">local_alignment_search_runtimes</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">ax</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f996396cf28&gt;
+</pre></div>
+</div>
+<img alt="../_images/database-searching_28_1.png" src="../_images/database-searching_28_1.png" />
+</div>
 </div>
 <p>What we see here is pretty clearly a linear relationship: <span class="math notranslate nohighlight">\(runtime \approx constant \times number\ of\ query\ sequences\)</span>. This is because as we increase the number of query sequences, we’re increasing the number of pairwise alignments that we need to perform. If we have 5 queries and 10 reference sequences, we compute <span class="math notranslate nohighlight">\(5 \times 10 = 50\)</span> pairwise alignments. If we have 10 queries and 100 reference sequences, we compute <span class="math notranslate nohighlight">\(10 \times 100 = 1000\)</span> pairwise alignments. There are a few practical ways to reduce the runtime of a process like this.</p>
 <p>The first seems obvious, and even silly at first: perform fewer alignments. This could be achieved in a few ways. You could reduce the number of query sequences, though this might be something a researcher is resistant to: they have some collection of unknown sequences, and they want to know what they all are. You could alternatively reduce the number of reference sequences, but you might run into the same issues there: we wouldn’t want to exclude reference sequences that might provide us with useful information about our query sequences. Finally, we might be able to figure out some ways to perform fewer alignments by not searching all of the query sequences against all of the reference sequences. If we could come up with some procedure to approximate which pairwise alignments were likely to be good (i.e., high scoring) and which were likely to be bad (i.e., low scoring) that is faster than performing the pairwise alignments, we could apply that procedure and only align a pair of sequences when we expect to get a high score. That could potentially allow us to reduce the number of alignments we need to perform, and therefore the runtime of the algorithm.</p>
@@ -567,14 +1243,42 @@
 <div class="section" id="heuristic-algorithms">
 <h2><span class="section-number">2.6. </span>Heuristic algorithms<a class="headerlink" href="#heuristic-algorithms" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned above, it just takes too long to search individual query sequences against a large database. This problem also isn’t going away anytime soon. While computers are getting faster (or cheaper), the size of our sequences collections are getting bigger because sequencing is getting cheaper. In fact, many people think that obtaining DNA sequences is getting cheaper faster than computers are getting cheaper. As our number of query sequences increases because we are able to obtain more for the same amount of money, and the size of our reference databases increases (because we’re continuously obtaining more sequence data) this will increasingly become a bigger problem. Figures 1 and 2, respectively, illustrate that these are both real-world issues. Notice that the axes are on a log scale in both cases.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
 <span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">IFrame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;600&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;394&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=1844125885&amp;amp;format=interactive&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<iframe
+    width="600"
+    height="394"
+    src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=1844125885&amp;format=interactive"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+</div></div>
+</div>
 <p>Figure 1: Genome sequencing costs.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">IPython.display</span>
 <span class="n">IPython</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">IFrame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;763&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;371&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=2103353397&amp;amp;format=interactive&quot;</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<iframe
+    width="763"
+    height="371"
+    src="https://docs.google.com/spreadsheets/d/1vUkUuZsRlLW5U05rXXUn8B2sDYwShkClRMGa8Wiu6bc/pubchart?oid=2103353397&amp;format=interactive"
+    frameborder="0"
+    allowfullscreen
+></iframe>
+</div></div>
 </div>
 <p>Figure 2: Size of GenBank.</p>
 <p>One way that we can deal with this problem is by recognizing that most of the alignments that are performed in a database search are unlikely to be very good alignments. An algorithm developer could therefore improve runtime by defining a heuristic (or a rule) that is applied to determine which reference sequences are likely to result in good alignments, and only aligning the query against those. For it to be useful, making the decision to align or not (i.e., applying the heuristic) must be <em>much faster</em> than actually performing the pairwise alignment. The heuristic also needs to make <em>good</em> choices about which reference sequences to align the query against. If the algorithm chooses to not align against a specific reference, that reference is ruled out as a possible result of the database search. A good heuristic for sequence homology searching would therefore be very unlikely to exclude the best alignment(s). When thinking about heuristic algorithms in general, there are some important considerations:</p>
@@ -587,15 +1291,30 @@
 <h3><span class="section-number">2.6.1. </span>Random reference sequence selection<a class="headerlink" href="#random-reference-sequence-selection" title="Permalink to this headline">¶</a></h3>
 <p>Our first heuristic will be a <a class="reference external" href="https://en.wikipedia.org/wiki/Straw_man">straw man</a> that we use as a baseline. We’ll select a random <span class="math notranslate nohighlight">\(p\%\)</span> of the reference sequences to align our query against. This will clearly result in a large decrease in the number of sequence alignments that we need to perform because we’ll go from performing <span class="math notranslate nohighlight">\(R_s\)</span> (the reference database size) sequence alignments to <span class="math notranslate nohighlight">\(p \times R_s\)</span> sequence alignments for each query sequence <span class="math notranslate nohighlight">\(q_i\)</span>.</p>
 <p>Here’s the source code for this. You can see that we’re just wrapping our <code class="docutils literal notranslate"><span class="pre">local_alignment_search</span></code> function in a function that samples down to <span class="math notranslate nohighlight">\(p\%\)</span> of the reference sequences.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_random</span>
-<span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_random</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">def</span> <span class="nf">heuristic_local_alignment_search_random</span><span class="p">(</span>
+        <span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
+    <span class="n">database_subset</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">reference_db</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">local_alignment_search</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">database_subset</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>Let’s select some new queries and see how the results compare to our known taxonomies.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">current_queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">heuristic_local_alignment_search_random</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">heuristic_local_alignment_search_random</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
     <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
@@ -605,14 +1324,119 @@
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 299807 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+
+Closest taxonomies for query 266637 (in order):
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__VC21_Bac22; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__; s__
+
+Closest taxonomies for query 4330658 (in order):
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__Simplicispira; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Methylophilales; f__Methylophilaceae; g__Methylotenera; s__mobilis
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__MND1; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__Dechloromonas; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__; s__
+
+Closest taxonomies for query 1684221 (in order):
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfovibrionales; f__Desulfovibrionaceae; g__Bilophila; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfobacterales; f__Desulfobacteraceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfuromonadales; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfovibrionales; f__Desulfovibrionaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfobacterales; f__Desulfobacteraceae; g__Desulfococcus; s__
+
+Closest taxonomies for query 1753080 (in order):
+  k__Archaea; p__Euryarchaeota; c__Thermoplasmata; o__E2; f__[Methanomassiliicoccaceae]; g__vadinCA11; s__
+  k__Archaea; p__Euryarchaeota; c__Thermoplasmata; o__E2; f__Marine group II; g__; s__
+  k__Archaea; p__Euryarchaeota; c__ANME-1; o__; f__; g__; s__
+  k__Archaea; p__Euryarchaeota; c__Methanobacteria; o__Methanobacteriales; f__MSBL1; g__SAGMEG-1; s__
+  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Bacillaceae; g__Geobacillus; s__
+
+Closest taxonomies for query 242665 (in order):
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Thiotrichales; f__Piscirickettsiaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Chromatiales; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Oceanospirillales; f__Halomonadaceae; g__Halomonas; s__campisalis
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Xanthomonadales; f__Xanthomonadaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Oceanospirillales; f__Oceanospirillaceae; g__; s__
+
+Closest taxonomies for query 324522 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+
+Closest taxonomies for query 853940 (in order):
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Caulobacterales; f__Caulobacteraceae; g__Mycoplana; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Methylobacteriaceae; g__Methylobacterium; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Hyphomicrobiaceae; g__Rhodoplanes; s__
+
+Closest taxonomies for query 204369 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Clostridiaceae; g__Clostridium; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+
+Closest taxonomies for query 198962 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Blautia; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Ruminococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">current_queries</span><span class="p">:</span>
     <span class="n">q_id</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Known taxonomy for query </span><span class="si">%s</span><span class="s1">:</span><span class="se">\n</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">q_id</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">q_id</span><span class="p">]))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 299807:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+Known taxonomy for query 266637:
+ k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
+Known taxonomy for query 4330658:
+ k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Nitrosomonadales; f__Nitrosomonadaceae; g__; s__
+Known taxonomy for query 1684221:
+ k__Bacteria; p__Proteobacteria; c__Deltaproteobacteria; o__Desulfovibrionales; f__Desulfovibrionaceae; g__Desulfovibrio; s__C21_c20
+Known taxonomy for query 1753080:
+ k__Archaea; p__Euryarchaeota; c__Methanomicrobia; o__Methanosarcinales; f__Methanosarcinaceae; g__Methanococcoides; s__
+Known taxonomy for query 242665:
+ k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Chromatiales; f__; g__; s__
+Known taxonomy for query 324522:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+Known taxonomy for query 853940:
+ k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__; s__
+Known taxonomy for query 204369:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Christensenellaceae; g__; s__
+Known taxonomy for query 198962:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+</pre></div>
+</div>
+</div>
+</div>
 <p>What we need now is a way to know how often we get the “right answer”, and how long this heuristic algorithm takes relative to the complete algorithm. We therefore first need to define what the “right answer” is. How about this: if the most common taxonomy assignment resulting from the database search at <code class="docutils literal notranslate"><span class="pre">taxonomy_levels</span></code> levels of taxonomy (i.e., how deep or specific our assignment is) matches the known taxonomy, then our algorithm has achieved the right answer. We can vary <code class="docutils literal notranslate"><span class="pre">taxonomy_levels</span></code> to see how the different heuristics perform at different levels.</p>
 <p>Here’s what this would look like:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="k">def</span> <span class="nf">evaluate_search</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">search_function</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -638,11 +1462,19 @@
     <span class="k">return</span> <span class="n">per_query_runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>First let’s see how this works for our full database search algorithm. What’s the runtime, and how often do we get the correct answer? We’ll start with five levels of taxonomy (which corresponds to the family level). <strong>This step will take a couple of minutes to run, because it’s doing the full database search.</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">taxonomy_levels</span> <span class="o">=</span> <span class="mi">5</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxonomy_levels</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
                                                   <span class="n">local_alignment_search</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f</span><span class="s1"> seconds per query sequence&#39;</span> <span class="o">%</span> <span class="n">runtime</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%1.2f%%</span><span class="s1"> correct answers&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fraction_correct</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
@@ -654,8 +1486,58 @@
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.65 seconds per query sequence
+80.00% correct answers
+Result details:
+299807
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+266637
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+
+4330658
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+
+1684221
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+
+1753080
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+
+242665
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+
+324522
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+853940
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+
+204369
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Christensenellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+
+198962
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Next let’s see how this compares to our random heuristic search algorithm. Try running this a few times, as you might get different answers due to different random selections of the database.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">functools</span>
 
 <span class="n">heuristic_local_alignment_search_random_10</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_random</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span>
 
@@ -672,6 +1554,54 @@
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.47 seconds per query sequence
+40.00% correct answers
+Result details:
+299807
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+266637
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+
+4330658
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Burkholderiales&#39;, &#39;f__Oxalobacteraceae&#39;)
+
+1684221
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__NB1-j&#39;, &#39;f__NB1-i&#39;)
+
+1753080
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Thermoplasmata&#39;, &#39;o__E2&#39;, &#39;f__DHVEG-1&#39;)
+
+242665
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+
+324522
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+853940
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+
+204369
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Christensenellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+
+198962
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Again, what’s the runtime, and how often do we get the correct answer? Based on comparison to the full search, what do you think: is this a good heuristic?</p>
 <p>After performing many trials of the above searches, I get the correct genus-level assignment about half as often with the random reference database heuristic relative to the full database search. Your results might differ from that due to differences in the random selection of query and reference sequences. Try running all the cells in this section a few times.</p>
 <p>Go back to the beginning of this section and try running this check based on fewer levels of taxonomy (i.e., decreased taxonomic specificity, such as the phylum) and on more levels of taxonomy (i.e., increased taxonomic specificity, such as the species level). How does that impact how often we get the right answer?</p>
@@ -682,16 +1612,45 @@
 <div class="section" id="gc-content">
 <h4><span class="section-number">2.6.2.1. </span>GC content<a class="headerlink" href="#gc-content" title="Permalink to this headline">¶</a></h4>
 <p>One metric of sequence composition that we can compute quickly (because remember, this has to be a lot faster than computing the alignment for it to be worth it) is GC content. Let’s define a heuristic that only performs a pairwise alignment for the reference sequences that have the most similar GC content to the query sequence. The number of alignments that we’ll perform will be defined as <code class="docutils literal notranslate"><span class="pre">database_subset_size</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">database_subset_size</span> <span class="o">=</span> <span class="mi">500</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">database_subset_size</span> <span class="o">=</span> <span class="mi">500</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_gc</span>
-
-<span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_gc</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">heuristic_local_alignment_search_gc</span><span class="p">(</span>
+        <span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">reference_db_gc_contents</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">reference_db_gc_contents</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reference_db_gc_contents</span> <span class="o">=</span> \
+         <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">gc_content</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="n">query_gc_content</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">gc_content</span><span class="p">()</span>
+        <span class="n">database_subset</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+            <span class="n">ref_gc_content</span> <span class="o">=</span> <span class="n">reference_db_gc_contents</span><span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+            <span class="c1"># find the difference in GC content between the reference and</span>
+            <span class="c1"># query. we&#39;ll sort and select our reference sequences by this</span>
+            <span class="c1"># value</span>
+            <span class="n">database_subset</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">abs</span><span class="p">(</span><span class="n">ref_gc_content</span> <span class="o">-</span> <span class="n">query_gc_content</span><span class="p">),</span> <span class="n">r</span><span class="p">))</span>
+        <span class="n">database_subset</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">database_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">database_subset</span><span class="p">[:</span><span class="n">database_subset_size</span><span class="p">]]</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_alignment_search</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="n">database_subset</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>If we run our queries again, how often do we get the right answer? How much did we reduce runtime? Do you think this is a better or worse heuristic than what we implemented above?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_gc_2</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_gc</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_gc_2</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_gc</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
 
 <span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
                                                   <span class="n">heuristic_local_alignment_search_gc_2</span><span class="p">,</span> <span class="n">taxonomy_levels</span><span class="o">=</span><span class="n">taxonomy_levels</span><span class="p">)</span>
@@ -706,29 +1665,152 @@
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.50 seconds per query sequence
+40.00% correct answers
+Result details:
+299807
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+266637
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+
+4330658
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+
+1684221
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+
+1753080
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+
+242665
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Thiotrichales&#39;, &#39;f__Thiotrichaceae&#39;)
+
+324522
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+
+853940
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+
+204369
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Christensenellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Thermoanaerobacterales&#39;, &#39;f__Thermoanaerobacteraceae&#39;)
+
+198962
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Try increasing and decreasing the number of sequences we’ll align by increasing or decreasing <code class="docutils literal notranslate"><span class="pre">database_subset_size</span></code>. How does this impact the runtime and fraction of time that we get the correct answer?</p>
 </div>
 <div class="section" id="kmer-content">
 <h4><span class="section-number">2.6.2.2. </span>kmer content<a class="headerlink" href="#kmer-content" title="Permalink to this headline">¶</a></h4>
 <p>Another metric of sequence composition is <em>kmer composition</em>. A kmer is simply a word (or list of adjacent characters) of length <em>k</em> found within a sequence. Here are the kmer frequencies in a short DNA sequence. The <code class="docutils literal notranslate"><span class="pre">overlap=True</span></code> parameter here means that our kmers can overlap one another.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio</span>
 
 <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">(</span><span class="s1">&#39;ACCGTGACCAGTTACCAGTTTGACCAA&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;ACCGT&#39;: 1,
+ &#39;CCGTG&#39;: 1,
+ &#39;CGTGA&#39;: 1,
+ &#39;GTGAC&#39;: 1,
+ &#39;TGACC&#39;: 2,
+ &#39;GACCA&#39;: 2,
+ &#39;ACCAG&#39;: 2,
+ &#39;CCAGT&#39;: 2,
+ &#39;CAGTT&#39;: 2,
+ &#39;AGTTA&#39;: 1,
+ &#39;GTTAC&#39;: 1,
+ &#39;TTACC&#39;: 1,
+ &#39;TACCA&#39;: 1,
+ &#39;AGTTT&#39;: 1,
+ &#39;GTTTG&#39;: 1,
+ &#39;TTTGA&#39;: 1,
+ &#39;TTGAC&#39;: 1,
+ &#39;ACCAA&#39;: 1}
+</pre></div>
+</div>
+</div>
+</div>
 <p>In our next heuristic, we’ll only align our query to the reference sequences with the largest fraction of the kmers that are observed in the query sequence are also present in the reference sequence. This makes a lot of sense to use as an alignment heuristic: we’re only aligning sequences when it looks like they’ll have multiple length-<code class="docutils literal notranslate"><span class="pre">k</span></code> stretches of nucleotides that are not interrupted by substitutions or insertion/deletion mutations.</p>
 <p>In our next heuristic, we’ll only align our query to the reference sequences with the largest fraction of the kmers that are observed in the query sequence. This makes a lot of sense to use as an alignment heuristic: we’re only aligning sequences when it looks like they’ll have multiple length-<code class="docutils literal notranslate"><span class="pre">k</span></code> stretches of nucleotides that are not interrupted by substitutions or insertion/deletion mutations.</p>
 <p>Here’s the source code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">heuristic_local_alignment_search_kmers</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fraction_shared_kmers</span><span class="p">(</span><span class="n">kmer_freqs1</span><span class="p">,</span> <span class="n">kmer_freqs2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the fraction of kmers in kmer_freqs1 that are also in kmer_freqs2</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kmer_freqs1, kmer_freqs2</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If k &lt; 1.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    k-mer counts are not incorporated in this distance metric.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sequence1_kmers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">kmer_freqs1</span><span class="p">)</span>
+    <span class="n">num_sequence1_kmers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence1_kmers</span><span class="p">)</span>
+    <span class="n">sequence2_kmers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">kmer_freqs2</span><span class="p">)</span>
+    <span class="n">shared_kmers</span> <span class="o">=</span> <span class="n">sequence1_kmers</span> <span class="o">&amp;</span> <span class="n">sequence2_kmers</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">shared_kmers</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_sequence1_kmers</span>
 
-<span class="o">%</span><span class="n">psource</span> <span class="n">heuristic_local_alignment_search_kmers</span>
+<span class="k">def</span> <span class="nf">heuristic_local_alignment_search_kmers</span><span class="p">(</span>
+        <span class="n">queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">reference_db_kmer_frequencies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">reference_db_kmer_frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reference_db_kmer_frequencies</span> <span class="o">=</span> \
+         <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+        <span class="n">query_kmer_frequency</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">database_subset</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+            <span class="n">ref_kmer_frequency</span> <span class="o">=</span> <span class="n">reference_db_kmer_frequencies</span><span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">fraction_shared_kmers</span><span class="p">(</span><span class="n">query_kmer_frequency</span><span class="p">,</span> <span class="n">ref_kmer_frequency</span><span class="p">)</span>
+            <span class="n">database_subset</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">s</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+        <span class="n">database_subset</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">database_subset</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">database_subset</span><span class="p">[:</span><span class="n">database_subset_size</span><span class="p">]]</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_alignment_search</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="n">database_subset</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>Let’s apply this and see how it does. How does the runtime and fraction of correct assignments compare to our GC content-based search and our full database search?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
 <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_kmers</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
 
 <span class="n">runtime</span><span class="p">,</span> <span class="n">fraction_correct</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">evaluate_search</span><span class="p">(</span><span class="n">current_queries</span><span class="p">,</span> <span class="n">reference_db</span><span class="p">,</span> <span class="n">reference_taxonomy</span><span class="p">,</span>
@@ -746,15 +1828,69 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.33 seconds per query sequence
+80.00% correct answers
+Result details:
+299807
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+266637
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+
+4330658
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+
+1684221
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+
+1753080
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+
+242665
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+
+324522
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+853940
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+
+204369
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Christensenellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+
+198962
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="further-optimizing-composition-based-approaches-by-pre-computing-reference-database-information">
 <h4><span class="section-number">2.6.2.3. </span>Further optimizing composition-based approaches by pre-computing reference database information<a class="headerlink" href="#further-optimizing-composition-based-approaches-by-pre-computing-reference-database-information" title="Permalink to this headline">¶</a></h4>
 <p>One important feature of composition-based approaches is that, because the reference database doesn’t change very often, we can pre-compute features of the reference sequences and re-use them. This can help us to vastly decrease the runtime of our heuristic searches. For example, the computation of all of the reference database kmer frequencies is a lot of work. If we can compute that outside of our database search, we can avoid doing that step for every database search, and therefore remove that computationally expensive (i.e., slow) step of the process.</p>
 <p>Here we’ll compute all of the reference database kmer frequencies. Notice that this step takes about a minute to complete. This is a minute of compute time that we can save on every database search!</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db_kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]:</span> <span class="n">r</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">}</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db_kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]:</span> <span class="n">r</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">}</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>We’ll now pass our pre-computed kmer frequencies into our search function. How does the runtime and accuracy of this search compare to the searches above? This last database search that we’ve implemented here is very similar to how BLAST works.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">heuristic_local_alignment_search_kmers_50</span> <span class="o">=</span> \
  <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">heuristic_local_alignment_search_kmers</span><span class="p">,</span> <span class="n">reference_db_kmer_frequencies</span><span class="o">=</span><span class="n">reference_db_kmer_frequencies</span><span class="p">,</span>
                    <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">database_subset_size</span><span class="o">=</span><span class="n">database_subset_size</span><span class="p">)</span>
 
@@ -771,6 +1907,54 @@
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Observed taxonomy&#39;</span><span class="p">][</span><span class="n">q_id</span><span class="p">])</span>
     <span class="nb">print</span><span class="p">()</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.82 seconds per query sequence
+80.00% correct answers
+Result details:
+299807
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+266637
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Cryomorphaceae&#39;)
+
+4330658
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Nitrosomonadales&#39;, &#39;f__Nitrosomonadaceae&#39;)
+
+1684221
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Deltaproteobacteria&#39;, &#39;o__Desulfovibrionales&#39;, &#39;f__Desulfovibrionaceae&#39;)
+
+1753080
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+  (&#39;k__Archaea&#39;, &#39;p__Euryarchaeota&#39;, &#39;c__Methanomicrobia&#39;, &#39;o__Methanosarcinales&#39;, &#39;f__Methanosarcinaceae&#39;)
+
+242665
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Chromatiales&#39;, &#39;f__&#39;)
+
+324522
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+
+853940
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+
+204369
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Christensenellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+
+198962
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -810,7 +1994,9 @@
 <h3><span class="section-number">2.7.3. </span>Interpreting alignment scores in context<a class="headerlink" href="#interpreting-alignment-scores-in-context" title="Permalink to this headline">¶</a></h3>
 <p>In this section, we are going to learn about how to interpret alignment scores by empirically determining if a pairwise alignment that we obtain is better than we would expect if the pair of sequences we’re working with were definitely not homologous. For a given pair of sequences that we want to align, we’re first going to align them and compute the score of the alignment. We’re then going to align many pairs of sequences that are similar to the query and reference, but that we know are not homologous. We’ll do this by shuffling or randomizing the order of the bases in the query sequences, and performing another pairwise alignment.</p>
 <p>First, we’ll define a function that can generate random sequences for us. This will take a scikit-bio sequence object (either <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code>, <code class="docutils literal notranslate"><span class="pre">skbio.RNA</span></code>, or <code class="docutils literal notranslate"><span class="pre">skbio.Protein</span></code>) and a length, and it will randomly generate a sequence of that type and length for us.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 <span class="k">def</span> <span class="nf">random_sequence</span><span class="p">(</span><span class="n">moltype</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">alphabet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">moltype</span><span class="o">.</span><span class="n">nondegenerate_chars</span><span class="p">)</span>
@@ -819,43 +2005,163 @@
     <span class="k">return</span> <span class="n">moltype</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>We can now run this a few times to generate some random sequences:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+--------------------------------------------------------
+Stats:
+    length: 50
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 42.00%
+--------------------------------------------------------
+0 ATCTCGGACA AGGTTCTAGT CCGTGTTCAT TCATGAACAT CGAAAATCCT
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+--------------------------------------------------------
+Stats:
+    length: 50
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 52.00%
+--------------------------------------------------------
+0 TTCCATTGCT GTGTGCCCAA AGGCAGGGCC TACACGATAT AGGGTTGGAA
+</pre></div>
+</div>
+</div>
 </div>
 <p>Next, we need a function that will shuffle the characters in a sequence, and give us a new sequence back. We’ll use this to generate a sequence that is similar (in length and composition) to our input sequence, but which we know is not homologous. We’ll use Pythons <code class="docutils literal notranslate"><span class="pre">random.shuffle</span></code> function, which randomly re-orders the order of the elements in a sequence, but keeps the composition and length of the sequence the same.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">shuffle_sequence</span>
-<span class="o">%</span><span class="n">psource</span> <span class="n">shuffle_sequence</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">shuffle_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">):</span>
+    <span class="c1"># generate a list of the position indices (numbers) in sequence</span>
+    <span class="n">randomized_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)))</span>
+    <span class="c1"># randomly rearrange the order of that list</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">randomized_order</span><span class="p">)</span>
+    <span class="c1"># return a new sequence, where the positions are shuffled</span>
+    <span class="k">return</span> <span class="n">sequence</span><span class="p">[</span><span class="n">randomized_order</span><span class="p">]</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>Now we can define a random sequence and shuffle it. Notice how the sequences are different (in their order), but their compositions (e.g., length and GC content) are the same. Shuffling will change the order of the bases, but it won’t change the frequency at which each base is present - it’s exactly analogous to shuffling a deck of cards.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">seq</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shuffle_sequence</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+--------------------------------------------------------
+Stats:
+    length: 50
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 38.00%
+--------------------------------------------------------
+0 AAATATTAAA TCAAGACATC GGAGGGGGAG GAAAGATTAT GGCCTATTAC
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">shuffle_sequence</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+--------------------------------------------------------
+Stats:
+    length: 50
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 38.00%
+--------------------------------------------------------
+0 GAGAATACAG TCTACAGCCT ATAGTAGTAG AGAGGTTGAA AATGTGAAAC
+</pre></div>
+</div>
+</div>
+</div>
 <p>Let’s generate a random query sequence and align it against itself to see what that score would be.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query_seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_seq</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">actual_score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">local_pairwise_align_ssw</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score: </span><span class="si">%1.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">actual_score</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Next let’s generate 99 random variants of that sequence with <code class="docutils literal notranslate"><span class="pre">shuffle_sequence</span></code> and compute the pairwise alignment for each of those variants against the query sequence. We’ll then look at the distribution of those scores.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">generate_random_score_distribution</span>
-<span class="o">%</span><span class="n">psource</span> <span class="n">generate_random_score_distribution</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Score: 100.00
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">random_scores</span> <span class="o">=</span> <span class="n">generate_random_score_distribution</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+</div>
+</div>
+<p>Next let’s generate 99 random variants of that sequence with <code class="docutils literal notranslate"><span class="pre">shuffle_sequence</span></code> and compute the pairwise alignment for each of those variants against the query sequence. We’ll then look at the distribution of those scores.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_random_score_distribution</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span>
+                                       <span class="n">sequence2</span><span class="p">,</span>
+                                       <span class="n">n</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span>
+                                       <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># iterate n times</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># generate a randomized version of the first sequence</span>
+        <span class="n">random_sequence</span> <span class="o">=</span> <span class="n">shuffle_sequence</span><span class="p">(</span><span class="n">sequence1</span><span class="p">)</span>
+        <span class="c1"># align that randomized sequence against the second sequence</span>
+        <span class="c1"># and save its score</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="c1"># return the n randomized alignment scores</span>
+    <span class="k">return</span> <span class="n">scores</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_scores</span> <span class="o">=</span> <span class="n">generate_random_score_distribution</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">random_scores</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11, 12, 10, 10, 10, 9, 10, 10, 10, 14, 13, 15, 12, 16, 14, 10, 17, 12, 10, 14, 10, 13, 10, 12, 14, 10, 12, 10, 12, 13, 12, 10, 10, 12, 13, 12, 9, 13, 11, 11, 11, 11, 11, 15, 13, 13, 12, 10, 12, 10, 12, 14, 10, 10, 10, 10, 10, 11, 11, 10, 12, 10, 8, 11, 10, 10, 12, 10, 12, 12, 9, 11, 14, 14, 12, 12, 10, 11, 16, 15, 12, 11, 10, 12, 12, 16, 9, 11, 15, 12, 16, 13, 10, 12, 13, 12, 14, 12, 11]
+</pre></div>
+</div>
+</div>
+</div>
 <p>How does the actual score of aligning the sequence to itself compare to the score of aligning it to many similar but non-homologous sequences? Let’s plot these to get a better idea.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="k">def</span> <span class="nf">plot_score_distribution</span><span class="p">(</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">random_scores</span><span class="p">):</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">random_scores</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Random scores&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
@@ -866,47 +2172,176 @@
     <span class="k">return</span> <span class="n">ax</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot_score_distribution</span><span class="p">(</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">random_scores</span><span class="p">)</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_score_distribution</span><span class="p">(</span><span class="n">actual_score</span><span class="p">,</span> <span class="n">random_scores</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/seaborn/distributions.py:2551: FutureWarning: `distplot` is a deprecated function and will be removed in a future version. Please adapt your code to use either `displot` (a figure-level function with similar flexibility) or `histplot` (an axes-level function for histograms).
+  warnings.warn(msg, FutureWarning)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f996309b630&gt;
+</pre></div>
+</div>
+<img alt="../_images/database-searching_79_2.png" src="../_images/database-searching_79_2.png" />
+</div>
 </div>
 <p>What does this tell us about our alignment score and therefore about our alignment? Is it good or bad?</p>
 <p>We finally have information that we can use to evaluate an alignment score, and therefore to evaluate the quality of an alignment. Let’s use this information to quantify the quality of the alignment by computing a p-value. As we described above, this is simply the probability that we would obtain an alignment score at least this good if the sequences being aligned are not homologous. Since we have a lot of scores now from sequences that are similar but not homologous, if we just count how many are at least as high as our actual score and divide by the number of scores we compute, that is an empirical (data-driven) way of determining our p-value.</p>
 <p>To determine if our alignment is statistically significant, we need to define <span class="math notranslate nohighlight">\(\alpha\)</span> before computing the p-value so the p-value does not impact our choice of <span class="math notranslate nohighlight">\(\alpha\)</span>. Let’s define <span class="math notranslate nohighlight">\(\alpha\)</span> as 0.05. This choice means if we obtain a p-value less than 0.05 we will consider the alignment statistically significant and accept the hypothesis that the sequences are homologous.</p>
 <p>Here’s what all of this looks like:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">iab.algorithms</span> <span class="kn">import</span> <span class="n">fraction_better_or_equivalent_alignments</span>
-<span class="o">%</span><span class="n">psource</span> <span class="n">fraction_better_or_equivalent_alignments</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_random_score_distribution</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span>
+                                       <span class="n">sequence2</span><span class="p">,</span>
+                                       <span class="n">n</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span>
+                                       <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># iterate n times</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># generate a randomized version of the first sequence</span>
+        <span class="n">random_sequence</span> <span class="o">=</span> <span class="n">shuffle_sequence</span><span class="p">(</span><span class="n">sequence1</span><span class="p">)</span>
+        <span class="c1"># align that randomized sequence against the second sequence</span>
+        <span class="c1"># and save its score</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="n">random_sequence</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="c1"># return the n randomized alignment scores</span>
+    <span class="k">return</span> <span class="n">scores</span>
+
+<span class="k">def</span> <span class="nf">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span>
+                                             <span class="n">sequence2</span><span class="p">,</span>
+                                             <span class="n">n</span> <span class="o">=</span> <span class="mi">99</span><span class="p">,</span>
+                                             <span class="n">aligner</span><span class="o">=</span><span class="n">local_pairwise_align_ssw</span><span class="p">):</span>
+    <span class="c1"># align sequence1 and sequence2 and store the score of the alignment</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">actual_score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">aligner</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence2</span><span class="p">)</span>
+    <span class="c1"># compute the distribution of randomized scores</span>
+    <span class="n">random_scores</span> <span class="o">=</span> <span class="n">generate_random_score_distribution</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span>
+                                                       <span class="n">sequence2</span><span class="p">,</span>
+                                                       <span class="n">n</span><span class="p">,</span>
+                                                       <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">)</span>
+
+    <span class="c1"># count the number of random scores that are at least as good as our</span>
+    <span class="c1"># actual score</span>
+    <span class="n">count_better</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">random_scores</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="n">actual_score</span><span class="p">:</span>
+            <span class="n">count_better</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># return the number of times we observe a score at least as good as the</span>
+    <span class="c1"># random score divided by the number of scores we computed. we add one</span>
+    <span class="c1"># to the numerator and denominator to account for our actual_score</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">count_better</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
       <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">99</span><span class="p">))</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.01
+</pre></div>
+</div>
+</div>
 </div>
 <p>The fraction that we get back here is <code class="docutils literal notranslate"><span class="pre">0.01</span></code>, which is lower than <span class="math notranslate nohighlight">\(\alpha\)</span>, so we would accept the hypothesis that our sequences are homologous.</p>
 <p>A few notes on these empirically defined p-values. First, here’s what the formula for computing this looks like:</p>
 <p><span class="math notranslate nohighlight">\(p\ value = \frac{number\ of\ computed\ aligned\ scores\ greater\ than\ or\ equal\ to\ the\ actual\ alignment\ score}{number\ of\ alignment\ scores\ computed}\)</span></p>
 <p>The numerator and the denominator both include the actual alignment score, so the lowest p-value that can be achieved is <span class="math notranslate nohighlight">\(\frac{1}{99 + 1}\)</span>, where the <span class="math notranslate nohighlight">\(1\)</span> in the numerator corresponds to our actual alignment score (which is of course equal to itself), where the <span class="math notranslate nohighlight">\(99\)</span> in the denominator is the number of permutations, and the <span class="math notranslate nohighlight">\(1\)</span> in the denominator is a constant which corresponds the computation of the actual score. If we increase the number of permutations, say to 999, we could achieve greater precision (more significant digits) in our p-value.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
       <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">query_seq</span><span class="p">,</span> <span class="mi">999</span><span class="p">))</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.001
+</pre></div>
+</div>
+</div>
 </div>
 <p>When we achieve the lowest possible value for a given test, as is the case here, we report the p-value as being less than that value, since we’ve yet to observe a random alignment score at least that high. For example, here we would report something like:</p>
 <p><em>The alignment of our query and reference sequence was statistically significant, as determined by comparing our actual alignment score to random variants (<span class="math notranslate nohighlight">\(p &lt; 0.001\)</span>).</em></p>
 <p>Let’s now try this for some harder cases, where the query and subject sequences are not identical. First, let’s generate a longer subject sequence at random. Then, we’ll create a random query sequence and compare it. Since we’re doing this in two random steps, we know that these sequences are not homologous. Does the resulting p-value reflect that?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
 <span class="n">sequence1</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence2</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 52.80%
+---------------------------------------------------------------------
+0   CACTGTGATG GCCCGGTGTC AAAGGCGGCT GCAAAACAGA GGTGCAGAAG TGACTTGTAT
+60  ACTTCAAATT CTAGCTTCCA GGGAGTCGAG GACGACTAGG GTCCATTAAG TTAGAACGCT
+120 GGCCCCCCGA TCCCGCTGCC TTGGATCGTT GACAGCAATA GGTGTGGTGT TGCGTCATCG
+180 CATAGCCGTT AACGAATATG GGAGCAATCC CGTATAATGT TCTCTACGCT CCACTACGTG
+240 GCGCTCTGAC
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence2</span> <span class="o">=</span> <span class="n">random_sequence</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span>
 <span class="n">sequence2</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 52.80%
+---------------------------------------------------------------------
+0   ACGTTTCATA GGCCGAACAC CTCAGCATTC TTGGATATCA GTTAGTGTTG GGCGACGGAT
+60  CGCGGGCGCA AATCTCGTCG ACCATTCGAA TCATTACTAG ATCTGGTGTC TAATCGCGCC
+120 TTAATACTAC GAGAACGTGG GGTGCCAGCG AAATAGGCTT GTGCAGTCTC GCTGTTCAAT
+180 CAGGACTTGG TACTTGGTAG GTTGCGCGGA GTAAGGTTGT AAGCCCCGGG CCTGCGTCTC
+240 GACCTTCTGC
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
       <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span><span class="n">sequence2</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.88
+</pre></div>
+</div>
+</div>
+</div>
 <p>We’ve now looked at two extremes: where sequences are obviously homologous (because they were the same), and where sequences are obviously not homologous (because they were both independently randomly generated). Next, we’ll explore the region between these, where this gets interesting. We’ll now create a partially randomized sequence to create a pair of sequences where the homology is more obscure. We’ll do this again using the Python <code class="docutils literal notranslate"><span class="pre">random</span></code> module, but this time we’ll introduce mutations only at some positions to create a pair of sequences that are approximately <code class="docutils literal notranslate"><span class="pre">percent_id</span></code> identical.</p>
 <p>Let’s define a function to do this, and then compute a sequence that is 95% identical to our <code class="docutils literal notranslate"><span class="pre">sequence1</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">partially_randomize_sequence</span><span class="p">(</span><span class="n">percent_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">partially_randomize_sequence</span><span class="p">(</span><span class="n">percent_id</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">percent_id</span><span class="p">:</span>
@@ -918,41 +2353,159 @@
     <span class="k">return</span> <span class="n">sequence</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_95</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_95</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_95</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 52.80%
+---------------------------------------------------------------------
+0   CACTGTGATG GCCCGGTGTC AAAGGCGGCT GCAAAACAGA GGTGCAGAAG TGACTTGTAT
+60  ACTTCAAATT CTAGCTTCCA GGGAGTCGAG GACGACTAGG GTCCATTAAG TTAGAACGCT
+120 GGCCCCCCGA TCCCGCTGCC TTGGATCGTT GACAGCAATA GGTGTGGTGT TGCGTCATCG
+180 CATAGCCGTT AACGAATATG GGAGCAATCC CGTATAATGT TCTCTACGCT CCACTACGTG
+240 GCGCTCTGAC
 </pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_95</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 54.40%
+---------------------------------------------------------------------
+0   CACCGTGATG GCCCGGTGTC AAAGGCGGCT GCAAAACAGA GGTGCAGAAG TGACTTATAC
+60  ACTTCAAATT CTAGCTTCCA GGGAGTCGAG GACGACTAGG GGCCATTAAG TTAGAACGCT
+120 GGCCCCCCGA TCCCGCTGCC TTGGATCGTT GACAGCAATA GGTGTGGTGT TGCGTCATCG
+180 CATAGCCGTT AACGAATATG GGAGCAAGCC CGTAGAATGT TCTCAACGCT CCCCTACGTG
+240 GCGCTATGAC
+</pre></div>
+</div>
+</div>
 </div>
 <p>Notice how these sequences are almost identical, but have some differences. Let’s apply our approach to determine if it would identify these sequences as being homologous based on <span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
       <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence1_95</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.01
+</pre></div>
+</div>
+</div>
+</div>
 <p>You likely got a significant p-value there, telling you that the sequences are homologous.</p>
 <p>Now let’s simulate much more distantly related sequences by introducing substitutions at many more sites.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_25</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_25</span> <span class="o">=</span> <span class="n">partially_randomize_sequence</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">sequence1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_25</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 52.80%
+---------------------------------------------------------------------
+0   CACTGTGATG GCCCGGTGTC AAAGGCGGCT GCAAAACAGA GGTGCAGAAG TGACTTGTAT
+60  ACTTCAAATT CTAGCTTCCA GGGAGTCGAG GACGACTAGG GTCCATTAAG TTAGAACGCT
+120 GGCCCCCCGA TCCCGCTGCC TTGGATCGTT GACAGCAATA GGTGTGGTGT TGCGTCATCG
+180 CATAGCCGTT AACGAATATG GGAGCAATCC CGTATAATGT TCTCTACGCT CCACTACGTG
+240 GCGCTCTGAC
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence1_25</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+---------------------------------------------------------------------
+Stats:
+    length: 250
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 51.60%
+---------------------------------------------------------------------
+0   CGCTCTGAAG CCGCCCCACC TATATAGTGT GAGCGACCGG TATGGATATA TTAATTGTAA
+60  GCCGTTACCT GCCGGTTTCG GTGTCGAAGG CATTACTAGG AGCCTCTTAG GTAATATGAT
+120 GCCTTCCAAA CGCCACTCAC TCAAGGCGTT CCGAACAATA TCAGTTGTCT TGACTCCTCG
+180 CATAGCGTGC AGAAGAGCCC TCGATGAGCA TGCAACCTGG TGGCGGCTTA CAGATGCTGC
+240 ACTATCGGTC
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fraction of alignment scores at least as good as the alignment score: </span><span class="si">%r</span><span class="s2">&quot;</span> <span class="o">%</span>
       <span class="n">fraction_better_or_equivalent_alignments</span><span class="p">(</span><span class="n">sequence1</span><span class="p">,</span> <span class="n">sequence1_25</span><span class="p">))</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.06
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="exploring-the-limit-of-detection-of-sequence-homology-searches">
 <h3><span class="section-number">2.7.4. </span>Exploring the limit of detection of sequence homology searches<a class="headerlink" href="#exploring-the-limit-of-detection-of-sequence-homology-searches" title="Permalink to this headline">¶</a></h3>
 <p>In the example above, we know that our input sequences are “homologous” because <code class="docutils literal notranslate"><span class="pre">sequence1_25</span></code> and <code class="docutils literal notranslate"><span class="pre">sequence1_95</span></code> are both derived from <code class="docutils literal notranslate"><span class="pre">sequence1</span></code>. Our method detected that homology for <code class="docutils literal notranslate"><span class="pre">sequence1_95</span></code>, when we simulated very closely related sequences, but not for <code class="docutils literal notranslate"><span class="pre">sequence1_25</span></code>, when we simulated much more distantly related sequences. This gives us an idea of the limit of detection of this method, and is a real-world problem that biologists face: as sequences are more divergent from one another, detecting homology becomes increasingly difficult.</p>
 <p>Lets run a simulation to gain some more insight into the limit of detection of this method. We’ll run this approach for pairs of sequences where we vary the <code class="docutils literal notranslate"><span class="pre">percent_id</span></code> parameter, and identify when our approach stops identifying sequence pairs as being homologous. This is important to know as a bioinformatician, because it tells us around what pairwise similarity we will no longer be able to identify homology using this approach.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, let&#39;s define the range of percent identities that we&#39;ll test</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, let&#39;s define the range of percent identities that we&#39;ll test</span>
 <span class="n">percent_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
 <span class="c1"># Then, we&#39;ll define the number of random sequences we&#39;ll test at each percent identity</span>
 <span class="n">num_trials</span> <span class="o">=</span> <span class="mi">20</span>
@@ -974,6 +2527,156 @@
 <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Percent id between query and subject&quot;</span><span class="p">,</span>
                                <span class="s2">&quot;Median p-value&quot;</span><span class="p">,</span> <span class="s2">&quot;Mean p-value&quot;</span><span class="p">])</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Percent id between query and subject</th>
+      <th>Median p-value</th>
+      <th>Mean p-value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00</td>
+      <td>0.540</td>
+      <td>0.5530</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.05</td>
+      <td>0.495</td>
+      <td>0.5100</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.10</td>
+      <td>0.515</td>
+      <td>0.5180</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.15</td>
+      <td>0.625</td>
+      <td>0.5800</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.20</td>
+      <td>0.560</td>
+      <td>0.5160</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.25</td>
+      <td>0.445</td>
+      <td>0.4740</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.30</td>
+      <td>0.225</td>
+      <td>0.3025</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.35</td>
+      <td>0.065</td>
+      <td>0.1655</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.40</td>
+      <td>0.035</td>
+      <td>0.1975</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.45</td>
+      <td>0.010</td>
+      <td>0.0630</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.50</td>
+      <td>0.010</td>
+      <td>0.0110</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.55</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.60</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0.65</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.70</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0.75</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0.80</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0.85</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0.90</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0.95</td>
+      <td>0.010</td>
+      <td>0.0100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>What does this simulation tell us about our limit of detection for homology (i.e., how similar must a pair of sequences be for us to reliably be able to identify homology between them)? Is this higher or lower than you expected?</p>
 <p>With respect to our simulation, I took a few shortcuts here to keep the runtime low. What are some things that could be improved to make this simulation more robust, if we weren’t as concerned about runtime?</p>
