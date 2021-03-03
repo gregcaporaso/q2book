@@ -436,4 +436,5 @@ dependencies:
     - jupyter-book
     - ghp-import
     - calysto_bash
+    - qiime_default_reference
 prefix: /home/jgc53/.conda/envs/q2book

@@ -353,4 +353,5 @@ dependencies:
     - jupyter-book
     - ghp-import
     - calysto_bash
+    - qiime_default_reference
 prefix: /Users/gregcaporaso/miniconda3/envs/q2book
