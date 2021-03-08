@@ -55,5 +55,5 @@ These are intended to share ideas related to what is being presented in the text
 - Warning: a common error that is encountered. 
 - Note: a idea that is related to the content being presented, but is a bit off topic relative to the current discussion. 
 - Food for thought: a question or topic to think about related to the current content
-- Interactive exercise: a suggestion for something to experiment to help you develop your understanding of the current content
+- Exercise: a suggestion for something to experiment to help you develop your understanding of the current content
 - Jargon: discussed a term that is common among microbiome or bioinformatics practitioners, but which may not be immediately clear to beginners. 

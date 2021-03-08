@@ -546,6 +546,13 @@ MVLFPADKSNVKATWAKIGNHGAEYGAEALERMFMNFPSTKTYFPHFDLGHDSAQVKGHGKKVADALTKAAGHMDNLLDA
 </div>
 </div>
 <p>In this case, <code class="docutils literal notranslate"><span class="pre">q1</span></code> has a smaller distance to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than it does to <code class="docutils literal notranslate"><span class="pre">r2</span></code>, so <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> than <code class="docutils literal notranslate"><span class="pre">r2</span></code>. The comments lines above each sequence describe the source organisms. The Hamming distances between these sequences align with our understanding of the evolutionary distances between these organisms. The whale hemoglobin has a smaller Hamming distance (i.e., it’s more similar) to the human hemoglobin sequence than to the chicken hemoglobin sequences. Whales and humans are both mammals while chickens are birds, thus whales are humans are more closely related to one another than either is to birds. If we hypothesized that whales were more closely related to humans than chickens, this finding would have supported that hypothesis. Relating sequence similarity to evolutionary history isn’t always that simple though unfortunately.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-video admonition">
+<p class="admonition-title">Video</p>
+<p><a class="reference external" href="https://youtu.be/FWD0fdozHcY">This video</a> on the QIIME 2 YouTube channel presents the content in this chapter through section <a class="reference internal" href="#first-alignment-algorithm"><span class="std std-ref">A first algorithm for aligning a pair of sequences</span></a>.</p>
+</div>
+</div>
 <p>Here we’ve assumed that only <em>substitution events</em> have occurred, meaning one DNA base was substituted with another. Let’s define <code class="docutils literal notranslate"><span class="pre">q2</span></code>, which is one base shorter than <code class="docutils literal notranslate"><span class="pre">r1</span></code>, <code class="docutils literal notranslate"><span class="pre">r2</span></code>, and <code class="docutils literal notranslate"><span class="pre">q1</span></code>. Because Hamming distance requires that input sequences are of equal length, I’m going to add a <code class="docutils literal notranslate"><span class="pre">-</span></code> character to the end of <code class="docutils literal notranslate"><span class="pre">q2</span></code>. The Hamming distance computation will score that as a single base difference.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -636,7 +643,7 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 <p>In the next section we’ll work through an accessible but overly simplistic method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.</p>
 </div>
 <div class="section" id="a-first-algorithm-for-aligning-a-pair-of-sequences">
-<h2><span class="section-number">1.2. </span>A first algorithm for aligning a pair of sequences<a class="headerlink" href="#a-first-algorithm-for-aligning-a-pair-of-sequences" title="Permalink to this headline">¶</a></h2>
+<span id="first-alignment-algorithm"></span><h2><span class="section-number">1.2. </span>A first algorithm for aligning a pair of sequences<a class="headerlink" href="#a-first-algorithm-for-aligning-a-pair-of-sequences" title="Permalink to this headline">¶</a></h2>
 <p>Let’s define two sequences, <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> and then work through an approach for aligning them. In this section we’ll work with DNA sequences, and in subsequent sections we’ll work with protein sequences. Again, the algorithms are largely the same. Throughout this book and your own work we’ll sometimes align DNA or RNA sequences, and sometimes align protein sequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -870,8 +877,8 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 <p class="admonition-title">Food for thought</p>
 <p>Why might the first alignment be the more biologically relevant one (meaning the one that is more likely to represent that true evolutionary history of this pair of molecules)? Why might the second be the more biologically relevant one?</p>
 </div>
-<div class="admonition-interactive-exercise admonition">
-<p class="admonition-title">Interactive exercise</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
 <p>If you’re reading this chapter interactively, go back to where we defined <code class="docutils literal notranslate"><span class="pre">seq1</span></code> and <code class="docutils literal notranslate"><span class="pre">seq2</span></code> and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.</p>
 </div>
 </div>
@@ -889,6 +896,13 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 <div class="section" id="differential-scoring-of-matches-and-mismatches">
 <h2><span class="section-number">1.3. </span>Differential scoring of matches and mismatches<a class="headerlink" href="#differential-scoring-of-matches-and-mismatches" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-video admonition">
+<p class="admonition-title">Video</p>
+<p><a class="reference external" href="https://youtu.be/DpZqo32lZjU">This video</a> on the QIIME 2 YouTube channel presents the content in this chapter through section <a class="reference internal" href="#nw-alignment"><span class="std std-ref">A better approach for global pairwise alignment using the Needleman-Wunsch algorithm</span></a>.</p>
+</div>
+</div>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <div class="admonition-jargon-what-is-an-amino-acid-residue admonition">
@@ -1007,7 +1021,9 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
 0
 -3
-5
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5
 15
 </pre></div>
 </div>
@@ -1016,7 +1032,7 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 <p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s <span id="id2">[<a class="reference internal" href="#id23"><span>MOD78</span></a>]</span> and by Steven Henikoff and Jorja Henikoff in the early 1990s <span id="id3">[<a class="reference internal" href="#id24"><span>HH92</span></a>]</span>. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) <span id="id4">[<a class="reference internal" href="#id25"><span>Edd04</span></a>]</span> presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We’ll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.</p>
 </div>
 <div class="section" id="a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm">
-<h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm<a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm" title="Permalink to this headline">¶</a></h2>
+<span id="nw-alignment"></span><h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm<a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm" title="Permalink to this headline">¶</a></h2>
 <p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 <span id="id5">[<a class="reference internal" href="#id26"><span>NW70</span></a>]</span>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
 <div class="section" id="stepwise-needleman-wunsch-alignment">
 <h3><span class="section-number">1.4.1. </span>Stepwise Needleman-Wunsch alignment<a class="headerlink" href="#stepwise-needleman-wunsch-alignment" title="Permalink to this headline">¶</a></h3>
@@ -1035,7 +1051,9 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HEAGAWGHEE
-PAWHEAE
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PAWHEAE
 </pre></div>
 </div>
 </div>
@@ -1696,6 +1714,13 @@ HEAGAWGHE-E
 </div>
 <div class="section" id="global-versus-local-alignment">
 <h2><span class="section-number">1.5. </span>Global versus local alignment<a class="headerlink" href="#global-versus-local-alignment" title="Permalink to this headline">¶</a></h2>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-video admonition">
+<p class="admonition-title">Video</p>
+<p><a class="reference external" href="https://youtu.be/9e72ujGRio4">This video</a> on the QIIME 2 YouTube channel summarizes the content through the end of this chapter.</p>
+</div>
+</div>
 <p>The alignment we just constructed is a <em>global alignment</em>, meaning we align both sequences from their beginning through their end. This has some important specific applications: for example, if we have two full-length protein sequences, and we have a crystal structure for one of them, we can use global alignment to give us a direct mapping between all positions in both sequences.</p>
 <p>This is in contrast to local alignment, where we have a pair of sequences that we suspect may partially overlap each other, and we want to know what the best possible alignment of all or part of one sequence is with all or part of the other sequences. Perhaps the most widely used application of this is in sequence database searching (e.g., <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">the BLAST web server</a>), where we have a query sequence and we want to find the closest match (or matches) in a reference database containing many different gene sequences. In this case, the whole reference database could be represented as a single sequence, as we could perform a local alignment against it to find the region that contains the highest scoring match.</p>
 <p>Global and local alignment are both used for different applications. We’ll next look at an algorithm for computing local alignments. You’ll see that this is very similar to Needleman-Wunsch alignment.</p>
@@ -1956,7 +1981,9 @@ F(i, j) = max \left(\begin{align}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AWGHE
-AW-HE
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AW-HE
 28.0
 </pre></div>
 </div>
@@ -2327,8 +2354,8 @@ HEAGAWGFHEE-
 </div>
 </div>
 </div>
-<div class="admonition-interactive-exercise admonition">
-<p class="admonition-title">Interactive exercise</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
 <p>As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won’t need to write any code to do this, but rather you can adapt some of the commands that we’ve already used above. Don’t forget about the <code class="docutils literal notranslate"><span class="pre">help()</span></code> function - that’s essential for learning how to use a function.</p>
 </div>
 </div>
@@ -2352,7 +2379,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>94.8 ms ± 1.37 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>95.5 ms ± 363 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2367,7 +2394,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>403 µs ± 781 ns per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>410 µs ± 3.63 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2447,10 +2474,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TGCAGAACTA
-CGGGTGTGCT
-AAGGCACACGTGCCTCGAGGATACA
-CGACTTATGGTCCATACTTCCTCACTAGCTCGCCTGAAGTCCACTTTCTT
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TCCGGTAAGT
+ACGACATCCA
+TCTAAGGGTGGTTCATTGGGATCAA
+CCACGAAAGACCTAAGGGTGATTACCAAGCCAAAACTTGCCGTATTTACC
 </pre></div>
 </div>
 </div>
@@ -2519,32 +2546,32 @@ CGACTTATGGTCCATACTTCCTCACTAGCTCGCCTGAAGTCCACTTTCTT
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.178261</td>
+      <td>0.181828</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.054260</td>
+      <td>1.060171</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>2.315911</td>
+      <td>2.318834</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>3.673074</td>
+      <td>3.684069</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>5.344469</td>
+      <td>5.370925</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>7.280526</td>
+      <td>7.346561</td>
     </tr>
   </tbody>
 </table>
@@ -2569,7 +2596,7 @@ CGACTTATGGTCCATACTTCCTCACTAGCTCGCCTGAAGTCCACTTTCTT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f390fe05e80&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f5c5c56fda0&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2593,7 +2620,7 @@ CGACTTATGGTCCATACTTCCTCACTAGCTCGCCTGAAGTCCACTTTCTT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f390fdcf400&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f5c5c54b8d0&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />

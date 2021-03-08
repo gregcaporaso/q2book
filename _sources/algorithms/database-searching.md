@@ -19,7 +19,7 @@ In this chapter we'll talk about using pairwise alignment to search databases of
 
 What a researcher will often do is search this sequence, their **query**, against some **reference database** of annotated sequences to learn what function the sequence performs (if the reference database contains functional annotation of sequences) and/or what organisms are likely to encode this sequence in their genome (if the reference database contains taxonomic annotation of sequences).
 
-````{admonition} Interactive exercise
+````{admonition} Exercise
 Whose genome is the following sequence encoded in? What is its function? Take a minute now to answer these questions using the [Protein BLAST homology search tool on the NCBI website](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastp&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome).
 
 ```
