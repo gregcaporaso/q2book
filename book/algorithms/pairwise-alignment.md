@@ -60,6 +60,13 @@ print(hamming(r2, q1))
 
 In this case, ``q1`` has a smaller distance to ``r1`` than it does to ``r2``, so ``q1`` is more similar to ``r1`` than ``r2``. The comments lines above each sequence describe the source organisms. The Hamming distances between these sequences align with our understanding of the evolutionary distances between these organisms. The whale hemoglobin has a smaller Hamming distance (i.e., it's more similar) to the human hemoglobin sequence than to the chicken hemoglobin sequences. Whales and humans are both mammals while chickens are birds, thus whales are humans are more closely related to one another than either is to birds. If we hypothesized that whales were more closely related to humans than chickens, this finding would have supported that hypothesis. Relating sequence similarity to evolutionary history isn't always that simple though unfortunately. 
 
+````{margin}
+```{admonition} Video
+[This video](https://youtu.be/FWD0fdozHcY) on the QIIME 2 YouTube channel presents the content in this chapter through section {ref}`first-alignment-algorithm`.
+```
+````
+
+
 Here we've assumed that only *substitution events* have occurred, meaning one DNA base was substituted with another. Let's define ``q2``, which is one base shorter than `r1`, `r2`, and `q1`. Because Hamming distance requires that input sequences are of equal length, I'm going to add a `-` character to the end of `q2`. The Hamming distance computation will score that as a single base difference. 
 
 ```{code-cell}
@@ -139,6 +146,7 @@ One thing that's worth pointing out at this point is that because we don't know 
 
 In the next section we'll work through an accessible but overly simplistic method for aligning a pair of sequences. As you work through this exercise, think about why it might be too simple given what you know about biological sequences.
 
+(first-alignment-algorithm)=
 ## A first algorithm for aligning a pair of sequences 
 
 Let's define two sequences, ``seq1`` and ``seq2`` and then work through an approach for aligning them. In this section we'll work with DNA sequences, and in subsequent sections we'll work with protein sequences. Again, the algorithms are largely the same. Throughout this book and your own work we'll sometimes align DNA or RNA sequences, and sometimes align protein sequences.
@@ -267,7 +275,7 @@ ACCGGT--------TAACACCCAC
 Why might the first alignment be the more biologically relevant one (meaning the one that is more likely to represent that true evolutionary history of this pair of molecules)? Why might the second be the more biologically relevant one?
 ```
 
-```{admonition} Interactive exercise
+```{admonition} Exercise
 If you're reading this chapter interactively, go back to where we defined `seq1` and `seq2` and re-define one or both of those as other sequences. Execute the code through here and see how the matrices change.
 ```
 
@@ -285,6 +293,12 @@ Another important consideration as we think about algorithms for aligning pairs 
 Over the next several sections we'll explore ways of addressing the two issues noted above. We'll introduce the problem of the computational complexity of pairwise sequence alignment at the end of this chapter, and explore approaches for addressing that (i.e., making database searching faster) in the next chapter.
 
 ## Differential scoring of matches and mismatches 
+
+````{margin}
+```{admonition} Video
+[This video](https://youtu.be/DpZqo32lZjU) on the QIIME 2 YouTube channel presents the content in this chapter through section {ref}`nw-alignment`.
+```
+````
 
 ````{margin}
 ```{admonition} Jargon: What is an "amino acid residue"?
@@ -375,6 +389,7 @@ print(blosum50['W']['W'])
 
 Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s {cite}`M_O_Dayhoff1978-lc` and by Steven Henikoff and Jorja Henikoff in the early 1990s {cite}`Henikoff1992-kn`. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) {cite}`Eddy2004-eu` presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We'll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.
 
+(nw-alignment)=
 ## A better approach for global pairwise alignment using the Needleman-Wunsch algorithm 
 
 We're next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 {cite}`Needleman1970-fk`, and is therefore referred to as *Needleman-Wunsch alignment*. This performs what is known as *global alignment*, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We'll contrast this later in this chapter with local alignment.
@@ -619,6 +634,12 @@ Some applications of global alignment use both the alignment score and the align
 
 ## Global versus local alignment 
 
+````{margin}
+```{admonition} Video
+[This video](https://youtu.be/9e72ujGRio4) on the QIIME 2 YouTube channel summarizes the content through the end of this chapter.
+```
+````
+
 The alignment we just constructed is a *global alignment*, meaning we align both sequences from their beginning through their end. This has some important specific applications: for example, if we have two full-length protein sequences, and we have a crystal structure for one of them, we can use global alignment to give us a direct mapping between all positions in both sequences.
 
 This is in contrast to local alignment, where we have a pair of sequences that we suspect may partially overlap each other, and we want to know what the best possible alignment of all or part of one sequence is with all or part of the other sequences. Perhaps the most widely used application of this is in sequence database searching (e.g., [the BLAST web server](http://blast.ncbi.nlm.nih.gov/Blast.cgi)), where we have a query sequence and we want to find the closest match (or matches) in a reference database containing many different gene sequences. In this case, the whole reference database could be represented as a single sequence, as we could perform a local alignment against it to find the region that contains the highest scoring match.
@@ -858,7 +879,7 @@ print(aln)
 print(score)
 ```
 
-```{admonition} Interactive exercise
+```{admonition} Exercise
 As a final exercise in this section, try to adapt the commands above to compute local alignments with affine gap scoring. You won't need to write any code to do this, but rather you can adapt some of the commands that we've already used above. Don't forget about the `help()` function - that's essential for learning how to use a function.
 ```
 

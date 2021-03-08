@@ -33,6 +33,12 @@ The central dogma of molecular biology represents information flow in biological
 
 ## Binary and decimal numerical systems
 
+````{margin}
+```{admonition} Video
+[This video](https://youtu.be/9e72ujGRio4) on the QIIME 2 YouTube channel summarizes presents the beginning of this chapter through {ref}`encoding-in-bits`.
+```
+````
+
 Humans most frequently use a _base 10_ or decimal numerical system for representing numbers. _Base 10_ means than there are ten available digits including zero. These are the digits 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9. We represent numbers larger than 9 using multiple places: the _ones_ place, the _tens_ place, the _hundreds_ place, and so on. These are the exponents of 10: the ones place is $10^{0}$, the tens place is $10^{1}$, the hundreds place is $10^{2}$, and so on. When we write a decimal number with multiple places, such as 42, what we're representing is a four in the tens place plus a two in the ones place, or $4 \times 10^{1} + 2 \times 10^{0} = 42$.
 
 You've probably heard that computers use a _base 2_ or binary numerical system to represent numbers. The _base_ again describes the number of available digits, so in a base 2 or binary system, there are two digits, 0 and 1. These are defined as the binary digits. As in the decimal system, numbers larger than 1 are represented using multiple places. The places in a binary number are again based on exponents, but this time they are the exponents of 2. Instead of a ones place, a tens place, and a hundreds place, the first three places in a binary number are the ones place ($2^0$), the _twos_ place ($2^1$), and the _fours_ place ($2^2$). Thus the interpretation of the binary number `011` is $0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 = 3$.
@@ -50,6 +56,7 @@ Here are some binary numbers and formulas for translating them to their decimal 
 
 A single **bi**nary digi**t** (a zero or one) is referred to as a _bit_, and bits can be used to encode a lot more than just numbers.
 
+(encoding-in-bits)=
 ## Encoding messages in bits 
 
 Internally, computers send and receive messages that are encoded using electrical currents. To reduce errors in message transmission, the electrical currents are interpreted only as being off or on: there is less opportunity for error if there are only two states to choose from rather than three, four, five, or more. For example, think about guessing the answer to a question you're unsure of on a multiple choice test. If there are only two choices, there are fewer opportunities to be wrong than if there are three or more choices. This is the reason that binary numbers are used to encode information in a computer. The digit zero can represent an electical current being off, and the digit one can represent an electircal current being on, such that the message `011` can be sent as off-on-on. The receiver of the message off-on-on could then know that the binary number `011` has been sent across the wire. But what does that message mean? The messages encoded by bits can be nearly anything, provided that the sender of the message and the recipient of the message have agreed on a coding scheme which describes how a message can be encoded in bits. 
@@ -101,6 +108,12 @@ Try to decode the message encoded in ASCII by these binary numbers:
 ```
 
 ## Protein sequences are encoded in a base 4 system
+
+````{margin}
+```{admonition} Video
+[This video](https://www.youtube.com/watch?v=RT5C_xsxXo8) on the QIIME 2 YouTube channel summarizes presents the remainder of this chapter.
+```
+````
 
 The building blocks of DNA are four chemical compounds called adenine, cytosine, guanine, and thymine. We often represent these compounds with the abbreviations A, C, G and T, respectively. One of the primary roles of DNA in biological organisms is to encode the primary structure, or amino acid sequence, of proteins. As with computer systems, this information is represented based on discrete states, but in biological systems there are four states rather than two. Each position or place in an exon of a protein-coding DNA sequence can contain one of these compounds, and the linear order of the compounds can encode a message.
 
