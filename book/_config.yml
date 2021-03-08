@@ -43,3 +43,6 @@ launch_buttons:
 
 bibtex_bibfiles:
    - references.bib
+
+html:
+  google_analytics_id: G-KZHV37SG3H
