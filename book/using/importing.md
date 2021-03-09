@@ -1,9 +1,9 @@
 (importing)=
 # Importing data into QIIME 2
 
-A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates [QIIME 2 archives](getting-started:archives) from data in other file formats, such as fastq or biom. To import data into QIIME 2, you need to define the [file type and semantic type](getting-started:types) of the data. 
+A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates a [QIIME 2 archive](getting-started:archives) from data in another file format, such as fastq or biom. To import data into QIIME 2, you need to define the [file type and semantic type](getting-started:types) of the data. 
 
-I'll get straight to the point: in addition to being the first step in a user's QIIME 2 analysis, importing is often the most challenging step. The reason it's challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the [ete3 phylogenetic analysis and visualization toolkit](http://etetoolkit.org/) recognizes (as of this writing) [11 different variants of the newick file format](http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode). A newick file doesn't include information in it on which of these variants it is, so it's up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2. 
+I'll get straight to the point: in addition to being the first step in a user's QIIME 2 analysis, importing is often the most challenging step. The reason it's challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the [ete3 phylogenetic analysis and visualization toolkit](http://etetoolkit.org/) recognizes (as of this writing) [11 different variants of the newick file format](http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode). A newick file doesn't include explicit information in it on which of these variants it is, so it's up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2. 
 
 This chapter will provide an overview of importing data into QIIME 2, focused on the most common importing tasks.
 
@@ -62,8 +62,52 @@ Raw sequencing data refers to data that has undergone no processing or minimal p
 
 ##### Differentiating multiplexed and demultiplexed data
 
+````{margin}
+```{admonition} Jargon
+The terms "index" and "barcode" are synonymous in discussions of multiplexing of sequencing runs. I will tend to use the term "barcode". 
+```
+````
+
+````{margin}
+```{note}
+In this section I refer to having `.fastq` files. This discussion applies directly to `.fastq.gz` files as well. Files ending with `.gz` are compressed files, similar to `.zip` files.
+```
+````
+
+Raw microbiome data typically exists in one of two forms: multiplexed or demultiplexed. In multiplexed data, sequences from all samples are grouped together in one or more files. In demultiplexed data, sequences are separated into different files based on the sample they are derived from. The process of demultiplexing, when multiplexed data is processed into demultiplexed data, will be discussed in the next chapter. Briefly, data can be demultiplexed before it's delivered to you, or it can be delivered still multiplexed in which case you can use QIIME 2 to demultiplex the data. It doesn't really matter whether the data you receive is multiplexed or demultiplexed: there are benefits and drawbacks to each.
+
+The number of files that you are starting with is the key to determining whether your data are multiplexed or demultiplexed. In QIIME 2, as of this writing, we primarily support importing of Illumina sequence data, so this discussion focuses around Illumina fastq data. 
+
+Most Illumina sequencing runs are paired-end, meaning that sequence reads are generated in two directions: the "forward reads" begin at the 5' end of the amplicon, and the "reverse reads" begin at the 3' end of the amplicon. These reads are stored in separate files, usually designated with an `R1` (for the forward reads) somewhere in the file name or `R2` (for the reverse reads) somewhere in the file name. In some cases, there may also be one (or less commonly two) "index" or "barcode" read files, designated with `I1` in the filename (or `I1` and `I2` in the names of separate files).
+
+If you have between one and four `.fastq` files, it's almost certain that you have multiplexed data. The sequence data from all of your samples is contained in the `R1` files if you performed a single-end sequencing run, or in the `R1` and `R2` files if you performed a paired-end sequencing run. If you have an `I1` file, that contains the sequence barcodes which during PCR were  added to the sequences on a sample-specific basis. If you also have an `I2` file, this means that a dual-barcoding scheme was used for associating sequences with samples. In either case, the single barcode or the combination of forward and reverse barcodes define which sample a given sequence was isolated from. Refer to {ref}`import-multiplexed` to learn how to import your data.
+
+If you have many `.fastq` files, your data are likely demultiplexed. In this case, you'll typically see either an `R1` or a pair of `R1` and `R2` files for each of your samples. Often you'll be able to recognize your sample identifiers in the filenames, though there is typically a lot of additional information in there as well. Refer to {ref}`import-demultiplexed` to learn how to import your data.
+
+If you're still unsure whether your data is mutliplexed or demultiplexed, get in touch on the QIIME 2 Forum and include a list of your `.fastq` filenames.
+
+(import-demultiplexed)=
 ##### Importing demultiplexed data
 
+````{margin}
+```{admonition} Attribution
+Content in this section is derived from a [popular QIIME 2 Forum post](https://forum.qiime2.org/t/importing-and-demultiplexing-sequence-data-quick-reference/14002) by [@Nicholas_Bokulich](https://forum.qiime2.org/u/nicholas_bokulich/summary).
+```
+````
+
+Because the sequences in demultiplexed sequence data are already associated with the samples they were isolated from, during the importing step you must make QIIME 2 of that association. Beginning with demultiplexed sequence data can be convenient because you don't need to understand how sequences were barcoded in order to work with them. Whoever provided you with the sequences already read the barcodes and assigned sequences to samples. This can be very convenient if a custom barcoding strategy was applied - for example, a dual barcoding approach. Telling QIIME 2 which samples are associated with which files can be a bit labor intensive however. Having a little bit of experience with regular expressions or computer programming can really help you to carry out this step, but it's not required.
+
+The semantic type of demultiplexed single-end sequence data is `SampleData[SequencesWithQuality]`. The semantic type of demultiplexed paired-end sequence data is `SampleData[PairedEndSequencesWithQuality]`. If you have only files with `R1` in their names, your data are single-end. If half of your files have `R1` in their names, and the other half have `R2` in their names, your data are paired-end. 
+
+The import format can be one of a few options. If your files are provided in CASAVA 1.8 format, there are two `fastq.gz` files for each sample in the study, each containing the forward or reverse reads for that sample. The file name includes the sample identifier. The forward and reverse read file names for a single sample might look like `L2S357_15_L001_R1_001.fastq.gz` and `L2S357_15_L001_R2_001.fastq.gz`, respectively. The underscore-separated fields in this file name are:
+
+ 1. the sample identifier,
+ 2. the barcode sequence or a barcode identifier,
+ 3. the lane number,
+ 4. the direction of the read (i.e. R1 or R2), and
+ 5. the set number.
+
+(import-multiplexed)=
 ##### Importing multiplexed data 
 
 #### Importing a `FeatureTable`

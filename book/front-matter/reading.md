@@ -57,3 +57,4 @@ These are intended to share ideas related to what is being presented in the text
 - Food for thought: a question or topic to think about related to the current content
 - Exercise: a suggestion for something to experiment to help you develop your understanding of the current content
 - Jargon: discussed a term that is common among microbiome or bioinformatics practitioners, but which may not be immediately clear to beginners. 
+- Attribution: used to indicate locations where ideas or content derived from open access resources, such as posts on the QIIME 2 Forum or from iterations of the QIIME 2 documentation.
