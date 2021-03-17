@@ -13,7 +13,7 @@ kernelspec:
   name: python3
 ---
 
-# Appendix 1: Biological Information
+# Appendix: Biological Information
 
 Biological systems and computer systems are analogous in ways that may not be immediately apparent. In this chapter we'll briefly explore a relationship between the two: information processing is fundamental to both.
 

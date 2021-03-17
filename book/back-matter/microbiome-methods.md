@@ -1,4 +1,4 @@
-# Appendix 2: A brief introduction to methods in microbiome science
+# Appendix: A brief introduction to methods in microbiome science
 
 There isn’t a clear definition for the term microbe. It has been defined based on human perception, such as an organism so small that it can’t be seen with the naked eye. A similar size-based definition is any organism smaller than 200 micrometers (μm). And a third definition is any single-celled organism. These definitions are similar enough that for most purposes it doesn’t matter which we choose, but the size-based definition is the least ambiguous, so we’ll adopt that for the purposes of this book. This is preferable to a definition based on human perception because it’s more objective. It’s also preferable to a definition based on the number of cells that compose the organism because there are some interesting creatures that sometimes exist in a single-cellular state, and at other times in a multicellular state, like slime molds which band together when times get tough. 
 
