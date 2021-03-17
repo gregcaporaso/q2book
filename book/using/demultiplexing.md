@@ -6,7 +6,7 @@
 The second file that we downloaded above was our multiplexed sequence data. This is sequencing data as it came off an Illumina DNA sequencing instrument. At this stage, the sequences are all grouped together - they are not grouped by sample. Instead, during sample preparation (PCR specifically), a short DNA sequence referred to as an index or a barcode was added to sequences on a per-sample basis. For example, `sample-1` might be assigned the barcode `TGACCGTACGTA`, and `sample-2` might be assigned the barcode `TGGTAGACCCGT`. All sequences derived from `sample-1` will have the `sample-1` barcode associated with them, and all sequences derived from `sample-2` will have the `sample-2` barcode associated with them. One piece of sample metadata in our sample metadata file is the barcode sequence associated with each sample. Assign sequences to the sample they are derived from is referred to as _demultiplexing_ the sequencing run. The `q2-demux` plugin in QIIME 2 has several methods for demultiplexing sequencing runs. These take the sequencing data as input, as well as the sample metadata. 
 
 ````{margin}
-```{note}
+```{admonition} Jargon
 _Demux_ is a common abbreviation for _demultiplex_. For example, if someone asks if your sequence data is demuxed, they're probably wondering whether the sequences from your samples are all group together (i.e., they are multiplexed), or if they have already been associated with the samples they are derived from (i.e., they are demultiplexed).
 ```
 ````

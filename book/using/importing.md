@@ -84,18 +84,18 @@ If you have between one and four `.fastq` files, it's almost certain that you ha
 
 If you have many `.fastq` files, your data are likely demultiplexed. In this case, you'll typically see either an `R1` or a pair of `R1` and `R2` files for each of your samples. Often you'll be able to recognize your sample identifiers in the filenames, though there is typically a lot of additional information in there as well. Refer to {ref}`import-demultiplexed` to learn how to import your data.
 
-If you're still unsure whether your data is mutliplexed or demultiplexed, get in touch on the QIIME 2 Forum and include a list of your `.fastq` filenames.
+If you're still unsure whether your data is multiplexed or demultiplexed, get in touch on the QIIME 2 Forum and include a list of your `.fastq` filenames.
 
 (import-demultiplexed)=
 ##### Importing demultiplexed data
 
 ````{margin}
 ```{admonition} Attribution
-Content in this section is derived from a [popular QIIME 2 Forum post](https://forum.qiime2.org/t/importing-and-demultiplexing-sequence-data-quick-reference/14002) by [@Nicholas_Bokulich](https://forum.qiime2.org/u/nicholas_bokulich/summary).
+Content in this section is derived from a [popular QIIME 2 Forum post](https://forum.qiime2.org/t/importing-and-demultiplexing-sequence-data-quick-reference/14002) by [@Nicholas_Bokulich](https://forum.qiime2.org/u/nicholas_bokulich/summary) and from the [QIIME 2 documentation](https://docs.qiime2.org/2021.2/tutorials/importing/).
 ```
 ````
 
-Because the sequences in demultiplexed sequence data are already associated with the samples they were isolated from, during the importing step you must make QIIME 2 of that association. Beginning with demultiplexed sequence data can be convenient because you don't need to understand how sequences were barcoded in order to work with them. Whoever provided you with the sequences already read the barcodes and assigned sequences to samples. This can be very convenient if a custom barcoding strategy was applied - for example, a dual barcoding approach. Telling QIIME 2 which samples are associated with which files can be a bit labor intensive however. Having a little bit of experience with regular expressions or computer programming can really help you to carry out this step, but it's not required.
+Because the sequences in demultiplexed sequence data are already associated with the samples they were isolated from, during the importing step you must make QIIME 2 aware of that association. Beginning with demultiplexed sequence data can be convenient because you don't need to understand how sequences were barcoded in order to work with them. Whoever provided you with the sequences already used the barcodes to assign sequences to samples. This can be very convenient if a barcoding strategy was applied that is unsupported by QIIME 2 (e.g., because it's new or uncommon). Informing QIIME 2 which samples are associated with which files can be a bit labor intensive however. Having a little bit of experience with regular expressions or computer programming can really help you to carry out this step, but it's not required.
 
 The semantic type of demultiplexed single-end sequence data is `SampleData[SequencesWithQuality]`. The semantic type of demultiplexed paired-end sequence data is `SampleData[PairedEndSequencesWithQuality]`. If you have only files with `R1` in their names, your data are single-end. If half of your files have `R1` in their names, and the other half have `R2` in their names, your data are paired-end. 
 
