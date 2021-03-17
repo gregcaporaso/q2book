@@ -10,6 +10,7 @@
   chapters:
   - file: using/getting-started
   - file: using/overview-tutorial
+  - file: using/metadata
   - file: using/importing
   - file: using/demultiplexing
   - file: using/denoising
