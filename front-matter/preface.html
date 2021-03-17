@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -120,23 +120,28 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../using/metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../using/importing.html">
-   3. Importing data into QIIME 2
+   4. Importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/demultiplexing.html">
-   4. Demultiplexing a sequencing run
+   5. Demultiplexing a sequencing run
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/denoising.html">
-   5. Denoising demultiplexed sequencing data
+   6. Denoising demultiplexed sequencing data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/taxonomy.html">
-   6. Taxonomic annotation and analysis of sequences
+   7. Taxonomic annotation and analysis of sequences
   </a>
  </li>
 </ul>
@@ -182,22 +187,22 @@
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/importing-examples.html">
-   1. Examples illustrating importing data into QIIME 2
+   1. Appendix: Examples illustrating importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/biological-information.html">
-   2. Appendix 1: Biological Information
+   2. Appendix: Biological Information
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/microbiome-methods.html">
-   3. Appendix 2: A brief introduction to methods in microbiome science
+   3. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/q2-origin-story.html">
-   4. Appendix 3: History of the QIIME platform
+   4. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
@@ -271,7 +276,8 @@
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
         <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
+            <i class="fas fa-list"></i>
+            Contents
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
@@ -309,7 +315,7 @@
 <p>Microbes almost never live alone in the real world (i.e., outside of a laboratory). Rather they exist in communities of different species who are interacting with each other and their environment. Some of these communities will have many different types of organisms, and some will have only a few. Because of the large number of species and individuals involved, no two communities will ever be exactly alike, and quantifying differences between microbial communities is an important area of research at the moment. The types of interactions between organisms are also highly varied. These can include mutualistic relationships, where both organisms benefit from the interaction; parasitic relationships, where one organism exclusively benefits to the detriment of the other; and the full gradient in between.</p>
 <p>Relatively recently, the term microbiome has been used to describe the community of microbes in a given environment. Technically speaking, the term microbiome is said to refer to the collection of microbial genes across all of the microbes present in a given environment while the term microbiota refers to the collection of the organisms themselves. In practice, especially in popular science literature but also in the primary scientific literature, the term microbiome is used to refer to microbiota, and that’s how I’ll use it in this text. If I’m referring to the collective genes of microbiota, I’ll use the term microbial metagenome.</p>
 <p>In spite of their ubiquity and importance, our understanding of microbes and microbiomes is still in its infancy. As we crack their mysteries we stand to make major advances in basic and applied sciences. We’ll develop a better understanding of the origin of life on Earth, the processes of evolution including the origin of multicellular organisms, and rules governing the interaction of species in the environment. We will also develop tools that will help us improve human health, support sustainable agriculture, and reduce our impact on our planet. In other words, we’re in the midst of a scientific revolution that could improve our lives, our children’s lives, and our world.</p>
-<p>Microbiome science is everywhere. There are tens of articles published daily in the scientific literature, and many popular science articles and books present these findings to the world of non-scientists. Understanding the promises and limitations of the methods of microbiome science can help avoid misconceptions about microbiome research, and it’s important for practioners of microbiome science to understand and convey the promise and limitations of our field. Misconceptions abound, frequently arising from the same sources as high-quality popular science microbiome reporting. For example, on 5 Feb 2015 <a class="reference external" href="https://www.nytimes.com/2015/02/06/nyregion/among-the-new-york-city-subways-millions-of-riders-a-study-finds-many-mystery-microbes.html">an article</a> appeared in the New York Times noting (almost offhand) that <em>Yersinia pestis</em>, the organism responsible for bubonic plague, had been found in multiple locations throughout the New York City subway system as part of its normal built environment microbiome. This was rapidly followed up on 6 Feb 2015 with <a class="reference external" href="https://www.nytimes.com/2015/02/07/nyregion/bubonic-plague-in-the-subway-system-dont-worry-about-it.html">an article</a> noting that there was probably not bubonic plague on the subway system after all, but rather that the approaches used by the research team are limited in their taxonomic resolution, and that likely a harmless close relative of <em>Y. pestis</em> was observedi: “What the researchers probably found, [a spokesman for the university where the study originated] said, was bacteria from an unknown species or from organisms that happened to share some gene sequences with the plague bacterium…”. As microbiome services and products are increasingly marketed directly to the public, consumers of microbiome research findings, products, and services need to know how to critically evaluate these offerings and their associated claims. As practioners in the field, we can help by ensuring that the methods we apply are appropriate and reliable, and that we make our work accessible.</p>
+<p>Microbiome science is everywhere. There are tens of articles published daily in the scientific literature, and many popular science articles and books present these findings to the world of non-scientists. Understanding the promises and limitations of the methods of microbiome science can help avoid misconceptions about microbiome research, and it’s important for practitioners of microbiome science to understand and convey the promise and limitations of our field. Misconceptions abound, frequently arising from the same sources as high-quality popular science microbiome reporting. For example, on 5 Feb 2015 <a class="reference external" href="https://www.nytimes.com/2015/02/06/nyregion/among-the-new-york-city-subways-millions-of-riders-a-study-finds-many-mystery-microbes.html">an article</a> appeared in the New York Times noting (almost offhand) that <em>Yersinia pestis</em>, the organism responsible for bubonic plague, had been found in multiple locations throughout the New York City subway system as part of its normal built environment microbiome. This was rapidly followed up on 6 Feb 2015 with <a class="reference external" href="https://www.nytimes.com/2015/02/07/nyregion/bubonic-plague-in-the-subway-system-dont-worry-about-it.html">an article</a> noting that there was probably not bubonic plague on the subway system after all, but rather that the approaches used by the research team are limited in their taxonomic resolution, and that likely a harmless close relative of <em>Y. pestis</em> was observedi: “What the researchers probably found, [a spokesman for the university where the study originated] said, was bacteria from an unknown species or from organisms that happened to share some gene sequences with the plague bacterium…”. As microbiome services and products are increasingly marketed directly to the public, consumers of microbiome research findings, products, and services need to know how to critically evaluate these offerings and their associated claims. As practioners in the field, we can help by ensuring that the methods we apply are appropriate and reliable, and that we make our work accessible.</p>
 <p>The technologies that are enabling work in microbiome science are the same that are driving the data revolution in biology. Primarily this work is driven by high-throughput DNA sequencing, which is applied for profiling microbial community composition (e.g., marker gene profiling such as 16S or ITS sequencing), functional potential (such as shotgun metagenomic sequencing), and functional activity (such as metatranscriptome sequencing). Other “omics” technologies are now playing an increasing role in microbiome research, such as mass-spectrometry-based metabolomics, which provides profiles of small molecule metabolites in an environment, and metaproteomics which provides more detailed descriptions of functional activities of microbes (and their hosts, if applicable). As a result, bioinformatics software tools are essential to microbiome research. For many microbiome researchers, bioinformatics is an intimidating and challenging aspect of their projects.</p>
 <p>My focus for the past decade has been on developing tools to empower researchers to analyze their microbiome data. This work is centered around the QIIME microbiome bioinformatics platform, and currently QIIME 2. The original QIIME, now referred to as <a class="reference external" href="http://qiime.org">QIIME 1</a>, was published in 2010 <span id="id1">[<a class="reference internal" href="#id4"><span>CKS+10</span></a>]</span> and has been <a class="reference external" href="https://scholar.google.com/scholar?cites=16903127068530972426&amp;as_sdt=805&amp;sciodt=0,3&amp;hl=en">cited tens of thousands of times in the primary literature</a>. QIIME 2, which was published in July of 2019 <span id="id2">[<a class="reference internal" href="#id5"><span>BRD+19</span></a>]</span>, <a class="reference external" href="https://qiime.wordpress.com/2018/01/03/qiime-2-has-succeeded-qiime-1/">succeeded QIIME 1 on 1 January 2018</a>. QIIME 2 is better than QIIME 1 in all ways, and QIIME 1 is no longer actively supported. If you have previously used QIIME 1, you should invest time in learning and switching to QIIME 2. If you’re new to QIIME, start with QIIME 2. (When I refer to <em>QIIME</em> in this book, without specifying whether I’m referring to QIIME 1 or QIIME 2, I’m refering to the platform generally.)</p>
 <div class="margin sidebar">

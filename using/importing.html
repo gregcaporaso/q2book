@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Importing data into QIIME 2 &#8212; q2book</title>
+    <title>4. Importing data into QIIME 2 &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Demultiplexing a sequencing run" href="demultiplexing.html" />
-    <link rel="prev" title="2. An interactive overview of QIIME 2" href="overview-tutorial.html" />
+    <link rel="next" title="5. Demultiplexing a sequencing run" href="demultiplexing.html" />
+    <link rel="prev" title="3. Metadata in QIIME 2" href="metadata.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -120,24 +120,29 @@
    2. An interactive overview of QIIME 2
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. Importing data into QIIME 2
+   4. Importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="demultiplexing.html">
-   4. Demultiplexing a sequencing run
+   5. Demultiplexing a sequencing run
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="denoising.html">
-   5. Denoising demultiplexed sequencing data
+   6. Denoising demultiplexed sequencing data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="taxonomy.html">
-   6. Taxonomic annotation and analysis of sequences
+   7. Taxonomic annotation and analysis of sequences
   </a>
  </li>
 </ul>
@@ -183,22 +188,22 @@
 <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/importing-examples.html">
-   1. Examples illustrating importing data into QIIME 2
+   1. Appendix: Examples illustrating importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/biological-information.html">
-   2. Appendix 1: Biological Information
+   2. Appendix: Biological Information
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/microbiome-methods.html">
-   3. Appendix 2: A brief introduction to methods in microbiome science
+   3. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/q2-origin-story.html">
-   4. Appendix 3: History of the QIIME platform
+   4. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
@@ -272,50 +277,51 @@
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
         <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
+            <i class="fas fa-list"></i>
+            Contents
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#why-is-importing-necessary">
-   3.1. Why is importing necessary?
+   4.1. Why is importing necessary?
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#determining-how-to-import-your-data">
-   3.2. Determining how to import your data
+   4.2. Determining how to import your data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#discussion-and-instructions-for-importing-specific-data">
-     3.2.1. Discussion and instructions for importing specific data
+     4.2.1. Discussion and instructions for importing specific data
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-raw-sequence-data">
-       3.2.1.1. Importing raw sequence data
+       4.2.1.1. Importing raw sequence data
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#differentiating-multiplexed-and-demultiplexed-data">
-         3.2.1.1.1. Differentiating multiplexed and demultiplexed data
+         4.2.1.1.1. Differentiating multiplexed and demultiplexed data
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#importing-demultiplexed-data">
-         3.2.1.1.2. Importing demultiplexed data
+         4.2.1.1.2. Importing demultiplexed data
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#importing-multiplexed-data">
-         3.2.1.1.3. Importing multiplexed data
+         4.2.1.1.3. Importing multiplexed data
         </a>
        </li>
       </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-a-featuretable">
-       3.2.1.2. Importing a
+       4.2.1.2. Importing a
        <code class="docutils literal notranslate">
         <span class="pre">
          FeatureTable
@@ -325,17 +331,17 @@
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-reference-data">
-       3.2.1.3. Importing reference data
+       4.2.1.3. Importing reference data
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-phylogenetic-trees">
-       3.2.1.4. Importing phylogenetic trees
+       4.2.1.4. Importing phylogenetic trees
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#importing-phylogeny-rooted">
-         3.2.1.4.1. Importing
+         4.2.1.4.1. Importing
          <code class="docutils literal notranslate">
           <span class="pre">
            Phylogeny[Rooted]
@@ -345,7 +351,7 @@
        </li>
        <li class="toc-h5 nav-item toc-entry">
         <a class="reference internal nav-link" href="#importing-phylogeny-unrooted">
-         3.2.1.4.2. Importing
+         4.2.1.4.2. Importing
          <code class="docutils literal notranslate">
           <span class="pre">
            Phylogeny[Unrooted]
@@ -357,7 +363,7 @@
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-featuredata">
-       3.2.1.5. Importing
+       4.2.1.5. Importing
        <code class="docutils literal notranslate">
         <span class="pre">
          FeatureData
@@ -367,7 +373,7 @@
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#importing-sampledata">
-       3.2.1.6. Importing
+       4.2.1.6. Importing
        <code class="docutils literal notranslate">
         <span class="pre">
          SampleData
@@ -381,7 +387,7 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#summary">
-   3.3. Summary
+   4.3. Summary
   </a>
  </li>
 </ul>
@@ -397,12 +403,12 @@
               <div>
                 
   <div class="section" id="importing-data-into-qiime-2">
-<span id="importing"></span><h1><span class="section-number">3. </span>Importing data into QIIME 2<a class="headerlink" href="#importing-data-into-qiime-2" title="Permalink to this headline">¶</a></h1>
-<p>A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates <a class="reference internal" href="getting-started.html#getting-started-archives"><span class="std std-ref">QIIME 2 archives</span></a> from data in other file formats, such as fastq or biom. To import data into QIIME 2, you need to define the <a class="reference internal" href="getting-started.html#getting-started-types"><span class="std std-ref">file type and semantic type</span></a> of the data.</p>
-<p>I’ll get straight to the point: in addition to being the first step in a user’s QIIME 2 analysis, importing is often the most challenging step. The reason it’s challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the <a class="reference external" href="http://etetoolkit.org/">ete3 phylogenetic analysis and visualization toolkit</a> recognizes (as of this writing) <a class="reference external" href="http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode">11 different variants of the newick file format</a>. A newick file doesn’t include information in it on which of these variants it is, so it’s up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2.</p>
+<span id="importing"></span><h1><span class="section-number">4. </span>Importing data into QIIME 2<a class="headerlink" href="#importing-data-into-qiime-2" title="Permalink to this headline">¶</a></h1>
+<p>A QIIME 2 analysis almost always starts with importing data for use in QIIME 2. This step creates a <a class="reference internal" href="getting-started.html#getting-started-archives"><span class="std std-ref">QIIME 2 archive</span></a> from data in another file format, such as fastq or biom. To import data into QIIME 2, you need to define the <a class="reference internal" href="getting-started.html#getting-started-types"><span class="std std-ref">file type and semantic type</span></a> of the data.</p>
+<p>I’ll get straight to the point: in addition to being the first step in a user’s QIIME 2 analysis, importing is often the most challenging step. The reason it’s challenging is that there are tens or even hundreds of different file types that users would like to use with QIIME 2, and many file formats in bioinformatics are poorly defined. For example, the <a class="reference external" href="http://etetoolkit.org/">ete3 phylogenetic analysis and visualization toolkit</a> recognizes (as of this writing) <a class="reference external" href="http://etetoolkit.org/docs/latest/reference/reference_tree.html#ete3.TreeNode">11 different variants of the newick file format</a>. A newick file doesn’t include explicit information in it on which of these variants it is, so it’s up to the person working with the file to know that. A user importing data into QIIME 2 needs to have a very good understanding of what format their data is in, and then learn how to provide that information to QIIME 2.</p>
 <p>This chapter will provide an overview of importing data into QIIME 2, focused on the most common importing tasks.</p>
 <div class="section" id="why-is-importing-necessary">
-<h2><span class="section-number">3.1. </span>Why is importing necessary?<a class="headerlink" href="#why-is-importing-necessary" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Why is importing necessary?<a class="headerlink" href="#why-is-importing-necessary" title="Permalink to this headline">¶</a></h2>
 <p>Importing fastq files is the most common importing task among QIIME 2 users, so I’ll discuss why importing is necessary using fastq as an example. Fastq files store sequence and associated sequence quality information. They use a clever approach for representing quality information that enables the quality information to be represented in the same number of characters as the sequence itself. For example, here is a single sequence and quality record from a fastq file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@M00176</span><span class="p">:</span><span class="mi">65</span><span class="p">:</span><span class="mi">000000000</span><span class="o">-</span><span class="n">A41FR</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="mi">1101</span><span class="p">:</span><span class="mi">9905</span><span class="p">:</span><span class="mi">3163</span> <span class="mi">1</span><span class="p">:</span><span class="n">N</span><span class="p">:</span><span class="mi">0</span><span class="p">:</span><span class="mi">0</span>
 <span class="n">AACCAGCACCTCAAGTGGTCAGGATGATTATTGGGCCTAAAGCATCCGTAGCCGGATCTGTAAGTTTTCGGTTAAATCTGTACGCTCAACGTACAGGCTGCCGGGAATACTGCAGATCTAGGGAGTGGGAGAGGTAGACGGTACTCGGTAG</span>
@@ -422,10 +428,10 @@
 <p>Importing is the step when you must provide specific information about your data to QIIME 2, and sometimes that information can be challenging to compile. The good news is we’re here to help on the QIIME 2 Forum and we frequently help users navigate this tricky step. You can find the most recent questions about importing data on the QIIME 2 Forum <a class="reference external" href="https://forum.qiime2.org/tag/import">under the <code class="docutils literal notranslate"><span class="pre">import</span></code> tag</a>. We’re also working on tools that will simplify the most common types of data imports in QIIME 2. Because of the huge number of file formats in bioinformatics though, it’s not a trivial task.</p>
 </div>
 <div class="section" id="determining-how-to-import-your-data">
-<h2><span class="section-number">3.2. </span>Determining how to import your data<a class="headerlink" href="#determining-how-to-import-your-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Determining how to import your data<a class="headerlink" href="#determining-how-to-import-your-data" title="Permalink to this headline">¶</a></h2>
 <p>When you import data into QIIME 2 you must provide the semantic type of the data and the file format (or file type) that the data is represented in. These concepts <a class="reference internal" href="getting-started.html#getting-started-types"><span class="std std-ref">were contrasted earlier</span></a> - refer back to that discussion now if you need to.</p>
 <p>While most users begin their QIIME 2 analysis with raw sequencing data, you can import data at any step of a QIIME 2 analysis. For example, another common approach users take is importing feature tables from <code class="docutils literal notranslate"><span class="pre">.biom</span></code> files. This might happen if a user wishes to process their raw data with another analysis tool, but then use QIIME 2 for visual data exploration and statistical analysis.</p>
-<p>The first step in determining how to import your data is figuring out what it is that you’re trying to import. <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 3.1</span></a> presents a flow chart that will get you get started. Follow the references in the flow chart to other sections in this chapter. If you suspect that you may have a particular type of data but are not sure, refer to the section that the flowchart would direct you to if you had that type of data. Each section will begin with a definition the type of data.</p>
+<p>The first step in determining how to import your data is figuring out what it is that you’re trying to import. <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 4.1</span></a> presents a flow chart that will get you get started. Follow the references in the flow chart to other sections in this chapter. If you suspect that you may have a particular type of data but are not sure, refer to the section that the flowchart would direct you to if you had that type of data. Each section will begin with a definition the type of data.</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <div class="admonition tip">
@@ -435,51 +441,88 @@
 </div>
 <div class="figure align-default" id="importing-1">
 <img alt="../_images/importing-1.png" src="../_images/importing-1.png" />
-<p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Flowchart illustrating initial decisions made during importing. Pointers such as “See Importing SampleData” reference other sections of this chapter or book.</span><a class="headerlink" href="#importing-1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Flowchart illustrating initial decisions made during importing. Pointers such as “See Importing SampleData” reference other sections of this chapter or book.</span><a class="headerlink" href="#importing-1" title="Permalink to this image">¶</a></p>
 <div class="legend">
 </div>
 </div>
 <div class="section" id="discussion-and-instructions-for-importing-specific-data">
-<h3><span class="section-number">3.2.1. </span>Discussion and instructions for importing specific data<a class="headerlink" href="#discussion-and-instructions-for-importing-specific-data" title="Permalink to this headline">¶</a></h3>
-<p>In this section I discuss and present instructions for importing specific types of data into QIIME 2. You don’t need to read this section all the way through - I recommend that you identify the section that is relevant to your current need using <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 3.1</span></a>, focus on that section, and then move on from importing. Since there are a lot of QIIME 2 specific details needed for importing, it’s unlikely that you’ll retain more than what you immediately need so just treat this section as reference material.</p>
+<h3><span class="section-number">4.2.1. </span>Discussion and instructions for importing specific data<a class="headerlink" href="#discussion-and-instructions-for-importing-specific-data" title="Permalink to this headline">¶</a></h3>
+<p>In this section I discuss and present instructions for importing specific types of data into QIIME 2. You don’t need to read this section all the way through - I recommend that you identify the section that is relevant to your current need using <a class="reference internal" href="#importing-1"><span class="std std-numref">Fig. 4.1</span></a>, focus on that section, and then move on from importing. Since there are a lot of QIIME 2 specific details needed for importing, it’s unlikely that you’ll retain more than what you immediately need so just treat this section as reference material.</p>
 <div class="section" id="importing-raw-sequence-data">
-<h4><span class="section-number">3.2.1.1. </span>Importing raw sequence data<a class="headerlink" href="#importing-raw-sequence-data" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.1. </span>Importing raw sequence data<a class="headerlink" href="#importing-raw-sequence-data" title="Permalink to this headline">¶</a></h4>
 <p>Raw sequencing data refers to data that has undergone no processing or minimal processing since it was generated on the sequencing instrument. As of this writing, this is most commonly represented in <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> files in one of a few different fastq format variants. <code class="docutils literal notranslate"><span class="pre">.sff</span></code> files, and pairs of <code class="docutils literal notranslate"><span class="pre">.fasta</span></code> and <code class="docutils literal notranslate"><span class="pre">.qual</span></code> files are other raw sequencing data formats.</p>
 <div class="section" id="differentiating-multiplexed-and-demultiplexed-data">
-<h5><span class="section-number">3.2.1.1.1. </span>Differentiating multiplexed and demultiplexed data<a class="headerlink" href="#differentiating-multiplexed-and-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+<h5><span class="section-number">4.2.1.1.1. </span>Differentiating multiplexed and demultiplexed data<a class="headerlink" href="#differentiating-multiplexed-and-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-jargon admonition">
+<p class="admonition-title">Jargon</p>
+<p>The terms “index” and “barcode” are synonymous in discussions of multiplexing of sequencing runs. I will tend to use the term “barcode”.</p>
+</div>
+</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this section I refer to having <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> files. This discussion applies directly to <code class="docutils literal notranslate"><span class="pre">.fastq.gz</span></code> files as well. Files ending with <code class="docutils literal notranslate"><span class="pre">.gz</span></code> are compressed files, similar to <code class="docutils literal notranslate"><span class="pre">.zip</span></code> files.</p>
+</div>
+</div>
+<p>Raw microbiome data typically exists in one of two forms: multiplexed or demultiplexed. In multiplexed data, sequences from all samples are grouped together in one or more files. In demultiplexed data, sequences are separated into different files based on the sample they are derived from. The process of demultiplexing, when multiplexed data is processed into demultiplexed data, will be discussed in the next chapter. Briefly, data can be demultiplexed before it’s delivered to you, or it can be delivered still multiplexed in which case you can use QIIME 2 to demultiplex the data. It doesn’t really matter whether the data you receive is multiplexed or demultiplexed: there are benefits and drawbacks to each.</p>
+<p>The number of files that you are starting with is the key to determining whether your data are multiplexed or demultiplexed. In QIIME 2, as of this writing, we primarily support importing of Illumina sequence data, so this discussion focuses around Illumina fastq data.</p>
+<p>Most Illumina sequencing runs are paired-end, meaning that sequence reads are generated in two directions: the “forward reads” begin at the 5’ end of the amplicon, and the “reverse reads” begin at the 3’ end of the amplicon. These reads are stored in separate files, usually designated with an <code class="docutils literal notranslate"><span class="pre">R1</span></code> (for the forward reads) somewhere in the file name or <code class="docutils literal notranslate"><span class="pre">R2</span></code> (for the reverse reads) somewhere in the file name. In some cases, there may also be one (or less commonly two) “index” or “barcode” read files, designated with <code class="docutils literal notranslate"><span class="pre">I1</span></code> in the filename (or <code class="docutils literal notranslate"><span class="pre">I1</span></code> and <code class="docutils literal notranslate"><span class="pre">I2</span></code> in the names of separate files).</p>
+<p>If you have between one and four <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> files, it’s almost certain that you have multiplexed data. The sequence data from all of your samples is contained in the <code class="docutils literal notranslate"><span class="pre">R1</span></code> files if you performed a single-end sequencing run, or in the <code class="docutils literal notranslate"><span class="pre">R1</span></code> and <code class="docutils literal notranslate"><span class="pre">R2</span></code> files if you performed a paired-end sequencing run. If you have an <code class="docutils literal notranslate"><span class="pre">I1</span></code> file, that contains the sequence barcodes which during PCR were  added to the sequences on a sample-specific basis. If you also have an <code class="docutils literal notranslate"><span class="pre">I2</span></code> file, this means that a dual-barcoding scheme was used for associating sequences with samples. In either case, the single barcode or the combination of forward and reverse barcodes define which sample a given sequence was isolated from. Refer to <a class="reference internal" href="#import-multiplexed"><span class="std std-ref">Importing multiplexed data</span></a> to learn how to import your data.</p>
+<p>If you have many <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> files, your data are likely demultiplexed. In this case, you’ll typically see either an <code class="docutils literal notranslate"><span class="pre">R1</span></code> or a pair of <code class="docutils literal notranslate"><span class="pre">R1</span></code> and <code class="docutils literal notranslate"><span class="pre">R2</span></code> files for each of your samples. Often you’ll be able to recognize your sample identifiers in the filenames, though there is typically a lot of additional information in there as well. Refer to <a class="reference internal" href="#import-demultiplexed"><span class="std std-ref">Importing demultiplexed data</span></a> to learn how to import your data.</p>
+<p>If you’re still unsure whether your data is multiplexed or demultiplexed, get in touch on the QIIME 2 Forum and include a list of your <code class="docutils literal notranslate"><span class="pre">.fastq</span></code> filenames.</p>
 </div>
 <div class="section" id="importing-demultiplexed-data">
-<h5><span class="section-number">3.2.1.1.2. </span>Importing demultiplexed data<a class="headerlink" href="#importing-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+<span id="import-demultiplexed"></span><h5><span class="section-number">4.2.1.1.2. </span>Importing demultiplexed data<a class="headerlink" href="#importing-demultiplexed-data" title="Permalink to this headline">¶</a></h5>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-attribution admonition">
+<p class="admonition-title">Attribution</p>
+<p>Content in this section is derived from a <a class="reference external" href="https://forum.qiime2.org/t/importing-and-demultiplexing-sequence-data-quick-reference/14002">popular QIIME 2 Forum post</a> by <a class="reference external" href="https://forum.qiime2.org/u/nicholas_bokulich/summary">&#64;Nicholas_Bokulich</a> and from the <a class="reference external" href="https://docs.qiime2.org/2021.2/tutorials/importing/">QIIME 2 documentation</a>.</p>
+</div>
+</div>
+<p>Because the sequences in demultiplexed sequence data are already associated with the samples they were isolated from, during the importing step you must make QIIME 2 aware of that association. Beginning with demultiplexed sequence data can be convenient because you don’t need to understand how sequences were barcoded in order to work with them. Whoever provided you with the sequences already used the barcodes to assign sequences to samples. This can be very convenient if a barcoding strategy was applied that is unsupported by QIIME 2 (e.g., because it’s new or uncommon). Informing QIIME 2 which samples are associated with which files can be a bit labor intensive however. Having a little bit of experience with regular expressions or computer programming can really help you to carry out this step, but it’s not required.</p>
+<p>The semantic type of demultiplexed single-end sequence data is <code class="docutils literal notranslate"><span class="pre">SampleData[SequencesWithQuality]</span></code>. The semantic type of demultiplexed paired-end sequence data is <code class="docutils literal notranslate"><span class="pre">SampleData[PairedEndSequencesWithQuality]</span></code>. If you have only files with <code class="docutils literal notranslate"><span class="pre">R1</span></code> in their names, your data are single-end. If half of your files have <code class="docutils literal notranslate"><span class="pre">R1</span></code> in their names, and the other half have <code class="docutils literal notranslate"><span class="pre">R2</span></code> in their names, your data are paired-end.</p>
+<p>The import format can be one of a few options. If your files are provided in CASAVA 1.8 format, there are two <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> files for each sample in the study, each containing the forward or reverse reads for that sample. The file name includes the sample identifier. The forward and reverse read file names for a single sample might look like <code class="docutils literal notranslate"><span class="pre">L2S357_15_L001_R1_001.fastq.gz</span></code> and <code class="docutils literal notranslate"><span class="pre">L2S357_15_L001_R2_001.fastq.gz</span></code>, respectively. The underscore-separated fields in this file name are:</p>
+<ol class="simple">
+<li><p>the sample identifier,</p></li>
+<li><p>the barcode sequence or a barcode identifier,</p></li>
+<li><p>the lane number,</p></li>
+<li><p>the direction of the read (i.e. R1 or R2), and</p></li>
+<li><p>the set number.</p></li>
+</ol>
 </div>
 <div class="section" id="importing-multiplexed-data">
-<h5><span class="section-number">3.2.1.1.3. </span>Importing multiplexed data<a class="headerlink" href="#importing-multiplexed-data" title="Permalink to this headline">¶</a></h5>
+<span id="import-multiplexed"></span><h5><span class="section-number">4.2.1.1.3. </span>Importing multiplexed data<a class="headerlink" href="#importing-multiplexed-data" title="Permalink to this headline">¶</a></h5>
 </div>
 </div>
 <div class="section" id="importing-a-featuretable">
-<h4><span class="section-number">3.2.1.2. </span>Importing a <code class="docutils literal notranslate"><span class="pre">FeatureTable</span></code><a class="headerlink" href="#importing-a-featuretable" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.2. </span>Importing a <code class="docutils literal notranslate"><span class="pre">FeatureTable</span></code><a class="headerlink" href="#importing-a-featuretable" title="Permalink to this headline">¶</a></h4>
 </div>
 <div class="section" id="importing-reference-data">
-<h4><span class="section-number">3.2.1.3. </span>Importing reference data<a class="headerlink" href="#importing-reference-data" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.3. </span>Importing reference data<a class="headerlink" href="#importing-reference-data" title="Permalink to this headline">¶</a></h4>
 </div>
 <div class="section" id="importing-phylogenetic-trees">
-<h4><span class="section-number">3.2.1.4. </span>Importing phylogenetic trees<a class="headerlink" href="#importing-phylogenetic-trees" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.4. </span>Importing phylogenetic trees<a class="headerlink" href="#importing-phylogenetic-trees" title="Permalink to this headline">¶</a></h4>
 <div class="section" id="importing-phylogeny-rooted">
-<h5><span class="section-number">3.2.1.4.1. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Rooted]</span></code><a class="headerlink" href="#importing-phylogeny-rooted" title="Permalink to this headline">¶</a></h5>
+<h5><span class="section-number">4.2.1.4.1. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Rooted]</span></code><a class="headerlink" href="#importing-phylogeny-rooted" title="Permalink to this headline">¶</a></h5>
 </div>
 <div class="section" id="importing-phylogeny-unrooted">
-<h5><span class="section-number">3.2.1.4.2. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Unrooted]</span></code><a class="headerlink" href="#importing-phylogeny-unrooted" title="Permalink to this headline">¶</a></h5>
+<h5><span class="section-number">4.2.1.4.2. </span>Importing <code class="docutils literal notranslate"><span class="pre">Phylogeny[Unrooted]</span></code><a class="headerlink" href="#importing-phylogeny-unrooted" title="Permalink to this headline">¶</a></h5>
 </div>
 </div>
 <div class="section" id="importing-featuredata">
-<h4><span class="section-number">3.2.1.5. </span>Importing <code class="docutils literal notranslate"><span class="pre">FeatureData</span></code><a class="headerlink" href="#importing-featuredata" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.5. </span>Importing <code class="docutils literal notranslate"><span class="pre">FeatureData</span></code><a class="headerlink" href="#importing-featuredata" title="Permalink to this headline">¶</a></h4>
 </div>
 <div class="section" id="importing-sampledata">
-<h4><span class="section-number">3.2.1.6. </span>Importing <code class="docutils literal notranslate"><span class="pre">SampleData</span></code><a class="headerlink" href="#importing-sampledata" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">4.2.1.6. </span>Importing <code class="docutils literal notranslate"><span class="pre">SampleData</span></code><a class="headerlink" href="#importing-sampledata" title="Permalink to this headline">¶</a></h4>
 </div>
 </div>
 </div>
 <div class="section" id="summary">
-<h2><span class="section-number">3.3. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
 <p>QIIME 2 is more explicit about the meaning and format of data than most bioinformatics tools, and as a result we’ve had to invent some language to describe these things. This creates a bit of a circular dependency when you’re just getting started: experience with QIIME 2 helps you to understand how to import data, but you have to import data to get experience with QIIME 2. As you gain experience with QIIME 2, you’ll learn its language of semantic types and you’ll be less dependent on the flow charts and other information in this chapter. You’ll probably still refer back to importing documentation from time to time though - I certainly do.</p>
 </div>
 </div>
@@ -509,8 +552,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="overview-tutorial.html" title="previous page"><span class="section-number">2. </span>An interactive overview of QIIME 2</a>
-    <a class='right-next' id="next-link" href="demultiplexing.html" title="next page"><span class="section-number">4. </span>Demultiplexing a sequencing run</a>
+    <a class='left-prev' id="prev-link" href="metadata.html" title="previous page"><span class="section-number">3. </span>Metadata in QIIME 2</a>
+    <a class='right-next' id="next-link" href="demultiplexing.html" title="next page"><span class="section-number">5. </span>Demultiplexing a sequencing run</a>
 
         </div>
         

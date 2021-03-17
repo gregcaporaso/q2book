@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Appendix 2: A brief introduction to methods in microbiome science &#8212; q2book</title>
+    <title>3. Appendix: A brief introduction to methods in microbiome science &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -26,7 +26,7 @@
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.37f24b989f4638ff9c27c22dc7559d4f.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Appendix 3: History of the QIIME platform" href="q2-origin-story.html" />
-    <link rel="prev" title="2. Appendix 1: Biological Information" href="biological-information.html" />
+    <link rel="next" title="4. Appendix: History of the QIIME platform" href="q2-origin-story.html" />
+    <link rel="prev" title="2. Appendix: Biological Information" href="biological-information.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -121,23 +121,28 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../using/metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../using/importing.html">
-   3. Importing data into QIIME 2
+   4. Importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/demultiplexing.html">
-   4. Demultiplexing a sequencing run
+   5. Demultiplexing a sequencing run
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/denoising.html">
-   5. Denoising demultiplexed sequencing data
+   6. Denoising demultiplexed sequencing data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../using/taxonomy.html">
-   6. Taxonomic annotation and analysis of sequences
+   7. Taxonomic annotation and analysis of sequences
   </a>
  </li>
 </ul>
@@ -183,22 +188,22 @@
 <ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="importing-examples.html">
-   1. Examples illustrating importing data into QIIME 2
+   1. Appendix: Examples illustrating importing data into QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="biological-information.html">
-   2. Appendix 1: Biological Information
+   2. Appendix: Biological Information
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. Appendix 2: A brief introduction to methods in microbiome science
+   3. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="q2-origin-story.html">
-   4. Appendix 3: History of the QIIME platform
+   4. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
@@ -272,7 +277,8 @@
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
         <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
+            <i class="fas fa-list"></i>
+            Contents
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
@@ -323,8 +329,8 @@
         
               <div>
                 
-  <div class="section" id="appendix-2-a-brief-introduction-to-methods-in-microbiome-science">
-<h1><span class="section-number">3. </span>Appendix 2: A brief introduction to methods in microbiome science<a class="headerlink" href="#appendix-2-a-brief-introduction-to-methods-in-microbiome-science" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="appendix-a-brief-introduction-to-methods-in-microbiome-science">
+<h1><span class="section-number">3. </span>Appendix: A brief introduction to methods in microbiome science<a class="headerlink" href="#appendix-a-brief-introduction-to-methods-in-microbiome-science" title="Permalink to this headline">¶</a></h1>
 <p>There isn’t a clear definition for the term microbe. It has been defined based on human perception, such as an organism so small that it can’t be seen with the naked eye. A similar size-based definition is any organism smaller than 200 micrometers (μm). And a third definition is any single-celled organism. These definitions are similar enough that for most purposes it doesn’t matter which we choose, but the size-based definition is the least ambiguous, so we’ll adopt that for the purposes of this book. This is preferable to a definition based on human perception because it’s more objective. It’s also preferable to a definition based on the number of cells that compose the organism because there are some interesting creatures that sometimes exist in a single-cellular state, and at other times in a multicellular state, like slime molds which band together when times get tough.</p>
 <p>200 μm is about 5 times smaller than the period at the end of this sentence, and as far as microbes go, 200 μm is massive! The largest known bacteria include <em>Thiomargarita namibiensis</em> (100-750 μm), and species in the genus <em>Epulopiscium</em> (200-700 μm) which were so large that when they were first discovered the researchers didn’t even think they were bacteria. One the other end of the spectrum, the smallest known bacteria are in the genus <em>Mycoplasma</em>, and they are on the order of 200 nanometers (nm) in diameter, about 5000 times smaller than the period at the end of this sentence. The ratio of the size of the smallest to largest bacterium is about the same as the ratio of the size of an ant to a blue whale.</p>
 <p>In this chapter, I’ll provide some historical context on methods used in microbiome science. The history of the field is rich, and the contributors so many, that I could easily divert all of my focus to trying to tell that story and as a result not help you learn QIIME 2. I therefore keep it brief here, and provide references through-out to resources that can help you fill in my gaps.</p>
@@ -463,8 +469,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="biological-information.html" title="previous page"><span class="section-number">2. </span>Appendix 1: Biological Information</a>
-    <a class='right-next' id="next-link" href="q2-origin-story.html" title="next page"><span class="section-number">4. </span>Appendix 3: History of the QIIME platform</a>
+    <a class='left-prev' id="prev-link" href="biological-information.html" title="previous page"><span class="section-number">2. </span>Appendix: Biological Information</a>
+    <a class='right-next' id="next-link" href="q2-origin-story.html" title="next page"><span class="section-number">4. </span>Appendix: History of the QIIME platform</a>
 
         </div>
         

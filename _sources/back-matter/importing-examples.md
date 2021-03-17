@@ -13,7 +13,7 @@ kernelspec:
   name: calysto_bash
 ---
 (importing-examples)=
-# Examples illustrating importing data into QIIME 2
+# Appendix: Examples illustrating importing data into QIIME 2
 
 This document will ultimately pull content from the [QIIME 2 documentation's importing guide](https://docs.qiime2.org/2020.11/tutorials/importing/). Refer there for now. 
 
