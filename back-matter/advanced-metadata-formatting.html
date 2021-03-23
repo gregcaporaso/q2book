@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Appendix: Advanced metadata formatting &#8212; q2book</title>
+    <title>3. Appendix: Advanced metadata formatting &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,6 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Appendix: A brief introduction to methods in microbiome science" href="microbiome-methods.html" />
+    <link rel="prev" title="2. Appendix: Biological Information" href="biological-information.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -160,6 +162,11 @@
    2. Sequence homology searching
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/machine-learning.html">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -183,7 +190,7 @@
   Back Matter
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="importing-examples.html">
    1. Appendix: Examples illustrating importing data into QIIME 2
@@ -194,19 +201,24 @@
    2. Appendix: Biological Information
   </a>
  </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="microbiome-methods.html">
-   3. Appendix: A brief introduction to methods in microbiome science
+   4. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="q2-origin-story.html">
-   4. Appendix: History of the QIIME platform
+   5. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="glossary.html">
-   5. Glossary
+   6. Glossary
   </a>
  </li>
 </ul>
@@ -282,17 +294,17 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#tsv-dialect-and-parser">
-   TSV Dialect and Parser
+   3.1. TSV Dialect and Parser
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#encoding-and-line-endings">
-   Encoding and Line Endings
+   3.2. Encoding and Line Endings
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#trailing-empty-cells-and-jagged-data">
-   Trailing Empty Cells and Jagged Data
+   3.3. Trailing Empty Cells and Jagged Data
   </a>
  </li>
 </ul>
@@ -308,19 +320,19 @@
               <div>
                 
   <div class="section" id="appendix-advanced-metadata-formatting">
-<span id="advanced-metadata-formatting"></span><h1>Appendix: Advanced metadata formatting<a class="headerlink" href="#appendix-advanced-metadata-formatting" title="Permalink to this headline">¶</a></h1>
+<span id="advanced-metadata-formatting"></span><h1><span class="section-number">3. </span>Appendix: Advanced metadata formatting<a class="headerlink" href="#appendix-advanced-metadata-formatting" title="Permalink to this headline">¶</a></h1>
 <p>If you’re creating TSV files by manually (e.g. in a text editor) or writing your own software to consume or produce QIIME 2 metadata files this section provides additional formatting details. If you’re creating and exporting QIIME 2 metadata files using a spreadsheet program (e.g. Microsoft Excel, Google Sheets) you can skip this content.</p>
 <div class="section" id="tsv-dialect-and-parser">
-<h2>TSV Dialect and Parser<a class="headerlink" href="#tsv-dialect-and-parser" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1. </span>TSV Dialect and Parser<a class="headerlink" href="#tsv-dialect-and-parser" title="Permalink to this headline">¶</a></h2>
 <p>QIIME 2 attempts to interoperate with TSV files exported from Microsoft Excel, as this is the most common TSV “dialect” we have seen in use. The QIIME 2 metadata parser (i.e. reader) uses the <a class="reference external" href="https://docs.python.org/3/library/csv.html">Python csv module</a> <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code> dialect for parsing TSV metadata files. This dialect supports wrapping fields in double quote characters (<code class="docutils literal notranslate"><span class="pre">&quot;</span></code>) to allow for tab, newline, and carriage return characters within a field. To include a literal double quote character in a field, the double quote character must be immediately preceded by another double quote character. See the <a class="reference external" href="https://docs.python.org/3/library/csv.html">Python csv module</a> for complete documentation on the <code class="docutils literal notranslate"><span class="pre">excel-tab</span></code> dialect.</p>
 </div>
 <div class="section" id="encoding-and-line-endings">
-<h2>Encoding and Line Endings<a class="headerlink" href="#encoding-and-line-endings" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>Encoding and Line Endings<a class="headerlink" href="#encoding-and-line-endings" title="Permalink to this headline">¶</a></h2>
 <p>Metadata files must be encoded as UTF-8, which is backwards-compatible with ASCII encoding.</p>
 <p>Unix line endings (<code class="docutils literal notranslate"><span class="pre">\n</span></code>), Windows/DOS line endings (<code class="docutils literal notranslate"><span class="pre">\r\n</span></code>), and “classic Mac OS” line endings (<code class="docutils literal notranslate"><span class="pre">\r</span></code>) are all supported by the metadata parser for interoperability. When metadata files are written to disk in QIIME 2, the line endings will always be <code class="docutils literal notranslate"><span class="pre">\r\n</span></code> (Windows/DOS line endings).</p>
 </div>
 <div class="section" id="trailing-empty-cells-and-jagged-data">
-<h2>Trailing Empty Cells and Jagged Data<a class="headerlink" href="#trailing-empty-cells-and-jagged-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3. </span>Trailing Empty Cells and Jagged Data<a class="headerlink" href="#trailing-empty-cells-and-jagged-data" title="Permalink to this headline">¶</a></h2>
 <p>The metadata parser ignores any trailing empty cells that occur past the fields declared by the header. This is mainly for interoperability with files exported from some spreadsheet programs. These trailing cells/columns may be jagged (or not); they will be ignored either way when the file is read.</p>
 <p>If a row doesn’t contain as many fields as declared by the header, empty cells will be padded to match the header length (again, this is mainly for interoperability with exported spreadsheets).</p>
 </div>
@@ -351,6 +363,8 @@
         
         <div class='prev-next-bottom'>
             
+    <a class='left-prev' id="prev-link" href="biological-information.html" title="previous page"><span class="section-number">2. </span>Appendix: Biological Information</a>
+    <a class='right-next' id="next-link" href="microbiome-methods.html" title="next page"><span class="section-number">4. </span>Appendix: A brief introduction to methods in microbiome science</a>
 
         </div>
         

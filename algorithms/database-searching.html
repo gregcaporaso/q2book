@@ -56,7 +56,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. Getting started with developing with QIIME 2" href="../developing/getting-started.html" />
+    <link rel="next" title="3. Machine learning in bioinformatics" href="machine-learning.html" />
     <link rel="prev" title="1. Pairwise sequence alignment" href="pairwise-alignment.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -164,6 +164,11 @@
    2. Sequence homology searching
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="machine-learning.html">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -199,18 +204,23 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/advanced-metadata-formatting.html">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/microbiome-methods.html">
-   3. Appendix: A brief introduction to methods in microbiome science
+   4. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/q2-origin-story.html">
-   4. Appendix: History of the QIIME platform
+   5. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/glossary.html">
-   5. Glossary
+   6. Glossary
   </a>
  </li>
 </ul>
@@ -501,7 +511,7 @@ local_pairwise_align_ssw(sequence1, sequence2, **kwargs)
 <p>While we’ll be aligning nucleotide sequences in this chapter, the same concepts apply to protein homology searching.</p>
 </div>
 <div class="section" id="loading-annotated-sequences">
-<h2><span class="section-number">2.2. </span>Loading annotated sequences<a class="headerlink" href="#loading-annotated-sequences" title="Permalink to this headline">¶</a></h2>
+<span id="load-qdr"></span><h2><span class="section-number">2.2. </span>Loading annotated sequences<a class="headerlink" href="#loading-annotated-sequences" title="Permalink to this headline">¶</a></h2>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <div class="admonition note">
@@ -691,18 +701,18 @@ Stats:
 ---------------------------------------------------------------------
 Metadata:
     &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;606340&#39;
+    &#39;id&#39;: &#39;269885&#39;
 Stats:
     length: 200
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 58.50%
+    GC-content: 50.50%
 ---------------------------------------------------------------------
-0   GAGTAACGCG TGGGTAACCT GCCCTCGGGC TTGGGACAAC TTCGGGAAAC TGGAGCTAAT
-60  ACCGGATAAG ACCACGGAGT CCCCGGACTC TGCGGAAAAA GGTGGCCTCT TCACGAAAGC
-120 TACCGCCTGA GGATGGGCCC GCGTGCCATT AGCTAGTTGG TGAGGTAACG GCTCACCAAG
-180 GCTGTGATGG CTAGCTGGTC
+0   GACGGGTGAG TAACGCGTGG AAAACCTGCC GTATACTGGG GGATAACACT TAGAAATAGG
+60  TGCTAATACC GCATAAGCGC ACAGACCCGC ATGGGACAGT GTGGAAAACA AAAAGCTAAA
+120 GCTTTTTATG GTATACGATG GTTCCGCGTC TGATTAGCTG GTTGGTGGGG TAACGGCCCA
+180 CCAAGGCGAC GATCAGTAGC
 </pre></div>
 </div>
 </div>
@@ -718,18 +728,18 @@ Stats:
 ---------------------------------------------------------------------
 Metadata:
     &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;4479579&#39;
+    &#39;id&#39;: &#39;330039&#39;
 Stats:
     length: 200
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 47.50%
+    GC-content: 49.00%
 ---------------------------------------------------------------------
-0   CTCAAAGTTT GGAATAACCT GCCGAAAGGC GGGCTAATAC TGAATAGAGC GACGAAATTC
-60  GTAATCGAAT TTTTCGGGAA AGGGAGGAAG CAATTCCCTT CGCTTTGAGA TGAGCCTGCG
-120 TCTCATTAGC TAGTTGGTGA GGTAATAGCT CACCAAGGCT TTGATGGGTA GCTGGTCTGA
-180 GAGGATGATC AGCCACACTG
+0   GTAACGCGTA TGCAACCTAC CTTTTATTGG GGGATAGCCC GTCGAAAGAC GGATTAATAC
+60  CGCATAAGAT CATAGCCTGG CATCAGGCAT TGATTAAAGC TACGGCGATA AAAGATGGGC
+120 ATGCGTGACA TTAGCTAGTT GGTAGAGGTA ACGGCTCACC AAGGCTACGA TGTCTAGGGG
+180 TTCTGAGAGG ATGATCCCCC
 </pre></div>
 </div>
 </div>
@@ -807,7 +817,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Runtime: 5.1846 sec per query
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Runtime: 5.2752 sec per query
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -845,148 +855,148 @@ Stats:
   </thead>
   <tbody>
     <tr>
-      <th rowspan="5" valign="top">1119199</th>
-      <th>1028553</th>
-      <td>k__Bacteria; p__Planctomycetes; c__Planctomyce...</td>
-      <td>84.343434</td>
+      <th rowspan="5" valign="top">515234</th>
+      <th>177727</th>
+      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
+      <td>86.868687</td>
       <td>198</td>
+      <td>262</td>
+    </tr>
+    <tr>
+      <th>182708</th>
+      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
+      <td>86.868687</td>
+      <td>198</td>
+      <td>262</td>
+    </tr>
+    <tr>
+      <th>177884</th>
+      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
+      <td>85.051546</td>
+      <td>194</td>
+      <td>241</td>
+    </tr>
+    <tr>
+      <th>316760</th>
+      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
+      <td>84.974093</td>
+      <td>193</td>
+      <td>239</td>
+    </tr>
+    <tr>
+      <th>276434</th>
+      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
+      <td>85.204082</td>
+      <td>196</td>
       <td>237</td>
     </tr>
     <tr>
-      <th>4386478</th>
-      <td>k__Bacteria; p__Planctomycetes; c__Planctomyce...</td>
-      <td>83.084577</td>
-      <td>201</td>
-      <td>226</td>
+      <th rowspan="5" valign="top">19387</th>
+      <th>303559</th>
+      <td>k__Bacteria; p__Cyanobacteria; c__Chloroplast;...</td>
+      <td>86.699507</td>
+      <td>203</td>
+      <td>264</td>
     </tr>
     <tr>
-      <th>4430327</th>
-      <td>k__Bacteria; p__Planctomycetes; c__Planctomyce...</td>
-      <td>80.402010</td>
+      <th>305395</th>
+      <td>k__Bacteria; p__Cyanobacteria; c__Chloroplast;...</td>
+      <td>86.500000</td>
+      <td>200</td>
+      <td>263</td>
+    </tr>
+    <tr>
+      <th>4350193</th>
+      <td>k__Bacteria; p__Cyanobacteria; c__Chloroplast;...</td>
+      <td>85.221675</td>
+      <td>203</td>
+      <td>249</td>
+    </tr>
+    <tr>
+      <th>834289</th>
+      <td>k__Bacteria; p__Cyanobacteria; c__Chloroplast;...</td>
+      <td>85.204082</td>
+      <td>196</td>
+      <td>243</td>
+    </tr>
+    <tr>
+      <th>47632</th>
+      <td>k__Bacteria; p__Cyanobacteria; c__Chloroplast;...</td>
+      <td>84.079602</td>
+      <td>201</td>
+      <td>238</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">588023</th>
+      <th>140062</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Epsilonprot...</td>
+      <td>85.000000</td>
+      <td>200</td>
+      <td>250</td>
+    </tr>
+    <tr>
+      <th>11163</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Epsilonprot...</td>
+      <td>84.500000</td>
+      <td>200</td>
+      <td>245</td>
+    </tr>
+    <tr>
+      <th>617742</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Epsilonprot...</td>
+      <td>82.178218</td>
+      <td>202</td>
+      <td>221</td>
+    </tr>
+    <tr>
+      <th>4393071</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Epsilonprot...</td>
+      <td>78.000000</td>
+      <td>200</td>
+      <td>178</td>
+    </tr>
+    <tr>
+      <th>4439136</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Epsilonprot...</td>
+      <td>78.000000</td>
+      <td>200</td>
+      <td>178</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">208197</th>
+      <th>144181</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Betaproteob...</td>
+      <td>87.128713</td>
+      <td>202</td>
+      <td>270</td>
+    </tr>
+    <tr>
+      <th>160102</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Betaproteob...</td>
+      <td>86.633663</td>
+      <td>202</td>
+      <td>265</td>
+    </tr>
+    <tr>
+      <th>3893865</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Betaproteob...</td>
+      <td>86.567164</td>
+      <td>201</td>
+      <td>263</td>
+    </tr>
+    <tr>
+      <th>539482</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Betaproteob...</td>
+      <td>85.427136</td>
       <td>199</td>
-      <td>214</td>
+      <td>249</td>
     </tr>
     <tr>
-      <th>4307839</th>
-      <td>k__Bacteria; p__Planctomycetes; c__Planctomyce...</td>
-      <td>81.218274</td>
-      <td>197</td>
-      <td>210</td>
-    </tr>
-    <tr>
-      <th>983373</th>
-      <td>k__Bacteria; p__Planctomycetes; c__Planctomyce...</td>
-      <td>81.280788</td>
-      <td>203</td>
-      <td>209</td>
-    </tr>
-    <tr>
-      <th rowspan="5" valign="top">20456</th>
-      <th>1132546</th>
-      <td>k__Bacteria; p__Bacteroidetes; c__Flavobacteri...</td>
-      <td>89.552239</td>
-      <td>201</td>
-      <td>293</td>
-    </tr>
-    <tr>
-      <th>642877</th>
-      <td>k__Bacteria; p__Bacteroidetes; c__Flavobacteri...</td>
-      <td>89.603960</td>
-      <td>202</td>
-      <td>291</td>
-    </tr>
-    <tr>
-      <th>826195</th>
-      <td>k__Bacteria; p__Bacteroidetes; c__Flavobacteri...</td>
-      <td>89.108911</td>
-      <td>202</td>
-      <td>286</td>
-    </tr>
-    <tr>
-      <th>1078167</th>
-      <td>k__Bacteria; p__Bacteroidetes; c__Flavobacteri...</td>
-      <td>88.000000</td>
-      <td>200</td>
-      <td>280</td>
-    </tr>
-    <tr>
-      <th>144059</th>
-      <td>k__Bacteria; p__Bacteroidetes; c__Flavobacteri...</td>
-      <td>88.118812</td>
-      <td>202</td>
-      <td>276</td>
-    </tr>
-    <tr>
-      <th rowspan="5" valign="top">4384545</th>
-      <th>3621297</th>
-      <td>k__Bacteria; p__Lentisphaerae; c__[Lentisphaer...</td>
-      <td>82.524272</td>
-      <td>206</td>
-      <td>227</td>
-    </tr>
-    <tr>
-      <th>4332851</th>
-      <td>k__Bacteria; p__Lentisphaerae; c__[Lentisphaer...</td>
-      <td>81.683168</td>
-      <td>202</td>
-      <td>213</td>
-    </tr>
-    <tr>
-      <th>62663</th>
-      <td>k__Bacteria; p__Lentisphaerae; c__[Lentisphaer...</td>
-      <td>79.802956</td>
-      <td>203</td>
+      <th>764734</th>
+      <td>k__Bacteria; p__Proteobacteria; c__Betaproteob...</td>
+      <td>84.848485</td>
       <td>198</td>
-    </tr>
-    <tr>
-      <th>532826</th>
-      <td>k__Bacteria; p__Actinobacteria; c__Acidimicrob...</td>
-      <td>79.702970</td>
-      <td>202</td>
-      <td>192</td>
-    </tr>
-    <tr>
-      <th>4333468</th>
-      <td>k__Bacteria; p__Actinobacteria; c__Acidimicrob...</td>
-      <td>78.817734</td>
-      <td>203</td>
-      <td>188</td>
-    </tr>
-    <tr>
-      <th rowspan="5" valign="top">269294</th>
-      <th>289177</th>
-      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
-      <td>100.000000</td>
-      <td>200</td>
-      <td>400</td>
-    </tr>
-    <tr>
-      <th>189272</th>
-      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
-      <td>100.000000</td>
-      <td>200</td>
-      <td>400</td>
-    </tr>
-    <tr>
-      <th>264378</th>
-      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
-      <td>100.000000</td>
-      <td>200</td>
-      <td>400</td>
-    </tr>
-    <tr>
-      <th>174782</th>
-      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
-      <td>99.500000</td>
-      <td>200</td>
-      <td>395</td>
-    </tr>
-    <tr>
-      <th>293737</th>
-      <td>k__Bacteria; p__Firmicutes; c__Clostridia; o__...</td>
-      <td>99.500000</td>
-      <td>200</td>
-      <td>395</td>
+      <td>246</td>
     </tr>
   </tbody>
 </table>
@@ -1010,33 +1020,33 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 1119199 (in order):
-  k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
-  k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
-  k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
-  k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
-  k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 515234 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Ruminococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Ruminococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Blautia; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
 
-Closest taxonomies for query 20456 (in order):
-  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
-  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
-  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
-  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__Flavobacterium; s__
-  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
+Closest taxonomies for query 19387 (in order):
+  k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__Rhodophyta; f__; g__; s__
+  k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__Rhodophyta; f__; g__; s__
+  k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__Stramenopiles; f__; g__; s__
+  k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__Stramenopiles; f__; g__; s__
+  k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__; f__; g__; s__
 
-Closest taxonomies for query 4384545 (in order):
-  k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
-  k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
-  k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Acidimicrobiia; o__Acidimicrobiales; f__koll13; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Acidimicrobiia; o__Acidimicrobiales; f__koll13; g__; s__
+Closest taxonomies for query 588023 (in order):
+  k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Arcobacter; s__
+  k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Arcobacter; s__
+  k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Arcobacter; s__
+  k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Campylobacter; s__
+  k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Helicobacteraceae; g__; s__
 
-Closest taxonomies for query 269294 (in order):
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+Closest taxonomies for query 208197 (in order):
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__Dechloromonas; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__Dechloromonas; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__SBla14; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__SBla14; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__; s__
 </pre></div>
 </div>
 </div>
@@ -1052,17 +1062,17 @@ Closest taxonomies for query 269294 (in order):
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 1119199:
- k__Bacteria; p__Planctomycetes; c__Planctomycetia; o__Planctomycetales; f__Planctomycetaceae; g__Planctomyces; s__
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 515234:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Ruminococcus; s__
 
-Known taxonomy for query 20456:
- k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__Fluviicola; s__
+Known taxonomy for query 19387:
+ k__Bacteria; p__Cyanobacteria; c__Chloroplast; o__Rhodophyta; f__; g__; s__
 
-Known taxonomy for query 4384545:
- k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
+Known taxonomy for query 588023:
+ k__Bacteria; p__Proteobacteria; c__Epsilonproteobacteria; o__Campylobacterales; f__Campylobacteraceae; g__Arcobacter; s__
 
-Known taxonomy for query 269294:
- k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
+Known taxonomy for query 208197:
+ k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Oceanospirillales; f__Oceanospirillaceae; g__; s__
 </pre></div>
 </div>
 </div>
@@ -1152,56 +1162,56 @@ Known taxonomy for query 269294:
       <td>1.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1447.0</td>
-      <td>0.100416</td>
+      <td>1452.5</td>
+      <td>0.107118</td>
     </tr>
     <tr>
       <th>1</th>
       <td>1.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1428.5</td>
-      <td>0.106739</td>
+      <td>1422.5</td>
+      <td>0.106564</td>
     </tr>
     <tr>
       <th>2</th>
       <td>1.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1442.0</td>
-      <td>0.096935</td>
+      <td>1436.0</td>
+      <td>0.104452</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1437.0</td>
-      <td>0.598817</td>
+      <td>1440.5</td>
+      <td>0.592400</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1433.5</td>
-      <td>0.480767</td>
+      <td>1418.0</td>
+      <td>0.526832</td>
     </tr>
     <tr>
       <th>5</th>
       <td>5.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1436.0</td>
-      <td>0.486613</td>
+      <td>1434.5</td>
+      <td>0.501913</td>
     </tr>
     <tr>
       <th>6</th>
       <td>10.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1433.5</td>
-      <td>0.944551</td>
+      <td>1436.0</td>
+      <td>1.063075</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1209,39 +1219,39 @@ Known taxonomy for query 269294:
       <td>100.0</td>
       <td>200.0</td>
       <td>1421.0</td>
-      <td>0.991092</td>
+      <td>1.054502</td>
     </tr>
     <tr>
       <th>8</th>
       <td>10.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1448.5</td>
-      <td>0.970144</td>
+      <td>1449.0</td>
+      <td>1.063528</td>
     </tr>
     <tr>
       <th>9</th>
       <td>15.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1449.5</td>
-      <td>1.452101</td>
+      <td>1444.0</td>
+      <td>1.554461</td>
     </tr>
     <tr>
       <th>10</th>
       <td>15.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1427.5</td>
-      <td>1.524757</td>
+      <td>1437.5</td>
+      <td>1.594590</td>
     </tr>
     <tr>
       <th>11</th>
       <td>15.0</td>
       <td>100.0</td>
       <td>200.0</td>
-      <td>1418.0</td>
-      <td>1.477499</td>
+      <td>1424.0</td>
+      <td>1.531714</td>
     </tr>
   </tbody>
 </table>
@@ -1260,7 +1270,7 @@ Known taxonomy for query 269294:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fcc8c0ebf28&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7feb49dd5b70&gt;
 </pre></div>
 </div>
 <img alt="../_images/database-searching_28_1.png" src="../_images/database-searching_28_1.png" />
@@ -1357,75 +1367,75 @@ Known taxonomy for query 269294:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 621365 (in order):
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Staphylococcaceae; g__Staphylococcus; s__epidermidis
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Staphylococcaceae; g__Staphylococcus; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Staphylococcaceae; g__Staphylococcus; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Bacillaceae; g__Bacillus; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Bacillaceae; g__Bacillus; s__cereus
-
-Closest taxonomies for query 4399806 (in order):
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Clostridiaceae; g__SMB53; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Dorea; s__formicigenerans
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Clostridiaceae; g__Clostridium; s__
-
-Closest taxonomies for query 4384545 (in order):
-  k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Acidimicrobiia; o__Acidimicrobiales; f__koll13; g__; s__
-  k__Bacteria; p__Verrucomicrobia; c__Verrucomicrobiae; o__Verrucomicrobiales; f__Verrucomicrobiaceae; g__Akkermansia; s__muciniphila
-  k__Bacteria; p__Actinobacteria; c__MB-A2-108; o__0319-7L14; f__; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Thermoleophilia; o__Gaiellales; f__Gaiellaceae; g__; s__
-
-Closest taxonomies for query 824723 (in order):
-  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Nocardioidaceae; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Pseudonocardiaceae; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Corynebacteriaceae; g__Corynebacterium; s__
-  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__; g__; s__
-  k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Actinomycetaceae; g__Actinomyces; s__
-
-Closest taxonomies for query 4429736 (in order):
-  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__Rhodobacter; s__
-  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__Octadecabacter; s__
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Closest taxonomies for query 143820 (in order):
   k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__; s__
   k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__; s__
-  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__Jannaschia; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Oceanospirillales; f__Oceanospirillaceae; g__Nitrincola; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Legionellales; f__Coxiellaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__RF32; f__; g__; s__
 
-Closest taxonomies for query 2735917 (in order):
-  k__Bacteria; p__Bacteroidetes; c__[Saprospirae]; o__[Saprospirales]; f__Saprospiraceae; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__[Saprospirae]; o__[Saprospirales]; f__Chitinophagaceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+Closest taxonomies for query 451449 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Coprococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__[Tissierellaceae]; g__ph2; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Ruminococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Epulopiscium; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__Oscillospira; s__
 
-Closest taxonomies for query 169515 (in order):
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Ruminococcaceae; g__; s__
+Closest taxonomies for query 794941 (in order):
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Peptococcaceae; g__Desulfotomaculum_Desulfovirgula; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
 
-Closest taxonomies for query 4154832 (in order):
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__Parabacteroides; s__distasonis
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__Parabacteroides; s__distasonis
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Porphyromonadaceae; g__Parabacteroides; s__distasonis
+Closest taxonomies for query 1144353 (in order):
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+  k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+
+Closest taxonomies for query 89667 (in order):
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Hyphomicrobiaceae; g__Rhodoplanes; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Rhodobiaceae; g__Afifella; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Bradyrhizobiaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Bradyrhizobiaceae; g__Bosea; s__genosp.
+  k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhizobiales; f__Beijerinckiaceae; g__Methylovirgula; s__ligni
+
+Closest taxonomies for query 584541 (in order):
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Bacteroidaceae; g__Bacteroides; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Bacteroidaceae; g__Bacteroides; s__plebeius
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Bacteroidaceae; g__Bacteroides; s__
+  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__[Paraprevotellaceae]; g__CF231; s__
   k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Bacteroidaceae; g__Bacteroides; s__
 
-Closest taxonomies for query 542103 (in order):
-  k__Bacteria; p__Firmicutes; c__Erysipelotrichi; o__Erysipelotrichales; f__Erysipelotrichaceae; g__; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Bacillaceae; g__Bacillus; s__cereus
-  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Paenibacillaceae; g__Paenibacillus; s__
-  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Bacillaceae; g__Bacillus; s__
+Closest taxonomies for query 727248 (in order):
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Rhodocyclales; f__Rhodocyclaceae; g__Azospira; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__SC-I-84; f__; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Betaproteobacteria; o__Burkholderiales; f__Comamonadaceae; g__; s__
+  k__Bacteria; p__Proteobacteria; c__Gammaproteobacteria; o__Alteromonadales; f__Alteromonadaceae; g__Marinobacter; s__
 
-Closest taxonomies for query 326095 (in order):
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__S24-7; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__S24-7; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__S24-7; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__S24-7; g__; s__
-  k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__; g__; s__
+Closest taxonomies for query 882765 (in order):
+  k__Bacteria; p__Firmicutes; c__Bacilli; o__Lactobacillales; f__Streptococcaceae; g__Streptococcus; s__anginosus
+  k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Staphylococcaceae; g__Staphylococcus; s__aureus
+  k__Bacteria; p__Firmicutes; c__Bacilli; o__Lactobacillales; f__Streptococcaceae; g__Streptococcus; s__
+  k__Bacteria; p__Firmicutes; c__Bacilli; o__Lactobacillales; f__Lactobacillaceae; g__Lactobacillus; s__
+  k__Bacteria; p__Spirochaetes; c__[Leptospirae]; o__[Leptospirales]; f__Sediment-4; g__SJA-88; s__
+
+Closest taxonomies for query 4308675 (in order):
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__Winogradskyella; s__thalassocola
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__Bizionia; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Cryomorphaceae; g__; s__
+  k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__Psychroflexus; s__
+
+Closest taxonomies for query 358016 (in order):
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Coprococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Coprococcus; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__Lachnospira; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
+  k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
 </pre></div>
 </div>
 </div>
@@ -1439,26 +1449,26 @@ Closest taxonomies for query 326095 (in order):
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 621365:
- k__Bacteria; p__Firmicutes; c__Bacilli; o__Bacillales; f__Staphylococcaceae; g__Staphylococcus; s__
-Known taxonomy for query 4399806:
- k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Peptostreptococcaceae; g__Tepidibacter; s__
-Known taxonomy for query 4384545:
- k__Bacteria; p__Lentisphaerae; c__[Lentisphaeria]; o__Z20; f__; g__; s__
-Known taxonomy for query 824723:
- k__Bacteria; p__Actinobacteria; c__Actinobacteria; o__Actinomycetales; f__Micrococcaceae; g__Arthrobacter; s__nitroguajacolicus
-Known taxonomy for query 4429736:
- k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodobacterales; f__Rhodobacteraceae; g__Paracoccus; s__
-Known taxonomy for query 2735917:
- k__Bacteria; p__Bacteroidetes; c__[Saprospirae]; o__[Saprospirales]; f__Saprospiraceae; g__; s__
-Known taxonomy for query 169515:
- k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__; g__; s__
-Known taxonomy for query 4154832:
- k__Bacteria; p__Bacteroidetes; c__Cytophagia; o__Cytophagales; f__; g__; s__
-Known taxonomy for query 542103:
- k__Bacteria; p__Verrucomicrobia; c__; o__; f__; g__; s__
-Known taxonomy for query 326095:
- k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__S24-7; g__; s__
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Known taxonomy for query 143820:
+ k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rickettsiales; f__; g__; s__
+Known taxonomy for query 451449:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__[Tissierellaceae]; g__Anaerococcus; s__
+Known taxonomy for query 794941:
+ k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__amylovorum
+Known taxonomy for query 1144353:
+ k__Bacteria; p__Spirochaetes; c__Spirochaetes; o__Spirochaetales; f__Spirochaetaceae; g__Treponema; s__
+Known taxonomy for query 89667:
+ k__Bacteria; p__Proteobacteria; c__Alphaproteobacteria; o__Rhodospirillales; f__Rhodospirillaceae; g__; s__
+Known taxonomy for query 584541:
+ k__Bacteria; p__Bacteroidetes; c__Bacteroidia; o__Bacteroidales; f__Bacteroidaceae; g__Bacteroides; s__uniformis
+Known taxonomy for query 727248:
+ k__Bacteria; p__Caldiserica; c__TTA-B1; o__; f__; g__; s__
+Known taxonomy for query 882765:
+ k__Bacteria; p__Firmicutes; c__Bacilli; o__Gemellales; f__Gemellaceae; g__; s__
+Known taxonomy for query 4308675:
+ k__Bacteria; p__Bacteroidetes; c__Flavobacteriia; o__Flavobacteriales; f__Flavobacteriaceae; g__; s__
+Known taxonomy for query 358016:
+ k__Bacteria; p__Firmicutes; c__Clostridia; o__Clostridiales; f__Lachnospiraceae; g__; s__
 </pre></div>
 </div>
 </div>
@@ -1519,48 +1529,48 @@ Known taxonomy for query 326095:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.89 seconds per query sequence
-70.00% correct answers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.28 seconds per query sequence
+80.00% correct answers
 Result details:
-621365
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
+143820
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__RF32&#39;, &#39;f__&#39;)
 
-4399806
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptostreptococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+451449
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
 
-4384545
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
+794941
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-824723
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
+1144353
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-4429736
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+89667
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
 
-2735917
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
+584541
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
 
-169515
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+727248
+  (&#39;k__Bacteria&#39;, &#39;p__Caldiserica&#39;, &#39;c__TTA-B1&#39;, &#39;o__&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Burkholderiales&#39;, &#39;f__Comamonadaceae&#39;)
 
-4154832
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Porphyromonadaceae&#39;)
+882765
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
 
-542103
-  (&#39;k__Bacteria&#39;, &#39;p__Verrucomicrobia&#39;, &#39;c__&#39;, &#39;o__&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Erysipelotrichi&#39;, &#39;o__Erysipelotrichales&#39;, &#39;f__Erysipelotrichaceae&#39;)
+4308675
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
 
-326095
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
+358016
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
 </pre></div>
 </div>
 </div>
@@ -1587,48 +1597,48 @@ Result details:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.50 seconds per query sequence
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.54 seconds per query sequence
 50.00% correct answers
 Result details:
-621365
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
+143820
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
 
-4399806
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptostreptococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Clostridiaceae&#39;)
+451449
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
 
-4384545
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
+794941
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptococcaceae&#39;)
 
-824723
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
+1144353
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-4429736
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+89667
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhizobiales&#39;, &#39;f__&#39;)
 
-2735917
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__Flammeovirgaceae&#39;)
+584541
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
 
-169515
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
+727248
+  (&#39;k__Bacteria&#39;, &#39;p__Caldiserica&#39;, &#39;c__TTA-B1&#39;, &#39;o__&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Burkholderiales&#39;, &#39;f__Alcaligenaceae&#39;)
 
-4154832
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Porphyromonadaceae&#39;)
+882765
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Lactobacillales&#39;, &#39;f__Streptococcaceae&#39;)
 
-542103
-  (&#39;k__Bacteria&#39;, &#39;p__Verrucomicrobia&#39;, &#39;c__&#39;, &#39;o__&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+4308675
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
 
-326095
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
+358016
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
 </pre></div>
 </div>
 </div>
@@ -1698,48 +1708,48 @@ Result details:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.55 seconds per query sequence
-40.00% correct answers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.57 seconds per query sequence
+60.00% correct answers
 Result details:
-621365
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
+143820
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Gammaproteobacteria&#39;, &#39;o__Thiotrichales&#39;, &#39;f__Piscirickettsiaceae&#39;)
 
-4399806
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptostreptococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Acidaminobacteraceae]&#39;)
+451449
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
 
-4384545
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
+794941
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-824723
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micromonosporaceae&#39;)
+1144353
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-4429736
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+89667
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
 
-2735917
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
+584541
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+
+727248
+  (&#39;k__Bacteria&#39;, &#39;p__Caldiserica&#39;, &#39;c__TTA-B1&#39;, &#39;o__&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__SC-I-84&#39;, &#39;f__&#39;)
+
+882765
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Lactobacillales&#39;, &#39;f__Streptococcaceae&#39;)
+
+4308675
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
   (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
 
-169515
+358016
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
   (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Ruminococcaceae&#39;)
-
-4154832
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-
-542103
-  (&#39;k__Bacteria&#39;, &#39;p__Verrucomicrobia&#39;, &#39;c__&#39;, &#39;o__&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Paenibacillaceae&#39;)
-
-326095
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
 </pre></div>
 </div>
 </div>
@@ -1747,7 +1757,7 @@ Result details:
 <p>Try increasing and decreasing the number of sequences we’ll align by increasing or decreasing <code class="docutils literal notranslate"><span class="pre">database_subset_size</span></code>. How does this impact the runtime and fraction of time that we get the correct answer?</p>
 </div>
 <div class="section" id="kmer-content">
-<h4><span class="section-number">2.6.2.2. </span>kmer content<a class="headerlink" href="#kmer-content" title="Permalink to this headline">¶</a></h4>
+<span id="kmer"></span><h4><span class="section-number">2.6.2.2. </span>kmer content<a class="headerlink" href="#kmer-content" title="Permalink to this headline">¶</a></h4>
 <p>Another metric of sequence composition is <em>kmer composition</em>. A kmer is simply a word (or list of adjacent characters) of length <em>k</em> found within a sequence. Here are the kmer frequencies in a short DNA sequence. The <code class="docutils literal notranslate"><span class="pre">overlap=True</span></code> parameter here means that our kmers can overlap one another.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1860,48 +1870,48 @@ Result details:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.81 seconds per query sequence
-70.00% correct answers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.36 seconds per query sequence
+80.00% correct answers
 Result details:
-621365
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
+143820
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__RF32&#39;, &#39;f__&#39;)
 
-4399806
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptostreptococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+451449
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
 
-4384545
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
+794941
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-824723
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
+1144353
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-4429736
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+89667
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
 
-2735917
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
+584541
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
 
-169515
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+727248
+  (&#39;k__Bacteria&#39;, &#39;p__Caldiserica&#39;, &#39;c__TTA-B1&#39;, &#39;o__&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Burkholderiales&#39;, &#39;f__Comamonadaceae&#39;)
 
-4154832
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Porphyromonadaceae&#39;)
+882765
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
 
-542103
-  (&#39;k__Bacteria&#39;, &#39;p__Verrucomicrobia&#39;, &#39;c__&#39;, &#39;o__&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Erysipelotrichi&#39;, &#39;o__Erysipelotrichales&#39;, &#39;f__Erysipelotrichaceae&#39;)
+4308675
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
 
-326095
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
+358016
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
 </pre></div>
 </div>
 </div>
@@ -1941,48 +1951,48 @@ Result details:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.87 seconds per query sequence
-70.00% correct answers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.90 seconds per query sequence
+80.00% correct answers
 Result details:
-621365
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Bacillales&#39;, &#39;f__Staphylococcaceae&#39;)
+143820
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rickettsiales&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__RF32&#39;, &#39;f__&#39;)
 
-4399806
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Peptostreptococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+451449
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__[Tissierellaceae]&#39;)
 
-4384545
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Lentisphaerae&#39;, &#39;c__[Lentisphaeria]&#39;, &#39;o__Z20&#39;, &#39;f__&#39;)
+794941
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-824723
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Actinobacteria&#39;, &#39;c__Actinobacteria&#39;, &#39;o__Actinomycetales&#39;, &#39;f__Micrococcaceae&#39;)
+1144353
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Spirochaetes&#39;, &#39;c__Spirochaetes&#39;, &#39;o__Spirochaetales&#39;, &#39;f__Spirochaetaceae&#39;)
 
-4429736
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodobacterales&#39;, &#39;f__Rhodobacteraceae&#39;)
+89667
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Alphaproteobacteria&#39;, &#39;o__Rhodospirillales&#39;, &#39;f__Rhodospirillaceae&#39;)
 
-2735917
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__[Saprospirae]&#39;, &#39;o__[Saprospirales]&#39;, &#39;f__Saprospiraceae&#39;)
+584541
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Bacteroidaceae&#39;)
 
-169515
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__&#39;)
+727248
+  (&#39;k__Bacteria&#39;, &#39;p__Caldiserica&#39;, &#39;c__TTA-B1&#39;, &#39;o__&#39;, &#39;f__&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Proteobacteria&#39;, &#39;c__Betaproteobacteria&#39;, &#39;o__Burkholderiales&#39;, &#39;f__Comamonadaceae&#39;)
 
-4154832
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Cytophagia&#39;, &#39;o__Cytophagales&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__Porphyromonadaceae&#39;)
+882765
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Bacilli&#39;, &#39;o__Gemellales&#39;, &#39;f__Gemellaceae&#39;)
 
-542103
-  (&#39;k__Bacteria&#39;, &#39;p__Verrucomicrobia&#39;, &#39;c__&#39;, &#39;o__&#39;, &#39;f__&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Erysipelotrichi&#39;, &#39;o__Erysipelotrichales&#39;, &#39;f__Erysipelotrichaceae&#39;)
+4308675
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Flavobacteriia&#39;, &#39;o__Flavobacteriales&#39;, &#39;f__Flavobacteriaceae&#39;)
 
-326095
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
-  (&#39;k__Bacteria&#39;, &#39;p__Bacteroidetes&#39;, &#39;c__Bacteroidia&#39;, &#39;o__Bacteroidales&#39;, &#39;f__S24-7&#39;)
+358016
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
+  (&#39;k__Bacteria&#39;, &#39;p__Firmicutes&#39;, &#39;c__Clostridia&#39;, &#39;o__Clostridiales&#39;, &#39;f__Lachnospiraceae&#39;)
 </pre></div>
 </div>
 </div>
@@ -2053,9 +2063,9 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 56.00%
+    GC-content: 52.00%
 --------------------------------------------------------
-0 GTCTTGGGTC TCTAACCACG CCCCATCTTA ACCTCGCGCG CGACTTTTCT
+0 GCGTTTGCCG TAACTTACAT GTGACAGGTT GAAAGGCTTC CAGGGCAGAG
 </pre></div>
 </div>
 </div>
@@ -2076,7 +2086,7 @@ Stats:
     has definites: True
     GC-content: 52.00%
 --------------------------------------------------------
-0 ACCTGATACC CCGACGCATG GCCCTTTGCT AATCTATTCC AACCAGTGCT
+0 ATACGTTGAA CAATGATGGG GGGCGTCTTA GGAGGTCACG GTTTCCAGAG
 </pre></div>
 </div>
 </div>
@@ -2111,9 +2121,9 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 60.00%
+    GC-content: 62.00%
 --------------------------------------------------------
-0 CAACACGAGG CGTGCTCATC CCACTGTTCT AGGGCCTGTG AGCACATCGC
+0 GTCCAGAATA CACACTACAA GCCCGCGGCT CGCGCAGAGG CGTAGTGAGG
 </pre></div>
 </div>
 </div>
@@ -2132,9 +2142,9 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 60.00%
+    GC-content: 62.00%
 --------------------------------------------------------
-0 TGACCTAGTC GACTGAAAGC CCCTGGGGAC CCTATACCGC TGCGCTTCAG
+0 AGGGAGGGAC AAGGCCGCGT GCGCAACTGG AATGTACAAC GCACCTCCCT
 </pre></div>
 </div>
 </div>
@@ -2184,7 +2194,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[16, 10, 9, 12, 20, 13, 14, 13, 10, 8, 12, 8, 16, 14, 12, 10, 12, 11, 14, 12, 10, 10, 11, 10, 18, 13, 12, 12, 10, 12, 12, 13, 14, 9, 15, 10, 13, 12, 12, 12, 10, 10, 10, 10, 11, 13, 15, 10, 16, 12, 10, 12, 13, 14, 13, 10, 12, 15, 14, 10, 10, 14, 10, 12, 10, 9, 12, 12, 11, 10, 10, 10, 9, 12, 14, 10, 15, 12, 13, 11, 10, 12, 10, 15, 12, 12, 10, 12, 14, 10, 10, 10, 12, 10, 11, 11, 12, 13, 10]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12, 16, 9, 11, 12, 12, 10, 12, 10, 17, 13, 10, 10, 13, 13, 12, 14, 12, 12, 10, 14, 11, 12, 13, 13, 11, 10, 8, 12, 10, 15, 12, 10, 12, 15, 12, 11, 8, 10, 13, 10, 10, 12, 11, 12, 10, 11, 17, 15, 17, 12, 12, 10, 14, 12, 10, 14, 14, 12, 10, 10, 8, 12, 10, 10, 10, 12, 10, 14, 13, 18, 13, 8, 10, 10, 16, 12, 12, 10, 10, 9, 10, 10, 12, 13, 18, 12, 19, 12, 12, 13, 18, 12, 12, 12, 11, 10, 12, 9]
 </pre></div>
 </div>
 </div>
@@ -2216,7 +2226,7 @@ Stats:
   warnings.warn(msg, FutureWarning)
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fcc8bd21b70&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7feb4a08f1d0&gt;
 </pre></div>
 </div>
 <img alt="../_images/database-searching_79_2.png" src="../_images/database-searching_79_2.png" />
@@ -2318,13 +2328,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 43.60%
+    GC-content: 48.80%
 ---------------------------------------------------------------------
-0   TACGATTCTC AGATCATCAA CCGCGGTGTC GGATGAGAAT ACGCTTTTAA AAATTCTTAG
-60  ACTTCCTTTT TCACTTCATT GTATTCACTT CCCATCTAAC ACGAAACAAA ATTATATTCG
-120 TAGTATGGCT CCTTCTCCCA AACCCTCGGC AGTTATATAA AGTGTAGGTA AACACAAGCG
-180 TTCTGCAATT GCCCGTACAT AGCGATCAAG ACAGGGTCGC CCTTTTGCCG TCCCTTTCCT
-240 GACCCAACCG
+0   CTAGGCGGCT ATGCAAAACG CTAAAGGCGA GGAGTGAGTA CGTATTGCGA GCAACACCTA
+60  GGGGCTTTGA ATCTTTATAA GGGCGAGGCT GTCCAGCACC TGGAACAGTC GGCGTGTACG
+120 CGTGTTTCTT ACTAATACGT ATCATTCGGC CATGCGTATT CTCTTTGCCA GTAGTCTGTG
+180 CTCCACTGGA GTGTAAAGCC CAGACCAGAT GACTTTAGCT AATACAGGTC TGTATTGTTT
+240 TGTTGGTGTC
 </pre></div>
 </div>
 </div>
@@ -2344,13 +2354,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 51.20%
+    GC-content: 50.00%
 ---------------------------------------------------------------------
-0   TGATACCCTG CCTGGTCGAT CATGCACTCT TGCGATGTGA GTCAGAGAAG TACCTCGTCA
-60  CATGGAATCA AAGTGACCCA CTAGACCAAT CAACTACTGA GCCAAAATCG CATGCAGCGC
-120 TATGTTCTGG ACCACGTCCC CACGGTGGTA CTTGTCCGAG TACGAGAGCT TAGGGCCGTG
-180 ATTTAGTACA GCGAACTGAG TCGATTCGGC AATTTATTAC CCGACTGCGC AGACAACGAC
-240 GTAGGTTGAG
+0   AGTCTCATTG TCATCAAGCT TGGATCAATA GACATCATCG GCCATGATTC GTTCCTCGGG
+60  TTCGTCCGTG TCTAGTGGCA ACATTCTGGT CACTTTGGAC CTCGAGAACC GCATGGGTCT
+120 CACGCTCTCG AAAGCAGTAT AGATGGGCTG TCATTATTCG CCACAATCTG TGCATCCCAA
+180 CGCAATGTGG ACAGGCTACA TCTGGTGCCC AGTTTTGTCC GGTGTCGAGA AGTTTTGGGA
+240 GATTCTATCC
 </pre></div>
 </div>
 </div>
@@ -2363,7 +2373,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.89
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.1
 </pre></div>
 </div>
 </div>
@@ -2407,13 +2417,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 43.60%
+    GC-content: 48.80%
 ---------------------------------------------------------------------
-0   TACGATTCTC AGATCATCAA CCGCGGTGTC GGATGAGAAT ACGCTTTTAA AAATTCTTAG
-60  ACTTCCTTTT TCACTTCATT GTATTCACTT CCCATCTAAC ACGAAACAAA ATTATATTCG
-120 TAGTATGGCT CCTTCTCCCA AACCCTCGGC AGTTATATAA AGTGTAGGTA AACACAAGCG
-180 TTCTGCAATT GCCCGTACAT AGCGATCAAG ACAGGGTCGC CCTTTTGCCG TCCCTTTCCT
-240 GACCCAACCG
+0   CTAGGCGGCT ATGCAAAACG CTAAAGGCGA GGAGTGAGTA CGTATTGCGA GCAACACCTA
+60  GGGGCTTTGA ATCTTTATAA GGGCGAGGCT GTCCAGCACC TGGAACAGTC GGCGTGTACG
+120 CGTGTTTCTT ACTAATACGT ATCATTCGGC CATGCGTATT CTCTTTGCCA GTAGTCTGTG
+180 CTCCACTGGA GTGTAAAGCC CAGACCAGAT GACTTTAGCT AATACAGGTC TGTATTGTTT
+240 TGTTGGTGTC
 </pre></div>
 </div>
 </div>
@@ -2432,13 +2442,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 43.20%
+    GC-content: 47.60%
 ---------------------------------------------------------------------
-0   TACGATTCTC AGATCATCAA CCGCGGTGTC GGATGAGAAT ACGCTTTTAA AAATTCTTAG
-60  ACTTCCTTTT TCACTTCATT GTATTCACTT CCCATCTAAC ACGAAACAAA ATTATATTCT
-120 TAGTATGGCT CCTTCTCCCA AACCCTCGGC ATTTATATAA AGTGTAGGTA AACACAAGCG
-180 TTCTGCAATT GCCCGTACAT AGCGACCAAG ACAGGGTCGC CCTTTTGCCG TCCCTTTCCT
-240 GACCCAACCG
+0   CTAGGCGGCT ATGCAAAACG CTTAAGGCGA GGAGTGAGTA CGTATTGCGA GCAATACCTT
+60  GGGGCTTTGA ATCTTTATAA GGGCAAGGCT GTCCAGCACC TGGAACAGTC GGCGTGTACG
+120 CGTGTTTCTT ACTAATACGT ATCATTCGGG CATGCGTATT CTCTTTGCCA GTAGTCTGTG
+180 CTCCACTGGA GTGTAAAACC CAGACCAGAT GAAGTTAGCT AATACAGGTC TGTATTGTTT
+240 AGTTGGTGTC
 </pre></div>
 </div>
 </div>
@@ -2480,13 +2490,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 43.60%
+    GC-content: 48.80%
 ---------------------------------------------------------------------
-0   TACGATTCTC AGATCATCAA CCGCGGTGTC GGATGAGAAT ACGCTTTTAA AAATTCTTAG
-60  ACTTCCTTTT TCACTTCATT GTATTCACTT CCCATCTAAC ACGAAACAAA ATTATATTCG
-120 TAGTATGGCT CCTTCTCCCA AACCCTCGGC AGTTATATAA AGTGTAGGTA AACACAAGCG
-180 TTCTGCAATT GCCCGTACAT AGCGATCAAG ACAGGGTCGC CCTTTTGCCG TCCCTTTCCT
-240 GACCCAACCG
+0   CTAGGCGGCT ATGCAAAACG CTAAAGGCGA GGAGTGAGTA CGTATTGCGA GCAACACCTA
+60  GGGGCTTTGA ATCTTTATAA GGGCGAGGCT GTCCAGCACC TGGAACAGTC GGCGTGTACG
+120 CGTGTTTCTT ACTAATACGT ATCATTCGGC CATGCGTATT CTCTTTGCCA GTAGTCTGTG
+180 CTCCACTGGA GTGTAAAGCC CAGACCAGAT GACTTTAGCT AATACAGGTC TGTATTGTTT
+240 TGTTGGTGTC
 </pre></div>
 </div>
 </div>
@@ -2505,13 +2515,13 @@ Stats:
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 46.00%
+    GC-content: 49.60%
 ---------------------------------------------------------------------
-0   CAGGTTCCTT ACAATTGGCA CCGGGGCGCG TGCATCAATT ACGTTGACAA TACATGGTAG
-60  ATCTTCCTGT TATAACCTCT ACAAGCCGTG AGAAAGGAAC ATGAGAAAAC AACATATGTA
-120 GAGTACACCT CGTGATATAA AACATTGTGA AGGATCATAT TTTCCCCTCA GAGTCTCGAG
-180 TTCAGCCACT GGGCGCGCTC ATCTGTAACG ATCCTGCCAT GATATCACCG GCCTTTGTCA
-240 GAACCACATG
+0   TGCAGCCGCT AAGGGAAACG CGAAAAAAGA TGACTTACAA TGCTGTTACT GAGCTACATC
+60  GAAATTTAGA ACCGCTATAA GGGCACGGTA CTGCTGAAGG TGCAACTTCC GACATGCATG
+120 AGGCGTGACC AGAAAACCGG AATTTACGGG ATTGGTCGCC CTCGCTCTCG GCCGTCATTA
+180 TAGAGCTCCA ACCGGAAAGC CTTAACGGAT GGCTCTCACA TTTAGAGCAC TTGATCGTCT
+240 TGCTACCCTT
 </pre></div>
 </div>
 </div>
@@ -2524,7 +2534,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.78
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fraction of alignment scores at least as good as the alignment score: 0.3
 </pre></div>
 </div>
 </div>
@@ -2588,74 +2598,74 @@ Stats:
     <tr>
       <th>0</th>
       <td>0.00</td>
-      <td>0.620</td>
-      <td>0.5755</td>
+      <td>0.590</td>
+      <td>0.5560</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.05</td>
-      <td>0.770</td>
-      <td>0.6250</td>
+      <td>0.810</td>
+      <td>0.7255</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.10</td>
-      <td>0.715</td>
-      <td>0.6265</td>
+      <td>0.630</td>
+      <td>0.5835</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.15</td>
-      <td>0.480</td>
-      <td>0.4920</td>
+      <td>0.525</td>
+      <td>0.5475</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.20</td>
-      <td>0.375</td>
-      <td>0.4065</td>
+      <td>0.420</td>
+      <td>0.4755</td>
     </tr>
     <tr>
       <th>5</th>
       <td>0.25</td>
-      <td>0.380</td>
-      <td>0.4320</td>
+      <td>0.400</td>
+      <td>0.4875</td>
     </tr>
     <tr>
       <th>6</th>
       <td>0.30</td>
-      <td>0.190</td>
-      <td>0.3360</td>
+      <td>0.305</td>
+      <td>0.3610</td>
     </tr>
     <tr>
       <th>7</th>
       <td>0.35</td>
-      <td>0.120</td>
-      <td>0.2640</td>
+      <td>0.020</td>
+      <td>0.1020</td>
     </tr>
     <tr>
       <th>8</th>
       <td>0.40</td>
-      <td>0.010</td>
-      <td>0.1575</td>
+      <td>0.065</td>
+      <td>0.1460</td>
     </tr>
     <tr>
       <th>9</th>
       <td>0.45</td>
       <td>0.010</td>
-      <td>0.0320</td>
+      <td>0.0310</td>
     </tr>
     <tr>
       <th>10</th>
       <td>0.50</td>
       <td>0.010</td>
-      <td>0.0100</td>
+      <td>0.0205</td>
     </tr>
     <tr>
       <th>11</th>
       <td>0.55</td>
       <td>0.010</td>
-      <td>0.0100</td>
+      <td>0.0105</td>
     </tr>
     <tr>
       <th>12</th>
@@ -2741,7 +2751,7 @@ Stats:
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="pairwise-alignment.html" title="previous page"><span class="section-number">1. </span>Pairwise sequence alignment</a>
-    <a class='right-next' id="next-link" href="../developing/getting-started.html" title="next page"><span class="section-number">1. </span>Getting started with developing with QIIME 2</a>
+    <a class='right-next' id="next-link" href="machine-learning.html" title="next page"><span class="section-number">3. </span>Machine learning in bioinformatics</a>
 
         </div>
         

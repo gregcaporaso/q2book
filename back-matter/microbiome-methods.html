@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3. Appendix: A brief introduction to methods in microbiome science &#8212; q2book</title>
+    <title>4. Appendix: A brief introduction to methods in microbiome science &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -54,8 +54,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Appendix: History of the QIIME platform" href="q2-origin-story.html" />
-    <link rel="prev" title="2. Appendix: Biological Information" href="biological-information.html" />
+    <link rel="next" title="5. Appendix: History of the QIIME platform" href="q2-origin-story.html" />
+    <link rel="prev" title="3. Appendix: Advanced metadata formatting" href="advanced-metadata-formatting.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -162,6 +162,11 @@
    2. Sequence homology searching
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/machine-learning.html">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -196,19 +201,24 @@
    2. Appendix: Biological Information
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="advanced-metadata-formatting.html">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   3. Appendix: A brief introduction to methods in microbiome science
+   4. Appendix: A brief introduction to methods in microbiome science
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="q2-origin-story.html">
-   4. Appendix: History of the QIIME platform
+   5. Appendix: History of the QIIME platform
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="glossary.html">
-   5. Glossary
+   6. Glossary
   </a>
  </li>
 </ul>
@@ -284,37 +294,37 @@
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-pre-history-of-microbiome-research">
-   3.1. The pre-history of microbiome research
+   4.1. The pre-history of microbiome research
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#microbial-diversity">
-   3.2. Microbial diversity
+   4.2. Microbial diversity
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-genome-as-a-tool-for-understanding-evolution">
-   3.3. The genome as a tool for understanding evolution
+   4.3. The genome as a tool for understanding evolution
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-big-tree">
-   3.4. The Big Tree
+   4.4. The Big Tree
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#studying-microbiomes">
-   3.5. Studying microbiomes
+   4.5. Studying microbiomes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#microbiome-multi-omics">
-   3.6. Microbiome multi-omics
+   4.6. Microbiome multi-omics
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#list-of-works-cited">
-   3.7. List of works cited
+   4.7. List of works cited
   </a>
  </li>
 </ul>
@@ -330,12 +340,12 @@
               <div>
                 
   <div class="section" id="appendix-a-brief-introduction-to-methods-in-microbiome-science">
-<h1><span class="section-number">3. </span>Appendix: A brief introduction to methods in microbiome science<a class="headerlink" href="#appendix-a-brief-introduction-to-methods-in-microbiome-science" title="Permalink to this headline">¶</a></h1>
+<h1><span class="section-number">4. </span>Appendix: A brief introduction to methods in microbiome science<a class="headerlink" href="#appendix-a-brief-introduction-to-methods-in-microbiome-science" title="Permalink to this headline">¶</a></h1>
 <p>There isn’t a clear definition for the term microbe. It has been defined based on human perception, such as an organism so small that it can’t be seen with the naked eye. A similar size-based definition is any organism smaller than 200 micrometers (μm). And a third definition is any single-celled organism. These definitions are similar enough that for most purposes it doesn’t matter which we choose, but the size-based definition is the least ambiguous, so we’ll adopt that for the purposes of this book. This is preferable to a definition based on human perception because it’s more objective. It’s also preferable to a definition based on the number of cells that compose the organism because there are some interesting creatures that sometimes exist in a single-cellular state, and at other times in a multicellular state, like slime molds which band together when times get tough.</p>
 <p>200 μm is about 5 times smaller than the period at the end of this sentence, and as far as microbes go, 200 μm is massive! The largest known bacteria include <em>Thiomargarita namibiensis</em> (100-750 μm), and species in the genus <em>Epulopiscium</em> (200-700 μm) which were so large that when they were first discovered the researchers didn’t even think they were bacteria. One the other end of the spectrum, the smallest known bacteria are in the genus <em>Mycoplasma</em>, and they are on the order of 200 nanometers (nm) in diameter, about 5000 times smaller than the period at the end of this sentence. The ratio of the size of the smallest to largest bacterium is about the same as the ratio of the size of an ant to a blue whale.</p>
 <p>In this chapter, I’ll provide some historical context on methods used in microbiome science. The history of the field is rich, and the contributors so many, that I could easily divert all of my focus to trying to tell that story and as a result not help you learn QIIME 2. I therefore keep it brief here, and provide references through-out to resources that can help you fill in my gaps.</p>
 <div class="section" id="the-pre-history-of-microbiome-research">
-<h2><span class="section-number">3.1. </span>The pre-history of microbiome research<a class="headerlink" href="#the-pre-history-of-microbiome-research" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1. </span>The pre-history of microbiome research<a class="headerlink" href="#the-pre-history-of-microbiome-research" title="Permalink to this headline">¶</a></h2>
 <p>Until relatively recently we barely knew microbes existed. Antonie van Leuenhook (1632-1723), a dutch microscope hobbyist in late 1600s, was the first to observe and describe microbes (in terms including <em>animacules</em> and <em>wee beasties</em>). Using microscopes that he expertly crafted and which achieved maginfication of about 200x, he explored microbial diversity in nearly everything he could get his hands on, from rain water to dental plaque, and reported his findings to the Royal Society. Van Leuenhook is credited with discovering microbes (and through his exploration of microbes in and on the human body, he discovered  the healthy human microbiome), though he was very private about the methods he used to develop his microscopes <span id="id1">[<a class="reference internal" href="#id9"><span>Lan15</span></a>]</span>. When van Leuenhook died in 1723 the microbial world faded from view with him for nearly 200 years. In fact many of his findings were called into question as they could not be reproduced with other (less powerful) microscopes, but his reports were confirmed when compound microscopes were developed. Among those who did believe van Leuenhook’s findings, the consensus was that microbes were small, usual organisms of no relevance to our lives. This is because, with few exceptions, microbes are harmless. Many more microbes are beneficial to us, but the benefits they provide are realized regardless of whether we believe in them or not (as long as we let them be, that is).</p>
 <p>It wasn’t for another couple of hundred years that microbes were recognized to have any relevance to our lives, and even then it was a controversial idea. These next views of microbes were negative ones, when disease brought microbes to our attention. In 1854 London, a young medical doctor named John Snow (1813-1858) had a hypothesis that the cholera epidemic spreading through London at the time moved through drinking water that had been contaminated with human waste. This stood in contrast to the belief held by most at the time: that cholera spread through “bad air”. In the first example of a modern public health study, Dr. Snow traced the contaminated water to a single pump in London, the Broad Street pump, by determining that most of the individuals who developed cholera obtained their drinking water from that pump. He convinced city officials to disable the Broad Street pump by removing its handle, and cholera deaths immediately began to decline. Despite this impactful result, Snow did not know what caused the illness, beyond some contaminant in the water. A full understanding of the cause of cholera did not prevent measures from being put in place that began improving human health and quality of life, such as sanitation improvements. And even with a detailed molecular understanding of cholera transmission and pathogenesis today, it still kills tens of thousands of people per year.</p>
 <p>In the 1880s, Robert Koch (1843-1910), a German physician, in collaboration with Walther (1846-1911) and Fanny Hesse (1850-1934), developed techniques for growing bacteria in culture using agar, a Jell-o like substance minus the food coloring, as a growth medium. Because microbes are so small, it helps (even today) to be able to increase the quantity of the unit of study, whether that be microbial cells or microbial DNA. By growing organisms that he isolated from sick humans, Koch for the first time identified bacteria as the cause of several human diseases, including anthrax, tuberculosis, and cholera. He therefore added several new pieces to the puzzle which Snow began, as cholera could now be linked to the bacterium <em>Vibrio cholera</em>. One of Koch’s most lasting legacies is his four postulates for identifying causality for a microorganism in disease. Koch’s postulates are:</p>
@@ -349,7 +359,7 @@
 <p>An excellent book covering the early history of microbial research is <em>Microbe Hunters</em> <span id="id2">[<a class="reference internal" href="#id10"><span>dKGC02</span></a>]</span>, orignally published in 1926. I found it to be an accessible and engaging introduction to the field, but I also found some language to be racially and socially insensitive. The state of microbiology, and the language used to describe it, are reflective of the time when the book was written.</p>
 </div>
 <div class="section" id="microbial-diversity">
-<h2><span class="section-number">3.2. </span>Microbial diversity<a class="headerlink" href="#microbial-diversity" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Microbial diversity<a class="headerlink" href="#microbial-diversity" title="Permalink to this headline">¶</a></h2>
 <p>Microbial diversity, the different types of microbes that exist, dwarfs the diversity of non-microbes. However, because of the difficulty of observing and characterizing microbes, until very recently that diversity went largely unrecognized.</p>
 <p>Taxonomists are biologists who focus on classification and naming of organisms. Historically, taxonomists used directly observable traits of organisms to categorize them. For example, monotremes are a subgroup of the taxonomic group mammals who have all of the features that define mammals, such as the presence of hair or fur, but are unique from other mammals in that they lay eggs. (Echidna and platypus are the only extant monotremes.) Since microbes and the features that differentiate them are invisible to the naked eye, this posed a problem for taxonomists. In fact, Carl Linneaus, “the father of taxonomy”, lumped all of van Leeuwenhoek’s animalcules together. Until the last few decades, microbes were thought to be comprised of a few thousand species: an unusual group of organisms in the tree of life, far less diverse than insects which were previously thought to be the most diverse taxonomic grouping. But scientists began noticing things that suggested there might be more to these creatures than we previously thought. For example, when looking at a sample of live microbes under a microscope many different shapes and sizes of organisms could be seen moving around. But when culturing from that same sample, many fewer types were observed. This indicated that the most common approach for studying microbes, growing them in the lab, might be selectively growing only a subset of microbes that were capable of growing under the lab conditions. To relate this idea back to the world that we can see, imagine trying to characterize plant diversity by growing all of the possible plants in your backyard. Depending on where you live, you might observe Saguaro cactus or you might observe banana trees, but you won’t observe both. Your local climate will select for the plants that you will be capable of observing. In fact, this selection process led early gut microbiome researchers to believe that Escherichia coli (or E. coli) was an abundant organism in the healthy human gut. When researchers would grow microbes from human stool, they found their cultures to be dominated by E. coli. Using more modern approaches we now know that E. coli make up only around 0.01% of the bacterial cells in a healthy human gut. It just happens to grow well in the lab.</p>
 <p>Other experiments that were run around the same time suggested that microbes might be more important to our lives than previously thought. For example, researchers interested in the role of microbes in agriculture grew test crops in soil that had been sterilized and compared that to crops grown in typical soil. These experiments have been replicated many times, and consistently show that crop yield is higher in soil that has not been sterilized relative to soil that has been sterilized. This suggested that microbes may be important for crop growth, and ran counter to the belief at the time that microbes found in agricultural systems were either unimportant or were pests that had a negative impact on plants. Our growing understanding of the importance of microbes in soil health is at the heart of the regenerative agriculture movement, and parallels our increasing appreciation of the importance of microbes that live in and on our bodies for our health.</p>
@@ -357,7 +367,7 @@
 <p>Powered flight, for example, is thought to have evolved independently four times: in insects, in mammals (bats), in dinosaurs, and in birds (birds evolved from dinosaurs, but not from flying dinosaurs). In this case, the observable feature of powered flight wouldn’t lead us to an accurate view of evolutionary history. The last common ancestor of bats, insects, dinosaurs, and birds didn’t fly. This was an ability that distinct evolutionary lineages converged on as a result of the obvious benefits it provides, such as the ability to escape predators that can’t fly. Because the features of microbes are so hard to see, taxonomic classifications of microbes frequently don’t represent evolutionary history, and as a result microbial taxonomy is messy. As of this writing, microbial taxonomy is under constant revision which leads to a lot of confusion and controversy.</p>
 </div>
 <div class="section" id="the-genome-as-a-tool-for-understanding-evolution">
-<h2><span class="section-number">3.3. </span>The genome as a tool for understanding evolution<a class="headerlink" href="#the-genome-as-a-tool-for-understanding-evolution" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3. </span>The genome as a tool for understanding evolution<a class="headerlink" href="#the-genome-as-a-tool-for-understanding-evolution" title="Permalink to this headline">¶</a></h2>
 <p>Recently a new organismal feature has become observable, and it has revolutionized our understanding of evolutionary history. This feature is the genome sequence of an organism. The genome is the primary store of biological information in an organism, or the full collection of its DNA. An organism’s genome encodes blueprints for its molecular machines, proteins and some RNA molecules, and when put in precisely the right context (which we are only beginning to understand), it serves as a program for creating that organism. The building blocks of DNA are four molecules called nucleotides: adenine, cytosine, guanine, and thymine. These are generally abbreviated as A, C, G, and T, respectively. DNA is a linear molecule, where nucleotides are covalently linked to one another, and a DNA sequence therefore refers to the linear order of As, Cs, Gs, and Ts in some DNA molecule. For example, a short DNA sequence might look like the following:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ACCGAGATTCAGATCAGGATAGCAAGAC</span>
 </pre></div>
@@ -402,27 +412,27 @@
 </div>
 </div>
 <div class="section" id="the-big-tree">
-<h2><span class="section-number">3.4. </span>The Big Tree<a class="headerlink" href="#the-big-tree" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4. </span>The Big Tree<a class="headerlink" href="#the-big-tree" title="Permalink to this headline">¶</a></h2>
 <p>This approach of sequencing one or more genes to infer evolutionary relationships led to a completely new understanding of the “big tree”, the term I use for the tree of life that relates all cellular organisms to one another. One of the biggest revelations that resulted from this work was a new understanding of that unusual group of life: the single-celled organisms. Based on molecular phylogenetics, we now understand there to be three top-level groups in the organization of life <span id="id4">[<a class="reference internal" href="#id14"><span>WF77</span></a>]</span>. These groups, called the domains of life, are the Archaea, Bacteria, and Eukaryotes. These groups encompass all currently known cellular life and represent our best hypothesis about deepest evolutionary relationships in the big tree. As far as we know, all of the Archaea and Bacteria are single-cellular, and most of the Eukaryotes are single-cellular. All of the multi-cellular organisms that we are aware of, including humans, are Eukaryotes. Single-cellular organisms, the vast majority of whom are microbes, actually represent most of the diversity of life on Earth, and multicellular organisms are really the unusual ones. This was quite an astonishing finding: until recently, we were barely even aware of most of the organisms on the planet!</p>
 <p>An important omission from the big tree is the viruses. Viruses contain encapsulated genetic information in the form of DNA or RNA, but can’t reproduce themselves on their own. In other words, they’re obligate parasites. They require a host cell to reproduce in, often hijacking the host’s machinery for replication, and may or may not kill the host cell in the process. Because viruses can’t replicate on their own it’s debatable whether they’re actually alive, or just life-like particles that move through the environment replicating themselves and wreaking havoc on populations of organisms (the SARS-CoV-2 virus, and the COVID-19 disease that it causes, are a perfect example). While we tend to think of viruses as attacking animals and plants, there are viruses that target bacterial and archaea as well and these viruses may be important for shaping microbiomes.</p>
 <p>This molecular approach to inferring evolutionary relationships has also led to a fascinating view of our own origin. One feature that differentiates the eukaryotic cell from bacterial and archaeal cells is that eukaryotic cells contain membrane-bound organelles. Membrane-bound organelles are structures inside of a cell that contain their own membrane, and serve as compartments which separate what is happening inside the organelle from what is happening outside the organelle. The majority of a eukaryotic cell’s DNA is contained inside of a membrane-bound organelle called the nucleus, and cellular functions related to DNA replication (for reproduction) or DNA transcription (the initial reading of the DNA to create molecular machines) happen in the nucleus. This likely serves the purpose of protecting the DNA and maintaining an environment that is always conducive to DNA replication and transcription so these functions can be quickly initiated.</p>
 <p>Eukaryotic cells have other membrane-bound organelles in addition to the nucleus. Two interesting ones are the mitochondria and chloroplast. These organelles actually have some of their own DNA in them, distinct from the nuclear DNA (or the DNA found in the nucleus). When molecular phylogenetics became part of the evolutionary toolkit, researchers sequenced the DNA from these organelles and found that their closest relatives (based on the distance to other known DNA sequences) were bacteria! The mitochondria was most closely related to a group of bacteria called proteobacteria, and the chloroplast was most closely related to the photosynthesizing cyanobacteria. Given the similarities of the eukaryotic cell to archaeal cells (for example, structures in the cell membrane), our current hypothesis is that eukaryotes like us evolved when an archaeal cell engulfed a bacterial cell, and the two formed a lasting symbiotic relationship.</p>
 </div>
 <div class="section" id="studying-microbiomes">
-<h2><span class="section-number">3.5. </span>Studying microbiomes<a class="headerlink" href="#studying-microbiomes" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.5. </span>Studying microbiomes<a class="headerlink" href="#studying-microbiomes" title="Permalink to this headline">¶</a></h2>
 <p>As a side effect of this molecular phylogenetics approach, we began to build up reference databases that linked names of organisms to the sequence of fragments of their genomes. In the mid-1980s, Norman Pace and colleagues came up with a new way to use this information that paved the way for our current understanding of microbiomes <span id="id5">[<a class="reference internal" href="#id12"><span>PSLO86</span></a>]</span>. They collected samples from the environment, isolated DNA from those samples, then isolated their “marker gene” of interest from that DNA, and sequenced it. This would give them lists of DNA sequences that were observed in a given environment. They could compare those sequences against known sequences in the reference databases, and end up with lists of which microbes were present in which sample. This became the basis of comparing samples based on their taxonomic composition, and was a major catalyst in the field of microbiome science. Now it was possible to take a sample, say from the soil, or the human gut, or a hot spring in Yellowstone National Park, and know what microbes lived in that environment without having to grow those microbes in the lab. The DNA sequences that were isolated also allowed researchers to determine which organisms were present without having to observe them through a microscope or how they reacted to a chemical you added to their environment. The era of culture-independent investigation of communities of microbes had arrived.</p>
 <p>Partial genome sequencing is now a very popular approach for studying microbiomes. This comes in a few different flavors. Currently the most common and cost effective approach is marker gene profiling, also referred to as metabarcoding, (other synonymous terms). In this approach a gene which is present in all of the targeted organisms, but which differs across those organisms due to mutations, is isolated from all of the microbial cells in a sample and sequenced. This typically results in tens of thousands of sequences of that gene per sample, and the variants that are observed are used as genetic fingerprints of the organisms that are present in that sample. This approach is applied to generate descriptions of the taxonomic composition of samples, or which organisms are present in what relative abundances across a set of samples. For example, a marker gene profile of an individual’s gut microbiome may tell us that its composition is 50% Proteobacteria, 35% Firmicutes, and 15% Bacteroidetes (three different types of bacteria). It doesn’t tell us how many individual organisms of each type are present though, which presents some challenges with interpreting these data. The process of isolating the marker gene can also introduce biases, such that some organisms are more likely to be observed than others, even if both are present in a sample.</p>
 <p>Another approach for applying partial genome sequencing to study microbiomes is shotgun metagenomic profiling. In this approach, all of the DNA collected from a sample is targeted for sequencing, rather than just a single marker gene. This provides some benefits and drawbacks relative to marker gene profiling. First, it enables not only a view of the taxonomic composition of a sample, but also a view of what genes are present in the environment. This is important, because very closely related microbes (even of the same species) can have very different genes in their genomes, which can in turn impact how they function. For example, the presence of a single gene can impact whether organisms of the species E. coli are harmless or pathogenic. This information often won’t be clear from a marker gene survey, but may be clear from a profile of the functional composition of a sample derived by sequencing its metagenome. However, a lot more DNA sequence data must be collected in a shotgun metagenomic survey than in a marker gene survey, since the former aims to profile all of the genes from all of the organisms in a sample, and the latter aims to profile one gene from all of the organisms in a sample. This makes shotgun metagenomics much more expensive than marker gene profiling.</p>
 <p>We’ll revisit the pros and cons of these approaches, and discuss microbial taxonomy and evaluating the taxonomic and functional composition of samples, in the other chapters.</p>
 </div>
 <div class="section" id="microbiome-multi-omics">
-<h2><span class="section-number">3.6. </span>Microbiome multi-omics<a class="headerlink" href="#microbiome-multi-omics" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6. </span>Microbiome multi-omics<a class="headerlink" href="#microbiome-multi-omics" title="Permalink to this headline">¶</a></h2>
 <p>As of this writing, many studies are trying to combine marker gene sequencing and shotgun metagenomics to balance their pros and cons. For example, marker gene profiling may be applied to all samples in a study, while shotgun metagenomic profiling is reserved for a few of the samples that are determined to be most interesting based on the marker gene profiles. Other studies may try to use shotgun metagenomic sequencing of a few samples as a way to generate detailed reference data that is then used in combination with marker gene data from all of the samples to try to approximate the information that would be gained by shotgun metagenomic profiling of all of the samples.</p>
 <p>We are also beginning to integrate other types of data with DNA sequencing-based profiles of microbiomes. For example, mass spectrometry is now being applied to profile the small molecules and/or proteins in samples, generating metabolomics and/or proteomics views of a community. These provide insight into the chemcial environment of microbiomes, or on what proteins are present. Sequencing of mRNA molecules in metatranscriptomics surveys provides a view of what transcripts are present, providing a view into what genes are active in a microbiome. These approaches try to provide additional information on top of which microbes are present in an environment: specifically, they aim to profile the activity of microbiomes.</p>
 <p>While QIIME began as a marker gene analysis pipeline, we are expanding to support analysis of shotgun metagenomics, metatranscriptomics, metaproteomics, and metabolomics. This is supported in large part by researchers around the world developing plugins for QIIME 2 - a topic that is covered in Part 3 of this book. Importantly, as these new technologies become available they tend to not replace earlier ones but to complement them. Culturing and microscopy are still important technologies for studying microbes and microorganisms. As we develop new tools, they expand our toolkit and allow us to learn more about the microbial world at a quicker pace than we could before.</p>
 </div>
 <div class="section" id="list-of-works-cited">
-<h2><span class="section-number">3.7. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.7. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
 <p id="id6"><dl class="citation">
 <dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id2">dKGC02</a></span></dt>
 <dd><p>Paul de Kruif and F Gonzalez-Crussi. <em>Microbe Hunters</em>. Mariner Books, first edition edition, October 2002.</p>
@@ -469,8 +479,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="biological-information.html" title="previous page"><span class="section-number">2. </span>Appendix: Biological Information</a>
-    <a class='right-next' id="next-link" href="q2-origin-story.html" title="next page"><span class="section-number">4. </span>Appendix: History of the QIIME platform</a>
+    <a class='left-prev' id="prev-link" href="advanced-metadata-formatting.html" title="previous page"><span class="section-number">3. </span>Appendix: Advanced metadata formatting</a>
+    <a class='right-next' id="next-link" href="q2-origin-story.html" title="next page"><span class="section-number">5. </span>Appendix: History of the QIIME platform</a>
 
         </div>
         

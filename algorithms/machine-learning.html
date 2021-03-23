@@ -1,0 +1,932 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3. Machine learning in bioinformatics &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Getting started with developing with QIIME 2" href="../developing/getting-started.html" />
+    <link rel="prev" title="2. Sequence homology searching" href="database-searching.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/preface.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Front Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/reading.html">
+   1. Reading this book
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/overview-tutorial.html">
+   2. An interactive overview of QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/importing.html">
+   4. Importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/demultiplexing.html">
+   5. Demultiplexing a sequencing run
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/denoising.html">
+   6. Denoising demultiplexed sequencing data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/taxonomy.html">
+   7. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pairwise-alignment.html">
+   1. Pairwise sequence alignment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="database-searching.html">
+   2. Sequence homology searching
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/importing-examples.html">
+   1. Appendix: Examples illustrating importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/biological-information.html">
+   2. Appendix: Biological Information
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/advanced-metadata-formatting.html">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/microbiome-methods.html">
+   4. Appendix: A brief introduction to methods in microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   5. Appendix: History of the QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   6. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        <a class="dropdown-buttons"
+            href="../_sources/algorithms/machine-learning.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/algorithms/machine-learning.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/algorithms/machine-learning.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#supervised-classification-with-naive-bayes">
+   3.1. Supervised classification with Naive Bayes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-a-classification-problem">
+     3.1.1. Defining a classification problem
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naive-bayes-classifiers">
+     3.1.2. Naive Bayes classifiers
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-a-native-bayes-classifier">
+     3.1.3. Training a Native Bayes classifier
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-a-native-bayes-classifier">
+     3.1.4. Applying a Native Bayes classifier
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
+     3.1.5. Evaluating our confidence in the results of the Naive Bayes classifier
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dimensionality-reduction">
+   3.2. Dimensionality reduction
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="machine-learning-in-bioinformatics">
+<h1><span class="section-number">3. </span>Machine learning in bioinformatics<a class="headerlink" href="#machine-learning-in-bioinformatics" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we’ll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set.</p>
+<p>Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Probably the most commonly used in bioinformatics are supervised classification and dimensionality reduction, and we’ll experiment with both in this chapter.</p>
+<p>In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, <em>healthy</em> and <em>disease</em>), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn’t known ahead of time, in attempt to predict the class from the features.</p>
+<p>Dimensionality reduction tasks, on the other hand, generally don’t have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you’d like to start trying some of these tools out, scikit-learn is a great place to start.</p>
+</div>
+</div>
+<div class="section" id="supervised-classification-with-naive-bayes">
+<h2><span class="section-number">3.1. </span>Supervised classification with Naive Bayes<a class="headerlink" href="#supervised-classification-with-naive-bayes" title="Permalink to this headline">¶</a></h2>
+<p>The first algorithm that we’ll look at in this chapter is called <em>Naive Bayes</em>, and it is a <strong>supervised classification</strong> algorithm.  We’ll implement Naive Bayes to gain an understanding of how it works, and I think you’ll discover that this idea of machines learning isn’t quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it’s a good place to get started.</p>
+<div class="section" id="defining-a-classification-problem">
+<h3><span class="section-number">3.1.1. </span>Defining a classification problem<a class="headerlink" href="#defining-a-classification-problem" title="Permalink to this headline">¶</a></h3>
+<p>We’ll explore machine learning classifiers in the context of a now familiar topic: taxonomic classification of 16S rRNA sequences. We previously explored this problem in <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>, so it’s worth spending a few minutes skimming that chapter if it’s not fresh in your mind.</p>
+<p>Briefly, the problem that we are going to address here is as follows. We have a query sequence (<span class="math notranslate nohighlight">\(q_i\)</span>) which is not taxonomically annotated (meaning we don’t know the taxonomy of the organism whose genome it is found in), and a reference database (<span class="math notranslate nohighlight">\(R\)</span>) of taxonomically annotated sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, r_n\)</span>). We want to infer a taxonomic annotation for <span class="math notranslate nohighlight">\(q_i\)</span>. We’ll again work with <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a>, a 16S rRNA sequence database, which we’ll access using <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. (This should all sound very familiar - if not, I again suggest that you review <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>.)</p>
+<p>In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. A classic example of this outside of bioinformatics is an email spam filter. For every email that is received, the spam filter must define it as spam or not spam so the message can directed either to the user’s spam folder or the user’s inbox. The stakes can be high: a filter that is too permissive will cause the user’s inbox to get filled with junk mail, while a filter that is overly restrictive could cause relevant messages to be directed to the spam folder. In either case, the email user could miss important messages.</p>
+<p>In the case of taxonomic assignment, our classes will be taxonomic groups at a user-defined taxonomic level. For example, a phylum classifier for 16S rRNA sequences would take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.</p>
+</div>
+<div class="section" id="naive-bayes-classifiers">
+<h3><span class="section-number">3.1.2. </span>Naive Bayes classifiers<a class="headerlink" href="#naive-bayes-classifiers" title="Permalink to this headline">¶</a></h3>
+<p>Naive Bayes classifiers work by building a model of what different classes look like based on labeled data that the user provides as input. In the case of taxonomic assignment of 16S sequences, the classes are different microbial taxonomy names at a given taxonomic level. For example, Proteobacteria and Cyanobacteria would be two classes if we were building a classifier for bacterial phyla. The data that is provided would be the 16S sequences associated with different representatives of the classes, but more specifically Naive Bayes needs these sequences broken into finer-grained features for it to work well. Features of sequences could be nearly anything, such as sequence length, presence or absence of certain sequence patterns (or motifs), GC content, and so on. The most commonly used features for sequence classification tasks such as this is <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">overlapping kmers</span></a>, which we have previously seen when looking at heuristic algorithms for database searching.</p>
+<p>In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we’ll train classifiers by building <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">kmer</span></a>-based models of the 16S sequences of taxa in our reference database. We’ll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown.</p>
+<p>We’ll begin by <a class="reference internal" href="database-searching.html#load-qdr"><span class="std std-ref">preparing our reference database and query sequences as we did previously</span></a>.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell performs some configuration for this notebook. It&#39;s hidden by</span>
+<span class="c1"># default because it&#39;s not relevant to the content of this chapter. You&#39;ll</span>
+<span class="c1"># occasionally notice that I hide this type of information so it&#39;s not </span>
+<span class="c1"># distracting.</span>
+
+<span class="o">%</span><span class="k">pylab</span> inline
+<span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
+<span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">skbio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">random</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Populating the interactive namespace from numpy and matplotlib
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime_default_reference</span> <span class="k">as</span> <span class="nn">qdr</span>
+<span class="kn">import</span> <span class="nn">skbio</span>
+
+<span class="k">def</span> <span class="nf">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># Load the taxonomic data</span>
+    <span class="n">reference_taxonomy</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_taxonomy</span><span class="p">()):</span>
+        <span class="n">seq_id</span><span class="p">,</span> <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">seq_tax</span>
+
+    <span class="c1"># Load the reference sequences, and associate the taxonomic annotation with</span>
+    <span class="c1"># each as metadata</span>
+    <span class="n">reference_db</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+            <span class="c1"># For the purpose of this lesson, we&#39;re going to ignore sequences that contain</span>
+            <span class="c1"># degenerate characters (i.e., characters other than A, C, G, or T)</span>
+            <span class="k">continue</span>
+        <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+        <span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">seq_tax</span>
+        <span class="n">reference_db</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> sequences were loaded from the reference database.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_taxonomy</span><span class="p">,</span> <span class="n">reference_db</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>88452 sequences were loaded from the reference database.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Recall that we can look reference sequences up as follows, and that reference sequences have taxonomic annotations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
+-----------------------------------------------------------------------
+Metadata:
+    &#39;description&#39;: &#39;&#39;
+    &#39;id&#39;: &#39;1111883&#39;
+    &#39;taxonomy&#39;: &#39;k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__;
+                 g__; s__&#39;
+Stats:
+    length: 1428
+    has gaps: False
+    has degenerates: False
+    has definites: True
+    GC-content: 61.90%
+-----------------------------------------------------------------------
+0    GCTGGCGGCG TGCCTAACAC ATGTAAGTCG AACGGGACTG GGGGCAACTC CAGTTCAGTG
+60   GCAGACGGGT GCGTAACACG TGAGCAACTT GTCCGACGGC GGGGGATAGC CGGCCCAACG
+...
+1320 GCCGCGGTGA ATACGTTCCC GGGCCTTGTA CACACCGCCC GTCACGCCAT GGAAGCCGGA
+1380 GGGACCCGAA ACCGGTGGGC CAACCGCAAG GGGGCAGCCG TCTAAGGT
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll again select a random subset of the reference database to work with here to get our analyses moving quickly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reference_db</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">reference_db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> sequences are present in the subsampled database.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">reference_db</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5000 sequences are present in the subsampled database.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="training-a-native-bayes-classifier">
+<h3><span class="section-number">3.1.3. </span>Training a Native Bayes classifier<a class="headerlink" href="#training-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<p>The first thing our Naive Bayes classifier will need is the set of all possible words of length <code class="docutils literal notranslate"><span class="pre">k</span></code>. This will be dependent on the value of <code class="docutils literal notranslate"><span class="pre">k</span></code> and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as <code class="docutils literal notranslate"><span class="pre">W</span></code>, and can be computed as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphabet</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">nondegenerate_chars</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">compute_W</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">k</span><span class="p">)))</span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="n">compute_W</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Alphabet contains the characters: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alphabet</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;For an alphabet size of </span><span class="si">%d</span><span class="s1">, W contains </span><span class="si">%d</span><span class="s1"> length-</span><span class="si">%d</span><span class="s1"> kmers.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">alphabet</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">),</span> <span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, A, T, G
+For an alphabet size of 4, W contains 16 length-2 kmers.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 7-mers are there? How many 7-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?</p>
+</div>
+<p>The next thing we’ll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code> sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmers</span> <span class="o">=</span> <span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iter_kmers</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">kmer</span> <span class="ow">in</span> <span class="n">kmers</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">kmer</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG GA AG GT TT TT TG GA AT TC CC CT TG GG GC CT TC CA AG GG GA AT TG GA AA AC CG GC CT TA AG GC CG GG GC CA AG GG GC CC CT TA AA AT TA AC CA AT TG GC CA AA AG GT TC CG GA AG GG GG GA AG GA AG GA AT TT TC CG GG GT TG GC CT TT TG GC CA AC CT TG GA AA AT TG GG GA AA AA AC CC CG GG GC CG GA AA AC CG GG GG GT TG GC CG GT TA AA AC CA AC CG GT TA AT TG GC CA AA AT TC CT TA AC CC CT TA AT TA AA AC CT TA AA AG GG GG GA AT TA AG GC CC CC CG GG GA AG GA AA AA AT TC CC CG GG GA AT TT TA AA AT TA AC CC CT TT TA AT TA AA AC CA AT TC CT TC CG GA AA AG GT TG GG GC CA AT TC CA AC CT TA AT TG GA AG GA AT TT TA AA AA AG GC CT TC CC CG GG GC CG GG GT TT TA AT TA AG GA AT TG GA AG GC CA AT TG GC CG GG GC CC CC CA AT TT TA AG GT TT TT TG GT TT TG GG GT TG GA AG GG GT TA AA AC CG GG GC CT TC CA AC CC CA AA AG GA AC CT TA AC CG GA AT TG GG GG GT TA AG GG GG GG GG GT TC CT TG GA AG GA AG GG GA AT TG GA AT TC CC CC CC CC CA AC CA AC CT TG GG GT TA AC CC CG GA AG GA AC CA AC CG GG GA AC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TA AG GG GG GA AA AT TA AT TT TG GG GT TC CA AA AT TG GG GA AC CG GA AA AA AG GT TC CT TG GA AA AC CC CA AG GC CC CA AT TG GC CC CG GC CG GT TG GC CA AG GG GA AT TG GA AA AT TG GC CC CC CT TC CT TG GG GG GT TT TG GT TA AA AA AC CT TG GC CT TT TT TT TA AT TA AT TA AG GG GA AA AG GA AA AA AC CC CT TC CT TC CT TA AC CG GT TG GT TA AG GA AG GA AG GC CT TG GA AC CG GG GT TA AC CT TA AT TA AC CG GA AA AT TA AA AG GG GA AC CC CG GG GC CT TA AA AC CT TC CC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GG GA AG GG GG GT TC CC CA AA AG GC CG GT TT TG GT TC CC CG GG GA AT TT TT TA AT TT TG GG GG GT TT TT TA AA AA AG GG GG GT TA AC CG GC CA AG GG GC CG GG GG GA AT TA AT TT TA AA AG GT TC CA AG GT TG GG GT TG GA AA AA AG GC CC CT TA AC CA AG GC CT TC CA AA AC CT TG GT TA AG GA AA AT TT TG GC CC CA AT TT TG GA AA AA AC CT TG GA AT TA AT TT TC CT TT TG GA AG GT TA AT TG GG GA AT TG GA AG GG GT TG GG GT TT TG GG GA AA AT TA AT TA AT TC CA AT TG GT 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TA AG GC CG GG GT TG GA AA AA AT TG GC CT TT TA AG GA AT TA AT TG GA AT TA AT TA AG GA AA AC CA AC CC CA AA AT TT TG GC CG GA AA AG GG GC CA AG GA AT TC CA AC CT TA AA AA AC CC CA AT TT TA AC CT TG GA AC CG GC CT TC CA AT TG GT TA AC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CG GA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CG GT TA AA AA AC CG GA AT TG GT TT TC CA AC CT TC CG GC CT TG GT TT TG GG GC CG GA AT TA AT TA AC CT TG GT TC CA AG GC CG GG GC CC CA AA AG GC CG GA AA AA AG GC CA AT TT TA AA AG GT TG GA AA AC CC CA AC CC CT TG GG GG GG GA AG GT TA AC CG GA AT TC CG GC CA AA AG GG GT TT TG GA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GG GC CC CC CG GC CA AC CA AA AG GC CG GG GT TG GG GA AG GC CA AT TG GT TG GG GA AT TT TA AA AT TT TC CG GA AT TG GA AT TA AC CG GC CG GA AG GG GA AA AC CC CT TT TA AC CC CT TG GG GG GC CT TT TA AA AA AT TG GG GA AA AT TC CG GG GA AT TT TG GT TC CG GC CC CG GA AA AA AG GG GT TG GT TC CG GT TT TC CT TT TT TT TT TA AG GA AC CT TG GA AT TT TT TC CA AA AG GG GT TG GC CT TG GC CA AT TG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GC CC CG GT TG GA AG GG GT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CC CT TT TT TC CT TT TT TA AG GT TT TG GC CC CA AG GC CA AC CG GT TA AA AT TG GG GT TG GG GG GG GA AC CT TC CT TA AA AA AG GA AT TA AC CT TG GC CC CT TA AC CG GT TA AA AG GT TA AG GT TG GA AG GG GA AA AG GG GT TA AG GG GG GA AC CG GA AC CG GT TC CA AA AG GT TC CA AT TC CA AT TG GG GC CC CC CT TT TA AC CG GT TC CC CA AG GG GG GC CT TT TC CA AC CA AC CG GT TG GC CT TA AC CA AA AT TG GG GT TA AG GA AT TA AC CA AA AA AG GA AG GC CA AG GC CC CA AC CT TC CC CG GC CG GA AG GG GA AG GG GA AG GC CG GA AA AT TC CT TC CA AA AA AA AA AG GT TC CT TA AT TC CT TC CA AG GT TT TC CG GG GA AT TC CG GG GA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TC CC CG GT TG GA AA AG GC CT TG GG GA AA AT TC CG GC CT TA AG 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GT TA AA AT TC CG GC CG GT TA AT TC CA AG GC CA AA AT TG GA AC CG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GC CC CT TT TG GT 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AA AG GC CC CA AT TG GG GA AA AG GT TT TG GG GG GA AG GA AA AC CC CT TA AA AA AG GT TC CG GA AT TA AA AC CC CG GC CA AA AG GG GA AG GT TC 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CG GC CC CT TA AG GG GG GT TT TA AG GA AC CC CA AA AT TG GA AC CT TG GG GG GG GC CT TA AA AG GT TC CG GT TA AA AC CA AA AG GG GT TA AA AC CC 
+</pre></div>
+</div>
+</div>
+</div>
+<p>That’s a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AG&#39;: 111, &#39;GA&#39;: 116, &#39;GT&#39;: 95, &#39;TT&#39;: 64, &#39;TG&#39;: 99, &#39;AT&#39;: 94, &#39;TC&#39;: 70, &#39;CC&#39;: 73, &#39;CT&#39;: 77, &#39;GG&#39;: 124, &#39;GC&#39;: 91, &#39;CA&#39;: 80, &#39;AA&#39;: 113, &#39;AC&#39;: 89, &#39;CG&#39;: 92, &#39;TA&#39;: 97}
+</pre></div>
+</div>
+</div>
+</div>
+<p>This information can be convenient to store in a pandas <code class="docutils literal notranslate"><span class="pre">Series</span></code> object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG    111
+GA    116
+GT     95
+TT     64
+TG     99
+AT     94
+TC     70
+CC     73
+CT     77
+GG    124
+GC     91
+CA     80
+AA    113
+AC     89
+CG     92
+TA     97
+Name: 309683, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Let’s start classifying at the phylum level to keep our task simple, since we’re working with a small subset of the reference database here. In Greengenes, phylum is the second level of the taxonomy.</p>
+<p>Next, how long should our kmers be? We don’t have a good idea of this to start with. The longer our kmers, the more likely they are to be specific to certain taxa, which is good because that will help with classification. However, if they get too long it becomes less likely that we’ll observe those kmers in sequences that aren’t represented in our database because the longer the sequence is the more likely we are to see variation across other organisms that are assigned to the same taxonomy. Based on some of my own work in this area, I’ll start us out with 7-mers (i.e., kmers of length 7).</p>
+<p>Finally, we’ll need to know the value of <code class="docutils literal notranslate"><span class="pre">W</span></code>, defined above as the set of all possible kmers given our alphabet and the value of <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p>
+<div class="cell docutils container" id="ml-define-nb-parameters">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxonomic_level</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">alphabet</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">nondegenerate_chars</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we’ll compute a table of the per-sequence kmer counts for all kmers in <code class="docutils literal notranslate"><span class="pre">W</span></code> for all sequences in our reference database. We’ll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, and then view the first 25 rows of that table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute all kmers for the specified alphabet</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">compute_W</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="c1"># Define a function that returns the taxonomy at a specified level given</span>
+<span class="c1"># a semi-colon separated taxonomic description.</span>
+<span class="c1"># For example, providing &#39;k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__&#39;</span>
+<span class="c1"># as input will return &#39;k__Bacteria; p__Gemmatimonadetes&#39; as output.</span>
+<span class="k">def</span> <span class="nf">get_taxon_at_level</span><span class="p">(</span><span class="n">taxon</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="n">taxon</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">taxon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">taxon</span><span class="p">[:</span><span class="n">level</span><span class="p">])</span>
+
+<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">taxon</span><span class="p">))</span>
+
+<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
+<span class="c1"># display the first 25 rows of that table.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">per_sequence_kmer_counts</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this information, we’ll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:</p>
+<p><span class="math notranslate nohighlight">\(N\)</span> : The total number of sequences in the training set (i.e., our reference database).</p>
+<p><span class="math notranslate nohighlight">\(W\)</span>: The set of all possible kmers, given <span class="math notranslate nohighlight">\(k\)</span> and an alphabet.</p>
+<p><span class="math notranslate nohighlight">\(w_i\)</span>: An individual kmer in <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(n(w_i)\)</span> : The number of total sequences containing <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(P_i\)</span> : The probability of observing <span class="math notranslate nohighlight">\(w_i\)</span>. Initially it might seem as though this would be computed as <span class="math notranslate nohighlight">\(n(w_i) / N\)</span>, but this neglects the possibility that a kmer observed in a query sequence might not be represented in our reference database (i.e., <span class="math notranslate nohighlight">\(n(w_i) = 0\)</span>), which would create problems later, when we’re assigning probabilities to each class for query sequences. As a result, 0.5 is added to the numerator and 1 is added to the denominator. When we alter counts in this way, we refer to the values that we’re adding as <strong>pseudocounts</strong>.</p>
+<p><span class="math notranslate nohighlight">\(P(w_i | taxon)\)</span> : The probability of observing a kmer given a taxon. Again, it would seem that this would be computed as the proportion of sequences in the taxon containing the kmer, but this would neglect that we’ll likely observe kmers in our query sequences that are not represented in our reference database. A pseudocount is therefore added again to the numerator and denominator. This time the pseudocount in the numerator is scaled by how frequent the kmer is in the reference database as a whole: specifically, it is <span class="math notranslate nohighlight">\(P_i\)</span>.</p>
+<p>Our “kmer probability table” is <span class="math notranslate nohighlight">\(P(w_i | taxon)\)</span> computed for all kmers in W and all taxa represented in our reference database. We’ll compute that and again look at the first 25 rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_kmer_probability_table</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span> <span class="c1"># number of training sequences</span>
+
+    <span class="c1"># number of sequences containing kmer wi</span>
+    <span class="n">n_wi</span> <span class="o">=</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">n_wi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;n(w_i)&#39;</span>
+
+    <span class="c1"># probabilities of observing each kmer</span>
+    <span class="n">Pi</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_wi</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Pi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;P_i&#39;</span>
+
+    <span class="c1"># number of times each taxon appears in training set</span>
+    <span class="n">taxon_counts</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">n_taxon_members_containing_kmer</span> <span class="o">=</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="c1"># probabilities of observing each kmer in each taxon</span>
+    <span class="n">p_wi_t</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">taxon</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">taxon_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">p_wi_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">((</span><span class="n">n_taxon_members_containing_kmer</span><span class="p">[</span><span class="n">taxon</span><span class="p">]</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">taxon</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">p_wi_t</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_probability_table</span> <span class="o">=</span> <span class="n">compute_kmer_probability_table</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span>
+<span class="n">kmer_probability_table</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.</p>
+</div>
+<div class="section" id="applying-a-native-bayes-classifier">
+<h3><span class="section-number">3.1.4. </span>Applying a Native Bayes classifier<a class="headerlink" href="#applying-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<p>With our kmer probability table we are now ready to classify unknown sequences. We’ll begin by defining some query sequences. We’ll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won’t be. We’ll also trim out 200 bases of our reference sequences since (as of this writing) we typically don’t obtain full-length 16S sequences from a DNA sequencing instrument. We’re thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we’ve observed before while others might represent previously unobserved sequences (or even previously unknown organisms).</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_taxonomy_query_sequences</span><span class="p">(</span><span class="n">start_position</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+            <span class="c1"># For the purpose of this lesson, we&#39;re going to ignore sequences that contain</span>
+            <span class="c1"># degenerate characters (i.e., characters other than A, C, G, or T)</span>
+            <span class="k">continue</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">start_position</span><span class="p">:</span><span class="n">start_position</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span>
+        <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">queries</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll load a collection of query sequences as we did in <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">queries</span> <span class="o">=</span> <span class="n">load_taxonomy_query_sequences</span><span class="p">()</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we can index into these results to look at individual sequences. Note that because we’re trying to emulate working with unannotated sequences here, the query sequences don’t have taxonomic annotations in their metadata.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For a given query sequence, its taxonomy will be classified as follows. First, the set of all kmers will be extracted from the sequence. This is referred to as <span class="math notranslate nohighlight">\(V\)</span>. Then, for all taxa in the kmer probability table, the probability of observing the query sequence will be computed given that taxon: <span class="math notranslate nohighlight">\(P(query | taxon)\)</span>. This is computed as the product of all its kmer probabilities for the given taxon. (It should be clear based on this formula why it was necessary to add pseudocounts when computing our kmer probability table - if not, kmer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.)</p>
+<p>After computing <span class="math notranslate nohighlight">\(P(query | taxon)\)</span> for all taxa, the taxonomy assignment returned is simply the one achieving the maximum probability. Here we’ll classify a sequence and look at the resulting taxonomy assignment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This function classifies a sequence that has already been split into a list</span>
+<span class="c1"># of kmers.</span>
+<span class="k">def</span> <span class="nf">classify_V</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">):</span>
+    <span class="n">P_S_t</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># probability of the sequence given the taxon</span>
+    <span class="k">for</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">kmer_probability_table</span><span class="p">:</span>
+        <span class="n">kmer_probabilities</span> <span class="o">=</span> <span class="n">kmer_probability_table</span><span class="p">[</span><span class="n">taxon</span><span class="p">]</span>
+        <span class="n">probability</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">for</span> <span class="n">v_i</span> <span class="ow">in</span> <span class="n">V</span><span class="p">:</span>
+            <span class="n">probability</span> <span class="o">*=</span> <span class="n">kmer_probabilities</span><span class="p">[</span><span class="n">v_i</span><span class="p">]</span>
+        <span class="n">P_S_t</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">probability</span><span class="p">,</span> <span class="n">taxon</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">P_S_t</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">V</span>
+
+<span class="c1"># This function is a little more convenient to use. It classifies a sequence </span>
+<span class="c1"># directly, first by computing V, and then by calling classify_V.</span>
+<span class="k">def</span> <span class="nf">classify_sequence</span><span class="p">(</span><span class="n">query_sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">query_sequence</span><span class="o">.</span><span class="n">iter_kmers</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">classify_V</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">taxon_assignment</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Try classifying a few other query sequences and determining if the returned class was correct. You can do this by changing which entry in <code class="docutils literal notranslate"><span class="pre">queries</span></code> you’re assigning to the value <code class="docutils literal notranslate"><span class="pre">query</span></code>. Keep track of how many times the classifier returned the correct assignment.</p>
+</div>
+</div>
+<div class="section" id="evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
+<h3><span class="section-number">3.1.5. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<p>Because the query and reference sequences that were working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. Chances are however that if you run the above steps multiple times you’ll get the wrong taxonomy assignment at least some of the time. Up to this point, we’ve left out an important piece of information: how confident should we be in our assignment, or in other words, how dependent is our taxonomy assignment on our specific query? If there were slight differences in our query (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because we sequenced a different region of the 16S sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is additionally important because our classifier will <em>always</em> return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.</p>
+<p>We can quantify confidence using an approach called bootstrapping. With a bootstrap approach, we’ll get our taxonomy assignment as we did above, but then for some user-specified number of times, we’ll create random subsets of V sampled with replacement. We’ll then assign taxonomy to each random subset of V, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to V. The count of times that they are the same divided by the number of iterations we’ve chosen to run will be our confidence value. If the assignments are often the same we’ll have a high confidence value. If the assignments are often different, we’ll have a low confidence value.</p>
+<p>Let’s now assign taxonomy and compute a confidence for that assignment.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span>
+                                      <span class="n">confidence_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># classify the query sequence, as we did above</span>
+    <span class="n">taxon</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+    <span class="n">count_same_taxon</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Define the size of each subsample as 10% of the actual number of</span>
+    <span class="c1"># kmers in the query sequence.</span>
+    <span class="n">subsample_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">V</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="c1"># Perform n iterations (where n is provided by the user as </span>
+    <span class="c1"># confidence_iterations) where a random subset of the query sequence&#39;s</span>
+    <span class="c1"># kmers are used for the classification task.</span>
+    <span class="c1"># Keep track of the number of times the observed result is the same as</span>
+    <span class="c1"># that for the query sequence. </span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">confidence_iterations</span><span class="p">):</span>
+        <span class="n">subsample_V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">subsample_size</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">subsample_taxon</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">classify_V</span><span class="p">(</span><span class="n">subsample_V</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxon</span> <span class="o">==</span> <span class="n">subsample_taxon</span><span class="p">:</span>
+            <span class="n">count_same_taxon</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">count_same_taxon</span> <span class="o">/</span> <span class="n">confidence_iterations</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">taxon</span><span class="p">,</span> <span class="n">confidence</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">queries</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">taxon_assignment</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>How did the computed confidence compare to the accuracy taxonomy assignment?</p>
+<p>At first glance, we don’t necessarily have an idea of what good versus bad confidence scores are, but we can use our reference database to explore that. Knowing that can allows us to develop a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we might reject it. To explore this, let’s compute taxonomy assignments and confidence for all of our query sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correct_assignment_confidences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">incorrect_assignment_confidences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">:</span>
+    <span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">actual_taxonomy</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_taxonomy</span><span class="p">[</span><span class="n">query</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">actual_taxonomy</span> <span class="o">==</span> <span class="n">predicted_taxonomy</span><span class="p">:</span>
+        <span class="n">correct_assignment_confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">incorrect_assignment_confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
+
+    <span class="n">summary</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">actual_taxonomy</span><span class="p">,</span> <span class="n">confidence</span><span class="p">])</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Predicted taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;Actual taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;Confidence&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">correct_assignment_confidences</span><span class="p">,</span> <span class="n">incorrect_assignment_confidences</span><span class="p">])</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">correct_assignment_confidences</span><span class="p">,</span> <span class="n">incorrect_assignment_confidences</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Correct assignments&#39;</span><span class="p">,</span> <span class="s1">&#39;Incorrect assignments&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Confidence&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Jump back up to where we <a class="reference internal" href="#ml-define-nb-parameters"><span class="std std-ref">defined <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code></span></a> and modify those values. How does the accuracy of the classifier change if you increase or decrease <code class="docutils literal notranslate"><span class="pre">k</span></code> while keeping the value of <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> fixed? How does the accuracy change if you increase or decrease the <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> while keeping <code class="docutils literal notranslate"><span class="pre">k</span></code> fixed?</p>
+</div>
+</div>
+</div>
+<div class="section" id="dimensionality-reduction">
+<h2><span class="section-number">3.2. </span>Dimensionality reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./algorithms"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="database-searching.html" title="previous page"><span class="section-number">2. </span>Sequence homology searching</a>
+    <a class='right-next' id="next-link" href="../developing/getting-started.html" title="next page"><span class="section-number">1. </span>Getting started with developing with QIIME 2</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020-2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-KZHV37SG3H', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    
+  </body>
+</html>
