@@ -69,6 +69,7 @@ When our reference database starts getting hundreds of millions of bases long (a
 
 While we'll be aligning nucleotide sequences in this chapter, the same concepts apply to protein homology searching.
 
+(load-qdr)=
 ## Loading annotated sequences 
 
 ````{margin}
@@ -548,6 +549,7 @@ for q_id in data.index:
 
 Try increasing and decreasing the number of sequences we'll align by increasing or decreasing ``database_subset_size``. How does this impact the runtime and fraction of time that we get the correct answer?
 
+(kmer)=
 #### kmer content 
 
 Another metric of sequence composition is *kmer composition*. A kmer is simply a word (or list of adjacent characters) of length *k* found within a sequence. Here are the kmer frequencies in a short DNA sequence. The ``overlap=True`` parameter here means that our kmers can overlap one another.

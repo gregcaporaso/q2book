@@ -20,6 +20,7 @@
   chapters: 
   - file: algorithms/pairwise-alignment
   - file: algorithms/database-searching
+  - file: algorithms/machine-learning
 
 - part: Developing with QIIME 2
   chapters: 
@@ -30,6 +31,7 @@
   chapters:
   - file: back-matter/importing-examples
   - file: back-matter/biological-information
+  - file: back-matter/advanced-metadata-formatting
   - file: back-matter/microbiome-methods
   - file: back-matter/q2-origin-story
   - file: back-matter/glossary
