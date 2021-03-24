@@ -457,8 +457,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 <span class="c1"># distracting.</span>
 
 <span class="o">%</span><span class="k">pylab</span> inline
-<span class="kn">from</span> <span class="nn">IPython.core</span> <span class="kn">import</span> <span class="n">page</span>
-<span class="n">page</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="nb">print</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">skbio</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -583,7 +582,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: G, C, T, A
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, G, A, T
 For an alphabet size of 4, W contains 16 length-2 kmers.
 </pre></div>
 </div>
@@ -603,7 +602,10 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG GA AG GT TT TT TG GA AT TC CC CT TG GG GC CT TC CA AG GG GA AT TG GA AA AC CG GC CT TG GG GC CG GG GC CG GT TT TC CC CT TA AA AC CA AC CA AT TG GC CA AA AG GT TC CG GA AA AC CG GA AA AG GC CG GC CA AT TG GC CC CT TG GG GA AA AC CC CC CT TC CC CG GG GG GG GG GG GA AA AG GG GG GC CA AT TA AT TG GA AC CT TG GA AG GT TG GG GC CG GG GA AC CG GG GG GT TG GA AG GT TA AA AC CG GC CG GT TG GG GG GC CA AA AC CC CT TG GC CC CC CC CG GC CA AT TT TG GG GG GG GG GA AC CA AA AC CA AG GC CC CG GG GA AA AA AC CG GG GC CT TG GC CT TA AA AT TA AC CC CG GC CA AT TA AT TG GC CG GC CA AC CA AG GC CT TT TT TG GC CA AT TG GA AA AG GC CA AG GT TG GT TG GG GA AA AA AA AC CT TC CC CG GG GT TG GG GT TG GC CG GG GG GA AT TG GG GG GC CC CC CG GC CG GT TC CT TG GA AT TT TA AG GC CT TG GG GT TT TG GG GC CG GG GG GG GC CA AA AC CG GG GC CC CC CA AC CC CA AA AG GG GC CG GA AC CG GA AT TC CA AG GT TA AG GC CC CG GG GC CC CT TG GA AG GA AG GG GG GT TG GG GA AC CG GG GC CC CA AC CA AT TT TG GG GG GA AC CT TG GA AG GA AC CA AC CG GG GC CC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TG GG GG GG GG GA AT TA AT TT TG GC CA AC CA AA AT TG GG GG GG GG GG GA AA AC CC CC CT TG GA AT TG GC CA AG GC CG GA AC CG GC CC CG GC CG GT TG GA AG GC CG GA AA AG GA AA AG GT TA AC CC CT TC CG GG GT TA AT TG GT TA AA AA AG GC CT TC CT TA AT TC CA AG GC CA AG GG GG GA AA AG GA AA AA AA AT TG GA AC CG GG GT TA AC CC CT TG GA AC CT TA AA AG GA AA AG GC CC CC CC CG GG GC CT TA AA AA AT TA AC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GT TA AT TG GG GG GG GC CA AA AG GC CG GT TT TA AT TC CC CG GG GA AT TT TT TA AC CT TG GG GG GT TG GT TA AA AA AG GG GG GA AG GC CG GC CA AG GG GC CG GG GC CC CT TG GC CC CA AA AG GT TC CT TG GG GT TG GT TG GA AA AA AA AC CC CC CG GG GG GG GC CC CC CA AA AC CC CC CC CG GG GG GC CC CT TG GC CA AT TT TG GG GA AA AA AC CT TG GG GC CG GG GG GC CT TG GG GA AG GT TG GT TC CG GG GA AG GG GG GG GC CA AG GG GC CG GG GA AA AT TT TC CC CT TA AG GT TG GT TA AG GC CG GG GT TG GA AA AA AT TG GC CG GT TA AG GA AT TA AT TT TA AG GG GA AG GG GA AA AC CA AC CC CA AG GT TG GG GG GC CG GA AA AG GG GC CG GG GC CT TT TA AC CT TG GG GA AC CG GG GT TA AA AC CT TG GA AC CG GC CT TG GA AG GG GC CT TC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CG GT TA AA AA AC CG GA AT TG GA AA AT TA AC CT TA AG GG GT TG GT TC CG GG GG GG GC CA AC CA AA AC CG GT TG GC CT TT TC CG GG GT TG GC CC CG GC CA AG GC CA AA AA AC CG GC CA AT TT TA AA AG GT TA AT TT TC CC CA AC CC CT TG GG GG GG GA AG GT TA AC CG GT TT TC CG GC CA AA AG GA AA AT TG GA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GA AC CC CC CG GC CA AC CA AA AG GC CG GG GT TG GG GA AG GC CA AT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AA AG GC CA AA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CA AG GT TC CC CT TT TG GA AC CA AT TC CC CT TG GC CT TG GG GC CA AG GC CC CC CC CG GT TA AA AC CG GG GG GG GG GA AA AT TT TC CC CT TT TT TG GG GG GA AC CA AG GC CA AG GA AG GA AC CA AG GG GT TG GG GT TG GC CA AT TG GG GT TT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CC CT TA AT TT TG GC CC CA AG GT TA AA AC CC CA AG GC CA AT TT TT TC CG GG GA AT TG GG GG GG GA AC CT TC CT TG GG GT TG GA AG GA AC CT TG GC CC CG GG GG GG GA AT TA AA AC CC CC CG GG GA AG GG GA AA AG GG GT TG GG GG GG GA AC CG GA AC CG GT TC CA AA AA AT TC CA AT TC CA AT TG GC CC CC CC CT TT TA AT TG GG GG GC CT TG GG GG GC CT TA AC CA AC CA AC CG GT TG GC CT TA AC CA AA AT TG GG GT TG GC CT TG GA AC CA AG GA AG GT TG GA AG GG GC CG GA AA AC CC CT TG GC CG GA AA AG GG GG GG GA AG GC CA AA AA AG GC CA AC CA AA AA AA AA AA AG GG GC CA AT TC CT TC CA AG GT TT TC CG GG GA AT TT TG GT TA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TA AC CA AT TG GA AA AG GC CT TG GG GA AA AT TC CG GC CT TA AG GT TA AA AT TC CG GC CA AG GA AT TC CA AG GA AA AT TG GC CC CG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GT TC CT TT TG GC CA AC CT TC CA AC CC CG GC CC CC CG GT TC CA 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CG GA AA AC CG GA AA AG GA AG GC CT TT TG GT TA AG GC CA AA AT TA AC CG GG GG GC CT TC CT TT TA AG GT TG GG GC CG GA AA AT TG GG GG GT TG GC CG GT TA AA AC CA AC CG GT TA AG GG GT TG GA AC CC CT TG GC CC CC CC CG GA AA AG GT TG GG GG GG GG GA AT TA AA AC CA AG GT TT TC CG GA AA AA AG GA AA AC CT TG GC CT TA AA AT TA AC CC CG GC CA AT TG GT TG GG GT TC CC CC CG GA AG GA AG GT TC CA AG GA AG GG GT TC CT TC CG GG GG GT TC CT TA AA AA AG GC CA AG GT TA AA AT TG GC CG GC CT TT TC CG GG GG GA AG GG GG GG GC CC CT TG GC CG GG GT TC CC CA AT TC CA AG GC CT TA AG GT TT TG GG GT TA AG GG GG GT TA AA AT TG GG GC CC CT TA AC CC CA AA AG GG GC CG GA AC CG GA AC CG GG GA AT TA AG GG GG GG GA AC CC CT TG GA AG GA AG GG GG GT TG GA AC CC CC CC CC CC CA AC CA AC CT TG GG GC CA AC CT TG GA AA AA AC CA AC CG GG GG GC CC CA AG GA AC CG GC CC CT TA AC CG GG GG GT TG GG GC CA AG GC CA AG GT TA AA AG GG GA AA AT TA AT TT TG GC CT TC CA AA AT TG GG GG GC CG GA AA AA AG GC CC CT TG GA AA AG GC CA AG GC CA AA AC CG GC CC CG GC CG GT TG GC CG GC CG GA AT TG GA AA AG GG GC CC CT TT TC CG GG GG GT TC CG GT TA AA AA AG GC CG GC CT TT TT TT TC CG GG GG GG GA AG GA AT TG GA AG GG GA AA AG GG GA AC CA AG GT TA AT TC CC CC CC CG GG GA AA AT TA AA AG GG GT TA AC CG GG GC CT TA AA AC CT TA AC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AA AA AC CG GT TA AG GG GT TA AC CC CA AA AG GC CG GT TT TA AT TC CC CG GG GA AT TT TC CA AC CT TG GG GG GC CG GT TC CA AA AG GC CG GC CG GT TG GC CA AG GG GT TG GG GT TC CA AG GG GT TA AA AG GT TC CG GG GG GC CA AT TG GA AA AA AA AC CT TC CT TT TG GG GC CT TC CA AA AC CT TG GA AG GA AG GA AA AG GC CT TG GT TC CC CG GA AT TA AC CT TG GT TC CG GG GA AC CT TT TG GA AG GG GA AC CA AT TG GA AG GA AG GG GG GA AG GG GT TG GG GA AA AT TT TC CC CG GC CG GT TG GT TA AG GT TG GG GT TG GA AA AA AT TG GC CG GT TA AG GA AT TA AT TG GC CG GG GA AG GG GA AA AC CA AC CC CA AG GT TG GG GC CG GA AA AG GG GC CG GG GC CC CT TC CC CT TG GG GC CA AT TG GC CT TC CC CT TG GA AC CA AC CT TC CA AG GA AC CG GC CG GA AA AA AG GC CT TA AG GG GG GG GA AG GC CG GA AA AC CG GG GG GA AT TT TA AG GA AA AA AC CC CC CC CG GG GT TA AG GT TC CC CT TA AG GC CC CG GT TA AA AA AC CG GA AT TG GA AT TT TA AC CT TA AG GG GT TG GT TT TA AG GT TG GG GT TA AT TC CA AA AG GC CC CC CA AC CT TA AG GT TG GC CC CG GA AA AG GC CT TA AA AC CG GC CG GA AT TA AA AG GT TA AA AT TC CC CG GC CC CT TG GG GG GG GA AC CT TA AC CG GA AT 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TC CG GC CA AA AG GA AT TT TA AA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GG GC CC CC CG GC CA AC CA AA AG GC CA AG GC CG GG GA AG GC CG GT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AG GG GC CT TA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CC CA AG GG GA AT TT TG GA AC CA AT TG GT TA AG GG GT TA AG GT TA AG GG GA AA AA AG GC CG GA AA AA AG GC CG GG GC CC CC CG GA AT TC CC CT TT TC CG GG GG GA AA AG GC CC CT TA AC CA AC CA AG GG GT TG GA AT TG GC CA AT TG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GC CC CG GT TG GA AG GG GT TG GT TT TT TG GG GT TT TA AA AG GT TC CC CA AG GT TA AA AC CG GA AG GC CG GC CA AA AC CC CC CT TT TG GG GG GG GC CC CA AG GT TT TA AC CA AT TG GT TG GT TC CT TG GG GC CC CC CG GA AC CT TG GC CC CG GG GT TC CT TT TA AA AG GC CC CG GG GA AG GG GA AA AG GG GC CG GG GG GG GA AT TG GA AC CG GT TC CA AA AG GT TC CA AG GC CA AT TG GT TC CC CT TT TT TA AT TA AT TC CT TG GG GG GG GC CT TA AC CA AC CA AC CA AC CG GC CT TA AC CA AA AT TG GG GG GT TA AG GT TA AC CA AA AT TG GG GG GT TT TG GC CC CA AA AC CC CC CG GC CG GA AG GG GG GG GG GA AG GC CC CA AA AT TC CC CT TA AA AA AA AA AG GC CT TA AT TC CC CT TC CA AG GT TT TC CA AG GA AT TT TG GC CA AG GG GC CT TG GC CA AA AC CT TC CG GC CC CT TG GC CA AT TG GA AA AG GT TC CG GG GA AA AT TT TG GC CT TA AG GT TA AA AA AC CG GC CA AG GG GA AC CA AG GC CT TA AT TA AC CT TG GC CG GT TT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GC CC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AC CG GT TC CA AT TG GG GG GA AG GC CT TG GA AT TA AA AC CA AC CC CT TG GA AA AG GC CC CG GG GT TG GG GC CC CT TA AA AC CC CG GC 
 </pre></div>
 </div>
 </div>
@@ -616,7 +618,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AG&#39;: 94, &#39;GA&#39;: 101, &#39;GT&#39;: 80, &#39;TT&#39;: 42, &#39;TG&#39;: 105, &#39;AT&#39;: 63, &#39;TC&#39;: 49, &#39;CC&#39;: 84, &#39;CT&#39;: 66, &#39;GG&#39;: 162, &#39;GC&#39;: 117, &#39;CA&#39;: 87, &#39;AA&#39;: 100, &#39;AC&#39;: 86, &#39;CG&#39;: 99, &#39;TA&#39;: 55}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;CG&#39;: 98, &#39;GA&#39;: 95, &#39;AA&#39;: 99, &#39;AC&#39;: 79, &#39;AG&#39;: 108, &#39;GC&#39;: 108, &#39;CT&#39;: 70, &#39;TT&#39;: 41, &#39;TG&#39;: 87, &#39;GT&#39;: 90, &#39;TA&#39;: 75, &#39;CA&#39;: 74, &#39;AT&#39;: 57, &#39;GG&#39;: 135, &#39;TC&#39;: 55, &#39;CC&#39;: 81}
 </pre></div>
 </div>
 </div>
@@ -629,23 +631,23 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG     94
-GA    101
-GT     80
-TT     42
-TG    105
-AT     63
-TC     49
-CC     84
-CT     66
-GG    162
-GC    117
-CA     87
-AA    100
-AC     86
-CG     99
-TA     55
-Name: 346648, dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CG     98
+GA     95
+AA     99
+AC     79
+AG    108
+GC    108
+CT     70
+TT     41
+TG     87
+GT     90
+TA     75
+CA     74
+AT     57
+GG    135
+TC     55
+CC     81
+Name: 559629, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -655,7 +657,7 @@ Name: 346648, dtype: int64
 <p>Finally, we’ll need to know the value of <code class="docutils literal notranslate"><span class="pre">W</span></code>, defined above as the set of all possible kmers given our alphabet and the value of <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p>
 <div class="cell docutils container" id="ml-define-nb-parameters">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxonomic_level</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxonomic_level</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
 <span class="n">alphabet</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">nondegenerate_chars</span>
 </pre></div>
@@ -895,6 +897,8 @@ Name: 346648, dtype: int64
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">correct_assignment_confidences</span><span class="p">,</span> <span class="n">incorrect_assignment_confidences</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Correct assignments&#39;</span><span class="p">,</span> <span class="s1">&#39;Incorrect assignments&#39;</span><span class="p">])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Confidence&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span>
 </pre></div>
 </div>
 </div>
