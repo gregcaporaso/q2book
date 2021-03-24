@@ -122,8 +122,7 @@ We'll begin by {ref}`preparing our reference database and query sequences as we 
 # distracting.
 
 %pylab inline
-from IPython.core import page
-page.page = print
+
 import pandas as pd
 import skbio
 import numpy as np
@@ -228,7 +227,7 @@ Finally, we'll need to know the value of `W`, defined above as the set of all po
 
 (ml:define-nb-parameters)=
 ```{code-cell}
-taxonomic_level = 1
+taxonomic_level = 2
 k = 7
 alphabet = skbio.DNA.nondegenerate_chars
 ```
@@ -450,6 +449,8 @@ ax = sns.boxplot(data=[correct_assignment_confidences, incorrect_assignment_conf
 ax = sns.swarmplot(data=[correct_assignment_confidences, incorrect_assignment_confidences], color="black")
 _ = ax.set_xticklabels(['Correct assignments', 'Incorrect assignments'])
 _ = ax.set_ylabel('Confidence')
+
+ax
 ```
 
 What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
