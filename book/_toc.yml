@@ -9,12 +9,14 @@
 - part: Microbiome Bioinformatics with QIIME 2
   chapters:
   - file: using/getting-started
-  - file: using/overview-tutorial
+  - file: using/interactive-introduction
   - file: using/metadata
   - file: using/importing
   - file: using/demultiplexing
   - file: using/denoising
   - file: using/taxonomy
+  - file: using/alpha-diversity
+  - file: using/beta-diversity
 
 - part: Understanding the algorithms
   chapters: 

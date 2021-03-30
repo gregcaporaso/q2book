@@ -28,7 +28,7 @@ parse:
 
 
 execute:
-  timeout: 120
+  timeout: 240
   execute_notebooks: force # set to cache, pending https://github.com/executablebooks/jupyter-book/issues/1239
   run_in_temp: true
 
