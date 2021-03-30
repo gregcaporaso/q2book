@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>8. Alpha diversity &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9. Beta diversity" href="beta-diversity.html" />
+    <link rel="prev" title="7. Taxonomic annotation and analysis of sequences" href="taxonomy.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/preface.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Front Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/reading.html">
+   1. Reading this book
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="interactive-introduction.html">
+   2. An interactive introduction to QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="importing.html">
+   4. Importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="demultiplexing.html">
+   5. Demultiplexing a sequencing run
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="denoising.html">
+   6. Denoising demultiplexed sequencing data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="taxonomy.html">
+   7. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   8. Alpha diversity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="beta-diversity.html">
+   9. Beta diversity
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/pairwise-alignment.html">
+   1. Pairwise sequence alignment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/database-searching.html">
+   2. Sequence homology searching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/machine-learning.html">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/importing-examples.html">
+   1. Appendix: Examples illustrating importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/biological-information.html">
+   2. Appendix: Biological Information
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/advanced-metadata-formatting.html">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/microbiome-methods.html">
+   4. Appendix: A brief introduction to methods in microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   5. Appendix: History of the QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   6. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/using/alpha-diversity.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#measure-of-microbiome-richness">
+   8.1. Measure of microbiome richness
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#observed-features">
+     8.1.1. Observed features
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-limitation-of-feature-counting">
+       8.1.1.1. A limitation of feature counting
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#phylogenetic-diversity-pd">
+     8.1.2. Phylogenetic Diversity (PD)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#even-sampling">
+     8.1.3. Even sampling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rarefaction">
+     8.1.4. Rarefaction
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       8.1.4.1. Even sampling
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#alpha-rarefaction">
+       8.1.4.2. Alpha rarefaction
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="alpha-diversity">
+<span id="id1"></span><h1><span class="section-number">8. </span>Alpha diversity<a class="headerlink" href="#alpha-diversity" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we’ll begin to explore metrics of microbiome diversity. We’ll start with metrics of <strong>alpha diversity</strong>, which are measures of “within-sample” diversity. The way I typically think of these is as metrics that can be computed on a single sample.</p>
+<p>The first sub-category of alpha diversity metric that we’ll look at will be <em>richness</em>. Richness refers to how many different types of organisms are present in a sample. For example, if we’re interested in species richness of plants in the Sonoran Desert and the Costa Rican rainforest, we could go to each, count the number of different species of plants that we observe, and have a basic measure of species richness in each environment.</p>
+<div class="admonition-jargon-type-of-organism admonition">
+<p class="admonition-title">Jargon: “type of organism”</p>
+<p>As defined earlier, a “type of organism” or a “type of microbe” is an arbitrary taxonomic grouping, such as genus, species, strain, or even an amplicon sequence variant.</p>
+</div>
+<p>The next sub-cateogry of alpha diversity metric that we’ll discuss in this chapter will be <em>evenness</em>. Evenness tells us how consistent the distribution of species abundances are in a given environment. If, for example, the most abundant plant in the Sonoran desert was roughly as common as the least abundant plant (not the case!), we would say that the evenness of plant species was high. On the other hand, if the most abundant plant was thousands of times more common than the least common plant (probably closer to the truth), then we’d say that the evenness of plant species was low.</p>
+<div class="section" id="measure-of-microbiome-richness">
+<h2><span class="section-number">8.1. </span>Measure of microbiome richness<a class="headerlink" href="#measure-of-microbiome-richness" title="Permalink to this headline">¶</a></h2>
+<p>We’ll begin by looking at two measures of community richness. Both of these are commonly used in practice.</p>
+<div class="section" id="observed-features">
+<h3><span class="section-number">8.1.1. </span>Observed features<a class="headerlink" href="#observed-features" title="Permalink to this headline">¶</a></h3>
+<p>Observed features is a very simple metric that can be used to quantify microbiome diversity. With this metric, we simply count the features that are observed in a given sample. A feature is considered to have been observed in a sample if it has a frequency of greater than zero. This is a <strong>qualitative</strong> diversity metric meaning that each feature is treated as being either observed or not observed. This metric doesn’t consider how many times a feature was observed.</p>
+<p>Let’s define a feature table for this analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B1&#39;</span><span class="p">,</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span><span class="s1">&#39;B3&#39;</span><span class="p">,</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span><span class="s1">&#39;B5&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;E2&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">feature_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span>
+<span class="go">    A  B  C</span>
+<span class="go">B1  1  1  5</span>
+<span class="go">B2  1  2  0</span>
+<span class="go">B3  3  1  0</span>
+<span class="go">B4  0  2  0</span>
+<span class="go">B5  0  0  0</span>
+<span class="go">A1  0  0  3</span>
+<span class="go">E2  0  0  1</span>
+</pre></div>
+</div>
+<p>Our sample <span class="math notranslate nohighlight">\(A\)</span> has an observed feature frequency value of 3, sample <span class="math notranslate nohighlight">\(B\)</span> has an observed feature frequency of 4, and sample <span class="math notranslate nohighlight">\(C\)</span> has an observed feature frequency of 3. Note that this is different than the total counts for each column (which would be 5, 6, and 9 respectively). Based on the observed features metric, we could consider samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span> to have even feature richness, and sample <span class="math notranslate nohighlight">\(B\)</span> to have 33% higher feature richness.</p>
+<p>We could compute this in python as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">observed_features</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">e</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">sample_id</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="section" id="a-limitation-of-feature-counting">
+<h4><span class="section-number">8.1.1.1. </span>A limitation of feature counting<a class="headerlink" href="#a-limitation-of-feature-counting" title="Permalink to this headline">¶</a></h4>
+<p>Imagine that we have the same table, but some additional information about the features in the table. Specifically, we’ve computed the following phylogenetic tree. And, for the sake of illustration, imagine that we’ve also assigned taxonomy to each of the features and found that our samples contain representatives from the archaea, bacteria, and eukaryotes (their labels begin with <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">E</span></code>, respectively).</p>
+<p>First, let’s define a phylogenetic tree using the Newick format (which is described <a class="reference external" href="http://evolution.genetics.washington.edu/phylip/newicktree.html">here</a>, and more formally defined <a class="reference external" href="http://evolution.genetics.washington.edu/phylip/newick_doc.html">here</a>). We’ll then load that up using <a class="reference external" href="http://scikit-bio.org">scikit-bio</a>’s <a class="reference external" href="http://scikit-bio.org/generated/skbio.core.tree.TreeNode.html#skbio.core.tree.TreeNode">TreeNode</a> object, and visualize it with <a class="reference external" href="http://etetoolkit.org">ete3</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ete3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">TreeStyle</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">show_leaf_name</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">branch_vertical_margin</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">show_branch_length</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newick_tree</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,&#39;</span>
+<span class="gp">... </span>                       <span class="s1">&#39;((A1:0.2,A2:0.3):0.3,&#39;</span>
+<span class="gp">... </span>                       <span class="s1">&#39; (E1:0.3,E2:0.4):0.7):0.55);&#39;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.tree</span> <span class="kn">import</span> <span class="n">TreeNode</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">newick_tree</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">root_at_midpoint</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">from_skbio</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">map_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%</span><span class="s2">inline&quot;</span><span class="p">,</span> <span class="n">tree_style</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+<span class="go">&lt;IPython.core.display.Image object&gt;</span>
+</pre></div>
+</div>
+<p>Pairing this with the table we defined above (displayed again in the cell below), given what you now know about these features, which would you consider the most diverse? Are you happy with the <span class="math notranslate nohighlight">\(\alpha\)</span> diversity conclusion that you obtained when computing the number of observed features in each sample?</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span>
+<span class="go">    A  B  C</span>
+<span class="go">B1  1  1  5</span>
+<span class="go">B2  1  2  0</span>
+<span class="go">B3  3  1  0</span>
+<span class="go">B4  0  2  0</span>
+<span class="go">B5  0  0  0</span>
+<span class="go">A1  0  0  3</span>
+<span class="go">E2  0  0  1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="phylogenetic-diversity-pd">
+<h3><span class="section-number">8.1.2. </span>Phylogenetic Diversity (PD)<a class="headerlink" href="#phylogenetic-diversity-pd" title="Permalink to this headline">¶</a></h3>
+<p>Phylogenetic Diversity (PD) is a metric that was developed by Dan Faith in the early 1990s (find the original paper <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/0006320792912013">here</a>). Like many of the measures that are used in microbial community ecology, it wasn’t initially designed for studying microbial communities, but rather communities of “macro-organisms” (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, while some don’t translate as well. (For an illustration of the effect of sequencing error on PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1 of <a class="reference external" href="http://www.nature.com/nmeth/journal/v7/n9/full/nmeth0910-668b.html">Reeder and Knight (2010)</a>).</p>
+<p>PD is relatively simple to calculate. It is computed simply as the sum of the branch length in a phylogenetic tree that is “covered” or represented in a given sample. Let’s look at an example to see how this works.</p>
+<p>I’ll now define a couple of functions that we’ll use to compute PD.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">observed_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs_id</span> <span class="k">for</span> <span class="n">obs_id</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">index</span>
+<span class="gp">... </span>                <span class="k">if</span> <span class="n">table</span><span class="p">[</span><span class="n">sample_id</span><span class="p">][</span><span class="n">obs_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">observed_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="c1"># iterate over the observed features</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">observed_features</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">t</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">internal_node</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">ancestors</span><span class="p">():</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">internal_node</span><span class="o">.</span><span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="c1"># we&#39;ve hit the root</span>
+<span class="gp">... </span>                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+<span class="gp">... </span>                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">internal_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">:</span>
+<span class="gp">... </span>                    <span class="nb">print</span><span class="p">(</span><span class="n">internal_node</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="gp">... </span>                <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">internal_node</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">observed_nodes</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">observed_nodes</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>And then apply those to compute the PD of our three samples. For each computation, we’re also printing out the branch lengths of the branches that are observed <em>for the first time</em> when looking at a given feature. When computing PD, we include the length of each branch only one time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_A</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_A</span><span class="p">)</span>
+<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
+<span class="go">B2 0.3 </span>
+<span class="go">B3 0.5 0.2 0.3 </span>
+<span class="go">2.0250000000000004</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_B</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_B</span><span class="p">)</span>
+<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
+<span class="go">B2 0.3 </span>
+<span class="go">B3 0.5 0.2 0.3 </span>
+<span class="go">B4 0.3 </span>
+<span class="go">2.325</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_C</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_C</span><span class="p">)</span>
+<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
+<span class="go">A1 0.2 0.3 0.32499999999999996 </span>
+<span class="go">E2 0.4 0.7 </span>
+<span class="go">2.65</span>
+</pre></div>
+</div>
+<p>How does this result compare to what we observed above with the Observed features metric? Based on your knowledge of biology, which do you think is a better representation of the relative diversities of these samples?</p>
+</div>
+<div class="section" id="even-sampling">
+<h3><span class="section-number">8.1.3. </span>Even sampling<a class="headerlink" href="#even-sampling" title="Permalink to this headline">¶</a></h3>
+<p>Imagine again that we’re going out to count plants in the Sonoran Desert and the Costa Rican rainforest. We’re interested in getting an idea of the plant richness in each environment. In the Sonoran Desert, we survey a square kilometer area, and count 150 species of plants. In the rainforest, we survey a square meter, and count 15 species of plants. So, clearly the plant species richness in the Sonoran Desert is higher, right? What’s wrong with this comparison?</p>
+<p>The problem is that we’ve expended a lot more sampling effort in the desert than we did in the rainforest, so it shouldn’t be surprising that we observed more species there. If we expended the same effort in the rainforest, we’d probably observe a lot more than 15 or 150 plant species, and we’d have a more sound comparison.</p>
+<p>In sequencing-based studies of microorganism richness, the analog of sampling area is sequencing depth. If we collect 100 sequences from one sample, and 10,000 sequences from another sample, we can’t directly compare the number of observed features or the phylogenetic diversity of these because we expended a lot more sampling effort on the sample with 10,000 sequences than on the sample with 100 sequences. The way this is typically handled is by randomly subsampling sequences from the sample with more sequences until the sequencing depth is equal to that in the sample with fewer sequences. If we randomly select 100 sequences at random from the sample with 10,000 sequences, and compute the alpha diversity based on that random subsample, we’ll have a better idea of the relative alpha diversities of the two samples.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;feature1&#39;</span><span class="p">,</span> <span class="s1">&#39;feature2&#39;</span><span class="p">,</span> <span class="s1">&#39;feature3&#39;</span><span class="p">,</span> <span class="s1">&#39;feature4&#39;</span><span class="p">,</span> <span class="s1">&#39;feature5&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bad_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">feature_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bad_table</span>
+<span class="go">        A    B  C</span>
+<span class="go">feature1   50    4  0</span>
+<span class="go">feature2   35  200  0</span>
+<span class="go">feature3  100    2  1</span>
+<span class="go">feature4   15  400  1</span>
+<span class="go">feature5    0   40  1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bad_table</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="go">A    200</span>
+<span class="go">B    646</span>
+<span class="go">C      3</span>
+<span class="go">dtype: int64</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rarefaction">
+<h3><span class="section-number">8.1.4. </span>Rarefaction<a class="headerlink" href="#rarefaction" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4><span class="section-number">8.1.4.1. </span>Even sampling<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="alpha-rarefaction">
+<h4><span class="section-number">8.1.4.2. </span>Alpha rarefaction<a class="headerlink" href="#alpha-rarefaction" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./using"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="taxonomy.html" title="previous page"><span class="section-number">7. </span>Taxonomic annotation and analysis of sequences</a>
+    <a class='right-next' id="next-link" href="beta-diversity.html" title="next page"><span class="section-number">9. </span>Beta diversity</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020-2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-KZHV37SG3H', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    
+  </body>
+</html>

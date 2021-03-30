@@ -1,4 +1,19 @@
-# An interactive overview of QIIME 2
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: calysto_bash
+  language: calysto_bash
+  name: calysto_bash
+---
+(interactive-introduction)=
+# An interactive introduction to QIIME 2
 
 In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we're through that, let's jump in and do something quick with QIIME 2. In this chapter I'll present a workflow, which you should follow along with on your computer if possible. In this workflow we'll download some real sequencing data and associated sample metadata, and apply some QIIME 2 methods and visualizers to it to see if it supports a hypothesis about the biological system being studied. The interactive visualizations that we'll build in this chapter are some of the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity of your samples. Before you can apply these steps to your own data, you'll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in {ref}`importing`. 
 
@@ -10,13 +25,14 @@ I have a few hypotheses going into this analysis that we can test when we analyz
 
  * Hypothesis: There will be fewer types of microbes in the hyper-arid samples than in the less arid samples. 
 
-"Type of microbe" is a term that needs to be defined. What I mean by that is an arbitrary taxonomic grouping, such as genus, species, or strain. The data we'll work with in this chapter is 16S rRNA amplicon data. To keep the analysis in this chapter simple, we're not going to assign taxonomy to our amplicon sequences. The unit of taxonomy that we'll work with here is the highest resolution possible for a study based on amplicon data: the _amplicon sequence variant_, or ASV. Each unique 16S rRNA amplicon that we observe in this study will be treated as a different ASV, and thus a different "type of microbe". Due to the limits of resolution in a 16S rRNA amplicon study, this approximates genus or species but does not consistently represent a single named taxonomic level.
+**Type of microbe** is a term that needs to be defined. What I mean by that is an arbitrary taxonomic grouping, such as genus, species, or strain. The data we'll work with in this chapter is 16S rRNA amplicon data. To keep the analysis in this chapter simple, we're not going to assign taxonomy to our amplicon sequences. The unit of taxonomy that we'll work with here is the highest resolution possible for a study based on amplicon data: the _amplicon sequence variant_, or ASV. Each unique 16S rRNA amplicon that we observe in this study will be treated as a different ASV, and thus a different "type of microbe". Due to the limits of resolution in a 16S rRNA amplicon study, this approximates genus or species but does not consistently represent a single named taxonomic level.
 
 ## Downloading the data
 
 We'll begin this interactive overview by downloading a few files to work on. Do this as follows:
 
-```bash
+```{code-cell}
+:tags: [hide-output]
 
 curl -sL \
   "https://data.qiime2.org/2020.11/tutorials/atacama-soils/sample_metadata.tsv" > \
@@ -43,21 +59,23 @@ As mentioned in the previous chapter, QIIME 2 artifacts such as the `demux.qza` 
 
 The first QIIME 2 command that we'll use in this chapter is a visualizer that that is specific to visualizing summaries of demultiplexed sequence data with quality scores. In addition to a summary of the demultiplexing run, it provides information on the quality of sequence data in the form of interactive visualizations. You can run this command as follows:
 
-```
+```{code-cell}
 qiime demux summarize \
   --i-data demux.qza \
   --o-visualization demux.qzv
 ```
 
-This command should run successfully for you. You'll know it did if you see text printed to the terminal saying something like:
+Since this is one of the first QIIME 2 commands that you've run (at least while reading this book) let's take a look at it in some detail. As we look at this command, I'm going to assume that you either have some command line software experience. 
 
+````{margin}
+```{admonition} Video
+[This video](https://youtu.be/vNC-Yi_5Vto) provides a review of interacting with a Linux command line. The span of video between about 6:30-8:00 minutes covers details on connecting to a specific server that we set up for a QIIME 2 workshop using the [Google Chrome Secure Shell App](https://chrome.google.com/webstore/detail/secure-shell-app/pnhechapfaindjhompbnflcldabbghjo?hl=en). If you're connecting to a remote server to access a command line, your connection details will differ from what is presented in that segment of the video. 
 ```
-Saved Visualization to: demux.qzv
-```
+````
 
-Since this is one of the first QIIME 2 commands that you've run (at least while reading this book) let's take a look at it in some detail. As we look at this command, I'm going to assume that you either have some command line software experience, or that you've read _the introductory chapter in this book on using the command line_ (**TODO: this chapter doesn't exist yet.**). There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command's components are separated by spaces. The first space-separated component is `qiime`. This tells your computer that the QIIME 2 program should be run. The second space-separated component is `demux`. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the `q2-demux` plugin. The third space-separated component is `summarize`, which is an action in the q2-demux plugin. This action generates a visual summary of demultiplexed sequence data. As mentioned in the previous chapter, if you'd like to learn about this action, you could run the command `qiime demux summarize --help`, which will print help text to the screen. Finally, the `\` at the end of the line is worth mentioning now. When you're working on the command line, line breaks (i.e., the character that is received when you press the _Return_ key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can sometimes be long, it's helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like you should press the _Return_ key after entering only part of the command. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation and it improves readability. The `\` character here simply means that the terminal shouldn't interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:
+There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command's components are separated by spaces. The first space-separated component is `qiime`. This tells your computer that the QIIME 2 program should be run. The second space-separated component is `demux`. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the `q2-demux` plugin. The third space-separated component is `summarize`, which is an action in the q2-demux plugin. This action generates a visual summary of demultiplexed sequence data. As mentioned in the previous chapter, if you'd like to learn about this action, you could run the command `qiime demux summarize --help`, which will print help text to the screen. Finally, the `\` at the end of the line is worth mentioning now. When you're working on the command line, line breaks (i.e., the character that is received when you press the _Return_ key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can sometimes be long, it's helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like you should press the _Return_ key after entering only part of the command. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation and it improves readability. The `\` character here simply means that the terminal shouldn't interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:
 
-``` 
+```{code-cell}
 qiime demux summarize --i-data demux.qza  --o-visualization demux.qzv
 ```
 
@@ -66,6 +84,9 @@ That command will do the exact same thing as the one above. As our commands get 
 After we specify the program (`qiime`), the plugin (`demux`), and the action (`summarize`) that we want to run, we provide options to that action to tell it what file(s) we want it to operate on and what we want the output(s) to be called. These components of the command are specified on the remaining lines. Let's look at those now. 
 
 This action takes one QIIME 2 artifact as input, the demultiplexed sequences that we downloaded above. In the QIIME 2 command line interface, input artifacts are always specified with options beginning with `--i-`. This command will generate one file as output, and we specify the path (absolute or relative) where we want to store that file with an output option. Output options always begin with `--o-` in the QIIME 2 command line interface. Here I specify that the output created by this command should be called `demux.qzv`. This is a QIIME 2 visualization that will contain the visual summary of our demultiplexed sequence data.
+
+Finally, notice that this command printed some text to the screen when it was run: `Saved Visualization to: demux.qzv`. This indicates that the command ran and completed successfully. If the command did not complete successfully, you'd see an error message printed to the screen instead.
+
 
 ````{margin}
 ```{admonition} Video
@@ -102,7 +123,7 @@ Spend a few minutes exploring this visualization, but don't worry if you don't f
 
 Since our sequence quality generally looks good, let's move on to the next step of our analysis: denoising the sequences (i.e., performing sequence quality control). QIIME 2 has a few options for denoising sequences. Here we'll use the DADA2 denoising approach {cite}`Callahan2016-ga`, which we'll access through the `q2-dada2` plugin. Go ahead and run this command, which may take up to about 10 minutes to complete.
 
-```
+```{code-cell}
 qiime dada2 denoise-single \
   --i-demultiplexed-seqs demux.qza \
   --p-trim-left 13 \
@@ -132,7 +153,7 @@ For programmers, waiting for code to compile is an excuse for a break. For data 
 
 The next visualizer that we'll use is a general purpose visualizer that you should always keep in mind. It's the `tabulate` visualizer in the `q2-metadata` plugin. This command uses the final option that the QIIME 2 command line interface uses: `--m-`, which specifies a metadata-related input. This might not seem very intuitive at the moment, but many QIIME 2 artifacts that provide some information on a per-sample basis can be used as if they are sample metadata. The power of this will become more clear in later chapters. We'll apply this to the log artifact that was generated by `denoise-single` as follows:
 
-```
+```{code-cell}
 qiime metadata tabulate \
   --m-input-file denoising-stats.qza \
   --o-visualization denoising-stats.qzv
@@ -151,7 +172,7 @@ Simplified screenshot of `denoising-stats.qzv`.
 
 Recall that one of the outputs from DADA2 is the ASV sequences. We called this file `asv-sequences.qza` in this example. These sequences may be something that you want to look at, either now (maybe as a sanity check) or at a later stage of the analysis (for example, if you want to learn more about some ASVs that you have become interested in while analyzing your data). The `q2-feature-table` plugin defines a special purpose visualizer for generating a human-readable list of the ASVs. You can apply this as follows:
 
-```
+```{code-cell}
 qiime feature-table tabulate-seqs \
   --i-data asv-sequences.qza \
   --o-visualization asv-sequences.qzv
@@ -176,7 +197,7 @@ Simplified screenshot of `asv-sequences.qzv`.
 
 As mentioned above, the feature table defined by DADA2 contains samples on one axis and ASVs on the other axis. The values in this table describe how many times each ASV was observed in each sample. The `q2-feature-table` plugin defines another special purpose visualizer to allow you to get a summary of this information. This can be run as follows: 
 
-```
+```{code-cell}
 qiime feature-table summarize \
   --i-table asv-table.qza \
   --m-sample-metadata-file sample-metadata.tsv \
@@ -217,10 +238,10 @@ Community richness can be computed with many different metrics. The `alpha-raref
 
 It is important to compute community richness as a function of the number of sequences obtained per sample because in a microbiome survey this represents our sampling effort. An analogy is useful to illustrate this. Imagine a researcher is interested in comparing plant diversity in the [Sonoran Desert (USA)](https://en.wikipedia.org/wiki/Sonoran_Desert) and the [Monte Verde Cloud Forest (Costa Rica)](https://en.wikipedia.org/wiki/Monteverde_Cloud_Forest_Reserve). If they were to attempt to achieve this by counting plant species in a square meter in the forest and a square kilometer in the desert, they might come to the flawed conclusion that the desert had more types of plants than the forest. This would of course be because they expended more effort sampling plants in the desert than in the forest, so had more opportunity to observe different types of plants. In a sequencing survey, the number of sequences obtained per sample often doesn't reflect biological features of the environments being studied, but rather random artifacts of the DNA extraction, PCR, and sequencing workflows. Differences in depth of sequencing therefore similarly represent sampling effort. (An exception to this is in extreme cases, such as the hyper-arid desert samples in this study where there are sometimes too few microbes to detect with standard workflows.) Differences in depth of sequencing need to be controlled for across samples to enable direct comparison. There are a variety of ways to do this that will be covered in later chapters. The simplest approach is referred to as **rarefaction**, and involves defining a sequencing depth and randomly sampling the counts in all samples without replacement to that depth. If a sample has fewer sequences than the defined depth of sequencing, that sample is excluded from the analysis at that depth of sequencing. In a rarefaction plot, multiple depths of sequencing are compared along the x-axis to illustrate change in richness on the y-axis. In the `alpha-rarefaction` visualizer, the minimum depth of sequencing used defaults to `1`. When calling the command, the user specifies the maximum rarefaction depth. I usually choose a round number near the 3rd quartile frequency per sample from the feature table visual summary ({numref}`asv-table-1`). Run this command as follows:
 
-```
+```{code-cell}
 qiime diversity alpha-rarefaction \
-  --i-table feature-table.qza \
-  --p-max-depth 10000 \
+  --i-table asv-table.qza \
+  --p-max-depth 2700 \
   --m-metadata-file sample-metadata.tsv \
   --o-visualization alpha-rarefaction.qzv
 ```
@@ -238,46 +259,46 @@ Note that there are two plots here. The top plot shows the Observed Features met
 
 When I compare the Observed Features across the unvegetated and vegetated sites at about 1000-4000 sequences per sample, I see that there appears to be a clear difference in the number of features observed, with the unvegetated sites having a lower community richness than the vegetated sites. This appears to support the hypothesis that was stated in the beginning of this chapter. 
 
-I can conclude this analysis by running a statistical test to compare these sites. One catch with a statistical test is that, due to current limitations in the available tests, this is typically performed at a single depth of sequencing. Based on the rarefaction plot, I will perform a statistical comparison of community richness across groups at a sequencing depth of 3000. This is because I have retained most of my samples at this stage, and because the difference in community richness appears stable in that region of the rarefaction plot.
+I can conclude this analysis by running a statistical test to compare these sites. One catch with a statistical test is that, due to current limitations in the available tests, this is typically performed at a single depth of sequencing. Based on the rarefaction plot, I will perform a statistical comparison of community richness across groups at a sequencing depth of 1200. This is because I have retained most of my samples at this stage, and because the difference in community richness appears stable in that region of the rarefaction plot.
 
 Three commands are required to run this statistical test. Run these commands now. 
 
-The first rarefies the ASV table to contain exactly 3000 sequences per sample, and discards samples that had fewer than 3000 sequences.
+The first rarefies the ASV table to contain exactly 1200 sequences per sample, and discards samples that had fewer than 1200 sequences.
 
-```
+```{code-cell}
 qiime feature-table rarefy \
   --i-table asv-table.qza \
-  --p-sampling-depth 3000 \
-  --o-rarefied-table asv-table-3000.qza
+  --p-sampling-depth 1200 \
+  --o-rarefied-table asv-table-1200.qza
 ```
 
 The next command computes the _Observed Features_ metric on all samples in the rarefied feature table. 
 
-```
+```{code-cell}
 qiime diversity alpha \
-  --i-table asv-table-3000.qza \
+  --i-table asv-table-1200.qza \
   --p-metric observed_features \
-  --o-alpha-diversity observed-features-3000.qza
+  --o-alpha-diversity observed-features-1200.qza
 ```
 
 The third command performs a Kruskal-Wallis test on the _Observed Features_ values and generates a visual summary of the results.
 
-```
+```{code-cell}
 qiime diversity alpha-group-significance \
-  --i-alpha-diversity observed-features-3000.qza \
+  --i-alpha-diversity observed-features-1200.qza \
   --m-metadata-file sample-metadata.tsv \
-  --o-visualization observed-features-3000.qzv
+  --o-visualization observed-features-1200.qzv
 ```
 
-As is always the case, you can call any of these commands with the `--help` option to learn more about what they do, what default values they use, and how you can change their behavior. Load `observed-features-3000.qzv` with QIIME 2 View. 
+As is always the case, you can call any of these commands with the `--help` option to learn more about what they do, what default values they use, and how you can change their behavior. Load `observed-features-1200.qzv` with QIIME 2 View. 
 
-In the resulting visualization, select _vegetation_ in the _Column_ dropdown box. This will present the _Observed Features_ in the unvegetated versus vegetated sites with a pair of boxplots and a statistical test. Your view should look like {numref}`observed-features-3000-1`. 
+In the resulting visualization, select _vegetation_ in the _Column_ dropdown box. This will present the _Observed Features_ in the unvegetated versus vegetated sites with a pair of boxplots and a statistical test. Your view should look like {numref}`observed-features-1200-1`. 
 
-```{figure} ./images/observed-features-3000-1.png
+```{figure} ./images/observed-features-1200-1.png
 ---
-name: observed-features-3000-1
+name: observed-features-1200-1
 ---
-Simplified screenshot of `observed-features-3000.qzv`.
+Simplified screenshot of `observed-features-1200.qzv`.
 ```
 
 This view confirms what we suspected from our visual comparison of these categories in the alpha rarefaction plot. Based on a Kruskal-Wallis test (a non-parametric test for comparing distributions of values) and the accompanying boxplot we can conclude that the unvegetated site have significantly fewer ASVs than the vegetated sites, supporting the hypothesis presented at the beginning of this chapter. 

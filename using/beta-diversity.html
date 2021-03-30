@@ -1,0 +1,772 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>9. Beta diversity &#8212; q2book</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Pairwise sequence alignment" href="../algorithms/pairwise-alignment.html" />
+    <link rel="prev" title="8. Alpha diversity" href="alpha-diversity.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../index.html">
+  
+  <img src="../_static/logo.png" class="logo" alt="logo">
+  
+  
+  <h1 class="site-logo" id="site-title">q2book</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/preface.html">
+   Preface
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Front Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../front-matter/reading.html">
+   1. Reading this book
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Microbiome Bioinformatics with QIIME 2
+ </span>
+</p>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="getting-started.html">
+   1. Getting started with using QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="interactive-introduction.html">
+   2. An interactive introduction to QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="metadata.html">
+   3. Metadata in QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="importing.html">
+   4. Importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="demultiplexing.html">
+   5. Demultiplexing a sequencing run
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="denoising.html">
+   6. Denoising demultiplexed sequencing data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="taxonomy.html">
+   7. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="alpha-diversity.html">
+   8. Alpha diversity
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   9. Beta diversity
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Understanding the algorithms
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/pairwise-alignment.html">
+   1. Pairwise sequence alignment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/database-searching.html">
+   2. Sequence homology searching
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../algorithms/machine-learning.html">
+   3. Machine learning in bioinformatics
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Developing with QIIME 2
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/getting-started.html">
+   1. Getting started with developing with QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../developing/first-plugin.html">
+   2. Building a first plugin
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent">
+ <span class="caption-text">
+  Back Matter
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/importing-examples.html">
+   1. Appendix: Examples illustrating importing data into QIIME 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/biological-information.html">
+   2. Appendix: Biological Information
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/advanced-metadata-formatting.html">
+   3. Appendix: Advanced metadata formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/microbiome-methods.html">
+   4. Appendix: A brief introduction to methods in microbiome science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/q2-origin-story.html">
+   5. Appendix: History of the QIIME platform
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../back-matter/glossary.html">
+   6. Glossary
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/using/beta-diversity.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i>
+            Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#distance-metrics-link-src-eac92f">
+   9.1. Distance metrics
+   <link src="eac92f"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bray-curtis-link-src-dac934">
+     9.1.1. Bray-Curtis
+     <link src="dac934"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unweighted-unifrac-link-src-2682aa">
+     9.1.2. Unweighted UniFrac
+     <link src="2682aa"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#even-sampling-link-src-200e13">
+     9.1.3. Even sampling
+     <link src="200e13"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpreting-distance-matrices-link-src-2be688">
+   9.2. Interpreting distance matrices
+   <link src="2be688"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#distribution-plots-and-comparisons-link-src-8fcf92">
+     9.2.1. Distribution plots and comparisons
+     <link src="8fcf92"/>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hierarchical-clustering-link-src-09f456">
+     9.2.2. Hierarchical clustering
+     <link src="09f456"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ordination-link-src-b1cdbe">
+   9.3. Ordination
+   <link src="b1cdbe"/>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#polar-ordination-link-src-538e18">
+     9.3.1. Polar ordination
+     <link src="538e18"/>
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="beta-diversity">
+<span id="id1"></span><h1><span class="section-number">9. </span>Beta diversity<a class="headerlink" href="#beta-diversity" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we’ll continue our exploration of metrics of microbiome diversity. We’ll next discuss metrics of <strong>betaa diversity</strong>, which are measures of “between-sample” diversity. I think of these as metrics that are computed based on pairs of samples.</p>
+<p><em>content from IAB follows</em></p>
+<p><em>beta diversity</em>) refers to <strong>between sample diversity</strong>, and is typically used to answer questions of the form: is sample <span class="math notranslate nohighlight">\(A\)</span> more similar in composition to sample <span class="math notranslate nohighlight">\(B\)</span> or sample <span class="math notranslate nohighlight">\(C\)</span>? In this section we’ll explore two (of tens or hundreds) of metrics for computing pairwise dissimilarity of samples to estimate <span class="math notranslate nohighlight">\(\beta\)</span> diversity.</p>
+<div class="section" id="distance-metrics-link-src-eac92f">
+<h2><span class="section-number">9.1. </span>Distance metrics <link src='eac92f'/><a class="headerlink" href="#distance-metrics-link-src-eac92f" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bray-curtis-link-src-dac934">
+<h3><span class="section-number">9.1.1. </span>Bray-Curtis <link src='dac934'/><a class="headerlink" href="#bray-curtis-link-src-dac934" title="Permalink to this headline">¶</a></h3>
+<p>The first metric that we’ll look at is a quantitative non-phylogenetic <span class="math notranslate nohighlight">\(\beta\)</span> diversity metric called Bray-Curtis. The Bray-Curtis dissimilarity between a pair of samples, <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, is defined as follows:</p>
+<p><span class="math notranslate nohighlight">\(BC_{jk} = \frac{ \sum_{i} | X_{ij} - X_{ik}|} {\sum_{i} (X_{ij} + X_{ik})}\)</span></p>
+<p><span class="math notranslate nohighlight">\(i\)</span> : feature (e.g., OTUs)</p>
+<p><span class="math notranslate nohighlight">\(X_{ij}\)</span> : frequency of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(j\)</span></p>
+<p><span class="math notranslate nohighlight">\(X_{ik}\)</span> : frequency of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(k\)</span></p>
+<p>This could be implemented in python as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bray_curtis_distance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample1_id</span><span class="p">,</span> <span class="n">sample2_id</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">numerator</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="n">denominator</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="n">sample1_counts</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">sample1_id</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">sample2_counts</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">sample2_id</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample1_count</span><span class="p">,</span> <span class="n">sample2_count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sample1_counts</span><span class="p">,</span> <span class="n">sample2_counts</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">numerator</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sample1_count</span> <span class="o">-</span> <span class="n">sample2_count</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">denominator</span> <span class="o">+=</span> <span class="n">sample1_count</span> <span class="o">+</span> <span class="n">sample2_count</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table1</span>
+<span class="go">      A  B  C</span>
+<span class="go">OTU1  1  0  0</span>
+<span class="go">OTU2  3  2  0</span>
+<span class="go">OTU3  0  0  6</span>
+<span class="go">OTU4  1  4  2</span>
+<span class="go">OTU5  0  4  1</span>
+</pre></div>
+</div>
+<p>Let’s now apply this to some pairs of samples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="go">0.6</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="go">0.857142857143</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="go">0.684210526316</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="go">0.684210526316</span>
+</pre></div>
+</div>
+<p>Ultimately, we likely want to apply this to all pairs of samples to get a distance matrix containing all pairwise distances. Let’s define a function for that, and then compute all pairwise Bray-Curtis distances between samples <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.stats.distance</span> <span class="kn">import</span> <span class="n">DistanceMatrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">table_to_distances</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pairwise_distance_fn</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span>
+<span class="gp">... </span>    <span class="n">num_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample1_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">sample2_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span>
+<span class="gp">... </span>            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pairwise_distance_fn</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample1_id</span><span class="p">,</span> <span class="n">sample2_id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">DistanceMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bc_dm</span> <span class="o">=</span> <span class="n">table_to_distances</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">bray_curtis_distance</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bc_dm</span><span class="p">)</span>
+<span class="go">3x3 distance matrix</span>
+<span class="go">IDs:</span>
+<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;</span>
+<span class="go">Data:</span>
+<span class="go">[[ 0.          0.6         0.85714286]</span>
+<span class="go"> [ 0.6         0.          0.68421053]</span>
+<span class="go"> [ 0.85714286  0.68421053  0.        ]]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unweighted-unifrac-link-src-2682aa">
+<h3><span class="section-number">9.1.2. </span>Unweighted UniFrac <link src='2682aa'/><a class="headerlink" href="#unweighted-unifrac-link-src-2682aa" title="Permalink to this headline">¶</a></h3>
+<p>Just as phylogenetic alpha diversity metrics can be more informative than non-phylogenetic alpha diversity metrics, phylogenetic beta diversity metrics offer advantages over non-phylogenetic metrics such as Bray-Curtis. The most widely applied phylogenetic beta diversity metric as of this writing is unweighted UniFrac. UniFrac was initially presented in <a class="reference external" href="http://aem.asm.org/content/71/12/8228.abstract">Lozupone and Knight, 2005, Applied and Environmental Microbiology</a>, and has been widely applied in microbial ecology since (and the illustration of UniFrac computation presented below is derived from a similar example originally developed by Lozupone and Knight).</p>
+<p>The unweighted UniFrac distance between a pair of samples <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> is defined as follows:</p>
+<p><span class="math notranslate nohighlight">\(U_{AB} = \frac{unique}{observed}\)</span></p>
+<p>where:</p>
+<p><span class="math notranslate nohighlight">\(unique\)</span> : the unique branch length, or branch length that only leads to OTU(s) observed in sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span></p>
+<p><span class="math notranslate nohighlight">\(observed\)</span> : the total branch length observed in either sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span></p>
+<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.png" align=right/></div>
+<p>To illustrate how UniFrac distances are computed, before we get into actually computing them, let’s look at a few examples. In these examples, imagine that we’re determining the pairwise UniFrac distance between two samples: a red sample, and a blue sample. If a red box appears next to an OTU, that indicates that it’s observed in the red sample; if a blue box appears next to the OTU, that indicates that it’s observed in the blue sample; if a red and blue box appears next to the OTU, that indicates that the OTU is present in both samples; and if no box is presented next to the OTU, that indicates that it’s present in neither sample.</p>
+<p>To compute the UniFrac distance between a pair of samples, we need to know the sum of the branch length that was observed in either sample (the <em>observed</em> branch length), and the sum of the branch length that was observed only in a single sample (the <em>unique</em> branch length). In these examples, we color all of the <em>observed</em> branch length. Branch length that is unique to the red sample is red, branch length that is unique to the blue sample is blue, and branch length that is observed in both samples is purple. Unobserved branch length is black (as is the vertical branches, as those don’t contribute to branch length - they are purely for visual presentation).</p>
+<p>In the tree on the right, all of the OTUs that are observed in either sample are observed in both samples. As a result, all of the observed branch length is purple. The unique branch length in this case is zero, so <strong>we have a UniFrac distance of 0 between the red and blue samples</strong>.</p>
+<hr>
+<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d1.png" align=right/></div>
+<p>On the other end of the spectrum, in the second tree, all of the OTUs in the tree are observed either in the red sample, or in the blue sample. All of the observed branch length in the tree is either red or blue, meaning that if you follow a branch out to the tips, you will observe only red or blue samples. In this case the unique branch length is equal to the observed branch length, so <strong>we have a UniFrac distance of 1 between the red and blue samples</strong>.</p>
+<hr>
+<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.5.png" align=right/></div>
+<p>Finally, most of the time we’re somewhere in the middle. In this tree, some of our branch length is unique, and some is not. For example, OTU 1 is only observed in our red sample, so the terminal branch leading to OTU 1 is red (i.e., unique to the red sample). OTU 2 is only observed in our blue sample, so the terminal branch leading to OTU 2 is blue (i.e., unique to the blue sample). However, the internal branch leading to the node connecting OTU 1 and OTU 2 leads to OTUs observed in both the red and blue samples (i.e., OTU 1 and OTU 2), so is purple (i.e, observed branch length, but not unique branch length). In this case, <strong>we have an intermediate UniFrac distance between the red and blue samples, maybe somewhere around 0.5</strong>.</p>
+<hr>
+<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances.png" align=right/></div>
+<p>Let’s now compute the Unweighted UniFrac distances between some samples. Imagine we have the following tree, paired with our table below (printed below, for quick reference).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table1</span>
+<span class="go">      A  B  C</span>
+<span class="go">OTU1  1  0  0</span>
+<span class="go">OTU2  3  2  0</span>
+<span class="go">OTU3  0  0  6</span>
+<span class="go">OTU4  1  4  2</span>
+<span class="go">OTU5  0  4  1</span>
+</pre></div>
+</div>
+<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances_ab.png" align=right/></div>
+<p>First, let’s compute the unweighted UniFrac distance between samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The <em>unweighted</em> in <em>unweighted UniFrac</em> means that this is a qualitative diversity metric, meaning that we don’t care about the abundances of the OTUs, only whether they are present in a given sample (<span class="math notranslate nohighlight">\(frequency &gt; 0\)</span>) or not present (<span class="math notranslate nohighlight">\(frequency = 0\)</span>).</p>
+<p>Start at the top right branch in the tree, and for each branch, determine if the branch is observed, and if so, if it is also unique. If it is observed then you add its length to your observed branch length. If it is observed and unique, then you also add its length to your unique branch length.</p>
+<p>For samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, I get the following (in the tree on the right, red branches are those observed in <span class="math notranslate nohighlight">\(A\)</span>, blue branches are those observed in <span class="math notranslate nohighlight">\(B\)</span>, and purple are observed in both):</p>
+<p><span class="math notranslate nohighlight">\(unique_{ab} = 0.5 + 0.75 = 1.25\)</span></p>
+<p><span class="math notranslate nohighlight">\(observed_{ab} = 0.5 + 0.5 + 0.5 + 1.0 + 1.25 + 0.75 + 0.75 = 5.25\)</span></p>
+<p><span class="math notranslate nohighlight">\(uu_{ab} = \frac{unique_{ab}}{observed_{ab}} = \frac{1.25}{5.25} = 0.238\)</span></p>
+<p>As an exercise, now compute the UniFrac distances between samples <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span>, and samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span>, using the above table and tree. When I do this, I get the following distance matrix.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.52</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="p">[</span><span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="p">[</span><span class="mf">0.52</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">DistanceMatrix</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
+<span class="go">3x3 distance matrix</span>
+<span class="go">IDs:</span>
+<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;</span>
+<span class="go">Data:</span>
+<span class="go">[[ 0.    0.24  0.52]</span>
+<span class="go"> [ 0.24  0.    0.35]</span>
+<span class="go"> [ 0.52  0.35  0.  ]]</span>
+</pre></div>
+</div>
+<p><strong>TODO</strong>: Interface change so this code can be used with <code class="docutils literal notranslate"><span class="pre">table_to_distances</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">## This is untested!! I&#39;m not certain that it&#39;s exactly right, just a quick test.</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="n">newick_tree1</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;(((((OTU1:0.5,OTU2:0.5):0.5,OTU3:1.0):1.0),(OTU4:0.75,OTU5:0.75):1.25))root;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">newick_tree1</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">unweighted_unifrac</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">observed_nodes1</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">observed_nodes2</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">observed_branch_length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes1</span> <span class="o">|</span> <span class="n">observed_nodes2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">shared_branch_length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes1</span> <span class="o">&amp;</span> <span class="n">observed_nodes2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">unique_branch_length</span> <span class="o">=</span> <span class="n">observed_branch_length</span> <span class="o">-</span> <span class="n">shared_branch_length</span>
+<span class="gp">... </span>    <span class="n">unweighted_unifrac</span> <span class="o">=</span> <span class="n">unique_branch_length</span> <span class="o">/</span> <span class="n">observed_branch_length</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">unweighted_unifrac</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
+<span class="go">0.23809523809523808</span>
+<span class="go">0.52</span>
+<span class="go">0.34782608695652173</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="even-sampling-link-src-200e13">
+<h3><span class="section-number">9.1.3. </span>Even sampling <link src='200e13'/><a class="headerlink" href="#even-sampling-link-src-200e13" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO</strong>: Add discussion on necessity of even sampling</p>
+</div>
+</div>
+<div class="section" id="interpreting-distance-matrices-link-src-2be688">
+<h2><span class="section-number">9.2. </span>Interpreting distance matrices <link src='2be688'/><a class="headerlink" href="#interpreting-distance-matrices-link-src-2be688" title="Permalink to this headline">¶</a></h2>
+<p>In the previous section we computed distance matrices that contained the pairwise distances between a few samples. You can look at those distance matrices and get a pretty good feeling for what the patterns are. For example, what are the most similar samples? What are the most dissimilar samples?</p>
+<p>What if instead of three samples though, we had more. Here’s a screenshot from a distance matrix containing data on 105 samples (this is just the first few rows and columns):</p>
+<p>&lt;img src=’<a class="reference external" href="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/example_big_dm.png">https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/example_big_dm.png</a>’, width=800&gt;</p>
+<p>Do you have a good feeling for the patterns here? What are the most similar samples? What are the most dissimilar samples?</p>
+<p>Chances are, you can’t just squint at that table and understand what’s going on (but if you can, I’m hiring!). The problem is exacerbated by the fact that in modern microbial ecology studies we may have thousands or tens of thousands of samples, not “just” hundreds as in the table above. We need tools to help us take these raw distances and convert them into something that we can interpret. In this section we’ll look at some techniques, one of which we’ve covered previously, that will help us interpret large distance matrices.</p>
+<hr>
+<p>One excellent paper that includes a comparison of several different strategies for interpreting beta diversity results is <a class="reference external" href="https://www.sciencemag.org/content/326/5960/1694.full">Costello <em>et al.</em> Science (2009) Bacterial Community Variation in Human Body Habitats Across Space and Time</a>. In this study, the authors collected microbiome samples from 7 human subjects at about 25 sites on their bodies, at four different points in time.</p>
+<p>Figure 1 shows several different approaches for comparing the resulting UniFrac distance matrix (this image is linked from the <em>Science</em> journal website - copyright belongs to <em>Science</em>):</p>
+<img src="https://www.sciencemag.org/content/326/5960/1694/F1.large.jpg" width=800>
+<p>Let’s generate a small distance matrix representing just a few of these body sites, and figure out how we’d generate and interpret each of these visualizations. The values in the distance matrix below are a subset of the unweighted UniFrac distance matrix representing two samples each from three body sites from the Costello <em>et al.</em> (2009) study.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">,</span> <span class="s1">&#39;individual&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_md</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;gut&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 1&#39;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">[</span><span class="s1">&#39;gut&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">[</span><span class="s1">&#39;tongue&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 1&#39;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">[</span><span class="s1">&#39;tongue&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">[</span><span class="s1">&#39;skin&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 1&#39;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">[</span><span class="s1">&#39;skin&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">]]</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">human_microbiome_sample_md</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">_md</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">_columns</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">human_microbiome_sample_md</span>
+<span class="go">  body site individual</span>
+<span class="go">A       gut  subject 1</span>
+<span class="go">B       gut  subject 2</span>
+<span class="go">C    tongue  subject 1</span>
+<span class="go">D    tongue  subject 2</span>
+<span class="go">E      skin  subject 1</span>
+<span class="go">F      skin  subject 2</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dm_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">],</span>
+<span class="gp">... </span>                    <span class="p">[</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">],</span>
+<span class="gp">... </span>                    <span class="p">[</span><span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.87</span><span class="p">],</span>
+<span class="gp">... </span>                    <span class="p">[</span><span class="mf">0.83</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">],</span>
+<span class="gp">... </span>                    <span class="p">[</span><span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">],</span>
+<span class="gp">... </span>                    <span class="p">[</span><span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.87</span><span class="p">,</span> <span class="mf">0.88</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">]])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">human_microbiome_dm</span> <span class="o">=</span> <span class="n">DistanceMatrix</span><span class="p">(</span><span class="n">dm_data</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">)</span>
+<span class="go">6x6 distance matrix</span>
+<span class="go">IDs:</span>
+<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;</span>
+<span class="go">Data:</span>
+<span class="go">[[ 0.    0.35  0.83  0.83  0.9   0.9 ]</span>
+<span class="go"> [ 0.35  0.    0.86  0.85  0.92  0.91]</span>
+<span class="go"> [ 0.83  0.86  0.    0.25  0.88  0.87]</span>
+<span class="go"> [ 0.83  0.85  0.25  0.    0.88  0.88]</span>
+<span class="go"> [ 0.9   0.92  0.88  0.88  0.    0.5 ]</span>
+<span class="go"> [ 0.9   0.91  0.87  0.88  0.5   0.  ]]</span>
+</pre></div>
+</div>
+<div class="section" id="distribution-plots-and-comparisons-link-src-8fcf92">
+<h3><span class="section-number">9.2.1. </span>Distribution plots and comparisons <link src='8fcf92'/><a class="headerlink" href="#distribution-plots-and-comparisons-link-src-8fcf92" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s look at the analysis presented in panels E and F. Instead of generating bar plots here, we’ll generate box plots as these are more informative (i.e., they provide a more detailed summary of the distribution being investigated). One important thing to notice here is the central role that the sample metadata plays in the visualization. If we just had our sample ids (i.e., letters <code class="docutils literal notranslate"><span class="pre">A</span></code> through <code class="docutils literal notranslate"><span class="pre">F</span></code>) we wouldn’t be able to group distances into <em>within</em> and <em>between</em> sample type categories, and we therefore couldn’t perform the comparisons we’re interested in.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">within_between_category_distributions</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_category</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">within_category_distances</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="n">between_category_distances</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">sample_md1</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="n">md_category</span><span class="p">][</span><span class="n">sample_id1</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">sample_id2</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
+<span class="gp">... </span>            <span class="n">sample_md2</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="n">md_category</span><span class="p">][</span><span class="n">sample_id2</span><span class="p">]</span>
+<span class="gp">... </span>            <span class="k">if</span> <span class="n">sample_md1</span> <span class="o">==</span> <span class="n">sample_md2</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="n">within_category_distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dm</span><span class="p">[</span><span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">])</span>
+<span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>                <span class="n">between_category_distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dm</span><span class="p">[</span><span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">within_category_distances</span><span class="p">,</span> <span class="n">between_category_distances</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">within_category_distances</span><span class="p">,</span> <span class="n">between_category_distances</span> <span class="o">=</span> <span class="n">within_between_category_distributions</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">human_microbiome_sample_md</span><span class="p">,</span> <span class="s2">&quot;body site&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">within_category_distances</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">between_category_distances</span><span class="p">)</span>
+<span class="go">[0.34999999999999998, 0.25, 0.5]</span>
+<span class="go">[0.82999999999999996, 0.85999999999999999, 0.82999999999999996, 0.84999999999999998, 0.90000000000000002, 0.92000000000000004, 0.88, 0.88, 0.90000000000000002, 0.91000000000000003, 0.87, 0.88]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">within_category_distances</span><span class="p">,</span> <span class="n">between_category_distances</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;same body habitat&#39;</span><span class="p">,</span> <span class="s1">&#39;different body habitat&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Unweighted UniFrac Distance&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.stats.distance</span> <span class="kn">import</span> <span class="n">anosim</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">anosim</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">human_microbiome_sample_md</span><span class="p">,</span> <span class="s1">&#39;body site&#39;</span><span class="p">)</span>
+<span class="go">method name               ANOSIM</span>
+<span class="go">test statistic name            R</span>
+<span class="go">sample size                    6</span>
+<span class="go">number of groups               3</span>
+<span class="go">test statistic                 1</span>
+<span class="go">p-value                    0.065</span>
+<span class="go">number of permutations       999</span>
+<span class="go">Name: ANOSIM results, dtype: object</span>
+</pre></div>
+</div>
+<p>If we run through these same steps, but base our analysis on a different metadata category where we don’t expect to see any significant clustering, you can see that we no longer get a significant result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">within_category_distances</span><span class="p">,</span> <span class="n">between_category_distances</span> <span class="o">=</span> <span class="n">within_between_category_distributions</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">human_microbiome_sample_md</span><span class="p">,</span> <span class="s2">&quot;individual&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">within_category_distances</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">between_category_distances</span><span class="p">)</span>
+<span class="go">[0.82999999999999996, 0.84999999999999998, 0.90000000000000002, 0.88, 0.91000000000000003, 0.88]</span>
+<span class="go">[0.34999999999999998, 0.85999999999999999, 0.82999999999999996, 0.25, 0.92000000000000004, 0.88, 0.90000000000000002, 0.87, 0.5]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">within_category_distances</span><span class="p">,</span> <span class="n">between_category_distances</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;same person&#39;</span><span class="p">,</span> <span class="s1">&#39;different person&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Unweighted UniFrac Distance&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">anosim</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">human_microbiome_sample_md</span><span class="p">,</span> <span class="s1">&#39;individual&#39;</span><span class="p">)</span>
+<span class="go">method name                 ANOSIM</span>
+<span class="go">test statistic name              R</span>
+<span class="go">sample size                      6</span>
+<span class="go">number of groups                 2</span>
+<span class="go">test statistic           -0.333333</span>
+<span class="go">p-value                      0.869</span>
+<span class="go">number of permutations         999</span>
+<span class="go">Name: ANOSIM results, dtype: object</span>
+</pre></div>
+</div>
+<p>Why do you think the distribution of distances between people has a greater range than the distribution of distances within people in this particular example?</p>
+<p>Here we used ANOSIM testing whether our with and between category groups differ. This test is specifically designed for distance matrices, and it accounts for the fact that the values are not independent of one another. For example, if one of our samples was very different from all of the others, all of the distances associated with that sample would be large. It’s very important to choose the appropriate statistical test to use. One free resource for helping you do that is <a class="reference external" href="http://mb3is.megx.net/gustame"><em>The Guide to Statistical Analysis in Microbial Ecology (GUSTAME)</em></a>. If you’re getting started in microbial ecology, I recommend spending some time studying GUSTAME.</p>
+</div>
+<div class="section" id="hierarchical-clustering-link-src-09f456">
+<h3><span class="section-number">9.2.2. </span>Hierarchical clustering <link src='09f456'/><a class="headerlink" href="#hierarchical-clustering-link-src-09f456" title="Permalink to this headline">¶</a></h3>
+<p>Next, let’s look at a hierarchical clustering analysis, similar to that presented in panel G above. Here I’m applying the UPGMA functionality implemented in <a class="reference external" href="http://www.scipy.org/scipylib/index.html">SciPy</a> to generate a tree which we visualize with a dendrogram. However the tips in this tree don’t represent sequences or OTUs, like they did when we <span class="xref myst">covered UPGMA for phylogenetic reconstruction</span>, but instead they represent samples, and samples with a smaller branch length between them are more similar in composition than samples with a longer branch length between them. (Remember that only horizontal branch length is counted - vertical branch length is just to aid in the organization of the dendrogram.)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">average</span><span class="p">,</span> <span class="n">dendrogram</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lm</span> <span class="o">=</span> <span class="n">average</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">condensed_form</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">dendrogram</span><span class="p">(</span><span class="n">lm</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+<span class="gp">... </span>               <span class="n">link_color_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>Again, we can see how the data really only becomes interpretable in the context of metadata:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">][</span><span class="n">sid</span><span class="p">]</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">sample_ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">dendrogram</span><span class="p">(</span><span class="n">lm</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+<span class="gp">... </span>               <span class="n">link_color_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;individual&#39;</span><span class="p">][</span><span class="n">sid</span><span class="p">]</span> <span class="k">for</span> <span class="n">sid</span> <span class="ow">in</span> <span class="n">sample_ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">dendrogram</span><span class="p">(</span><span class="n">lm</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+<span class="gp">... </span>               <span class="n">link_color_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ordination-link-src-b1cdbe">
+<h2><span class="section-number">9.3. </span>Ordination <link src='b1cdbe'/><a class="headerlink" href="#ordination-link-src-b1cdbe" title="Permalink to this headline">¶</a></h2>
+<p>Finally, let’s look at ordination, similar to that presented in panels A-D. The basic idea behind ordination is dimensionality reduction: we want to take high-dimensionality data (a distance matrix) and represent that in a few (usually two or three) dimensions. As humans, we’re very bad at interpreting high dimensionality data directly: with ordination, we can take an <span class="math notranslate nohighlight">\(n\)</span>-dimensional data set (e.g., a distance matrix of shape <span class="math notranslate nohighlight">\(n \times n\)</span>, representing the distances between <span class="math notranslate nohighlight">\(n\)</span> biological samples) and reduce that to a 2-dimensional scatter plot similar to that presented in panels A-D above.</p>
+<p>Ordination is a technique that is widely applied in ecology and in bioinformatics, but the math behind some of the methods such as <em>Principal Coordinates Analysis</em> is fairly complex, and as a result I’ve found that these methods are a black box for a lot of people. Possibly the most simple ordination technique is one called Polar Ordination. Polar Ordination is not widely applied because it has some inconvenient features, but I find that it is useful for introducing the idea behind ordination. Here we’ll work through a simple implementation of ordination to illustrate the process, which will help us to interpret ordination plots. In practice, you will use existing software, such as <a class="reference external" href="http://scikit-bio.org">scikit-bio</a>’s <a class="reference external" href="http://scikit-bio.org/maths.stats.ordination.html">ordination module</a>.</p>
+<p>An excellent site for learning more about ordination is <a class="reference external" href="http://ordination.okstate.edu/">Michael W. Palmer’s Ordination Methods page</a>.</p>
+<div class="section" id="polar-ordination-link-src-538e18">
+<h3><span class="section-number">9.3.1. </span>Polar ordination <link src='538e18'/><a class="headerlink" href="#polar-ordination-link-src-538e18" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s print our distance matrix again so we have it nearby.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./using"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="alpha-diversity.html" title="previous page"><span class="section-number">8. </span>Alpha diversity</a>
+    <a class='right-next' id="next-link" href="../algorithms/pairwise-alignment.html" title="next page"><span class="section-number">1. </span>Pairwise sequence alignment</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By J Gregory Caporaso<br/>
+        
+            &copy; Copyright 2020-2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'G-KZHV37SG3H', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    
+  </body>
+</html>

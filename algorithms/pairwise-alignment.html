@@ -57,7 +57,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="2. Sequence homology searching" href="database-searching.html" />
-    <link rel="prev" title="7. Taxonomic annotation and analysis of sequences" href="../using/taxonomy.html" />
+    <link rel="prev" title="9. Beta diversity" href="../using/beta-diversity.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -118,8 +118,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../using/overview-tutorial.html">
-   2. An interactive overview of QIIME 2
+  <a class="reference internal" href="../using/interactive-introduction.html">
+   2. An interactive introduction to QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
@@ -145,6 +145,16 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../using/taxonomy.html">
    7. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/alpha-diversity.html">
+   8. Alpha diversity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/beta-diversity.html">
+   9. Beta diversity
   </a>
  </li>
 </ul>
@@ -1065,9 +1075,7 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HEAGAWGHEE
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PAWHEAE
+PAWHEAE
 </pre></div>
 </div>
 </div>
@@ -2391,7 +2399,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>132 ms ± 3.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>93.6 ms ± 458 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2406,7 +2414,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>525 µs ± 4.4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>405 µs ± 2.68 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2486,10 +2494,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TGGAGCCCTA
-GGACTAAGGA
-GGTGCGGCATGTACCTACTTGGAGG
-GATCCACAAGCGCCCTAGCGACTCGACCCGCTCCCAAGGACTTTGAAAAG
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CGATATACAG
+GCAGATAGAC
+ACGTATTACCCGCGCTGGGTCTGCG
+CCTGACGTCAAGGTCGCTCGTGTAGTGTCCTGTACCAAGGAGGCCGATAA
 </pre></div>
 </div>
 </div>
@@ -2558,32 +2566,32 @@ GATCCACAAGCGCCCTAGCGACTCGACCCGCTCCCAAGGACTTTGAAAAG
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.195165</td>
+      <td>0.176805</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.203278</td>
+      <td>1.039655</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>2.675494</td>
+      <td>2.269228</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>4.580329</td>
+      <td>3.636480</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>7.115880</td>
+      <td>5.306538</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>10.142134</td>
+      <td>7.254613</td>
     </tr>
   </tbody>
 </table>
@@ -2608,7 +2616,7 @@ GATCCACAAGCGCCCTAGCGACTCGACCCGCTCCCAAGGACTTTGAAAAG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f620c18c278&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f6073d1a4e0&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2632,7 +2640,7 @@ GATCCACAAGCGCCCTAGCGACTCGACCCGCTCCCAAGGACTTTGAAAAG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f620c1570f0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f6073cf8cf8&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />
@@ -2702,7 +2710,7 @@ GATCCACAAGCGCCCTAGCGACTCGACCCGCTCCCAAGGACTTTGAAAAG
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="../using/taxonomy.html" title="previous page"><span class="section-number">7. </span>Taxonomic annotation and analysis of sequences</a>
+    <a class='left-prev' id="prev-link" href="../using/beta-diversity.html" title="previous page"><span class="section-number">9. </span>Beta diversity</a>
     <a class='right-next' id="next-link" href="database-searching.html" title="next page"><span class="section-number">2. </span>Sequence homology searching</a>
 
         </div>

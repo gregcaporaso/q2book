@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2. An interactive overview of QIIME 2 &#8212; q2book</title>
+    <title>2. An interactive introduction to QIIME 2 &#8212; q2book</title>
     
   <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
@@ -117,7 +117,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   2. An interactive overview of QIIME 2
+   2. An interactive introduction to QIIME 2
   </a>
  </li>
  <li class="toctree-l1">
@@ -143,6 +143,16 @@
  <li class="toctree-l1">
   <a class="reference internal" href="taxonomy.html">
    7. Taxonomic annotation and analysis of sequences
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="alpha-diversity.html">
+   8. Alpha diversity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="beta-diversity.html">
+   9. Beta diversity
   </a>
  </li>
 </ul>
@@ -259,9 +269,12 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/using/interactive-introduction.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/using/overview-tutorial.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/using/interactive-introduction.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -280,6 +293,23 @@
                         class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/using/interactive-introduction.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
 
         </div>
 
@@ -354,8 +384,8 @@
         
               <div>
                 
-  <div class="section" id="an-interactive-overview-of-qiime-2">
-<h1><span class="section-number">2. </span>An interactive overview of QIIME 2<a class="headerlink" href="#an-interactive-overview-of-qiime-2" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="an-interactive-introduction-to-qiime-2">
+<span id="interactive-introduction"></span><h1><span class="section-number">2. </span>An interactive introduction to QIIME 2<a class="headerlink" href="#an-interactive-introduction-to-qiime-2" title="Permalink to this headline">¶</a></h1>
 <p>In the previous chapter I introduced you to some concepts that will help you learn QIIME 2 more quickly. Now that we’re through that, let’s jump in and do something quick with QIIME 2. In this chapter I’ll present a workflow, which you should follow along with on your computer if possible. In this workflow we’ll download some real sequencing data and associated sample metadata, and apply some QIIME 2 methods and visualizers to it to see if it supports a hypothesis about the biological system being studied. The interactive visualizations that we’ll build in this chapter are some of the first ones that I generate when working with a new data set. They will help you to judge the quality of your sequencing run, and give you an initial view of the alpha diversity of your samples. Before you can apply these steps to your own data, you’ll also need to learn how to import your data into a QIIME 2 artifact. This will be covered in <a class="reference internal" href="importing.html#importing"><span class="std std-ref">Importing data into QIIME 2</span></a>.</p>
 <div class="section" id="the-study">
 <h2><span class="section-number">2.1. </span>The study<a class="headerlink" href="#the-study" title="Permalink to this headline">¶</a></h2>
@@ -364,11 +394,13 @@
 <ul class="simple">
 <li><p>Hypothesis: There will be fewer types of microbes in the hyper-arid samples than in the less arid samples.</p></li>
 </ul>
-<p>“Type of microbe” is a term that needs to be defined. What I mean by that is an arbitrary taxonomic grouping, such as genus, species, or strain. The data we’ll work with in this chapter is 16S rRNA amplicon data. To keep the analysis in this chapter simple, we’re not going to assign taxonomy to our amplicon sequences. The unit of taxonomy that we’ll work with here is the highest resolution possible for a study based on amplicon data: the <em>amplicon sequence variant</em>, or ASV. Each unique 16S rRNA amplicon that we observe in this study will be treated as a different ASV, and thus a different “type of microbe”. Due to the limits of resolution in a 16S rRNA amplicon study, this approximates genus or species but does not consistently represent a single named taxonomic level.</p>
+<p><strong>Type of microbe</strong> is a term that needs to be defined. What I mean by that is an arbitrary taxonomic grouping, such as genus, species, or strain. The data we’ll work with in this chapter is 16S rRNA amplicon data. To keep the analysis in this chapter simple, we’re not going to assign taxonomy to our amplicon sequences. The unit of taxonomy that we’ll work with here is the highest resolution possible for a study based on amplicon data: the <em>amplicon sequence variant</em>, or ASV. Each unique 16S rRNA amplicon that we observe in this study will be treated as a different ASV, and thus a different “type of microbe”. Due to the limits of resolution in a 16S rRNA amplicon study, this approximates genus or species but does not consistently represent a single named taxonomic level.</p>
 </div>
 <div class="section" id="downloading-the-data">
 <h2><span class="section-number">2.2. </span>Downloading the data<a class="headerlink" href="#downloading-the-data" title="Permalink to this headline">¶</a></h2>
 <p>We’ll begin this interactive overview by downloading a few files to work on. Do this as follows:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -sL <span class="se">\</span>
   <span class="s2">&quot;https://data.qiime2.org/2020.11/tutorials/atacama-soils/sample_metadata.tsv&quot;</span> &gt; <span class="se">\</span>
   <span class="s2">&quot;sample-metadata.tsv&quot;</span>
@@ -377,6 +409,13 @@ curl -sL <span class="se">\</span>
   <span class="s2">&quot;https://docs.qiime2.org/2020.11/data/tutorials/atacama-soils/demux.qza&quot;</span> &gt; <span class="se">\</span>
   <span class="s2">&quot;demux.qza&quot;</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>You’ll see some output on the screen, and you should ultimately see that these two files were downloaded successfully.</p>
 <div class="admonition warning">
@@ -390,22 +429,45 @@ curl -sL <span class="se">\</span>
 <h2><span class="section-number">2.3. </span>Viewing summaries of sequencing run quality and demultiplexing<a class="headerlink" href="#viewing-summaries-of-sequencing-run-quality-and-demultiplexing" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned in the previous chapter, QIIME 2 artifacts such as the <code class="docutils literal notranslate"><span class="pre">demux.qza</span></code> file that you just downloaded are intermediary files in a QIIME 2 analysis. They’re not meant to be directly viewed by humans. Generally when there is something important to view from a QIIME 2 artifact, such as a summary of the data, there will be a QIIME 2 visualizer that you can apply to that artifact. Some QIIME 2 visualizers are specific to a QIIME 2 artifact type, while others are more general purpose. We’ll look at an example of each in this chapter.</p>
 <p>The first QIIME 2 command that we’ll use in this chapter is a visualizer that that is specific to visualizing summaries of demultiplexed sequence data with quality scores. In addition to a summary of the demultiplexing run, it provides information on the quality of sequence data in the form of interactive visualizations. You can run this command as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">demux</span> <span class="n">summarize</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">data</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">demux</span><span class="o">.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime demux summarize <span class="se">\</span>
+  --i-data demux.qza <span class="se">\</span>
+  --o-visualization demux.qzv
 </pre></div>
 </div>
-<p>This command should run successfully for you. You’ll know it did if you see text printed to the terminal saying something like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Saved</span> <span class="n">Visualization</span> <span class="n">to</span><span class="p">:</span> <span class="n">demux</span><span class="o">.</span><span class="n">qzv</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: demux.qzv</span>
 </pre></div>
 </div>
-<p>Since this is one of the first QIIME 2 commands that you’ve run (at least while reading this book) let’s take a look at it in some detail. As we look at this command, I’m going to assume that you either have some command line software experience, or that you’ve read <em>the introductory chapter in this book on using the command line</em> (<strong>TODO: this chapter doesn’t exist yet.</strong>). There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command’s components are separated by spaces. The first space-separated component is <code class="docutils literal notranslate"><span class="pre">qiime</span></code>. This tells your computer that the QIIME 2 program should be run. The second space-separated component is <code class="docutils literal notranslate"><span class="pre">demux</span></code>. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the <code class="docutils literal notranslate"><span class="pre">q2-demux</span></code> plugin. The third space-separated component is <code class="docutils literal notranslate"><span class="pre">summarize</span></code>, which is an action in the q2-demux plugin. This action generates a visual summary of demultiplexed sequence data. As mentioned in the previous chapter, if you’d like to learn about this action, you could run the command <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">demux</span> <span class="pre">summarize</span> <span class="pre">--help</span></code>, which will print help text to the screen. Finally, the <code class="docutils literal notranslate"><span class="pre">\</span></code> at the end of the line is worth mentioning now. When you’re working on the command line, line breaks (i.e., the character that is received when you press the <em>Return</em> key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can sometimes be long, it’s helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like you should press the <em>Return</em> key after entering only part of the command. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation and it improves readability. The <code class="docutils literal notranslate"><span class="pre">\</span></code> character here simply means that the terminal shouldn’t interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">demux</span> <span class="n">summarize</span> <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">data</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span>  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">demux</span><span class="o">.</span><span class="n">qzv</span>
+</div>
+</div>
+<p>Since this is one of the first QIIME 2 commands that you’ve run (at least while reading this book) let’s take a look at it in some detail. As we look at this command, I’m going to assume that you either have some command line software experience.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition-video admonition">
+<p class="admonition-title">Video</p>
+<p><a class="reference external" href="https://youtu.be/vNC-Yi_5Vto">This video</a> provides a review of interacting with a Linux command line. The span of video between about 6:30-8:00 minutes covers details on connecting to a specific server that we set up for a QIIME 2 workshop using the <a class="reference external" href="https://chrome.google.com/webstore/detail/secure-shell-app/pnhechapfaindjhompbnflcldabbghjo?hl=en">Google Chrome Secure Shell App</a>. If you’re connecting to a remote server to access a command line, your connection details will differ from what is presented in that segment of the video.</p>
+</div>
+</div>
+<p>There are four components to notice on the first line of this command, and as is typically the case when running command line software, the command’s components are separated by spaces. The first space-separated component is <code class="docutils literal notranslate"><span class="pre">qiime</span></code>. This tells your computer that the QIIME 2 program should be run. The second space-separated component is <code class="docutils literal notranslate"><span class="pre">demux</span></code>. This is the name of the q2-demux plugin, as far as QIIME 2 is concerned, so this tells QIIME 2 that you want to use the <code class="docutils literal notranslate"><span class="pre">q2-demux</span></code> plugin. The third space-separated component is <code class="docutils literal notranslate"><span class="pre">summarize</span></code>, which is an action in the q2-demux plugin. This action generates a visual summary of demultiplexed sequence data. As mentioned in the previous chapter, if you’d like to learn about this action, you could run the command <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">demux</span> <span class="pre">summarize</span> <span class="pre">--help</span></code>, which will print help text to the screen. Finally, the <code class="docutils literal notranslate"><span class="pre">\</span></code> at the end of the line is worth mentioning now. When you’re working on the command line, line breaks (i.e., the character that is received when you press the <em>Return</em> key on your keyboard) signifies that you have finished entering the command and that the command should now be executed (i.e., run). Since QIIME 2 commands can sometimes be long, it’s helpful when documenting them to split them over multiple lines so that they can be read without the reader having to scroll to the right. If the documentation is being presented in a non-interactive medium, such as a printed book, the formatting of the command could actually be misleading - for example, it could look like you should press the <em>Return</em> key after entering only part of the command. Splitting long commands across multiple lines also therefore helps to ensure accuracy of the documentation and it improves readability. The <code class="docutils literal notranslate"><span class="pre">\</span></code> character here simply means that the terminal shouldn’t interpret the line break that follows it as the end of the command, but rather that the command will continue on the next line. The same command, without the line breaks, would look like the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime demux summarize --i-data demux.qza  --o-visualization demux.qzv
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: demux.qzv</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>That command will do the exact same thing as the one above. As our commands get longer later in this chapter and beyond, this would be inconvenient to read.</p>
 <p>After we specify the program (<code class="docutils literal notranslate"><span class="pre">qiime</span></code>), the plugin (<code class="docutils literal notranslate"><span class="pre">demux</span></code>), and the action (<code class="docutils literal notranslate"><span class="pre">summarize</span></code>) that we want to run, we provide options to that action to tell it what file(s) we want it to operate on and what we want the output(s) to be called. These components of the command are specified on the remaining lines. Let’s look at those now.</p>
 <p>This action takes one QIIME 2 artifact as input, the demultiplexed sequences that we downloaded above. In the QIIME 2 command line interface, input artifacts are always specified with options beginning with <code class="docutils literal notranslate"><span class="pre">--i-</span></code>. This command will generate one file as output, and we specify the path (absolute or relative) where we want to store that file with an output option. Output options always begin with <code class="docutils literal notranslate"><span class="pre">--o-</span></code> in the QIIME 2 command line interface. Here I specify that the output created by this command should be called <code class="docutils literal notranslate"><span class="pre">demux.qzv</span></code>. This is a QIIME 2 visualization that will contain the visual summary of our demultiplexed sequence data.</p>
+<p>Finally, notice that this command printed some text to the screen when it was run: <code class="docutils literal notranslate"><span class="pre">Saved</span> <span class="pre">Visualization</span> <span class="pre">to:</span> <span class="pre">demux.qzv</span></code>. This indicates that the command ran and completed successfully. If the command did not complete successfully, you’d see an error message printed to the screen instead.</p>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
 <div class="admonition-video admonition">
@@ -430,14 +492,25 @@ curl -sL <span class="se">\</span>
 <div class="section" id="denoising-the-demultiplexed-sequences">
 <h2><span class="section-number">2.4. </span>Denoising the demultiplexed sequences<a class="headerlink" href="#denoising-the-demultiplexed-sequences" title="Permalink to this headline">¶</a></h2>
 <p>Since our sequence quality generally looks good, let’s move on to the next step of our analysis: denoising the sequences (i.e., performing sequence quality control). QIIME 2 has a few options for denoising sequences. Here we’ll use the DADA2 denoising approach <span id="id2">[<a class="reference internal" href="#id12"><span>CMR+16</span></a>]</span>, which we’ll access through the <code class="docutils literal notranslate"><span class="pre">q2-dada2</span></code> plugin. Go ahead and run this command, which may take up to about 10 minutes to complete.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">dada2</span> <span class="n">denoise</span><span class="o">-</span><span class="n">single</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">demultiplexed</span><span class="o">-</span><span class="n">seqs</span> <span class="n">demux</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">trim</span><span class="o">-</span><span class="n">left</span> <span class="mi">13</span> \
-  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">trunc</span><span class="o">-</span><span class="nb">len</span> <span class="mi">150</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">representative</span><span class="o">-</span><span class="n">sequences</span> <span class="n">asv</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">table</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">denoising</span><span class="o">-</span><span class="n">stats</span> <span class="n">denoising</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">qza</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime dada2 denoise-single <span class="se">\</span>
+  --i-demultiplexed-seqs demux.qza <span class="se">\</span>
+  --p-trim-left <span class="m">13</span> <span class="se">\</span>
+  --p-trunc-len <span class="m">150</span> <span class="se">\</span>
+  --o-representative-sequences asv-sequences.qza <span class="se">\</span>
+  --o-table asv-table.qza <span class="se">\</span>
+  --o-denoising-stats denoising-stats.qza
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved FeatureTable[Frequency] to: asv-table.qza</span>
+<span class=" -Color -Color-Green">Saved FeatureData[Sequence] to: asv-sequences.qza</span>
+<span class=" -Color -Color-Green">Saved SampleData[DADA2Stats] to: denoising-stats.qza</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>As you can tell from the first line of this command, we’re calling the program <code class="docutils literal notranslate"><span class="pre">qiime</span></code>, the plugin <code class="docutils literal notranslate"><span class="pre">dada2</span></code>, and the action <code class="docutils literal notranslate"><span class="pre">denoise-single</span></code>. This runs DADA2’s single-end read denoiser, which may seem like a surprising choice given that I previously mentioned that this is paired end data. The reason that I choose to use the single end denoiser here is that these are short sequence reads for the region of the 16S rRNA that we’re sequencing. The region is about 350 bases long, but the sequencing run was a 2x151 run (where the 2 implies that it was paired end, for two reads, and 151 implies that 151 bases were read in each direction). These reads are too short for paired end joining for this region of the 16S, so I’m not going to join them here. (If we were to apply paired end joining with the <code class="docutils literal notranslate"><span class="pre">denoise-paired</span></code> action, the reads that failed to join would be excluded from the results. This would result in a bias for organisms with shorter 16S sequences, which would likely have a confusing impact on our findings.)</p>
 <p>You can also see that this command takes a single file as input. This is the same file we provided as input to <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">demux</span> <span class="pre">summarize</span></code>: our demultiplexed sequence data. This command generates three output artifacts, as specified by the <code class="docutils literal notranslate"><span class="pre">--o-</span></code> options. Recall that the unit of taxonomy that we’re working with in this chapter is the amplicon sequence variant (ASV). When DADA2 denoises a sequencing run, it defines the ASVs that were observed from the quality-controlled sequences. One of the outputs that it generates is the collection of the ASV sequences that were defined. This is one of the three outputs that are generated, and you can specify the filepath where you’d like to store that file with the output option <code class="docutils literal notranslate"><span class="pre">--o-representative-sequences</span></code>. I called that file <code class="docutils literal notranslate"><span class="pre">asv-sequences.qza</span></code>. DADA2 also creates our feature table, and the path where that should be stored is specified with the <code class="docutils literal notranslate"><span class="pre">--o-table</span></code> option. I chose the name <code class="docutils literal notranslate"><span class="pre">asv-table.qza</span></code> for this output file. The feature table is one of the most important piece of data that you’ll generate and use in QIIME 2. While the contents of the feature table can differ depending on the data that you’re working with or the stage of your analysis (something we’ll revisit later), the feature table we created here defines the frequency at which each ASVs is observed in each sample. The feature table contains samples on one axis and ASVs on the other axis, and the values in this table describe how many times each ASV was observed in each sample. The values can be zero or greater in this feature table. The third output generated by this command, specified with <code class="docutils literal notranslate"><span class="pre">--o-denoising-stats</span></code>, is a log of the denoising run that summarizes which quality control steps were taken.</p>
@@ -451,10 +524,19 @@ curl -sL <span class="se">\</span>
 <div class="section" id="viewing-a-summary-of-the-denoising-run">
 <h2><span class="section-number">2.5. </span>Viewing a summary of the denoising run<a class="headerlink" href="#viewing-a-summary-of-the-denoising-run" title="Permalink to this headline">¶</a></h2>
 <p>The next visualizer that we’ll use is a general purpose visualizer that you should always keep in mind. It’s the <code class="docutils literal notranslate"><span class="pre">tabulate</span></code> visualizer in the <code class="docutils literal notranslate"><span class="pre">q2-metadata</span></code> plugin. This command uses the final option that the QIIME 2 command line interface uses: <code class="docutils literal notranslate"><span class="pre">--m-</span></code>, which specifies a metadata-related input. This might not seem very intuitive at the moment, but many QIIME 2 artifacts that provide some information on a per-sample basis can be used as if they are sample metadata. The power of this will become more clear in later chapters. We’ll apply this to the log artifact that was generated by <code class="docutils literal notranslate"><span class="pre">denoise-single</span></code> as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">metadata</span> <span class="n">tabulate</span> \
-  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="n">file</span> <span class="n">denoising</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">denoising</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime metadata tabulate <span class="se">\</span>
+  --m-input-file denoising-stats.qza <span class="se">\</span>
+  --o-visualization denoising-stats.qzv
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: denoising-stats.qzv</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>Load the resulting <code class="docutils literal notranslate"><span class="pre">.qzv</span></code> file with <a class="reference external" href="https://view.qiime2.org">QIIME 2 View</a>. You should see something that looks like <a class="reference internal" href="#denoising-stats-1"><span class="std std-numref">Fig. 2.4</span></a>. This table presents the results of the denoising run on a per-sample basis. The <em>input</em> column of the table presents the number of sequence reads that were contained in the <code class="docutils literal notranslate"><span class="pre">demux.qza</span></code> for each sample. Other columns present information such as the percentage of input reads that passed the different quality filtering steps. We’ll revisit log file this in <a class="reference internal" href="denoising.html#denoising"><span class="std std-ref">Denoising demultiplexed sequencing data</span></a>.</p>
 <div class="figure align-default" id="denoising-stats-1">
@@ -465,10 +547,19 @@ curl -sL <span class="se">\</span>
 <div class="section" id="viewing-the-asv-sequences">
 <h2><span class="section-number">2.6. </span>Viewing the ASV sequences<a class="headerlink" href="#viewing-the-asv-sequences" title="Permalink to this headline">¶</a></h2>
 <p>Recall that one of the outputs from DADA2 is the ASV sequences. We called this file <code class="docutils literal notranslate"><span class="pre">asv-sequences.qza</span></code> in this example. These sequences may be something that you want to look at, either now (maybe as a sanity check) or at a later stage of the analysis (for example, if you want to learn more about some ASVs that you have become interested in while analyzing your data). The <code class="docutils literal notranslate"><span class="pre">q2-feature-table</span></code> plugin defines a special purpose visualizer for generating a human-readable list of the ASVs. You can apply this as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span> <span class="n">tabulate</span><span class="o">-</span><span class="n">seqs</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">data</span> <span class="n">asv</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">asv</span><span class="o">-</span><span class="n">sequences</span><span class="o">.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime feature-table tabulate-seqs <span class="se">\</span>
+  --i-data asv-sequences.qza <span class="se">\</span>
+  --o-visualization asv-sequences.qzv
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: asv-sequences.qzv</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
@@ -486,11 +577,20 @@ curl -sL <span class="se">\</span>
 <div class="section" id="viewing-the-asv-table-summary">
 <h2><span class="section-number">2.7. </span>Viewing the ASV table summary<a class="headerlink" href="#viewing-the-asv-table-summary" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned above, the feature table defined by DADA2 contains samples on one axis and ASVs on the other axis. The values in this table describe how many times each ASV was observed in each sample. The <code class="docutils literal notranslate"><span class="pre">q2-feature-table</span></code> plugin defines another special purpose visualizer to allow you to get a summary of this information. This can be run as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span> <span class="n">summarize</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">table</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime feature-table summarize <span class="se">\</span>
+  --i-table asv-table.qza <span class="se">\</span>
+  --m-sample-metadata-file sample-metadata.tsv <span class="se">\</span>
+  --o-visualization asv-table.qzv
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: asv-table.qzv</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="margin sidebar">
 <p class="sidebar-title"></p>
@@ -516,12 +616,21 @@ curl -sL <span class="se">\</span>
 <p>Next we’ll generate an alpha rarefaction plot which presents community richness as a function of the number of sequences obtained per sample.</p>
 <p>Community richness can be computed with many different metrics. The <code class="docutils literal notranslate"><span class="pre">alpha-rarefaction</span></code> visualizer in the <code class="docutils literal notranslate"><span class="pre">q2-diversity</span></code> plugin defaults to compute Observed Features and the Shannon Diversity Index (the details of these and other diversity metrics will be introduced in later chapters - in both cases, higher values means more diverse communities). You can see these and other default settings for this visualizer by calling <code class="docutils literal notranslate"><span class="pre">qiime</span> <span class="pre">diversity</span> <span class="pre">alpha-rarefaction</span> <span class="pre">--help</span></code>.</p>
 <p>It is important to compute community richness as a function of the number of sequences obtained per sample because in a microbiome survey this represents our sampling effort. An analogy is useful to illustrate this. Imagine a researcher is interested in comparing plant diversity in the <a class="reference external" href="https://en.wikipedia.org/wiki/Sonoran_Desert">Sonoran Desert (USA)</a> and the <a class="reference external" href="https://en.wikipedia.org/wiki/Monteverde_Cloud_Forest_Reserve">Monte Verde Cloud Forest (Costa Rica)</a>. If they were to attempt to achieve this by counting plant species in a square meter in the forest and a square kilometer in the desert, they might come to the flawed conclusion that the desert had more types of plants than the forest. This would of course be because they expended more effort sampling plants in the desert than in the forest, so had more opportunity to observe different types of plants. In a sequencing survey, the number of sequences obtained per sample often doesn’t reflect biological features of the environments being studied, but rather random artifacts of the DNA extraction, PCR, and sequencing workflows. Differences in depth of sequencing therefore similarly represent sampling effort. (An exception to this is in extreme cases, such as the hyper-arid desert samples in this study where there are sometimes too few microbes to detect with standard workflows.) Differences in depth of sequencing need to be controlled for across samples to enable direct comparison. There are a variety of ways to do this that will be covered in later chapters. The simplest approach is referred to as <strong>rarefaction</strong>, and involves defining a sequencing depth and randomly sampling the counts in all samples without replacement to that depth. If a sample has fewer sequences than the defined depth of sequencing, that sample is excluded from the analysis at that depth of sequencing. In a rarefaction plot, multiple depths of sequencing are compared along the x-axis to illustrate change in richness on the y-axis. In the <code class="docutils literal notranslate"><span class="pre">alpha-rarefaction</span></code> visualizer, the minimum depth of sequencing used defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>. When calling the command, the user specifies the maximum rarefaction depth. I usually choose a round number near the 3rd quartile frequency per sample from the feature table visual summary (<a class="reference internal" href="#asv-table-1"><span class="std std-numref">Fig. 2.6</span></a>). Run this command as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">diversity</span> <span class="n">alpha</span><span class="o">-</span><span class="n">rarefaction</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">table</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="nb">max</span><span class="o">-</span><span class="n">depth</span> <span class="mi">10000</span> \
-  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">metadata</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">alpha</span><span class="o">-</span><span class="n">rarefaction</span><span class="o">.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime diversity alpha-rarefaction <span class="se">\</span>
+  --i-table asv-table.qza <span class="se">\</span>
+  --p-max-depth <span class="m">2700</span> <span class="se">\</span>
+  --m-metadata-file sample-metadata.tsv <span class="se">\</span>
+  --o-visualization alpha-rarefaction.qzv
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: alpha-rarefaction.qzv</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>Within the interactive visualization, samples can be grouped into metadata categories to facilitate visual comparisons. In the sample metadata column select <em>vegetation</em> to group samples based on whether they are observed in sites containing or not containing vegetation. You should see a view that looks something like <a class="reference internal" href="#alpha-rarefaction-1"><span class="std std-numref">Fig. 2.8</span></a>.</p>
 <div class="figure align-default" id="alpha-rarefaction-1">
@@ -530,34 +639,61 @@ curl -sL <span class="se">\</span>
 </div>
 <p>Note that there are two plots here. The top plot shows the Observed Features metric as a function of Sequence Depth. This is the alpha rarefaction plot. The bottom plot is essential to interpreting the alpha rarefaction plot. This shows the number of samples in each group as a function of sequencing depth. Recall that at a given sequencing depth, if the sequence count is less than the specified sequencing depth the sample is excluded from analyses at that sequencing depth. The bottom plot illustrates that at higher sequencing depths we lose many of our samples. This may explain erratic behavior in the two plots at higher sequence depths (where the Observed Features starts to decrease for the unvegetated sites and starts to increase for the vegetated sites). The bottom plot thus suggests where we should focus our attention in the top plot.</p>
 <p>When I compare the Observed Features across the unvegetated and vegetated sites at about 1000-4000 sequences per sample, I see that there appears to be a clear difference in the number of features observed, with the unvegetated sites having a lower community richness than the vegetated sites. This appears to support the hypothesis that was stated in the beginning of this chapter.</p>
-<p>I can conclude this analysis by running a statistical test to compare these sites. One catch with a statistical test is that, due to current limitations in the available tests, this is typically performed at a single depth of sequencing. Based on the rarefaction plot, I will perform a statistical comparison of community richness across groups at a sequencing depth of 3000. This is because I have retained most of my samples at this stage, and because the difference in community richness appears stable in that region of the rarefaction plot.</p>
+<p>I can conclude this analysis by running a statistical test to compare these sites. One catch with a statistical test is that, due to current limitations in the available tests, this is typically performed at a single depth of sequencing. Based on the rarefaction plot, I will perform a statistical comparison of community richness across groups at a sequencing depth of 1200. This is because I have retained most of my samples at this stage, and because the difference in community richness appears stable in that region of the rarefaction plot.</p>
 <p>Three commands are required to run this statistical test. Run these commands now.</p>
-<p>The first rarefies the ASV table to contain exactly 3000 sequences per sample, and discards samples that had fewer than 3000 sequences.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">feature</span><span class="o">-</span><span class="n">table</span> <span class="n">rarefy</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">table</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">sampling</span><span class="o">-</span><span class="n">depth</span> <span class="mi">3000</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">rarefied</span><span class="o">-</span><span class="n">table</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="mf">3000.</span><span class="n">qza</span>
+<p>The first rarefies the ASV table to contain exactly 1200 sequences per sample, and discards samples that had fewer than 1200 sequences.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime feature-table rarefy <span class="se">\</span>
+  --i-table asv-table.qza <span class="se">\</span>
+  --p-sampling-depth <span class="m">1200</span> <span class="se">\</span>
+  --o-rarefied-table asv-table-1200.qza
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved FeatureTable[Frequency] to: asv-table-1200.qza</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>The next command computes the <em>Observed Features</em> metric on all samples in the rarefied feature table.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">diversity</span> <span class="n">alpha</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">table</span> <span class="n">asv</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="mf">3000.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">p</span><span class="o">-</span><span class="n">metric</span> <span class="n">observed_features</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">alpha</span><span class="o">-</span><span class="n">diversity</span> <span class="n">observed</span><span class="o">-</span><span class="n">features</span><span class="o">-</span><span class="mf">3000.</span><span class="n">qza</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime diversity alpha <span class="se">\</span>
+  --i-table asv-table-1200.qza <span class="se">\</span>
+  --p-metric observed_features <span class="se">\</span>
+  --o-alpha-diversity observed-features-1200.qza
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved SampleData[AlphaDiversity] to: observed-features-1200.qza</span>
+</pre></div>
+</div>
+</div>
 </div>
 <p>The third command performs a Kruskal-Wallis test on the <em>Observed Features</em> values and generates a visual summary of the results.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qiime</span> <span class="n">diversity</span> <span class="n">alpha</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">significance</span> \
-  <span class="o">--</span><span class="n">i</span><span class="o">-</span><span class="n">alpha</span><span class="o">-</span><span class="n">diversity</span> <span class="n">observed</span><span class="o">-</span><span class="n">features</span><span class="o">-</span><span class="mf">3000.</span><span class="n">qza</span> \
-  <span class="o">--</span><span class="n">m</span><span class="o">-</span><span class="n">metadata</span><span class="o">-</span><span class="n">file</span> <span class="n">sample</span><span class="o">-</span><span class="n">metadata</span><span class="o">.</span><span class="n">tsv</span> \
-  <span class="o">--</span><span class="n">o</span><span class="o">-</span><span class="n">visualization</span> <span class="n">observed</span><span class="o">-</span><span class="n">features</span><span class="o">-</span><span class="mf">3000.</span><span class="n">qzv</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qiime diversity alpha-group-significance <span class="se">\</span>
+  --i-alpha-diversity observed-features-1200.qza <span class="se">\</span>
+  --m-metadata-file sample-metadata.tsv <span class="se">\</span>
+  --o-visualization observed-features-1200.qzv
 </pre></div>
 </div>
-<p>As is always the case, you can call any of these commands with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to learn more about what they do, what default values they use, and how you can change their behavior. Load <code class="docutils literal notranslate"><span class="pre">observed-features-3000.qzv</span></code> with QIIME 2 View.</p>
-<p>In the resulting visualization, select <em>vegetation</em> in the <em>Column</em> dropdown box. This will present the <em>Observed Features</em> in the unvegetated versus vegetated sites with a pair of boxplots and a statistical test. Your view should look like <a class="reference internal" href="#observed-features-3000-1"><span class="std std-numref">Fig. 2.9</span></a>.</p>
-<div class="figure align-default" id="observed-features-3000-1">
-<img alt="../_images/observed-features-3000-1.png" src="../_images/observed-features-3000-1.png" />
-<p class="caption"><span class="caption-number">Fig. 2.9 </span><span class="caption-text">Simplified screenshot of <code class="docutils literal notranslate"><span class="pre">observed-features-3000.qzv</span></code>.</span><a class="headerlink" href="#observed-features-3000-1" title="Permalink to this image">¶</a></p>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Saved Visualization to: observed-features-1200.qzv</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As is always the case, you can call any of these commands with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> option to learn more about what they do, what default values they use, and how you can change their behavior. Load <code class="docutils literal notranslate"><span class="pre">observed-features-1200.qzv</span></code> with QIIME 2 View.</p>
+<p>In the resulting visualization, select <em>vegetation</em> in the <em>Column</em> dropdown box. This will present the <em>Observed Features</em> in the unvegetated versus vegetated sites with a pair of boxplots and a statistical test. Your view should look like <a class="reference internal" href="#observed-features-1200-1"><span class="std std-numref">Fig. 2.9</span></a>.</p>
+<div class="figure align-default" id="observed-features-1200-1">
+<img alt="../_images/observed-features-1200-1.png" src="../_images/observed-features-1200-1.png" />
+<p class="caption"><span class="caption-number">Fig. 2.9 </span><span class="caption-text">Simplified screenshot of <code class="docutils literal notranslate"><span class="pre">observed-features-1200.qzv</span></code>.</span><a class="headerlink" href="#observed-features-1200-1" title="Permalink to this image">¶</a></p>
 </div>
 <p>This view confirms what we suspected from our visual comparison of these categories in the alpha rarefaction plot. Based on a Kruskal-Wallis test (a non-parametric test for comparing distributions of values) and the accompanying boxplot we can conclude that the unvegetated site have significantly fewer ASVs than the vegetated sites, supporting the hypothesis presented at the beginning of this chapter.</p>
 </div>
@@ -588,16 +724,16 @@ curl -sL <span class="se">\</span>
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "calysto_bash"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "calysto_bash",
             path: "./using"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'calysto_bash'</script>
 
               </div>
               
