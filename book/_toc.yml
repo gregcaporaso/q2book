@@ -17,6 +17,7 @@
   - file: using/taxonomy
   - file: using/alpha-diversity
   - file: using/beta-diversity
+  - file: using/feature-table-normalization
 
 - part: Understanding the algorithms
   chapters: 
