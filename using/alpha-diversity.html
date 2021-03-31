@@ -157,6 +157,11 @@
    9. Beta diversity
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="feature-table-normalization.html">
+   10. Normalization of Feature Tables
+  </a>
+ </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -271,7 +276,10 @@
 
     <div class="dropdown-buttons">
         <!-- ipynb file if we had a myst markdown file -->
-        
+        <a class="dropdown-buttons"
+            href="../_sources/using/alpha-diversity.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download notebook file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
         <!-- Download raw file -->
         <a class="dropdown-buttons" href="../_sources/using/alpha-diversity.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
@@ -293,6 +301,23 @@
 
             <!-- Launch buttons -->
 
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/gregcaporaso/q2book/main?urlpath=tree/book/using/alpha-diversity.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
         </div>
 
         <!-- Table of contents -->
@@ -305,30 +330,30 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#measure-of-microbiome-richness">
-   8.1. Measure of microbiome richness
+  <a class="reference internal nav-link" href="#measures-of-microbiome-richness">
+   8.1. Measures of microbiome richness
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#observed-features">
      8.1.1. Observed features
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#even-sampling">
+     8.1.2. Even sampling
+    </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#a-limitation-of-feature-counting">
-       8.1.1.1. A limitation of feature counting
+       8.1.2.1. A limitation of feature counting
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#phylogenetic-diversity-pd">
-     8.1.2. Phylogenetic Diversity (PD)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#even-sampling">
-     8.1.3. Even sampling
+     8.1.3. Phylogenetic Diversity (PD)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -371,197 +396,403 @@
 <p>As defined earlier, a “type of organism” or a “type of microbe” is an arbitrary taxonomic grouping, such as genus, species, strain, or even an amplicon sequence variant.</p>
 </div>
 <p>The next sub-cateogry of alpha diversity metric that we’ll discuss in this chapter will be <em>evenness</em>. Evenness tells us how consistent the distribution of species abundances are in a given environment. If, for example, the most abundant plant in the Sonoran desert was roughly as common as the least abundant plant (not the case!), we would say that the evenness of plant species was high. On the other hand, if the most abundant plant was thousands of times more common than the least common plant (probably closer to the truth), then we’d say that the evenness of plant species was low.</p>
-<div class="section" id="measure-of-microbiome-richness">
-<h2><span class="section-number">8.1. </span>Measure of microbiome richness<a class="headerlink" href="#measure-of-microbiome-richness" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="measures-of-microbiome-richness">
+<h2><span class="section-number">8.1. </span>Measures of microbiome richness<a class="headerlink" href="#measures-of-microbiome-richness" title="Permalink to this headline">¶</a></h2>
 <p>We’ll begin by looking at two measures of community richness. Both of these are commonly used in practice.</p>
 <div class="section" id="observed-features">
 <h3><span class="section-number">8.1.1. </span>Observed features<a class="headerlink" href="#observed-features" title="Permalink to this headline">¶</a></h3>
 <p>Observed features is a very simple metric that can be used to quantify microbiome diversity. With this metric, we simply count the features that are observed in a given sample. A feature is considered to have been observed in a sample if it has a frequency of greater than zero. This is a <strong>qualitative</strong> diversity metric meaning that each feature is treated as being either observed or not observed. This metric doesn’t consider how many times a feature was observed.</p>
-<p>Let’s define a feature table for this analysis:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B1&#39;</span><span class="p">,</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span><span class="s1">&#39;B3&#39;</span><span class="p">,</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span><span class="s1">&#39;B5&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;E2&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">feature_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span>
-<span class="go">    A  B  C</span>
-<span class="go">B1  1  1  5</span>
-<span class="go">B2  1  2  0</span>
-<span class="go">B3  3  1  0</span>
-<span class="go">B4  0  2  0</span>
-<span class="go">B5  0  0  0</span>
-<span class="go">A1  0  0  3</span>
-<span class="go">E2  0  0  1</span>
+<p>Let’s define a simple feature table for this analysis:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;4ac2&#39;</span><span class="p">,</span> <span class="s1">&#39;e375&#39;</span><span class="p">,</span> <span class="s1">&#39;4gd8&#39;</span><span class="p">]</span>
+<span class="n">feature_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B1&#39;</span><span class="p">,</span><span class="s1">&#39;B2&#39;</span><span class="p">,</span><span class="s1">&#39;B3&#39;</span><span class="p">,</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span><span class="s1">&#39;B5&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;E2&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">feature_table_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">feature_ids</span><span class="p">)</span>
+<span class="n">feature_table_1</span><span class="o">.</span><span class="n">style</span>
 </pre></div>
 </div>
-<p>Our sample <span class="math notranslate nohighlight">\(A\)</span> has an observed feature frequency value of 3, sample <span class="math notranslate nohighlight">\(B\)</span> has an observed feature frequency of 4, and sample <span class="math notranslate nohighlight">\(C\)</span> has an observed feature frequency of 3. Note that this is different than the total counts for each column (which would be 5, 6, and 9 respectively). Based on the observed features metric, we could consider samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span> to have even feature richness, and sample <span class="math notranslate nohighlight">\(B\)</span> to have 33% higher feature richness.</p>
-<p>We could compute this in python as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">observed_features</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">e</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">sample_id</span><span class="p">]])</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >B5</th>        <th class="col_heading level0 col5" >A1</th>        <th class="col_heading level0 col6" >E2</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >1</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >1</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >3</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col5" class="data row0 col5" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow0_col6" class="data row0 col6" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >1</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >5</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >1</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >2</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col5" class="data row1 col5" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow1_col6" class="data row1 col6" >1</td>
+            </tr>
+            <tr>
+                        <th id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >3</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col1" class="data row2 col1" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col4" class="data row2 col4" >0</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col5" class="data row2 col5" >3</td>
+                        <td id="T_4aff6230_9235_11eb_8b49_000d3a9d2c7frow2_col6" class="data row2 col6" >1</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<p>To compute the value of observed features for each sample in our feature table, we would simply count the number of non-zero counts for each sample. All of the non-zero counts are bolded in the following view of the table.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">non_zero_blue</span><span class="p">(</span><span class="n">frequency</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">frequency</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;blue&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;color: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">color</span>
+
+<span class="n">feature_table_1</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="n">non_zero_blue</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="go">3</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col0,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col1,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col2,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col0,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col1,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col2,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col3,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col6,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col0,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col5,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col6{
+            color:  blue;
+        }#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col3,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col4,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col5,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col6,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col4,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col5,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col1,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col2,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col3,#T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col4{
+            color:  black;
+        }</style><table id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >B5</th>        <th class="col_heading level0 col5" >A1</th>        <th class="col_heading level0 col6" >E2</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >1</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >1</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >3</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col5" class="data row0 col5" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow0_col6" class="data row0 col6" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >1</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >5</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >1</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >2</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col5" class="data row1 col5" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow1_col6" class="data row1 col6" >1</td>
+            </tr>
+            <tr>
+                        <th id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >3</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col1" class="data row2 col1" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col4" class="data row2 col4" >0</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col5" class="data row2 col5" >3</td>
+                        <td id="T_4b03ec4c_9235_11eb_8b49_000d3a9d2c7frow2_col6" class="data row2 col6" >1</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<p>Counting non-zero values for each sample would result in the following values of observed features for each sample:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2</span>
+<span class="kn">import</span> <span class="nn">qiime2.plugins.diversity</span> <span class="k">as</span> <span class="nn">div</span>
+
+<span class="n">feature_table_1a</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Artifact</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="s2">&quot;FeatureTable[Frequency]&quot;</span><span class="p">,</span> <span class="n">feature_table_1</span><span class="p">)</span>
+
+<span class="n">observed_features_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">alpha</span><span class="p">(</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;observed_features&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">alpha_diversity</span>
+<span class="n">observed_features_1</span> <span class="o">=</span> <span class="n">observed_features_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;observed-features&#39;</span><span class="p">)</span>
+<span class="n">observed_features_1</span><span class="o">.</span><span class="n">style</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
-<span class="go">4</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >observed-features</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >3</td>
+            </tr>
+            <tr>
+                        <th id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >5</td>
+            </tr>
+            <tr>
+                        <th id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4c64bc56_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >3</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<p>Based on the observed features metric, we could consider samples <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">4gd8</span></code> to have equal feature richness, and sample <code class="docutils literal notranslate"><span class="pre">e375</span></code> to have a higher feature richness. Also note that while <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">4gd8</span></code> have the same feature richness, different features are present in the two samples. Richness tells us only about how many different features are present, but nothing about which features are present.</p>
+<p>Simple counting of features, as we’re doing here, is common but there are a few limitations to be aware of.</p>
+</div>
+<div class="section" id="even-sampling">
+<h3><span class="section-number">8.1.2. </span>Even sampling<a class="headerlink" href="#even-sampling" title="Permalink to this headline">¶</a></h3>
+<p>Imagine again that we’re going on a sampling trip to count plants in the Sonoran Desert and the Costa Rican rainforest. We’re interested in getting an idea of the plant richness in each environment. In the Sonoran Desert, we survey a square kilometer area, and count 150 species of plants. In the rainforest, we survey a square meter, and count 15 species of plants. On the basis of our survey we decide that plant species richness is higher in the desert than in the rainforest. Where did we go wrong?</p>
+<p>We expended a lot more sampling effort in the desert than we did in the rainforest, so it shouldn’t be surprising that we observed more species there. If we expended the same effort in the rainforest, we’d probably observe a lot more than 15 or 150 plant species, and we’d have a more sound comparison.</p>
+<p>In sequencing-based studies of microbiomes, the analog of sampling area is sequencing depth. If we collect 100 sequences from one sample, and 10,000 sequences from another sample, we can’t directly compare the number of observed features across these samples because we expended a lot more sampling effort on the sample with 10,000 sequences than on the sample with 100 sequences.</p>
+<p>The ideal way to normalize tables for computation of these metrics is a subject of ongoing research, and most likely differs depending on what you want to do with the feature table. We’ll cover this topic in <a class="reference internal" href="feature-table-normalization.html#feature-table-normalization"><span class="std std-ref">Normalization of Feature Tables</span></a>. At present, when computing alpha and <a class="reference internal" href="beta-diversity.html#beta-diversity"><span class="std std-ref">beta diversity</span></a> metics, the way this is typically handled is by randomly subsampling sequences without replacement at a fixed total frequency across all samples. This process is referred to as <strong>rarefaction</strong>. Continuing from the example above, if we randomly select 100 sequences to represent the sample with 10,000 sequences (i.e., we rarefy that sample to a depth of 100 sequences) we can compute its richness based on that random subsample. That richness value will serve as a more relevant comparison to the richness value for the sample that we only obtained 100 sequences from.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Rarefaction is not ideal. I think of it as a necessary evil to faciliate these comparisons. Our field needs to move toward improved solutions that are easily accessible to users to get beyond the need to rarefy data. Until we have that, you <strong>must</strong> rarefy your data before computing alpha and beta diversity unless the metric you’re using specifically does not require equal sampling effort across samples.</p>
+</div>
+<p>Because rarefaction involves taking a <em>random</em> subsample of sequences from each sample, rarefying the same feature table multiple times will yield different rarefied feature tables. This is sometimes managed by computing multiple rarefied feature tables, computing diversity metrics on each table, and then averaging the diversity value computed for each sample. We’ll explore this below in <a class="reference internal" href="#alpha-rarefaction"><span class="std std-ref">Alpha rarefaction</span></a>. The following are three different rarefied versions of our example feature table from above. Notice that the total frequency for each sample is now four - our rarefaction depth.</p>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When feature tables are rarefied in QIIME 2, features that are not observed in any samples are dropped from the table. This doesn’t impact downstream analysis and results in tables with smaller file size. You can observe this in the rarefied feature tables presented in this section.</p>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2.plugins.feature_table</span> <span class="k">as</span> <span class="nn">ft</span>
+
+<span class="n">rarefied_feature_table_1a</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">rarefy</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">sampling_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">rarefied_table</span>
+<span class="n">rarefied_feature_table1</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">rarefied_feature_table1</span><span class="o">.</span><span class="n">style</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="go">3</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >A1</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >1</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >3</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >1</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >2</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >1</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >2</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow2_col1" class="data row2 col1" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_4c6f0db4_9235_11eb_8b49_000d3a9d2c7frow2_col4" class="data row2 col4" >2</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rarefied_feature_table_2a</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">rarefy</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">sampling_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">rarefied_table</span>
+<span class="n">rarefied_feature_table2</span> <span class="o">=</span> <span class="n">rarefied_feature_table_2a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">rarefied_feature_table2</span><span class="o">.</span><span class="n">style</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >A1</th>        <th class="col_heading level0 col5" >E2</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >1</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >1</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >2</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow0_col5" class="data row0 col5" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >2</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >1</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >1</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow1_col5" class="data row1 col5" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col1" class="data row2 col1" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col4" class="data row2 col4" >3</td>
+                        <td id="T_4c797e34_9235_11eb_8b49_000d3a9d2c7frow2_col5" class="data row2 col5" >1</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rarefied_feature_table_3a</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">rarefy</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">sampling_depth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">rarefied_table</span>
+<span class="n">rarefied_feature_table3</span> <span class="o">=</span> <span class="n">rarefied_feature_table_3a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">rarefied_feature_table3</span><span class="o">.</span><span class="n">style</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >A1</th>        <th class="col_heading level0 col5" >E2</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >1</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >3</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow0_col5" class="data row0 col5" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >3</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >1</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow1_col5" class="data row1 col5" >0</td>
+            </tr>
+            <tr>
+                        <th id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7flevel0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col0" class="data row2 col0" >2</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col1" class="data row2 col1" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col4" class="data row2 col4" >1</td>
+                        <td id="T_4c831e3a_9235_11eb_8b49_000d3a9d2c7frow2_col5" class="data row2 col5" >1</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<p>If instead of choosing to rarefy at four sequences per sample (which is lower than the total frequency of any of our samples) we rarefied at six sequences per sample (which is higher than the total frequency of sample <code class="docutils literal notranslate"><span class="pre">4ac2</span></code>), sample <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> will be dropped from the resulting feature table.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rarefied_feature_table_4a</span> <span class="o">=</span> <span class="n">ft</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">rarefy</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">sampling_depth</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">rarefied_table</span>
+<span class="n">rarefied_feature_table4</span> <span class="o">=</span> <span class="n">rarefied_feature_table_4a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">rarefied_feature_table4</span><span class="o">.</span><span class="n">style</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >A1</th>        <th class="col_heading level0 col5" >E2</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7flevel0_row0" class="row_heading level0 row0" >e375</th>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col0" class="data row0 col0" >0</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col1" class="data row0 col1" >2</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col2" class="data row0 col2" >1</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col3" class="data row0 col3" >2</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col4" class="data row0 col4" >0</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow0_col5" class="data row0 col5" >1</td>
+            </tr>
+            <tr>
+                        <th id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7flevel0_row1" class="row_heading level0 row1" >4gd8</th>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col0" class="data row1 col0" >3</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col1" class="data row1 col1" >0</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col2" class="data row1 col2" >0</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col3" class="data row1 col3" >0</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col4" class="data row1 col4" >2</td>
+                        <td id="T_4c8c4654_9235_11eb_8b49_000d3a9d2c7frow1_col5" class="data row1 col5" >1</td>
+            </tr>
+    </tbody></table></div></div>
 </div>
 <div class="section" id="a-limitation-of-feature-counting">
-<h4><span class="section-number">8.1.1.1. </span>A limitation of feature counting<a class="headerlink" href="#a-limitation-of-feature-counting" title="Permalink to this headline">¶</a></h4>
+<h4><span class="section-number">8.1.2.1. </span>A limitation of feature counting<a class="headerlink" href="#a-limitation-of-feature-counting" title="Permalink to this headline">¶</a></h4>
 <p>Imagine that we have the same table, but some additional information about the features in the table. Specifically, we’ve computed the following phylogenetic tree. And, for the sake of illustration, imagine that we’ve also assigned taxonomy to each of the features and found that our samples contain representatives from the archaea, bacteria, and eukaryotes (their labels begin with <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">E</span></code>, respectively).</p>
 <p>First, let’s define a phylogenetic tree using the Newick format (which is described <a class="reference external" href="http://evolution.genetics.washington.edu/phylip/newicktree.html">here</a>, and more formally defined <a class="reference external" href="http://evolution.genetics.washington.edu/phylip/newick_doc.html">here</a>). We’ll then load that up using <a class="reference external" href="http://scikit-bio.org">scikit-bio</a>’s <a class="reference external" href="http://scikit-bio.org/generated/skbio.core.tree.TreeNode.html#skbio.core.tree.TreeNode">TreeNode</a> object, and visualize it with <a class="reference external" href="http://etetoolkit.org">ete3</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ete3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">TreeStyle</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">show_leaf_name</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">250</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">branch_vertical_margin</span> <span class="o">=</span> <span class="mi">15</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span><span class="o">.</span><span class="n">show_branch_length</span> <span class="o">=</span> <span class="kc">True</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ete3</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">TreeStyle</span><span class="p">()</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">show_leaf_name</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">branch_vertical_margin</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">show_branch_length</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">newick_tree</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,&#39;</span>
-<span class="gp">... </span>                       <span class="s1">&#39;((A1:0.2,A2:0.3):0.3,&#39;</span>
-<span class="gp">... </span>                       <span class="s1">&#39; (E1:0.3,E2:0.4):0.7):0.55);&#39;</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.tree</span> <span class="kn">import</span> <span class="n">TreeNode</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">newick_tree</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">root_at_midpoint</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="n">newick_tree</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,&#39;</span>
+                      <span class="s1">&#39;((A1:0.2,A2:0.3):0.3,&#39;</span>
+                      <span class="s1">&#39; (E1:0.3,E2:0.4):0.7):0.55);&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">skbio.tree</span> <span class="kn">import</span> <span class="n">TreeNode</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">newick_tree</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">root_at_midpoint</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">from_skbio</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">map_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%</span><span class="s2">inline&quot;</span><span class="p">,</span> <span class="n">tree_style</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
-<span class="go">&lt;IPython.core.display.Image object&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">ete3</span><span class="o">.</span><span class="n">Tree</span><span class="o">.</span><span class="n">from_skbio</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">map_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+<span class="n">t</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%%</span><span class="s2">inline&quot;</span><span class="p">,</span> <span class="n">tree_style</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+
 </pre></div>
 </div>
 <p>Pairing this with the table we defined above (displayed again in the cell below), given what you now know about these features, which would you consider the most diverse? Are you happy with the <span class="math notranslate nohighlight">\(\alpha\)</span> diversity conclusion that you obtained when computing the number of observed features in each sample?</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span>
-<span class="go">    A  B  C</span>
-<span class="go">B1  1  1  5</span>
-<span class="go">B2  1  2  0</span>
-<span class="go">B3  3  1  0</span>
-<span class="go">B4  0  2  0</span>
-<span class="go">B5  0  0  0</span>
-<span class="go">A1  0  0  3</span>
-<span class="go">E2  0  0  1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table2</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="phylogenetic-diversity-pd">
-<h3><span class="section-number">8.1.2. </span>Phylogenetic Diversity (PD)<a class="headerlink" href="#phylogenetic-diversity-pd" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">8.1.3. </span>Phylogenetic Diversity (PD)<a class="headerlink" href="#phylogenetic-diversity-pd" title="Permalink to this headline">¶</a></h3>
 <p>Phylogenetic Diversity (PD) is a metric that was developed by Dan Faith in the early 1990s (find the original paper <a class="reference external" href="http://www.sciencedirect.com/science/article/pii/0006320792912013">here</a>). Like many of the measures that are used in microbial community ecology, it wasn’t initially designed for studying microbial communities, but rather communities of “macro-organisms” (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, while some don’t translate as well. (For an illustration of the effect of sequencing error on PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1 of <a class="reference external" href="http://www.nature.com/nmeth/journal/v7/n9/full/nmeth0910-668b.html">Reeder and Knight (2010)</a>).</p>
 <p>PD is relatively simple to calculate. It is computed simply as the sum of the branch length in a phylogenetic tree that is “covered” or represented in a given sample. Let’s look at an example to see how this works.</p>
 <p>I’ll now define a couple of functions that we’ll use to compute PD.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">observed_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs_id</span> <span class="k">for</span> <span class="n">obs_id</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">index</span>
-<span class="gp">... </span>                <span class="k">if</span> <span class="n">table</span><span class="p">[</span><span class="n">sample_id</span><span class="p">][</span><span class="n">obs_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
-<span class="gp">... </span>    <span class="n">observed_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="c1"># iterate over the observed features</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">observed_features</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">t</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">for</span> <span class="n">internal_node</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">ancestors</span><span class="p">():</span>
-<span class="gp">... </span>            <span class="k">if</span> <span class="n">internal_node</span><span class="o">.</span><span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="c1"># we&#39;ve hit the root</span>
-<span class="gp">... </span>                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-<span class="gp">... </span>                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="gp">... </span>            <span class="k">else</span><span class="p">:</span>
-<span class="gp">... </span>                <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">internal_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">:</span>
-<span class="gp">... </span>                    <span class="nb">print</span><span class="p">(</span><span class="n">internal_node</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="gp">... </span>                <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">internal_node</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">observed_nodes</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">observed_nodes</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">result</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+   <span class="n">observed_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">obs_id</span> <span class="k">for</span> <span class="n">obs_id</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">index</span>
+               <span class="k">if</span> <span class="n">table</span><span class="p">[</span><span class="n">sample_id</span><span class="p">][</span><span class="n">obs_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+   <span class="n">observed_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+   <span class="c1"># iterate over the observed features</span>
+   <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">observed_features</span><span class="p">:</span>
+       <span class="n">t</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+       <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+       <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+           <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+       <span class="k">for</span> <span class="n">internal_node</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">ancestors</span><span class="p">():</span>
+           <span class="k">if</span> <span class="n">internal_node</span><span class="o">.</span><span class="n">length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+               <span class="c1"># we&#39;ve hit the root</span>
+               <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+           <span class="k">else</span><span class="p">:</span>
+               <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">internal_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">:</span>
+                   <span class="nb">print</span><span class="p">(</span><span class="n">internal_node</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+               <span class="n">observed_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">internal_node</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">observed_nodes</span>
+
+<span class="k">def</span> <span class="nf">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+   <span class="n">observed_nodes</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
 <p>And then apply those to compute the PD of our three samples. For each computation, we’re also printing out the branch lengths of the branches that are observed <em>for the first time</em> when looking at a given feature. When computing PD, we include the length of each branch only one time.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_A</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_A</span><span class="p">)</span>
-<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
-<span class="go">B2 0.3 </span>
-<span class="go">B3 0.5 0.2 0.3 </span>
-<span class="go">2.0250000000000004</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd_A</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd_A</span><span class="p">)</span>
+
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_B</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_B</span><span class="p">)</span>
-<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
-<span class="go">B2 0.3 </span>
-<span class="go">B3 0.5 0.2 0.3 </span>
-<span class="go">B4 0.3 </span>
-<span class="go">2.325</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd_B</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd_B</span><span class="p">)</span>
+
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_C</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pd_C</span><span class="p">)</span>
-<span class="go">B1 0.2 0.3 0.2250000000000001 </span>
-<span class="go">A1 0.2 0.3 0.32499999999999996 </span>
-<span class="go">E2 0.4 0.7 </span>
-<span class="go">2.65</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd_C</span> <span class="o">=</span> <span class="n">phylogenetic_diversity</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table2</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd_C</span><span class="p">)</span>
+
 </pre></div>
 </div>
 <p>How does this result compare to what we observed above with the Observed features metric? Based on your knowledge of biology, which do you think is a better representation of the relative diversities of these samples?</p>
-</div>
-<div class="section" id="even-sampling">
-<h3><span class="section-number">8.1.3. </span>Even sampling<a class="headerlink" href="#even-sampling" title="Permalink to this headline">¶</a></h3>
-<p>Imagine again that we’re going out to count plants in the Sonoran Desert and the Costa Rican rainforest. We’re interested in getting an idea of the plant richness in each environment. In the Sonoran Desert, we survey a square kilometer area, and count 150 species of plants. In the rainforest, we survey a square meter, and count 15 species of plants. So, clearly the plant species richness in the Sonoran Desert is higher, right? What’s wrong with this comparison?</p>
-<p>The problem is that we’ve expended a lot more sampling effort in the desert than we did in the rainforest, so it shouldn’t be surprising that we observed more species there. If we expended the same effort in the rainforest, we’d probably observe a lot more than 15 or 150 plant species, and we’d have a more sound comparison.</p>
-<p>In sequencing-based studies of microorganism richness, the analog of sampling area is sequencing depth. If we collect 100 sequences from one sample, and 10,000 sequences from another sample, we can’t directly compare the number of observed features or the phylogenetic diversity of these because we expended a lot more sampling effort on the sample with 10,000 sequences than on the sample with 100 sequences. The way this is typically handled is by randomly subsampling sequences from the sample with more sequences until the sequencing depth is equal to that in the sample with fewer sequences. If we randomly select 100 sequences at random from the sample with 10,000 sequences, and compute the alpha diversity based on that random subsample, we’ll have a better idea of the relative alpha diversities of the two samples.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;feature1&#39;</span><span class="p">,</span> <span class="s1">&#39;feature2&#39;</span><span class="p">,</span> <span class="s1">&#39;feature3&#39;</span><span class="p">,</span> <span class="s1">&#39;feature4&#39;</span><span class="p">,</span> <span class="s1">&#39;feature5&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-<span class="gp">... </span>                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bad_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">feature_ids</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">sample_ids</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bad_table</span>
-<span class="go">        A    B  C</span>
-<span class="go">feature1   50    4  0</span>
-<span class="go">feature2   35  200  0</span>
-<span class="go">feature3  100    2  1</span>
-<span class="go">feature4   15  400  1</span>
-<span class="go">feature5    0   40  1</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="go">4</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
-<span class="go">5</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_features</span><span class="p">(</span><span class="n">bad_table</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bad_table</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="go">A    200</span>
-<span class="go">B    646</span>
-<span class="go">C      3</span>
-<span class="go">dtype: int64</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="rarefaction">
 <h3><span class="section-number">8.1.4. </span>Rarefaction<a class="headerlink" href="#rarefaction" title="Permalink to this headline">¶</a></h3>
@@ -569,7 +800,7 @@
 <h4><span class="section-number">8.1.4.1. </span>Even sampling<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 </div>
 <div class="section" id="alpha-rarefaction">
-<h4><span class="section-number">8.1.4.2. </span>Alpha rarefaction<a class="headerlink" href="#alpha-rarefaction" title="Permalink to this headline">¶</a></h4>
+<span id="id3"></span><h4><span class="section-number">8.1.4.2. </span>Alpha rarefaction<a class="headerlink" href="#alpha-rarefaction" title="Permalink to this headline">¶</a></h4>
 </div>
 </div>
 </div>

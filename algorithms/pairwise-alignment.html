@@ -57,7 +57,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="2. Sequence homology searching" href="database-searching.html" />
-    <link rel="prev" title="9. Beta diversity" href="../using/beta-diversity.html" />
+    <link rel="prev" title="10. Normalization of Feature Tables" href="../using/feature-table-normalization.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -155,6 +155,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="../using/beta-diversity.html">
    9. Beta diversity
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../using/feature-table-normalization.html">
+   10. Normalization of Feature Tables
   </a>
  </li>
 </ul>
@@ -2399,7 +2404,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>138 ms ± 3.48 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>103 ms ± 1.13 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2414,7 +2419,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>572 µs ± 10.2 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>445 µs ± 3.88 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2494,10 +2499,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CACGGAGGTG
-TCATAGAGGT
-ATCGCACAGAGTTATTGGACTGAGG
-TTTGCATCCATCCAGTGTCAGACGCGTCTTAACGTATCAATTTCGCGGGT
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ATGAATGCCA
+GGGTCGGGGA
+CCGTCCTGGTACTACGCTGACGGCG
+CGGGTCCGACACCTTATGCGCACTTCTTACGGTGACGTTGATATCGCAGT
 </pre></div>
 </div>
 </div>
@@ -2566,32 +2571,32 @@ TTTGCATCCATCCAGTGTCAGACGCGTCTTAACGTATCAATTTCGCGGGT
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.196187</td>
+      <td>0.212302</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.295433</td>
+      <td>1.268839</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>3.087092</td>
+      <td>2.823569</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>5.087195</td>
+      <td>4.431370</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>7.625082</td>
+      <td>6.380605</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>11.018907</td>
+      <td>8.500631</td>
     </tr>
   </tbody>
 </table>
@@ -2616,7 +2621,7 @@ TTTGCATCCATCCAGTGTCAGACGCGTCTTAACGTATCAATTTCGCGGGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f6befc994e0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fd8a40a95f8&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2640,7 +2645,7 @@ TTTGCATCCATCCAGTGTCAGACGCGTCTTAACGTATCAATTTCGCGGGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f6befc5b048&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fd8a4085320&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />
@@ -2710,7 +2715,7 @@ TTTGCATCCATCCAGTGTCAGACGCGTCTTAACGTATCAATTTCGCGGGT
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="../using/beta-diversity.html" title="previous page"><span class="section-number">9. </span>Beta diversity</a>
+    <a class='left-prev' id="prev-link" href="../using/feature-table-normalization.html" title="previous page"><span class="section-number">10. </span>Normalization of Feature Tables</a>
     <a class='right-next' id="next-link" href="database-searching.html" title="next page"><span class="section-number">2. </span>Sequence homology searching</a>
 
         </div>

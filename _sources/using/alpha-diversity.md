@@ -1,3 +1,18 @@
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 (alpha-diversity)=
 # Alpha diversity
 
@@ -11,7 +26,7 @@ As defined earlier, a "type of organism" or a "type of microbe" is an arbitrary 
 
 The next sub-cateogry of alpha diversity metric that we'll discuss in this chapter will be *evenness*. Evenness tells us how consistent the distribution of species abundances are in a given environment. If, for example, the most abundant plant in the Sonoran desert was roughly as common as the least abundant plant (not the case!), we would say that the evenness of plant species was high. On the other hand, if the most abundant plant was thousands of times more common than the least common plant (probably closer to the truth), then we'd say that the evenness of plant species was low.
 
-## Measure of microbiome richness
+## Measures of microbiome richness
 
 We'll begin by looking at two measures of community richness. Both of these are commonly used in practice. 
 
@@ -19,53 +34,108 @@ We'll begin by looking at two measures of community richness. Both of these are 
 
 Observed features is a very simple metric that can be used to quantify microbiome diversity. With this metric, we simply count the features that are observed in a given sample. A feature is considered to have been observed in a sample if it has a frequency of greater than zero. This is a **qualitative** diversity metric meaning that each feature is treated as being either observed or not observed. This metric doesn't consider how many times a feature was observed.
 
-Let's define a feature table for this analysis:
+Let's define a simple feature table for this analysis:
 
-```python
->>> sample_ids = ['A', 'B', 'C']
->>> feature_ids = ['B1','B2','B3','B4','B5','A1','E2']
->>> data = np.array([[1, 1, 5],
-...                  [1, 2, 0],
-...                  [3, 1, 0],
-...                  [0, 2, 0],
-...                  [0, 0, 0],
-...                  [0, 0, 3],
-...                  [0, 0, 1]])
-...
->>> table2 = pd.DataFrame(data, index=feature_ids, columns=sample_ids)
->>> table2
-    A  B  C
-B1  1  1  5
-B2  1  2  0
-B3  3  1  0
-B4  0  2  0
-B5  0  0  0
-A1  0  0  3
-E2  0  0  1
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import numpy as np
+
+sample_ids = ['4ac2', 'e375', '4gd8']
+feature_ids = ['B1','B2','B3','B4','B5','A1','E2']
+data = np.array([[1, 1, 3, 0, 0, 0, 0],
+                 [1, 5, 1, 2, 0, 0, 1],
+                 [3, 0, 0, 0, 0, 3, 1]])
+
+feature_table_1 = pd.DataFrame(data, index=sample_ids, columns=feature_ids)
+feature_table_1.style
 ```
 
-Our sample $A$ has an observed feature frequency value of 3, sample $B$ has an observed feature frequency of 4, and sample $C$ has an observed feature frequency of 3. Note that this is different than the total counts for each column (which would be 5, 6, and 9 respectively). Based on the observed features metric, we could consider samples $A$ and $C$ to have even feature richness, and sample $B$ to have 33% higher feature richness.
+To compute the value of observed features for each sample in our feature table, we would simply count the number of non-zero counts for each sample. All of the non-zero counts are bolded in the following view of the table. 
 
-We could compute this in python as follows:
+```{code-cell}
+:tags: [hide-input]
 
-```python
->>> def observed_features(table, sample_id):
-...     return sum([e > 0 for e in table[sample_id]])
+def non_zero_blue(frequency):
+    if frequency > 0:
+        color = 'blue'
+    else:
+        color = 'black'
+    return 'color: %s' % color
+
+feature_table_1.style.applymap(non_zero_blue)
 ```
 
-```python
->>> print(observed_features(table2, 'A'))
-3
+Counting non-zero values for each sample would result in the following values of observed features for each sample:
+
+```{code-cell}
+:tags: [hide-input]
+import qiime2
+import qiime2.plugins.diversity as div
+
+feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", feature_table_1)
+
+observed_features_1a = div.actions.alpha(feature_table_1a, metric='observed_features').alpha_diversity
+observed_features_1 = observed_features_1a.view(pd.Series).to_frame(name='observed-features')
+observed_features_1.style
 ```
 
-```python
->>> print(observed_features(table2, 'B'))
-4
+Based on the observed features metric, we could consider samples `4ac2` and `4gd8` to have equal feature richness, and sample `e375` to have a higher feature richness. Also note that while `4ac2` and `4gd8` have the same feature richness, different features are present in the two samples. Richness tells us only about how many different features are present, but nothing about which features are present.
+
+Simple counting of features, as we're doing here, is common but there are a few limitations to be aware of. 
+
+### Even sampling
+
+Imagine again that we're going on a sampling trip to count plants in the Sonoran Desert and the Costa Rican rainforest. We're interested in getting an idea of the plant richness in each environment. In the Sonoran Desert, we survey a square kilometer area, and count 150 species of plants. In the rainforest, we survey a square meter, and count 15 species of plants. On the basis of our survey we decide that plant species richness is higher in the desert than in the rainforest. Where did we go wrong?
+
+We expended a lot more sampling effort in the desert than we did in the rainforest, so it shouldn't be surprising that we observed more species there. If we expended the same effort in the rainforest, we'd probably observe a lot more than 15 or 150 plant species, and we'd have a more sound comparison.
+
+In sequencing-based studies of microbiomes, the analog of sampling area is sequencing depth. If we collect 100 sequences from one sample, and 10,000 sequences from another sample, we can't directly compare the number of observed features across these samples because we expended a lot more sampling effort on the sample with 10,000 sequences than on the sample with 100 sequences. 
+
+The ideal way to normalize tables for computation of these metrics is a subject of ongoing research, and most likely differs depending on what you want to do with the feature table. We'll cover this topic in {ref}`feature-table-normalization`. At present, when computing alpha and {ref}`beta diversity <beta-diversity>` metics, the way this is typically handled is by randomly subsampling sequences without replacement at a fixed total frequency across all samples. This process is referred to as **rarefaction**. Continuing from the example above, if we randomly select 100 sequences to represent the sample with 10,000 sequences (i.e., we rarefy that sample to a depth of 100 sequences) we can compute its richness based on that random subsample. That richness value will serve as a more relevant comparison to the richness value for the sample that we only obtained 100 sequences from. 
+
+```{warning}
+Rarefaction is not ideal. I think of it as a necessary evil to faciliate these comparisons. Our field needs to move toward improved solutions that are easily accessible to users to get beyond the need to rarefy data. Until we have that, you **must** rarefy your data before computing alpha and beta diversity unless the metric you're using specifically does not require equal sampling effort across samples. 
 ```
 
-```python
->>> print(observed_features(table2, 'C'))
-3
+Because rarefaction involves taking a _random_ subsample of sequences from each sample, rarefying the same feature table multiple times will yield different rarefied feature tables. This is sometimes managed by computing multiple rarefied feature tables, computing diversity metrics on each table, and then averaging the diversity value computed for each sample. We'll explore this below in {ref}`alpha-rarefaction`. The following are three different rarefied versions of our example feature table from above. Notice that the total frequency for each sample is now four - our rarefaction depth.
+
+````{margin}
+```{note}
+When feature tables are rarefied in QIIME 2, features that are not observed in any samples are dropped from the table. This doesn't impact downstream analysis and results in tables with smaller file size. You can observe this in the rarefied feature tables presented in this section.
+```
+````
+
+```{code-cell}
+:tags: [hide-input]
+import qiime2.plugins.feature_table as ft
+
+rarefied_feature_table_1a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_feature_table1 = rarefied_feature_table_1a.view(pd.DataFrame).astype(int)
+rarefied_feature_table1.style
+```
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_2a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_feature_table2 = rarefied_feature_table_2a.view(pd.DataFrame).astype(int)
+rarefied_feature_table2.style
+```
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_3a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_feature_table3 = rarefied_feature_table_3a.view(pd.DataFrame).astype(int)
+rarefied_feature_table3.style
+```
+
+If instead of choosing to rarefy at four sequences per sample (which is lower than the total frequency of any of our samples) we rarefied at six sequences per sample (which is higher than the total frequency of sample `4ac2`), sample `4ac2` will be dropped from the resulting feature table. 
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_4a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=6).rarefied_table
+rarefied_feature_table4 = rarefied_feature_table_4a.view(pd.DataFrame).astype(int)
+rarefied_feature_table4.style
 ```
 
 #### A limitation of feature counting
@@ -74,45 +144,37 @@ Imagine that we have the same table, but some additional information about the f
 
 First, let's define a phylogenetic tree using the Newick format (which is described [here](http://evolution.genetics.washington.edu/phylip/newicktree.html), and more formally defined [here](http://evolution.genetics.washington.edu/phylip/newick_doc.html)). We'll then load that up using [scikit-bio](http://scikit-bio.org)'s [TreeNode](http://scikit-bio.org/generated/skbio.core.tree.TreeNode.html#skbio.core.tree.TreeNode) object, and visualize it with [ete3](http://etetoolkit.org).
 
-```python
->>> import ete3
->>> ts = ete3.TreeStyle()
->>> ts.show_leaf_name = True
->>> ts.scale = 250
->>> ts.branch_vertical_margin = 15
->>> ts.show_branch_length = True
+```
+import ete3
+ts = ete3.TreeStyle()
+ts.show_leaf_name = True
+ts.scale = 250
+ts.branch_vertical_margin = 15
+ts.show_branch_length = True
 ```
 
-```python
->>> from io import StringIO
->>> newick_tree = StringIO('((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,'
-...                        '((A1:0.2,A2:0.3):0.3,'
-...                        ' (E1:0.3,E2:0.4):0.7):0.55);')
-...
->>> from skbio.tree import TreeNode
-...
->>> tree = TreeNode.read(newick_tree)
->>> tree = tree.root_at_midpoint()
+```
+from io import StringIO
+newick_tree = StringIO('((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,'
+                      '((A1:0.2,A2:0.3):0.3,'
+                      ' (E1:0.3,E2:0.4):0.7):0.55);')
+
+from skbio.tree import TreeNode
+
+tree = TreeNode.read(newick_tree)
+tree = tree.root_at_midpoint()
 ```
 
-```python
->>> t = ete3.Tree.from_skbio(tree, map_attributes=["value"])
->>> t.render("%%inline", tree_style=ts)
-<IPython.core.display.Image object>
+```
+t = ete3.Tree.from_skbio(tree, map_attributes=["value"])
+t.render("%%inline", tree_style=ts)
+
 ```
 
 Pairing this with the table we defined above (displayed again in the cell below), given what you now know about these features, which would you consider the most diverse? Are you happy with the $\alpha$ diversity conclusion that you obtained when computing the number of observed features in each sample?
 
-```python
->>> table2
-    A  B  C
-B1  1  1  5
-B2  1  2  0
-B3  3  1  0
-B4  0  2  0
-B5  0  0  0
-A1  0  0  3
-E2  0  0  1
+```
+table2
 ```
 
 ### Phylogenetic Diversity (PD)
@@ -123,118 +185,61 @@ PD is relatively simple to calculate. It is computed simply as the sum of the br
 
 I'll now define a couple of functions that we'll use to compute PD.
 
-```python
->>> def get_observed_nodes(tree, table, sample_id, verbose=False):
-...     observed_features = [obs_id for obs_id in table.index
-...                 if table[sample_id][obs_id] > 0]
-...     observed_nodes = set()
-...     # iterate over the observed features
-...     for feature in observed_features:
-...         t = tree.find(feature)
-...         observed_nodes.add(t)
-...         if verbose:
-...             print(t.name, t.length, end=' ')
-...         for internal_node in t.ancestors():
-...             if internal_node.length is None:
-...                 # we've hit the root
-...                 if verbose:
-...                     print('')
-...             else:
-...                 if verbose and internal_node not in observed_nodes:
-...                     print(internal_node.length, end=' ')
-...                 observed_nodes.add(internal_node)
-...     return observed_nodes
-...
->>> def phylogenetic_diversity(tree, table, sample_id, verbose=False):
-...     observed_nodes = get_observed_nodes(tree, table, sample_id, verbose=verbose)
-...     result = sum(o.length for o in observed_nodes)
-...     return result
+```
+def get_observed_nodes(tree, table, sample_id, verbose=False):
+   observed_features = [obs_id for obs_id in table.index
+               if table[sample_id][obs_id] > 0]
+   observed_nodes = set()
+   # iterate over the observed features
+   for feature in observed_features:
+       t = tree.find(feature)
+       observed_nodes.add(t)
+       if verbose:
+           print(t.name, t.length, end=' ')
+       for internal_node in t.ancestors():
+           if internal_node.length is None:
+               # we've hit the root
+               if verbose:
+                   print('')
+           else:
+               if verbose and internal_node not in observed_nodes:
+                   print(internal_node.length, end=' ')
+               observed_nodes.add(internal_node)
+   return observed_nodes
+
+def phylogenetic_diversity(tree, table, sample_id, verbose=False):
+   observed_nodes = get_observed_nodes(tree, table, sample_id, verbose=verbose)
+   result = sum(o.length for o in observed_nodes)
+   return result
 ```
 
 And then apply those to compute the PD of our three samples. For each computation, we're also printing out the branch lengths of the branches that are observed *for the first time* when looking at a given feature. When computing PD, we include the length of each branch only one time.
 
-```python
->>> pd_A = phylogenetic_diversity(tree, table2, 'A', verbose=True)
->>> print(pd_A)
-B1 0.2 0.3 0.2250000000000001 
-B2 0.3 
-B3 0.5 0.2 0.3 
-2.0250000000000004
+```
+pd_A = phylogenetic_diversity(tree, table2, 'A', verbose=True)
+print(pd_A)
+
 ```
 
-```python
->>> pd_B = phylogenetic_diversity(tree, table2, 'B', verbose=True)
->>> print(pd_B)
-B1 0.2 0.3 0.2250000000000001 
-B2 0.3 
-B3 0.5 0.2 0.3 
-B4 0.3 
-2.325
+```
+pd_B = phylogenetic_diversity(tree, table2, 'B', verbose=True)
+print(pd_B)
+
 ```
 
-```python
->>> pd_C = phylogenetic_diversity(tree, table2, 'C', verbose=True)
->>> print(pd_C)
-B1 0.2 0.3 0.2250000000000001 
-A1 0.2 0.3 0.32499999999999996 
-E2 0.4 0.7 
-2.65
+```
+pd_C = phylogenetic_diversity(tree, table2, 'C', verbose=True)
+print(pd_C)
+
 ```
 
 How does this result compare to what we observed above with the Observed features metric? Based on your knowledge of biology, which do you think is a better representation of the relative diversities of these samples?
 
-### Even sampling
 
-Imagine again that we're going out to count plants in the Sonoran Desert and the Costa Rican rainforest. We're interested in getting an idea of the plant richness in each environment. In the Sonoran Desert, we survey a square kilometer area, and count 150 species of plants. In the rainforest, we survey a square meter, and count 15 species of plants. So, clearly the plant species richness in the Sonoran Desert is higher, right? What's wrong with this comparison?
-
-The problem is that we've expended a lot more sampling effort in the desert than we did in the rainforest, so it shouldn't be surprising that we observed more species there. If we expended the same effort in the rainforest, we'd probably observe a lot more than 15 or 150 plant species, and we'd have a more sound comparison.
-
-In sequencing-based studies of microorganism richness, the analog of sampling area is sequencing depth. If we collect 100 sequences from one sample, and 10,000 sequences from another sample, we can't directly compare the number of observed features or the phylogenetic diversity of these because we expended a lot more sampling effort on the sample with 10,000 sequences than on the sample with 100 sequences. The way this is typically handled is by randomly subsampling sequences from the sample with more sequences until the sequencing depth is equal to that in the sample with fewer sequences. If we randomly select 100 sequences at random from the sample with 10,000 sequences, and compute the alpha diversity based on that random subsample, we'll have a better idea of the relative alpha diversities of the two samples.
-
-```python
->>> sample_ids = ['A', 'B', 'C']
->>> feature_ids = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5']
->>> data = np.array([[50, 4, 0],
-...                  [35, 200, 0],
-...                  [100, 2, 1],
-...                  [15, 400, 1],
-...                  [0, 40, 1]])
-...
->>> bad_table = pd.DataFrame(data, index=feature_ids, columns=sample_ids)
->>> bad_table
-        A    B  C
-feature1   50    4  0
-feature2   35  200  0
-feature3  100    2  1
-feature4   15  400  1
-feature5    0   40  1
-```
-
-```python
->>> print(observed_features(bad_table, 'A'))
-4
-```
-
-```python
->>> print(observed_features(bad_table, 'B'))
-5
-```
-
-```python
->>> print(observed_features(bad_table, 'C'))
-3
-```
-
-```python
->>> print(bad_table.sum())
-A    200
-B    646
-C      3
-dtype: int64
-```
 
 ### Rarefaction
 
 #### Even sampling
 
+(alpha-rarefaction)=
 #### Alpha rarefaction
