@@ -43,9 +43,9 @@ import numpy as np
 
 sample_ids = ['4ac2', 'e375', '4gd8']
 feature_ids = ['B1','B2','B3','B4','B5','A1','E2']
-data = np.array([[1, 1, 3, 0, 0, 0, 0],
-                 [1, 5, 1, 2, 0, 0, 1],
-                 [3, 0, 0, 0, 0, 3, 1]])
+data = np.array([[5, 5, 2, 0, 0, 0, 0],
+                 [3, 5, 1, 4, 4, 0, 0],
+                 [5, 0, 0, 0, 0, 5, 5]])
 
 feature_table_1 = pd.DataFrame(data, index=sample_ids, columns=feature_ids)
 feature_table_1.style
@@ -95,10 +95,12 @@ In sequencing-based studies of microbiomes, the analog of sampling area is seque
 The ideal way to normalize tables for computation of these metrics is a subject of ongoing research, and most likely differs depending on what you want to do with the feature table. We'll cover this topic in {ref}`feature-table-normalization`. At present, when computing alpha and {ref}`beta diversity <beta-diversity>` metics, the way this is typically handled is by randomly subsampling sequences without replacement at a fixed total frequency across all samples. This process is referred to as **rarefaction**. Continuing from the example above, if we randomly select 100 sequences to represent the sample with 10,000 sequences (i.e., we rarefy that sample to a depth of 100 sequences) we can compute its richness based on that random subsample. That richness value will serve as a more relevant comparison to the richness value for the sample that we only obtained 100 sequences from. 
 
 ```{warning}
-Rarefaction is not ideal. I think of it as a necessary evil to faciliate these comparisons. Our field needs to move toward improved solutions that are easily accessible to users to get beyond the need to rarefy data. Until we have that, you **must** rarefy your data before computing alpha and beta diversity unless the metric you're using specifically does not require equal sampling effort across samples. 
+Rarefaction is not ideal. I think of it as a necessary evil that enables these comparisons. Our field needs to move toward better normalization techniques that are _accessible to users_ to get beyond the need to rarefy data. You **must** rarefy or otherwise normalize your feature table data before computing alpha and beta diversity unless the metric you're using specifically does not require this. 
 ```
 
-Because rarefaction involves taking a _random_ subsample of sequences from each sample, rarefying the same feature table multiple times will yield different rarefied feature tables. This is sometimes managed by computing multiple rarefied feature tables, computing diversity metrics on each table, and then averaging the diversity value computed for each sample. We'll explore this below in {ref}`alpha-rarefaction`. The following are three different rarefied versions of our example feature table from above. Notice that the total frequency for each sample is now four - our rarefaction depth.
+Because rarefaction involves taking a _random_ subsample of sequences from each sample, rarefying the same feature table multiple times will yield different rarefied feature tables. This is sometimes managed by computing multiple rarefied feature tables, computing diversity metrics on each table, and then averaging the diversity value computed for each sample. We'll explore this below in {ref}`alpha-rarefaction`. 
+
+The following are three different rarefied versions of our example feature table from above, each rarefied to 10 sequences per sample. Notice that the total frequency for each sample is now ten. After rarefied, Observed Features is computed and presented for each rarefied table. 
 
 ````{margin}
 ```{note}
@@ -106,44 +108,80 @@ When feature tables are rarefied in QIIME 2, features that are not observed in a
 ```
 ````
 
+(adiv:first-rarefied-table)=
+#### A rarefied feature table at `sampling_depth=10`
+
 ```{code-cell}
 :tags: [hide-input]
 import qiime2.plugins.feature_table as ft
 
-rarefied_feature_table_1a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_feature_table_1a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=10).rarefied_table
 rarefied_feature_table1 = rarefied_feature_table_1a.view(pd.DataFrame).astype(int)
 rarefied_feature_table1.style
 ```
 
 ```{code-cell}
 :tags: [hide-input]
-rarefied_feature_table_2a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_observed_features_1a = div.actions.alpha(rarefied_feature_table_1a, metric='observed_features').alpha_diversity
+rarefied_observed_features_1 = rarefied_observed_features_1a.view(pd.Series).to_frame(name='observed-features')
+rarefied_observed_features_1.style
+```
+
+#### Another rarefied feature table at `sampling_depth=10`
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_2a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=10).rarefied_table
 rarefied_feature_table2 = rarefied_feature_table_2a.view(pd.DataFrame).astype(int)
 rarefied_feature_table2.style
 ```
 
 ```{code-cell}
 :tags: [hide-input]
-rarefied_feature_table_3a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=4).rarefied_table
+rarefied_observed_features_2a = div.actions.alpha(rarefied_feature_table_2a, metric='observed_features').alpha_diversity
+rarefied_observed_features_2 = rarefied_observed_features_2a.view(pd.Series).to_frame(name='observed-features')
+rarefied_observed_features_2.style
+```
+
+#### A third rarefied feature table at `sampling_depth=10`
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_3a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=10).rarefied_table
 rarefied_feature_table3 = rarefied_feature_table_3a.view(pd.DataFrame).astype(int)
 rarefied_feature_table3.style
 ```
 
-If instead of choosing to rarefy at four sequences per sample (which is lower than the total frequency of any of our samples) we rarefied at six sequences per sample (which is higher than the total frequency of sample `4ac2`), sample `4ac2` will be dropped from the resulting feature table. 
+```{code-cell}
+:tags: [hide-input]
+rarefied_observed_features_3a = div.actions.alpha(rarefied_feature_table_3a, metric='observed_features').alpha_diversity
+rarefied_observed_features_3 = rarefied_observed_features_3a.view(pd.Series).to_frame(name='observed-features')
+rarefied_observed_features_3.style
+```
+
+#### A rarefied feature table at a higher sampling depth (`sampling_depth=13`)
+ 
+If instead of choosing to rarefy at ten sequences per sample (which is lower than the total frequency of any of our samples) we rarefied at thirteen sequences per sample (which is higher than the total frequency of sample `4ac2`), sample `4ac2` will be dropped from the resulting feature table. 
 
 ```{code-cell}
 :tags: [hide-input]
-rarefied_feature_table_4a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=6).rarefied_table
+rarefied_feature_table_4a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=13).rarefied_table
 rarefied_feature_table4 = rarefied_feature_table_4a.view(pd.DataFrame).astype(int)
 rarefied_feature_table4.style
 ```
 
+```{code-cell}
+:tags: [hide-input]
+rarefied_observed_features_4a = div.actions.alpha(rarefied_feature_table_4a, metric='observed_features').alpha_diversity
+rarefied_observed_features_4 = rarefied_observed_features_4a.view(pd.Series).to_frame(name='observed-features')
+rarefied_observed_features_4.style
+```
+
 #### A limitation of feature counting
 
-Imagine that we have the same table, but some additional information about the features in the table. Specifically, we've computed the following phylogenetic tree. And, for the sake of illustration, imagine that we've also assigned taxonomy to each of the features and found that our samples contain representatives from the archaea, bacteria, and eukaryotes (their labels begin with `A`, `B`, and `E`, respectively).
+Imagine that we have the same table, but some additional context about the features in the table. Specifically, imagine we've computed the following phylogenetic tree from our feature sequences. And, for the sake of illustration, imagine that we've also assigned taxonomy to each of the features and found that our samples contain representatives from the archaea, bacteria, and eukaryotes (their labels begin with `A`, `B`, and `E`, respectively, in this example).
 
-First, let's define a phylogenetic tree using the Newick format (which is described [here](http://evolution.genetics.washington.edu/phylip/newicktree.html), and more formally defined [here](http://evolution.genetics.washington.edu/phylip/newick_doc.html)). We'll then load that up using [scikit-bio](http://scikit-bio.org)'s [TreeNode](http://scikit-bio.org/generated/skbio.core.tree.TreeNode.html#skbio.core.tree.TreeNode) object, and visualize it with [ete3](http://etetoolkit.org).
-
+<!-- This code generated the tree image included in this section, but I haven't yet been able to get ete to install in the q2book environment.
 ```
 import ete3
 ts = ete3.TreeStyle()
@@ -152,66 +190,125 @@ ts.scale = 250
 ts.branch_vertical_margin = 15
 ts.show_branch_length = True
 ```
+-->
 
-```
+```{code-cell}
+:tags: [hide-cell]
 from io import StringIO
-newick_tree = StringIO('((B1:0.2,B2:0.3):0.3,((B3:0.5,B4:0.3):0.2,B5:0.9):0.3,'
-                      '((A1:0.2,A2:0.3):0.3,'
-                      ' (E1:0.3,E2:0.4):0.7):0.55);')
-
 from skbio.tree import TreeNode
 
-tree = TreeNode.read(newick_tree)
-tree = tree.root_at_midpoint()
+tree_1n = StringIO('((B1:0.1,B2:0.05):0.1,((B3:0.05,B4:0.1):0.1,B5:0.2):0.1,'
+                   '((A1:0.1,A2:0.05):0.3,'
+                   '(E1:0.1,E2:0.1):0.7):0.25);')
+
+tree_1 = TreeNode.read(tree_1n)
+tree_1 = tree_1.root_at_midpoint()
+
+tree_1a = qiime2.Artifact.import_data("Phylogeny[Rooted]", tree_1)
 ```
 
+<!-- This code generated the tree image included in this section, but I haven't yet been able to get ete to install in the q2book environment.
 ```
 t = ete3.Tree.from_skbio(tree, map_attributes=["value"])
 t.render("%%inline", tree_style=ts)
 
 ```
+-->
 
-Pairing this with the table we defined above (displayed again in the cell below), given what you now know about these features, which would you consider the most diverse? Are you happy with the $\alpha$ diversity conclusion that you obtained when computing the number of observed features in each sample?
+```{figure} ./images/adiv-tree-1.png
+---
+name: adiv-tree-1
+---
+A phylogenetic tree representing all of the features in our original feature table. (This tree isn't intended to accurately represent the relationship between the Bacteria, Archaea, and Eukarya.)
+```
 
-```
-table2
-```
+Pairing this with the table we defined above (displayed again in the cell below), and given what you now know about these features, how do you feel about the relative richness of these samples?
+
 
 ### Phylogenetic Diversity (PD)
 
-Phylogenetic Diversity (PD) is a metric that was developed by Dan Faith in the early 1990s (find the original paper [here](http://www.sciencedirect.com/science/article/pii/0006320792912013)). Like many of the measures that are used in microbial community ecology, it wasn't initially designed for studying microbial communities, but rather communities of "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, while some don't translate as well. (For an illustration of the effect of sequencing error on PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1 of [Reeder and Knight (2010)](http://www.nature.com/nmeth/journal/v7/n9/full/nmeth0910-668b.html)).
+Phylogenetic Diversity (PD or Faith's PD) is a measure of richness that was developed in the early 1990s {cite}`Faith1992-nn`. Like many of the measures that are used in microbiome research, it wasn't initially designed for studying microbial communities, but rather communities of plants, animals, and other "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, {ref}`while others don't <chao1>`.
 
-PD is relatively simple to calculate. It is computed simply as the sum of the branch length in a phylogenetic tree that is "covered" or represented in a given sample. Let's look at an example to see how this works.
+PD is computed as the sum of the branch length in a phylogenetic tree that is represented in a given sample.
+
+Let's apply this metric to the three rarefied feature tables that we computed above. 
+
+```{code-cell}
+:tags: [hide-cell]
+def get_observed_branch_lengths(tree, table, sample_id, verbose=False):
+    sample_vector = table.T[sample_id]
+    observed_features = sample_vector.index[sample_vector.to_numpy().nonzero()[0]]
+    observed_nodes = set()
+    # iterate over the observed features
+    for feature_id in observed_features:
+        t = tree.find(feature_id)
+        observed_nodes.add(t)
+        if verbose:
+            print(t.name, t.length, end=' ')
+        for internal_node in t.ancestors():
+            if internal_node.length is None:
+                # we've hit the root
+                if verbose:
+                    print('')
+            else:
+                if verbose and internal_node not in observed_nodes:
+                    print(internal_node.length, end=' ')
+                observed_nodes.add(internal_node)
+    return [t.length for t in observed_nodes]
+```
+
+#### Faith's PD computed on our first rarefied feature table
+
+```{code-cell}
+:tags: [hide-input]
+for sample_id in rarefied_feature_table1.index:
+    print("Observed branch lengths for sample %s" % sample_id)
+    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table1, sample_id, verbose=True)
+    print()
+```
+
+```{code-cell}
+:tags: [hide-input]
+pd_1a = div.actions.alpha_phylogenetic(rarefied_feature_table_1a, tree_1a, metric='faith_pd').alpha_diversity
+pd_1 = pd_1a.view(pd.Series).to_frame(name="Faith's PD")
+pd_1.style
+```
+
+#### Faith's PD computed on our second rarefied feature table
+
+```{code-cell}
+:tags: [hide-input]
+for sample_id in rarefied_feature_table2.index:
+    print("Observed branch lengths for sample %s" % sample_id)
+    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table2, sample_id, verbose=True)
+    print()
+```
+
+```{code-cell}
+:tags: [hide-input]
+pd_2a = div.actions.alpha_phylogenetic(rarefied_feature_table_2a, tree_1a, metric='faith_pd').alpha_diversity
+pd_2 = pd_2a.view(pd.Series).to_frame(name="Faith's PD")
+pd_2.style
+```
+
+#### Faith's PD computed on our third rarefied feature table
+
+```{code-cell}
+:tags: [hide-input]
+for sample_id in rarefied_feature_table1.index:
+    print("Observed branch lengths for sample %s" % sample_id)
+    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table3, sample_id, verbose=True)
+    print()
+```
+
+```{code-cell}
+:tags: [hide-input]
+pd_3a = div.actions.alpha_phylogenetic(rarefied_feature_table_3a, tree_1a, metric='faith_pd').alpha_diversity
+pd_3 = pd_3a.view(pd.Series).to_frame(name="Faith's PD")
+pd_3.style
+```
 
 I'll now define a couple of functions that we'll use to compute PD.
-
-```
-def get_observed_nodes(tree, table, sample_id, verbose=False):
-   observed_features = [obs_id for obs_id in table.index
-               if table[sample_id][obs_id] > 0]
-   observed_nodes = set()
-   # iterate over the observed features
-   for feature in observed_features:
-       t = tree.find(feature)
-       observed_nodes.add(t)
-       if verbose:
-           print(t.name, t.length, end=' ')
-       for internal_node in t.ancestors():
-           if internal_node.length is None:
-               # we've hit the root
-               if verbose:
-                   print('')
-           else:
-               if verbose and internal_node not in observed_nodes:
-                   print(internal_node.length, end=' ')
-               observed_nodes.add(internal_node)
-   return observed_nodes
-
-def phylogenetic_diversity(tree, table, sample_id, verbose=False):
-   observed_nodes = get_observed_nodes(tree, table, sample_id, verbose=verbose)
-   result = sum(o.length for o in observed_nodes)
-   return result
-```
 
 And then apply those to compute the PD of our three samples. For each computation, we're also printing out the branch lengths of the branches that are observed *for the first time* when looking at a given feature. When computing PD, we include the length of each branch only one time.
 
@@ -235,11 +332,23 @@ print(pd_C)
 
 How does this result compare to what we observed above with the Observed features metric? Based on your knowledge of biology, which do you think is a better representation of the relative diversities of these samples?
 
+````{margin}
+```{admonition} PD_whole_tree?
+:class: warning
+You may occasionally see this Faith's PD values reported as "PD_whole_tree" in the literature. This is not the name of this measure, and it shouldn't be used. Faith's PD values should be reported as "Faith's PD" or "Phylogenetic Diversity", or "Faith's Phylogenetic Diversity". I'll take the blame for "PD_whole_tree". It came about because, in QIIME 1, we allowed the name of a function that computed PD to show up in figures that presented PD values. `PD_whole_tree` was [an internal name used in our code](https://github.com/pycogent/pycogent/blob/1.5.3-release/cogent/maths/unifrac/fast_unifrac.py#L220) to indicate that we were computing Faith's PD from a phylogenetic tree that had not been pruned to represent only the features that were observed in the feature table. This is a good name for the function, but it shouldn't be presented to end-users of the software. Sorry about that!
+```
+````
 
+(chao1)=
+### What about Chao1?
 
-### Rarefaction
-
-#### Even sampling
+(For an illustration of the effect of sequencing error on PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1 of [Reeder and Knight (2010)](http://www.nature.com/nmeth/journal/v7/n9/full/nmeth0910-668b.html)).
 
 (alpha-rarefaction)=
-#### Alpha rarefaction
+## Alpha rarefaction
+
+## List of works cited
+
+```{bibliography} ../references.bib
+:filter: docname in docnames
+```
