@@ -26,9 +26,9 @@ As defined earlier, a "type of organism" or a "type of microbe" is an arbitrary 
 
 The next sub-cateogry of alpha diversity metric that we'll discuss in this chapter will be *evenness*. Evenness tells us how consistent the distribution of species abundances are in a given environment. If, for example, the most abundant plant in the Sonoran desert was roughly as common as the least abundant plant (not the case!), we would say that the evenness of plant species was high. On the other hand, if the most abundant plant was thousands of times more common than the least common plant (probably closer to the truth), then we'd say that the evenness of plant species was low.
 
-## Measures of microbiome richness
+## Metrics of microbiome richness
 
-We'll begin by looking at two measures of community richness. Both of these are commonly used in practice. 
+We'll begin by looking at two metrics of community richness. Both of these are commonly used in practice. 
 
 ### Observed features
 
@@ -224,18 +224,27 @@ A phylogenetic tree representing all of the features in our original feature tab
 
 Pairing this with the table we defined above (displayed again in the cell below), and given what you now know about these features, how do you feel about the relative richness of these samples?
 
-
 ### Phylogenetic Diversity (PD)
 
-Phylogenetic Diversity (PD or Faith's PD) is a measure of richness that was developed in the early 1990s {cite}`Faith1992-nn`. Like many of the measures that are used in microbiome research, it wasn't initially designed for studying microbial communities, but rather communities of plants, animals, and other "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, {ref}`while others don't <chao1>`.
+Phylogenetic Diversity (PD or Faith's PD) is a metric of richness that was developed in the early 1990s {cite}`Faith1992-nn`. Like many of the metrics that are used in microbiome research, it wasn't initially designed for studying microbial communities, but rather communities of plants, animals, and other "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, {ref}`while others don't <chao1>`.
 
-PD is computed as the sum of the branch length in a phylogenetic tree that is represented in a given sample.
+PD is computed as the sum of the branch lengths in a phylogenetic tree that are represented in a given sample. I recommend computing this by hand on the example data presented in this chapter to ensure that you understand how it works. It can help to have a piece of scratch paper and to print out a copy of the phylogenetic tree ({numref}`adiv-tree-1` in this example) to work through this process. It can also help to have a few colors of pencil or pen for this (one color per sample).
 
-Let's apply this metric to the three rarefied feature tables that we computed above. 
+1. For each sample in a given feature table, write down which features ids were observed in that sample on a different line. Choose a color to use to represent this sample.
+1. For each feature id in your list, find that feature in the phylogenetic tree. Trace from the feature id to the root node of the tree in the current sample's color. As you trace, write down the branch lengths of any _new_ branches that you trace in the current color for this feature. (If you encounter a branch that you have traced for a different feature in this sample, don't write it down again.)
+1. When you have done this for all of the features observed in the sample, sum the lengths of the branches that you wrote down. Again, each branch length should be added only one time for each sample. The resulting sum is the Phylogenetic Diversity of the sample. 
+1. Repeat this for each sample in the feature table. Remember to choose a new color for each sample.
+
+Let's apply this metric to the three rarefied feature tables that we computed above. For each rarefied feature table, I'll print out what I would have written down on my scratch paper. 
 
 ```{code-cell}
 :tags: [hide-cell]
-def get_observed_branch_lengths(tree, table, sample_id, verbose=False):
+def phylogenetic_diversity(tree, table, sample_id, verbose=False):
+    # Don't use this function in practice - it's untested and slow. Instead use 
+    # qiime2.plugins.diversity.actions.alpha_phylogenetic()
+
+    if verbose:
+        print("Observed branch lengths for sample %s" % sample_id)
     sample_vector = table.T[sample_id]
     observed_features = sample_vector.index[sample_vector.to_numpy().nonzero()[0]]
     observed_nodes = set()
@@ -254,18 +263,30 @@ def get_observed_branch_lengths(tree, table, sample_id, verbose=False):
                 if verbose and internal_node not in observed_nodes:
                     print(internal_node.length, end=' ')
                 observed_nodes.add(internal_node)
-    return [t.length for t in observed_nodes]
+    result = sum([t.length for t in observed_nodes])
+    if verbose:
+        print()
+    return result
 ```
 
 #### Faith's PD computed on our first rarefied feature table
 
+The first rarefied feature table was as follows:
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table1.style
+```
+
+Working through the steps for each sample, I would have the following notes:
+
 ```{code-cell}
 :tags: [hide-input]
 for sample_id in rarefied_feature_table1.index:
-    print("Observed branch lengths for sample %s" % sample_id)
-    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table1, sample_id, verbose=True)
-    print()
+    _ = phylogenetic_diversity(tree_1, rarefied_feature_table1, sample_id, verbose=True)
 ```
+
+This would result in the following vector of Phylogenetic Diversities:
 
 ```{code-cell}
 :tags: [hide-input]
@@ -276,13 +297,22 @@ pd_1.style
 
 #### Faith's PD computed on our second rarefied feature table
 
+The second rarefied feature table was as follows:
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table2.style
+```
+
+Working through the steps for each sample, I would have the following notes:
+
 ```{code-cell}
 :tags: [hide-input]
 for sample_id in rarefied_feature_table2.index:
-    print("Observed branch lengths for sample %s" % sample_id)
-    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table2, sample_id, verbose=True)
-    print()
+    _ = phylogenetic_diversity(tree_1, rarefied_feature_table2, sample_id, verbose=True)
 ```
+
+This would result in the following vector of Phylogenetic Diversities:
 
 ```{code-cell}
 :tags: [hide-input]
@@ -293,13 +323,21 @@ pd_2.style
 
 #### Faith's PD computed on our third rarefied feature table
 
+The third rarefied feature table was as follows:
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table3.style
+```
+
+Working through the steps for each sample, I would have the following notes:
+
 ```{code-cell}
 :tags: [hide-input]
 for sample_id in rarefied_feature_table1.index:
-    print("Observed branch lengths for sample %s" % sample_id)
-    _ = get_observed_branch_lengths(tree_1, rarefied_feature_table3, sample_id, verbose=True)
-    print()
+    _ = phylogenetic_diversity(tree_1, rarefied_feature_table3, sample_id, verbose=True)
 ```
+This would result in the following vector of Phylogenetic Diversities:
 
 ```{code-cell}
 :tags: [hide-input]
@@ -308,41 +346,30 @@ pd_3 = pd_3a.view(pd.Series).to_frame(name="Faith's PD")
 pd_3.style
 ```
 
-I'll now define a couple of functions that we'll use to compute PD.
+How do these results compare to what we computed above with the Observed Features metric? It's important to note that neither Observed Features nor Faith's PD are _more correct_ than the other. These metrics tell us different things about our samples, and depending on our interests we may want to choose one metric over the other. I often compute both of these metrics.
 
-And then apply those to compute the PD of our three samples. For each computation, we're also printing out the branch lengths of the branches that are observed *for the first time* when looking at a given feature. When computing PD, we include the length of each branch only one time.
-
-```
-pd_A = phylogenetic_diversity(tree, table2, 'A', verbose=True)
-print(pd_A)
-
-```
-
-```
-pd_B = phylogenetic_diversity(tree, table2, 'B', verbose=True)
-print(pd_B)
-
-```
-
-```
-pd_C = phylogenetic_diversity(tree, table2, 'C', verbose=True)
-print(pd_C)
-
-```
-
-How does this result compare to what we observed above with the Observed features metric? Based on your knowledge of biology, which do you think is a better representation of the relative diversities of these samples?
-
-````{margin}
-```{admonition} PD_whole_tree?
+(PD_whole_tree)=
+```{admonition} What is PD_whole_tree?
 :class: warning
-You may occasionally see this Faith's PD values reported as "PD_whole_tree" in the literature. This is not the name of this measure, and it shouldn't be used. Faith's PD values should be reported as "Faith's PD" or "Phylogenetic Diversity", or "Faith's Phylogenetic Diversity". I'll take the blame for "PD_whole_tree". It came about because, in QIIME 1, we allowed the name of a function that computed PD to show up in figures that presented PD values. `PD_whole_tree` was [an internal name used in our code](https://github.com/pycogent/pycogent/blob/1.5.3-release/cogent/maths/unifrac/fast_unifrac.py#L220) to indicate that we were computing Faith's PD from a phylogenetic tree that had not been pruned to represent only the features that were observed in the feature table. This is a good name for the function, but it shouldn't be presented to end-users of the software. Sorry about that!
+You may occasionally see Faith's PD values reported as "PD_whole_tree" in the literature. This is not the name of this metric, and it shouldn't be used. Faith's PD values should be reported as "Faith's PD" or "Phylogenetic Diversity", or "Faith's Phylogenetic Diversity". 
+
+I'll take the blame for the "PD_whole_tree" misnomer. It came about because, in QIIME 1, we allowed the name of a function that computed PD to show up in figures that presented PD values. `PD_whole_tree` was [an internal name used in our code](https://github.com/pycogent/pycogent/blob/1.5.3-release/cogent/maths/unifrac/fast_unifrac.py#L220) to indicate that we were computing Faith's PD from a phylogenetic tree that had not been pruned to represent only the features that were observed in the feature table (i.e., it used the "whole tree"). This is a good name for the function, but it shouldn't be presented to end-users of the software. Sorry about that!
 ```
-````
 
 (chao1)=
 ### What about Chao1?
 
-(For an illustration of the effect of sequencing error on PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1 of [Reeder and Knight (2010)](http://www.nature.com/nmeth/journal/v7/n9/full/nmeth0910-668b.html)).
+Another metric that was widely used in microbiome research, especially in the early days, was Chao1 {cite}`Chao1984-sk`. Chao1 tries to do something different than the other richness metrics we've looked at here: it attempts to project what the actual diversity of the environment being sampled is, rather than just computing the diversity of what we observed. This is very appealing, but the way that it does this is not compatible with sequencing-based approaches for studying microbiomes and it shouldn't be used on this type of data. 
+
+Chao1 integrates the count of **singleton features** in its computation, where a singleton feature is defined as a feature that was only observed one time in a sample. The idea is that if you have observed a lot of singleton features, there are also probably a lot that you haven't observed yet, so the actual diversity of the environment is likely higher than what you observe in the sample. If on the other hand, you observe few or no singleton features, that you have probably come closer to fully capturing the richness of the environment with your sample, so the actual diversity of the environment is close to what you observed. 
+
+This is a very cool approach, but with sequencing data we often don't trust singletons as they frequently result from sequencing errors. In fact, many analysis workflows explicitly or implicitly filter singleton features out of samples. So, unfortunately, Chao1 shouldn't be applied to microbiome sequence data because the counts of singletons are not reliably telling us anything about the environments we're studying. 
+
+For an illustration of the effect of sequencing error on Faith's PD, where it is handled well, versus its effect on the Chao1 metric, where it is handled less well, see Figure 1c and 1f of {cite}`Reeder2010-in`. (And, can you identify what's [wrong](PD_whole_tree) with the axis labels of Figure 1f?)
+
+## Microbiome evenness
+
+## Shannon diversity
 
 (alpha-rarefaction)=
 ## Alpha rarefaction
