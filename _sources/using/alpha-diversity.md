@@ -224,12 +224,11 @@ A phylogenetic tree representing all of the features in our original feature tab
 
 Pairing this with the table we defined above (displayed again in the cell below), and given what you now know about these features, how do you feel about the relative richness of these samples?
 
-
 ### Phylogenetic Diversity (PD)
 
 Phylogenetic Diversity (PD or Faith's PD) is a metric of richness that was developed in the early 1990s {cite}`Faith1992-nn`. Like many of the metrics that are used in microbiome research, it wasn't initially designed for studying microbial communities, but rather communities of plants, animals, and other "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, {ref}`while others don't <chao1>`.
 
-PD is computed as the sum of the branch lengths in a phylogenetic tree that are represented in a given sample. I recommend computing this by hand on the example data presented in this chapter to ensure that you understand how it works. It can help to have a piece of scratch paper and to print out a copy of the phylogenetic tree ({ref}`adiv-tree-1` in this example) to work through this process. It can also help to have a few colors of pencil or pen for this (one color per sample).
+PD is computed as the sum of the branch lengths in a phylogenetic tree that are represented in a given sample. I recommend computing this by hand on the example data presented in this chapter to ensure that you understand how it works. It can help to have a piece of scratch paper and to print out a copy of the phylogenetic tree ({numref}`adiv-tree-1` in this example) to work through this process. It can also help to have a few colors of pencil or pen for this (one color per sample).
 
 1. For each sample in a given feature table, write down which features ids were observed in that sample on a different line. Choose a color to use to represent this sample.
 1. For each feature id in your list, find that feature in the phylogenetic tree. Trace from the feature id to the root node of the tree in the current sample's color. As you trace, write down the branch lengths of any _new_ branches that you trace in the current color for this feature. (If you encounter a branch that you have traced for a different feature in this sample, don't write it down again.)
