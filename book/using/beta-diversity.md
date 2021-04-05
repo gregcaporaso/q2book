@@ -1,17 +1,107 @@
+---
+jupytext:
+  cell_metadata_filter: -all
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.12
+    jupytext_version: 1.9.1
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 (beta-diversity)=
 # Beta diversity
 
-In this chapter we'll continue our exploration of metrics of microbiome diversity. We'll next discuss metrics of **betaa diversity**, which are measures of "between-sample" diversity. I think of these as metrics that are computed based on pairs of samples. 
+In this chapter we'll continue our exploration of metrics of microbiome diversity. We'll next discuss metrics of **beta diversity**, which are measures of "between-sample" diversity. I think of these as metrics that are computed based on pairs of samples. 
 
-_content from IAB follows_
+The beta diversity metrics that we'll cover in this chapter are distance and dissimilarity metrics. These are always computed on a pair of samples, and most typically they will be computed on all pairs of samples in a feature table. If a distance is computed between a pair of samples, it results in a single positive value. If distances are computed between all pairs of samples, the result is a distance matrix. The distance matrix is indexed by sample ids on both axes, and individual distances can be looked up from that matrix. 
 
-*beta diversity*) refers to **between sample diversity**, and is typically used to answer questions of the form: is sample $A$ more similar in composition to sample $B$ or sample $C$? In this section we'll explore two (of tens or hundreds) of metrics for computing pairwise dissimilarity of samples to estimate $\beta$ diversity.
+## Distances and distance matrices
 
-### Distance metrics <link src='eac92f'/>
+The distance between two samples is the opposite of the similarity between two samples, so if two samples have a large distance between them that means they are more dissimilar to one another. If they have a small distance between them, that means they are similar to one another. Distances between microbiome samples typically aren't interpreted in isolation, but rather contextualized by other distances. 
 
-#### Bray-Curtis <link src='dac934'/>
+The meaning of a distance between samples depends on the specific distance metric that is being used. Stepping back from biology for a moment, imagine that we're computing the distance between two cities. There are various ways that we could measure this, and the way we choose to measure it depends on what we need to do with that distance. For example, we could draw a straight line between the two cities on a map, measure that line, and we'd have a distance between the cities. But, if we're driving between the cities, that distance won't be very relevant unless there is a road that connects the cities by the line that we've drawn. In this case, a more relevant distance will be that of the shortest drivable route between the two cities. Just as there are many ways to compute the distance between two cities, there are many ways to compute the distance between biological communities. 
 
-The first metric that we'll look at is a quantitative non-phylogenetic $\beta$ diversity metric called Bray-Curtis. The Bray-Curtis dissimilarity between a pair of samples, $j$ and $k$, is defined as follows:
+Because distances between microbiome samples are generally contextualized by other distances between microbiome samples, we generally compute distances between all pairs of samples at the same time. We can then work with the full distance matrix, or look up distances for specific pairs of samples that we're interested in from the distance matrix. Here's an example of a feature table, and a distance matrix containing Jaccard distances between three samples. (We'll learn about Jaccard distances later in this chapter.)
+
+A feature table:
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import numpy as np
+import skbio
+
+import qiime2
+import qiime2.plugins.feature_table as ft
+import qiime2.plugins.diversity as div
+
+sample_ids = ['4ac2', 'e375', '4gd8']
+feature_ids = ['B1','B2','B3','B4','B5','A1','E2']
+data = np.array([[5, 5, 2, 0, 0, 0, 0],
+                 [3, 5, 1, 4, 4, 0, 0],
+                 [5, 0, 0, 0, 0, 5, 5]])
+
+feature_table_1 = pd.DataFrame(data, index=sample_ids, columns=feature_ids)
+feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", feature_table_1)
+rarefied_feature_table_1a = ft.actions.rarefy(table=feature_table_1a, sampling_depth=10).rarefied_table
+
+rarefied_feature_table_1 = rarefied_feature_table_1a.view(pd.DataFrame).astype(int)
+rarefied_feature_table_1.style
+```
+
+A distance matrix containing Jaccard distances between all pairs of samples in the feature table:
+
+```{code-cell}
+:tags: [hide-input]
+jaccard_1a = div.actions.beta(rarefied_feature_table_1a, metric='jaccard').distance_matrix
+jaccard_1 = jaccard_1a.view(skbio.DistanceMatrix).to_data_frame()
+jaccard_1.style.set_precision(2)
+```
+
+Ignoring for the moment exactly how these values are calculated, let discuss what this distance matrix tells. To find the distance between any pair of samples, look up the first sample id of the pair on one axis, and the other sample id of the pair on the other axis.
+
+First, notice that the diagonal of the matrix is all zeros. This is because the distance between a sample and itself (for example between `4ac2` and `4ac2`) is always zero by definition. 
+
+Next, notice that the matrix is symmetric: if you flip the values across the diagonal they are identical. In other words, if you look up the value at the intersection of row `4ac2` and column `4gd8`, the value will be the same as at the intersection of column `4ac2` and row `4gd8`. This tells you that the distance between two samples is the same regardless of the order the samples are provided when you compute the distance between them. 
+
+Finally, notice that all values in our matrix are zero or greater. Negative distances between samples don't exist. 
+
+This distance matrix tells us that the most similar pair of samples in our feature table are `4ac2` and `e375`. The most dissimilar samples in our feature table are `4gd8` and `e375`. To understand exactly what these distances mean, let's explore a few of the commonly used metrics. 
+
+### Jaccard Distance
+
+The first beta diversity metric that we'll look at is Jaccard Distance. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity). 
+
+To compute the Jaccard Index for a pair of samples $A$ and $B$, count all of the features that are observed in _both_ $A$ and $B$. _Observed_ features in this context are features with a count of greater than zero. The features present in both samples represent the **intersection** of $A$ and $B$. In set theory notation $A \cap B$ denotes the intersection of sets $A$ and $B$, and $| A \cap B |$ denotes the size of the intersection of sets $A$ and $B$.
+
+Next, count the features that are observed in _either_ sample $A$ or sample $B$ or in both sample $A$ and sample $B$. Those features represent the **union** of the samples. In set theory notation $| A \cup B |$ denotes the size of the union of sets $A$ and $B$. 
+
+Next, divide the size of the intersection by the size the union of the two samples to get the Jaccard Index between the two samples {eq}`jaccard_index`. Subtract that from one to get the Jaccard Distance {eq}`jaccard_distance`. 
+
+```{math}
+:label: jaccard_index
+Jaccard \, Index_{(A,B)} = \frac{| A \cap B |}{| A \cup B |}
+```
+
+```{math}
+:label: jaccard_distance
+Jaccard \, Distance_{(A,B)} = 1 - Jaccard \, Index_{(A,B)}
+```
+
+```{admonition} Exercise
+Return to the example presented above and try to compute the Jaccard distances between all pairs of samples yourself. Confirm that you get these values after rounding to two decimal places.
+```
+
+** PICK UP HERE**
+
+### Bray-Curtis distance
+
+The next metric that we'll look at is a quantitative non-phylogenetic $\beta$ diversity metric called Bray-Curtis. The Bray-Curtis dissimilarity between a pair of samples, $j$ and $k$, is defined as follows:
 
 $BC_{jk} = \frac{ \sum_{i} | X_{ij} - X_{ik}|} {\sum_{i} (X_{ij} + X_{ik})}$
 
@@ -100,7 +190,7 @@ Data:
  [ 0.85714286  0.68421053  0.        ]]
 ```
 
-#### Unweighted UniFrac <link src='2682aa'/>
+### Unweighted UniFrac distance 
 
 Just as phylogenetic alpha diversity metrics can be more informative than non-phylogenetic alpha diversity metrics, phylogenetic beta diversity metrics offer advantages over non-phylogenetic metrics such as Bray-Curtis. The most widely applied phylogenetic beta diversity metric as of this writing is unweighted UniFrac. UniFrac was initially presented in [Lozupone and Knight, 2005, Applied and Environmental Microbiology](http://aem.asm.org/content/71/12/8228.abstract), and has been widely applied in microbial ecology since (and the illustration of UniFrac computation presented below is derived from a similar example originally developed by Lozupone and Knight).
 
@@ -205,11 +295,10 @@ Data:
 0.34782608695652173
 ```
 
-#### Even sampling <link src='200e13'/>
+### Weighted UniFrac distance
 
-**TODO**: Add discussion on necessity of even sampling
 
-### Interpreting distance matrices <link src='2be688'/>
+## Interpreting distance matrices
 
 In the previous section we computed distance matrices that contained the pairwise distances between a few samples. You can look at those distance matrices and get a pretty good feeling for what the patterns are. For example, what are the most similar samples? What are the most dissimilar samples?
 
@@ -274,7 +363,7 @@ Data:
  [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
 ```
 
-#### Distribution plots and comparisons <link src='8fcf92'/>
+#### Distribution plots and comparisons
 
 First, let's look at the analysis presented in panels E and F. Instead of generating bar plots here, we'll generate box plots as these are more informative (i.e., they provide a more detailed summary of the distribution being investigated). One important thing to notice here is the central role that the sample metadata plays in the visualization. If we just had our sample ids (i.e., letters ``A`` through ``F``) we wouldn't be able to group distances into *within* and *between* sample type categories, and we therefore couldn't perform the comparisons we're interested in.
 
@@ -357,9 +446,9 @@ Why do you think the distribution of distances between people has a greater rang
 
 Here we used ANOSIM testing whether our with and between category groups differ. This test is specifically designed for distance matrices, and it accounts for the fact that the values are not independent of one another. For example, if one of our samples was very different from all of the others, all of the distances associated with that sample would be large. It's very important to choose the appropriate statistical test to use. One free resource for helping you do that is [*The Guide to Statistical Analysis in Microbial Ecology (GUSTAME)*](http://mb3is.megx.net/gustame). If you're getting started in microbial ecology, I recommend spending some time studying GUSTAME.
 
-#### Hierarchical clustering <link src='09f456'/>
+#### Hierarchical clustering
 
-Next, let's look at a hierarchical clustering analysis, similar to that presented in panel G above. Here I'm applying the UPGMA functionality implemented in [SciPy](http://www.scipy.org/scipylib/index.html) to generate a tree which we visualize with a dendrogram. However the tips in this tree don't represent sequences or OTUs, like they did when we [covered UPGMA for phylogenetic reconstruction](alias://73d028), but instead they represent samples, and samples with a smaller branch length between them are more similar in composition than samples with a longer branch length between them. (Remember that only horizontal branch length is counted - vertical branch length is just to aid in the organization of the dendrogram.)
+Next, let's look at a hierarchical clustering analysis, similar to that presented in panel G above. Here I'm applying the UPGMA functionality implemented in [SciPy](http://www.scipy.org/scipylib/index.html) to generate a tree which we visualize with a dendrogram. However the tips in this tree don't represent sequences or OTUs, but instead they represent samples, and samples with a smaller branch length between them are more similar in composition than samples with a longer branch length between them. (Remember that only horizontal branch length is counted - vertical branch length is just to aid in the organization of the dendrogram.)
 
 ```python
 >>> from scipy.cluster.hierarchy import average, dendrogram
@@ -385,7 +474,7 @@ Again, we can see how the data really only becomes interpretable in the context 
 <Figure size 432x288 with 1 Axes>
 ```
 
-### Ordination <link src='b1cdbe'/>
+### Ordination
 
 Finally, let's look at ordination, similar to that presented in panels A-D. The basic idea behind ordination is dimensionality reduction: we want to take high-dimensionality data (a distance matrix) and represent that in a few (usually two or three) dimensions. As humans, we're very bad at interpreting high dimensionality data directly: with ordination, we can take an $n$-dimensional data set (e.g., a distance matrix of shape $n \times n$, representing the distances between $n$ biological samples) and reduce that to a 2-dimensional scatter plot similar to that presented in panels A-D above.
 
@@ -393,7 +482,7 @@ Ordination is a technique that is widely applied in ecology and in bioinformatic
 
 An excellent site for learning more about ordination is [Michael W. Palmer's Ordination Methods page](http://ordination.okstate.edu/).
 
-#### Polar ordination <link src='538e18'/>
+#### Polar ordination
 
 First, let's print our distance matrix again so we have it nearby.
 
