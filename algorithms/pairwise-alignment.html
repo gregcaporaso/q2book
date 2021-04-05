@@ -2324,6 +2324,9 @@ global_pairwise_align(seq1, seq2, gap_open_penalty, gap_extend_penalty, substitu
     .. [2] http://www.ebi.ac.uk/Tools/psa/emboss_needle/
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </div>
 <p>Here I define <code class="docutils literal notranslate"><span class="pre">seq1</span></code> to be slightly different than what I have above. Notice how we get different alignments when we use affine gap penalties (i.e., <code class="docutils literal notranslate"><span class="pre">gap_extend_penalty</span></code> is not equal to <code class="docutils literal notranslate"><span class="pre">gap_open_penalty</span></code>) versus equal gap open and gap extend penalties.</p>
@@ -2404,7 +2407,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>149 ms ± 2.08 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>107 ms ± 364 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2419,7 +2422,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>636 µs ± 7.58 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>466 µs ± 1.82 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2499,10 +2502,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AACCTAGATA
-GAACTCGCAT
-GGCAATAGGAGCTCCTAGCGTCGCT
-TATGAGAACAGACCGGGAATATATTACCCTTACATGGCTAGATCCGACAC
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GACATAGCCC
+GGTTTTCCCA
+CCACTGCTTGGTGGTTCAAGTTGTC
+GTCCGCGAATTTACCCGACTCCTTTCTACGGGCTTTGTTCTTTGTGACGT
 </pre></div>
 </div>
 </div>
@@ -2571,32 +2574,32 @@ TATGAGAACAGACCGGGAATATATTACCCTTACATGGCTAGATCCGACAC
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.215700</td>
+      <td>0.214339</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.381118</td>
+      <td>1.247239</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>3.073107</td>
+      <td>2.740138</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>5.451015</td>
+      <td>4.354578</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>8.396657</td>
+      <td>6.351418</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>11.740228</td>
+      <td>8.629778</td>
     </tr>
   </tbody>
 </table>
@@ -2621,7 +2624,7 @@ TATGAGAACAGACCGGGAATATATTACCCTTACATGGCTAGATCCGACAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4ee310a3c8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f61f3361a90&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2645,7 +2648,7 @@ TATGAGAACAGACCGGGAATATATTACCCTTACATGGCTAGATCCGACAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4ee30d56d8&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f61f3330d30&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />
