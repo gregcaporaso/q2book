@@ -75,13 +75,7 @@ This distance matrix tells us that the most similar pair of samples in our featu
 
 ### Jaccard Distance
 
-The first beta diversity metric that we'll look at is Jaccard Distance. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity). 
-
-To compute the Jaccard Index for a pair of samples $A$ and $B$, count all of the features that are observed in _both_ $A$ and $B$. _Observed_ features in this context are features with a count of greater than zero. The features present in both samples represent the **intersection** of $A$ and $B$. In set theory notation $A \cap B$ denotes the intersection of sets $A$ and $B$, and $| A \cap B |$ denotes the size of the intersection of sets $A$ and $B$.
-
-Next, count the features that are observed in _either_ sample $A$ or sample $B$ or in both sample $A$ and sample $B$. Those features represent the **union** of the samples. In set theory notation $| A \cup B |$ denotes the size of the union of sets $A$ and $B$. 
-
-Next, divide the size of the intersection by the size the union of the two samples to get the Jaccard Index between the two samples {eq}`jaccard_index`. Subtract that from one to get the Jaccard Distance {eq}`jaccard_distance`. 
+The first beta diversity metric that we'll look at is Jaccard Distance. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity). It is defined as follows:
 
 ```{math}
 :label: jaccard_index
@@ -93,207 +87,197 @@ Jaccard \, Index_{(A,B)} = \frac{| A \cap B |}{| A \cup B |}
 Jaccard \, Distance_{(A,B)} = 1 - Jaccard \, Index_{(A,B)}
 ```
 
+To compute the Jaccard Index for a pair of samples $A$ and $B$, count all of the features that are observed in _both_ $A$ and $B$. _Observed_ features in this context are features with a count of greater than zero. The features present in both samples represent the **intersection** of $A$ and $B$. In set theory notation $A \cap B$ denotes the intersection of sets $A$ and $B$, and $| A \cap B |$ denotes the size of the intersection of sets $A$ and $B$. Computing this for samples `4ac2` and `e375` from the feature table above would look like the following:
+
+```{code-cell}
+:tags: [hide-input]
+sample_a_id = '4ac2'
+sample_b_id = 'e375'
+
+print('Sample A id: %s' % sample_a_id)
+print('Sample B id: %s' % sample_b_id)
+print('')
+
+sample_a_vector = rarefied_feature_table_1.T[sample_a_id]
+sample_b_vector = rarefied_feature_table_1.T[sample_b_id]
+feature_ids = rarefied_feature_table_1.columns.values
+
+observed_features_a = set()
+observed_features_b = set()
+for i in range(rarefied_feature_table_1.shape[1]):
+      if sample_a_vector[i] > 0:
+            observed_features_a.add(feature_ids[i])
+      if sample_b_vector[i] > 0:
+            observed_features_b.add(feature_ids[i])
+
+a_b_intersection = observed_features_a & observed_features_b
+a_b_intersection_size = len(a_b_intersection)
+print(' A = %s' % str(observed_features_a))
+print(' B = %s' % str(observed_features_b))
+print('')
+print(' A ∩ B = %s' % str(a_b_intersection))
+print(' | A ∩ B | = %d' % a_b_intersection_size)
+```
+
+Next, count the features that are observed in _either_ sample $A$ or sample $B$ or in both sample $A$ and sample $B$. Those features represent the **union** of the samples. In set theory notation $| A \cup B |$ denotes the size of the union of sets $A$ and $B$. 
+
+```{code-cell}
+:tags: [hide-input]
+
+a_b_union = observed_features_a | observed_features_b
+a_b_union_size = len(a_b_union)
+print(' A ∪ B = %s' % str(a_b_union))
+print(' | A ∪ B | = %d' % a_b_union_size)
+```
+
+Next, divide the size of the intersection by the size the union of the two samples to get the Jaccard Index between the two samples {eq}`jaccard_index`.
+
+```{code-cell}
+:tags: [hide-input]
+
+j_index = a_b_intersection_size / a_b_union_size
+j_distance = 1 - j_index
+print('( %d / %d ) ' % (a_b_intersection_size, a_b_union_size))
+print('Jaccard index between samples %s and %s: %1.2f ' %\
+       (sample_a_id, sample_b_id, j_index))
+```
+
+Subtract the Jaccard Index from one to get the Jaccard Distance {eq}`jaccard_distance`. 
+
+```{code-cell}
+:tags: [hide-input]
+print('1 - %1.2f' % j_index)
+print('Jaccard distance between samples %s and %s: %1.2f ' %\
+       (sample_a_id, sample_b_id, j_distance))
+```
+
 ```{admonition} Exercise
 Return to the example presented above and try to compute the Jaccard distances between all pairs of samples yourself. Confirm that you get these values after rounding to two decimal places.
 ```
 
-** PICK UP HERE**
+### Bray-Curtis dissimilarity
 
-### Bray-Curtis distance
+The next metric that we'll look at is called Bray-Curtis dissimilarity. The Bray-Curtis dissimilarity between a pair of samples, $A$ and $B$, is defined as follows:
 
-The next metric that we'll look at is a quantitative non-phylogenetic $\beta$ diversity metric called Bray-Curtis. The Bray-Curtis dissimilarity between a pair of samples, $j$ and $k$, is defined as follows:
-
-$BC_{jk} = \frac{ \sum_{i} | X_{ij} - X_{ik}|} {\sum_{i} (X_{ij} + X_{ik})}$
-
-$i$ : feature (e.g., OTUs)
-
-$X_{ij}$ : frequency of feature $i$ in sample $j$
-
-$X_{ik}$ : frequency of feature $i$ in sample $k$
-
-This could be implemented in python as follows:
-
-```python
->>> def bray_curtis_distance(table, sample1_id, sample2_id):
-...     numerator = 0
-...     denominator = 0
-...     sample1_counts = table[sample1_id]
-...     sample2_counts = table[sample2_id]
-...     for sample1_count, sample2_count in zip(sample1_counts, sample2_counts):
-...         numerator += abs(sample1_count - sample2_count)
-...         denominator += sample1_count + sample2_count
-...     return numerator / denominator
+```{math}
+:label: bray_curtis_dissimilarity
+Bray\text{-}Curtis\,Dissimilarity_{AB} = \frac{ \sum_{i} | A_{i} - B_{i}|} {\sum_{i} (A_{i} + B_{i})}
 ```
 
-```python
->>> table1
-      A  B  C
-OTU1  1  0  0
-OTU2  3  2  0
-OTU3  0  0  6
-OTU4  1  4  2
-OTU5  0  4  1
+````{margin}
+```{warning}
+In {eq}`bray_curtis_dissimilarity`, the $|\,|$ symbols indicate absolute value. This differs from {eq}`jaccard_distance`, where the $|\,|$ symbols indicate the size of a set.
+```
+````
+
+$i$ : a feature in the input feature table
+
+$A_{i}$ : the value (i.e., frequency or count) of feature $i$ in sample $A$
+
+$B_{i}$ : the value (i.e., frequency or count) of feature $i$ in sample $B$
+
+This formula is relatively straight-forward to apply. To compute the numerator of the equation, sum the absolute differences of each feature's count across samples $A$ and $B$. Computing this for samples `4ac2` and `e375` would look like the following:
+
+```{code-cell}
+:tags: [hide-input]
+sample_a_id = '4ac2'
+sample_b_id = 'e375'
+
+print('Sample A id: %s' % sample_a_id)
+print('Sample B id: %s' % sample_b_id)
+print('')
+
+sample_a_vector = rarefied_feature_table_1.T[sample_a_id]
+sample_b_vector = rarefied_feature_table_1.T[sample_b_id]
+numerator_value = 0
+
+for i in range(rarefied_feature_table_1.shape[1]):
+      if i > 0:
+            print(' + ', end='')
+      print('| %d - %d |' % (sample_a_vector[i], sample_b_vector[i]), end='')
+      numerator_value += abs(sample_a_vector[i] - sample_b_vector[i])
+print('')
+print('Numerator value: %d' % numerator_value)
 ```
 
-Let's now apply this to some pairs of samples:
+To compute the denominator of the equation, sum each feature's count across samples $A$ and $B$. Computing this for samples `4ac2` and `e375` would look like the following:
 
-```python
->>> print(bray_curtis_distance(table1, 'A', 'B'))
-0.6
+```{code-cell}
+:tags: [hide-input]
+denominator_value = 0
+
+for i in range(rarefied_feature_table_1.shape[1]):
+      if i > 0:
+            print(' + ', end='')
+      print('( %d + %d )' % (sample_a_vector[i], sample_b_vector[i]), end='')
+      denominator_value += sample_a_vector[i] + sample_b_vector[i]
+print('')
+print('Denominator value: %d' % denominator_value)
 ```
 
-```python
->>> print(bray_curtis_distance(table1, 'A', 'C'))
-0.857142857143
+Finally, divide the numerator by the denominator to get the Bray-Curtis dissimilarity between the samples:
+
+```{code-cell}
+:tags: [hide-input]
+bc = numerator_value / denominator_value
+print(" %d / %d " % (numerator_value, denominator_value))
+print('Bray-Curtis dissimilarity between samples %s and %s: %1.2f' % (sample_a_id, sample_b_id, bc))
 ```
 
-```python
->>> print(bray_curtis_distance(table1, 'B', 'C'))
-0.684210526316
-```
+Computing Bray-Curtis dissimilarities between all pairs of samples in our feature table would result in the following distance matrix:
 
-```python
->>> print(bray_curtis_distance(table1, 'A', 'A'))
-0.0
-```
-
-```python
->>> print(bray_curtis_distance(table1, 'C', 'B'))
-0.684210526316
-```
-
-Ultimately, we likely want to apply this to all pairs of samples to get a distance matrix containing all pairwise distances. Let's define a function for that, and then compute all pairwise Bray-Curtis distances between samples `A`, `B` and `C`.
-
-```python
->>> from skbio.stats.distance import DistanceMatrix
->>> from numpy import zeros
-...
->>> def table_to_distances(table, pairwise_distance_fn):
-...     sample_ids = table.columns
-...     num_samples = len(sample_ids)
-...     data = zeros((num_samples, num_samples))
-...     for i, sample1_id in enumerate(sample_ids):
-...         for j, sample2_id in enumerate(sample_ids[:i]):
-...             data[i,j] = data[j,i] = pairwise_distance_fn(table, sample1_id, sample2_id)
-...     return DistanceMatrix(data, sample_ids)
-```
-
-```python
->>> bc_dm = table_to_distances(table1, bray_curtis_distance)
->>> print(bc_dm)
-3x3 distance matrix
-IDs:
-'A', 'B', 'C'
-Data:
-[[ 0.          0.6         0.85714286]
- [ 0.6         0.          0.68421053]
- [ 0.85714286  0.68421053  0.        ]]
+```{code-cell}
+:tags: [hide-input]
+bray_curtis_1a = div.actions.beta(rarefied_feature_table_1a, metric='braycurtis').distance_matrix
+bray_curtis_1 = bray_curtis_1a.view(skbio.DistanceMatrix).to_data_frame()
+bray_curtis_1.style.set_precision(2)
 ```
 
 ### Unweighted UniFrac distance 
 
-Just as phylogenetic alpha diversity metrics can be more informative than non-phylogenetic alpha diversity metrics, phylogenetic beta diversity metrics offer advantages over non-phylogenetic metrics such as Bray-Curtis. The most widely applied phylogenetic beta diversity metric as of this writing is unweighted UniFrac. UniFrac was initially presented in [Lozupone and Knight, 2005, Applied and Environmental Microbiology](http://aem.asm.org/content/71/12/8228.abstract), and has been widely applied in microbial ecology since (and the illustration of UniFrac computation presented below is derived from a similar example originally developed by Lozupone and Knight).
+Just as some metrics of alpha diversity use a phylogenetic tree, some metrics of beta diversity also use a phylogenetic tree. The most widely applied phylogenetic beta diversity metric as of this writing is likely Unweighted UniFrac {cite}`Lozupone2005-we`. Unweighted UniFrac is closely related to the alpha diversity metric, {ref}`Faith's Phylogenetic Diversity index <faith_pd>`, and it is computed similarly. First, for each sample $A$ and $B$, the branches connecting the observed features to the root node of the tree are identified. The Unweighted UniFrac distance is then computed as the branch length that is unique to either sample $A$ or sample $B$, divided by all of the branch length covered by both samples.
 
-The unweighted UniFrac distance between a pair of samples `A` and `B` is defined as follows:
+The Unweighted UniFrac distance between a pair of samples `A` and `B` is defined as follows:
 
-$U_{AB} = \frac{unique}{observed}$
-
-where:
-
-$unique$ : the unique branch length, or branch length that only leads to OTU(s) observed in sample $A$ or sample $B$
-
-$observed$ : the total branch length observed in either sample $A$ or sample $B$
-
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.png" align=right/></div>
-
-To illustrate how UniFrac distances are computed, before we get into actually computing them, let's look at a few examples. In these examples, imagine that we're determining the pairwise UniFrac distance between two samples: a red sample, and a blue sample. If a red box appears next to an OTU, that indicates that it's observed in the red sample; if a blue box appears next to the OTU, that indicates that it's observed in the blue sample; if a red and blue box appears next to the OTU, that indicates that the OTU is present in both samples; and if no box is presented next to the OTU, that indicates that it's present in neither sample.
-
-To compute the UniFrac distance between a pair of samples, we need to know the sum of the branch length that was observed in either sample (the *observed* branch length), and the sum of the branch length that was observed only in a single sample (the *unique* branch length). In these examples, we color all of the *observed* branch length. Branch length that is unique to the red sample is red, branch length that is unique to the blue sample is blue, and branch length that is observed in both samples is purple. Unobserved branch length is black (as is the vertical branches, as those don't contribute to branch length - they are purely for visual presentation).
-
-In the tree on the right, all of the OTUs that are observed in either sample are observed in both samples. As a result, all of the observed branch length is purple. The unique branch length in this case is zero, so **we have a UniFrac distance of 0 between the red and blue samples**.
-
-<hr>
-
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d1.png" align=right/></div>
-
-On the other end of the spectrum, in the second tree, all of the OTUs in the tree are observed either in the red sample, or in the blue sample. All of the observed branch length in the tree is either red or blue, meaning that if you follow a branch out to the tips, you will observe only red or blue samples. In this case the unique branch length is equal to the observed branch length, so **we have a UniFrac distance of 1 between the red and blue samples**.
-
-<hr>
-
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.5.png" align=right/></div>
-
-Finally, most of the time we're somewhere in the middle. In this tree, some of our branch length is unique, and some is not. For example, OTU 1 is only observed in our red sample, so the terminal branch leading to OTU 1 is red (i.e., unique to the red sample). OTU 2 is only observed in our blue sample, so the terminal branch leading to OTU 2 is blue (i.e., unique to the blue sample). However, the internal branch leading to the node connecting OTU 1 and OTU 2 leads to OTUs observed in both the red and blue samples (i.e., OTU 1 and OTU 2), so is purple (i.e, observed branch length, but not unique branch length). In this case, **we have an intermediate UniFrac distance between the red and blue samples, maybe somewhere around 0.5**.
-
-<hr>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances.png" align=right/></div>
-
-Let's now compute the Unweighted UniFrac distances between some samples. Imagine we have the following tree, paired with our table below (printed below, for quick reference).
-
-```python
->>> table1
-      A  B  C
-OTU1  1  0  0
-OTU2  3  2  0
-OTU3  0  0  6
-OTU4  1  4  2
-OTU5  0  4  1
+```{math}
+:label:
+Unweighted\,UniFrac_{AB} = \frac{unique\,branch\,length}{observed\,branch\,length}
 ```
 
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances_ab.png" align=right/></div>
+#### Conceptual overview of Unweighted UniFrac
 
-First, let's compute the unweighted UniFrac distance between samples $A$ and $B$. The *unweighted* in *unweighted UniFrac* means that this is a qualitative diversity metric, meaning that we don't care about the abundances of the OTUs, only whether they are present in a given sample ($frequency > 0$) or not present ($frequency = 0$).
+To illustrate how UniFrac distances are computed, before we get into actually computing them, let's look at a few examples. In these examples, imagine that we're determining the pairwise UniFrac distance between two samples: Sample 1 which we'll illustrate in red, and Sample 2 which we'll illustrate in blue. The evolutionary relationships between all of the features in the samples (amplicon sequence variants (ASVs) in this example), are represented with a phylogenetic tree. The count of each ASV in each sample appears to the right of the feature in the phylogenetic tree. As far as Unweighted UniFrac is concerned, a feature is observed in a sample if its count is greater than zero.
 
-Start at the top right branch in the tree, and for each branch, determine if the branch is observed, and if so, if it is also unique. If it is observed then you add its length to your observed branch length. If it is observed and unique, then you also add its length to your unique branch length.
+To compute the UniFrac distance between a pair of samples, we need to sum the branch length that was observed only in a single sample (the *unique* branch length), and sum the branch length that was observed in either or both samples (the *observed* branch length). Branch length that is unique to Sample 1 will be colored red, branch length that is unique to Sample 2 will be colored blue, and branch length that is observed in both samples will be colored purple. Unobserved branch length is colored black (as are the vertical lines in the tree, as those don't contribute to branch length - they are purely for visual presentation).
 
-For samples $A$ and $B$, I get the following (in the tree on the right, red branches are those observed in $A$, blue branches are those observed in $B$, and purple are observed in both):
-
-$unique_{ab} = 0.5 + 0.75 = 1.25$
-
-$observed_{ab} = 0.5 + 0.5 + 0.5 + 1.0 + 1.25 + 0.75 + 0.75 = 5.25$
-
-$uu_{ab} = \frac{unique_{ab}}{observed_{ab}} = \frac{1.25}{5.25} = 0.238$
-
-As an exercise, now compute the UniFrac distances between samples $B$ and $C$, and samples $A$ and $C$, using the above table and tree. When I do this, I get the following distance matrix.
-
-```python
->>> ids = ['A', 'B', 'C']
->>> d = [[0.00, 0.24, 0.52],
-...       [0.24, 0.00, 0.35],
-...       [0.52, 0.35, 0.00]]
->>> print(DistanceMatrix(d, ids))
-3x3 distance matrix
-IDs:
-'A', 'B', 'C'
-Data:
-[[ 0.    0.24  0.52]
- [ 0.24  0.    0.35]
- [ 0.52  0.35  0.  ]]
+```{figure} ./images/unifrac-tree-1.png
+---
+name: unifrac-tree-1
+---
+Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
 ```
 
- **TODO**: Interface change so this code can be used with ``table_to_distances``.
+In {numref}`unifrac-tree-1`, all of the ASVs that are observed in either sample are observed in both samples. As a result, the unique branch length in this case is zero, so we have a UniFrac distance of 0 between the Sample 1 and Sample 2.
 
-```python
->>> ## This is untested!! I'm not certain that it's exactly right, just a quick test.
-...
-... newick_tree1 = StringIO('(((((OTU1:0.5,OTU2:0.5):0.5,OTU3:1.0):1.0),(OTU4:0.75,OTU5:0.75):1.25))root;')
->>> tree1 = TreeNode.read(newick_tree1)
-...
->>> def unweighted_unifrac(tree, table, sample_id1, sample_id2, verbose=False):
-...     observed_nodes1 = get_observed_nodes(tree, table, sample_id1, verbose=verbose)
-...     observed_nodes2 = get_observed_nodes(tree, table, sample_id2, verbose=verbose)
-...     observed_branch_length = sum(o.length for o in observed_nodes1 | observed_nodes2)
-...     shared_branch_length = sum(o.length for o in observed_nodes1 & observed_nodes2)
-...     unique_branch_length = observed_branch_length - shared_branch_length
-...     unweighted_unifrac = unique_branch_length / observed_branch_length
-...     return unweighted_unifrac
-...
->>> print(unweighted_unifrac(tree1, table1, 'A', 'B'))
->>> print(unweighted_unifrac(tree1, table1, 'A', 'C'))
->>> print(unweighted_unifrac(tree1, table1, 'B', 'C'))
-0.23809523809523808
-0.52
-0.34782608695652173
+```{figure} ./images/unifrac-tree-3.png
+---
+name: unifrac-tree-3
+---
+Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
 ```
+
+On the other end of the spectrum, in {numref}`unifrac-tree-3`, all of the ASVs in the tree are observed either in Sample 1 or Sample 2, but not in both samples. Furthermore, the ASVs observed in each sample are segregated into different clades in the phylogenetic tree such that there is no overlapping branch length at all. The unique branch length is therefore equal to the observed branch length, so we have a UniFrac distance of 1 between Sample A and Sample B.
+
+```{figure} ./images/unifrac-tree-2.png
+---
+name: unifrac-tree-2
+---
+Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
+```
+
+In most cases, our samples are somewhere between these extremes, as represented in {numref}`unifrac-tree-2`. In this tree, some of our branch length is unique, and some is not. For example, ASV.1 is only observed in Sample 1, so the terminal branch leading to ASV.1 is red. ASV.4 is only observed in Sample 2, so the terminal branch leading to ASV.4 is blue. However, the last internal branch that leads to both ASV.1 and ASV.4 is observed in both samples, so is purple. In this case, we have an intermediate UniFrac distance between Sample 1 and Sample 2, perhaps somewhere around 0.5.
+
+#### Worked example of Unweighted UniFrac
 
 ### Weighted UniFrac distance
 
@@ -363,7 +347,7 @@ Data:
  [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
 ```
 
-#### Distribution plots and comparisons
+### Distribution plots and comparisons
 
 First, let's look at the analysis presented in panels E and F. Instead of generating bar plots here, we'll generate box plots as these are more informative (i.e., they provide a more detailed summary of the distribution being investigated). One important thing to notice here is the central role that the sample metadata plays in the visualization. If we just had our sample ids (i.e., letters ``A`` through ``F``) we wouldn't be able to group distances into *within* and *between* sample type categories, and we therefore couldn't perform the comparisons we're interested in.
 
@@ -446,7 +430,7 @@ Why do you think the distribution of distances between people has a greater rang
 
 Here we used ANOSIM testing whether our with and between category groups differ. This test is specifically designed for distance matrices, and it accounts for the fact that the values are not independent of one another. For example, if one of our samples was very different from all of the others, all of the distances associated with that sample would be large. It's very important to choose the appropriate statistical test to use. One free resource for helping you do that is [*The Guide to Statistical Analysis in Microbial Ecology (GUSTAME)*](http://mb3is.megx.net/gustame). If you're getting started in microbial ecology, I recommend spending some time studying GUSTAME.
 
-#### Hierarchical clustering
+### Hierarchical clustering
 
 Next, let's look at a hierarchical clustering analysis, similar to that presented in panel G above. Here I'm applying the UPGMA functionality implemented in [SciPy](http://www.scipy.org/scipylib/index.html) to generate a tree which we visualize with a dendrogram. However the tips in this tree don't represent sequences or OTUs, but instead they represent samples, and samples with a smaller branch length between them are more similar in composition than samples with a longer branch length between them. (Remember that only horizontal branch length is counted - vertical branch length is just to aid in the organization of the dendrogram.)
 
@@ -481,9 +465,3 @@ Finally, let's look at ordination, similar to that presented in panels A-D. The 
 Ordination is a technique that is widely applied in ecology and in bioinformatics, but the math behind some of the methods such as *Principal Coordinates Analysis* is fairly complex, and as a result I've found that these methods are a black box for a lot of people. Possibly the most simple ordination technique is one called Polar Ordination. Polar Ordination is not widely applied because it has some inconvenient features, but I find that it is useful for introducing the idea behind ordination. Here we'll work through a simple implementation of ordination to illustrate the process, which will help us to interpret ordination plots. In practice, you will use existing software, such as [scikit-bio](http://scikit-bio.org)'s [ordination module](http://scikit-bio.org/maths.stats.ordination.html).
 
 An excellent site for learning more about ordination is [Michael W. Palmer's Ordination Methods page](http://ordination.okstate.edu/).
-
-#### Polar ordination
-
-First, let's print our distance matrix again so we have it nearby.
-
-```python
