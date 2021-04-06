@@ -224,6 +224,7 @@ A phylogenetic tree representing all of the features in our original feature tab
 
 Pairing this with the table we defined above (displayed again in the cell below), and given what you now know about these features, how do you feel about the relative richness of these samples?
 
+(faith_pd)=
 ### Phylogenetic Diversity (PD)
 
 Phylogenetic Diversity (PD or Faith's PD) is a metric of richness that was developed in the early 1990s {cite}`Faith1992-nn`. Like many of the metrics that are used in microbiome research, it wasn't initially designed for studying microbial communities, but rather communities of plants, animals, and other "macro-organisms" (macrobes?). Some of these metrics, including PD, do translate well to microbial community analysis, {ref}`while others don't <chao1>`.

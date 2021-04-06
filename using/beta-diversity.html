@@ -340,14 +340,26 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bray-curtis-distance">
-     9.1.2. Bray-Curtis distance
+    <a class="reference internal nav-link" href="#bray-curtis-dissimilarity">
+     9.1.2. Bray-Curtis dissimilarity
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#unweighted-unifrac-distance">
      9.1.3. Unweighted UniFrac distance
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#conceptual-overview-of-unweighted-unifrac">
+       9.1.3.1. Conceptual overview of Unweighted UniFrac
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#worked-example-of-unweighted-unifrac">
+       9.1.3.2. Worked example of Unweighted UniFrac
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#weighted-unifrac-distance">
@@ -375,13 +387,6 @@
     <a class="reference internal nav-link" href="#ordination">
      9.2.3. Ordination
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#polar-ordination">
-       9.2.3.1. Polar ordination
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -434,36 +439,36 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style  type="text/css" >
-</style><table id="T_bedd00a0_9621_11eb_ad4f_0022481ee82f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >B5</th>        <th class="col_heading level0 col5" >A1</th>        <th class="col_heading level0 col6" >E2</th>    </tr></thead><tbody>
+</style><table id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >B1</th>        <th class="col_heading level0 col1" >B2</th>        <th class="col_heading level0 col2" >B3</th>        <th class="col_heading level0 col3" >B4</th>        <th class="col_heading level0 col4" >B5</th>        <th class="col_heading level0 col5" >A1</th>        <th class="col_heading level0 col6" >E2</th>    </tr></thead><tbody>
                 <tr>
-                        <th id="T_bedd00a0_9621_11eb_ad4f_0022481ee82flevel0_row0" class="row_heading level0 row0" >4ac2</th>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col0" class="data row0 col0" >3</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col1" class="data row0 col1" >5</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col2" class="data row0 col2" >2</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col3" class="data row0 col3" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col4" class="data row0 col4" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col5" class="data row0 col5" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow0_col6" class="data row0 col6" >0</td>
+                        <th id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5level0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col0" class="data row0 col0" >4</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col1" class="data row0 col1" >5</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col2" class="data row0 col2" >1</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col3" class="data row0 col3" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col4" class="data row0 col4" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col5" class="data row0 col5" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row0_col6" class="data row0 col6" >0</td>
             </tr>
             <tr>
-                        <th id="T_bedd00a0_9621_11eb_ad4f_0022481ee82flevel0_row1" class="row_heading level0 row1" >e375</th>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col0" class="data row1 col0" >1</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col1" class="data row1 col1" >3</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col2" class="data row1 col2" >1</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col3" class="data row1 col3" >2</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col4" class="data row1 col4" >3</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col5" class="data row1 col5" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow1_col6" class="data row1 col6" >0</td>
+                        <th id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5level0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col0" class="data row1 col0" >1</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col1" class="data row1 col1" >4</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col2" class="data row1 col2" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col3" class="data row1 col3" >2</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col4" class="data row1 col4" >3</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col5" class="data row1 col5" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row1_col6" class="data row1 col6" >0</td>
             </tr>
             <tr>
-                        <th id="T_bedd00a0_9621_11eb_ad4f_0022481ee82flevel0_row2" class="row_heading level0 row2" >4gd8</th>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col0" class="data row2 col0" >3</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col1" class="data row2 col1" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col2" class="data row2 col2" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col3" class="data row2 col3" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col4" class="data row2 col4" >0</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col5" class="data row2 col5" >3</td>
-                        <td id="T_bedd00a0_9621_11eb_ad4f_0022481ee82frow2_col6" class="data row2 col6" >4</td>
+                        <th id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5level0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col0" class="data row2 col0" >3</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col1" class="data row2 col1" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col2" class="data row2 col2" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col3" class="data row2 col3" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col4" class="data row2 col4" >0</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col5" class="data row2 col5" >3</td>
+                        <td id="T_119ec696_96ec_11eb_9af7_000d3a9bfaf5row2_col6" class="data row2 col6" >4</td>
             </tr>
     </tbody></table></div></div>
 </div>
@@ -482,24 +487,24 @@
 </pre></div>
 </div>
 <div class="output text_html"><style  type="text/css" >
-</style><table id="T_bee90dfa_9621_11eb_ad4f_0022481ee82f" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >4ac2</th>        <th class="col_heading level0 col1" >e375</th>        <th class="col_heading level0 col2" >4gd8</th>    </tr></thead><tbody>
+</style><table id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >4ac2</th>        <th class="col_heading level0 col1" >e375</th>        <th class="col_heading level0 col2" >4gd8</th>    </tr></thead><tbody>
                 <tr>
-                        <th id="T_bee90dfa_9621_11eb_ad4f_0022481ee82flevel0_row0" class="row_heading level0 row0" >4ac2</th>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow0_col0" class="data row0 col0" >0.00</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow0_col1" class="data row0 col1" >0.40</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow0_col2" class="data row0 col2" >0.80</td>
+                        <th id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5level0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row0_col0" class="data row0 col0" >0.00</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row0_col1" class="data row0 col1" >0.60</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row0_col2" class="data row0 col2" >0.80</td>
             </tr>
             <tr>
-                        <th id="T_bee90dfa_9621_11eb_ad4f_0022481ee82flevel0_row1" class="row_heading level0 row1" >e375</th>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow1_col0" class="data row1 col0" >0.40</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow1_col1" class="data row1 col1" >0.00</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow1_col2" class="data row1 col2" >0.86</td>
+                        <th id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5level0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row1_col0" class="data row1 col0" >0.60</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row1_col1" class="data row1 col1" >0.00</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row1_col2" class="data row1 col2" >0.83</td>
             </tr>
             <tr>
-                        <th id="T_bee90dfa_9621_11eb_ad4f_0022481ee82flevel0_row2" class="row_heading level0 row2" >4gd8</th>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow2_col0" class="data row2 col0" >0.80</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow2_col1" class="data row2 col1" >0.86</td>
-                        <td id="T_bee90dfa_9621_11eb_ad4f_0022481ee82frow2_col2" class="data row2 col2" >0.00</td>
+                        <th id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5level0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row2_col0" class="data row2 col0" >0.80</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row2_col1" class="data row2 col1" >0.83</td>
+                        <td id="T_11aa540c_96ec_11eb_9af7_000d3a9bfaf5row2_col2" class="data row2 col2" >0.00</td>
             </tr>
     </tbody></table></div></div>
 </div>
@@ -510,169 +515,260 @@
 <p>This distance matrix tells us that the most similar pair of samples in our feature table are <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">e375</span></code>. The most dissimilar samples in our feature table are <code class="docutils literal notranslate"><span class="pre">4gd8</span></code> and <code class="docutils literal notranslate"><span class="pre">e375</span></code>. To understand exactly what these distances mean, let’s explore a few of the commonly used metrics.</p>
 <div class="section" id="jaccard-distance">
 <h3><span class="section-number">9.1.1. </span>Jaccard Distance<a class="headerlink" href="#jaccard-distance" title="Permalink to this headline">¶</a></h3>
-<p>The first beta diversity metric that we’ll look at is Jaccard Distance. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity).</p>
-<p>To compute the Jaccard Index for a pair of samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, count all of the features that are observed in <em>both</em> <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. <em>Observed</em> features in this context are features with a count of greater than zero. The features present in both samples represent the <strong>intersection</strong> of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. In set theory notation <span class="math notranslate nohighlight">\(A \cap B\)</span> denotes the intersection of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(| A \cap B |\)</span> denotes the size of the intersection of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>Next, count the features that are observed in <em>either</em> sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span> or in both sample <span class="math notranslate nohighlight">\(A\)</span> and sample <span class="math notranslate nohighlight">\(B\)</span>. Those features represent the <strong>union</strong> of the samples. In set theory notation <span class="math notranslate nohighlight">\(| A \cup B |\)</span> denotes the size of the union of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
-<p>Next, divide the size of the intersection by the size the union of the two samples to get the Jaccard Index between the two samples <a class="reference internal" href="#equation-jaccard-index">(9.1)</a>. Subtract that from one to get the Jaccard Distance <a class="reference internal" href="#equation-jaccard-distance">(9.2)</a>.</p>
+<p>The first beta diversity metric that we’ll look at is Jaccard Distance. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity). It is defined as follows:</p>
 <div class="math notranslate nohighlight" id="equation-jaccard-index">
 <span class="eqno">(9.1)<a class="headerlink" href="#equation-jaccard-index" title="Permalink to this equation">¶</a></span>\[Jaccard \, Index_{(A,B)} = \frac{| A \cap B |}{| A \cup B |}\]</div>
 <div class="math notranslate nohighlight" id="equation-jaccard-distance">
 <span class="eqno">(9.2)<a class="headerlink" href="#equation-jaccard-distance" title="Permalink to this equation">¶</a></span>\[Jaccard \, Distance_{(A,B)} = 1 - Jaccard \, Index_{(A,B)}\]</div>
+<p>To compute the Jaccard Index for a pair of samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, count all of the features that are observed in <em>both</em> <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. <em>Observed</em> features in this context are features with a count of greater than zero. The features present in both samples represent the <strong>intersection</strong> of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. In set theory notation <span class="math notranslate nohighlight">\(A \cap B\)</span> denotes the intersection of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, and <span class="math notranslate nohighlight">\(| A \cap B |\)</span> denotes the size of the intersection of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Computing this for samples <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">e375</span></code> from the feature table above would look like the following:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_a_id</span> <span class="o">=</span> <span class="s1">&#39;4ac2&#39;</span>
+<span class="n">sample_b_id</span> <span class="o">=</span> <span class="s1">&#39;e375&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sample A id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sample_a_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sample B id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sample_b_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="n">sample_a_vector</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sample_a_id</span><span class="p">]</span>
+<span class="n">sample_b_vector</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sample_b_id</span><span class="p">]</span>
+<span class="n">feature_ids</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">observed_features_a</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">observed_features_b</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+      <span class="k">if</span> <span class="n">sample_a_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">observed_features_a</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">feature_ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+      <span class="k">if</span> <span class="n">sample_b_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">observed_features_b</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">feature_ids</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">a_b_intersection</span> <span class="o">=</span> <span class="n">observed_features_a</span> <span class="o">&amp;</span> <span class="n">observed_features_b</span>
+<span class="n">a_b_intersection_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_b_intersection</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; A = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">observed_features_a</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; B = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">observed_features_b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; A ∩ B = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">a_b_intersection</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; | A ∩ B | = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">a_b_intersection_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample A id: 4ac2
+Sample B id: e375
+
+ A = {&#39;B1&#39;, &#39;B2&#39;, &#39;B3&#39;}
+ B = {&#39;B1&#39;, &#39;B5&#39;, &#39;B4&#39;, &#39;B2&#39;}
+
+ A ∩ B = {&#39;B1&#39;, &#39;B2&#39;}
+ | A ∩ B | = 2
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, count the features that are observed in <em>either</em> sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span> or in both sample <span class="math notranslate nohighlight">\(A\)</span> and sample <span class="math notranslate nohighlight">\(B\)</span>. Those features represent the <strong>union</strong> of the samples. In set theory notation <span class="math notranslate nohighlight">\(| A \cup B |\)</span> denotes the size of the union of sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_b_union</span> <span class="o">=</span> <span class="n">observed_features_a</span> <span class="o">|</span> <span class="n">observed_features_b</span>
+<span class="n">a_b_union_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_b_union</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; A ∪ B = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">a_b_union</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39; | A ∪ B | = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">a_b_union_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> A ∪ B = {&#39;B4&#39;, &#39;B1&#39;, &#39;B5&#39;, &#39;B2&#39;, &#39;B3&#39;}
+ | A ∪ B | = 5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, divide the size of the intersection by the size the union of the two samples to get the Jaccard Index between the two samples <a class="reference internal" href="#equation-jaccard-index">(9.1)</a>.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">j_index</span> <span class="o">=</span> <span class="n">a_b_intersection_size</span> <span class="o">/</span> <span class="n">a_b_union_size</span>
+<span class="n">j_distance</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">j_index</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;( </span><span class="si">%d</span><span class="s1"> / </span><span class="si">%d</span><span class="s1"> ) &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a_b_intersection_size</span><span class="p">,</span> <span class="n">a_b_union_size</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Jaccard index between samples </span><span class="si">%s</span><span class="s1"> and </span><span class="si">%s</span><span class="s1">: </span><span class="si">%1.2f</span><span class="s1"> &#39;</span> <span class="o">%</span>\
+       <span class="p">(</span><span class="n">sample_a_id</span><span class="p">,</span> <span class="n">sample_b_id</span><span class="p">,</span> <span class="n">j_index</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>( 2 / 5 ) 
+Jaccard index between samples 4ac2 and e375: 0.40 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Subtract the Jaccard Index from one to get the Jaccard Distance <a class="reference internal" href="#equation-jaccard-distance">(9.2)</a>.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1 - </span><span class="si">%1.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">j_index</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Jaccard distance between samples </span><span class="si">%s</span><span class="s1"> and </span><span class="si">%s</span><span class="s1">: </span><span class="si">%1.2f</span><span class="s1"> &#39;</span> <span class="o">%</span>\
+       <span class="p">(</span><span class="n">sample_a_id</span><span class="p">,</span> <span class="n">sample_b_id</span><span class="p">,</span> <span class="n">j_distance</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 - 0.40
+Jaccard distance between samples 4ac2 and e375: 0.60 
+</pre></div>
+</div>
+</div>
+</div>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
 <p>Return to the example presented above and try to compute the Jaccard distances between all pairs of samples yourself. Confirm that you get these values after rounding to two decimal places.</p>
 </div>
-<p>** PICK UP HERE**</p>
 </div>
-<div class="section" id="bray-curtis-distance">
-<h3><span class="section-number">9.1.2. </span>Bray-Curtis distance<a class="headerlink" href="#bray-curtis-distance" title="Permalink to this headline">¶</a></h3>
-<p>The next metric that we’ll look at is a quantitative non-phylogenetic <span class="math notranslate nohighlight">\(\beta\)</span> diversity metric called Bray-Curtis. The Bray-Curtis dissimilarity between a pair of samples, <span class="math notranslate nohighlight">\(j\)</span> and <span class="math notranslate nohighlight">\(k\)</span>, is defined as follows:</p>
-<p><span class="math notranslate nohighlight">\(BC_{jk} = \frac{ \sum_{i} | X_{ij} - X_{ik}|} {\sum_{i} (X_{ij} + X_{ik})}\)</span></p>
-<p><span class="math notranslate nohighlight">\(i\)</span> : feature (e.g., OTUs)</p>
-<p><span class="math notranslate nohighlight">\(X_{ij}\)</span> : frequency of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(j\)</span></p>
-<p><span class="math notranslate nohighlight">\(X_{ik}\)</span> : frequency of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(k\)</span></p>
-<p>This could be implemented in python as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">bray_curtis_distance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample1_id</span><span class="p">,</span> <span class="n">sample2_id</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">numerator</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">... </span>    <span class="n">denominator</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">... </span>    <span class="n">sample1_counts</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">sample1_id</span><span class="p">]</span>
-<span class="gp">... </span>    <span class="n">sample2_counts</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">sample2_id</span><span class="p">]</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample1_count</span><span class="p">,</span> <span class="n">sample2_count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sample1_counts</span><span class="p">,</span> <span class="n">sample2_counts</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="n">numerator</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sample1_count</span> <span class="o">-</span> <span class="n">sample2_count</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">denominator</span> <span class="o">+=</span> <span class="n">sample1_count</span> <span class="o">+</span> <span class="n">sample2_count</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span>
+<div class="section" id="bray-curtis-dissimilarity">
+<h3><span class="section-number">9.1.2. </span>Bray-Curtis dissimilarity<a class="headerlink" href="#bray-curtis-dissimilarity" title="Permalink to this headline">¶</a></h3>
+<p>The next metric that we’ll look at is called Bray-Curtis dissimilarity. The Bray-Curtis dissimilarity between a pair of samples, <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, is defined as follows:</p>
+<div class="math notranslate nohighlight" id="equation-bray-curtis-dissimilarity">
+<span class="eqno">(9.3)<a class="headerlink" href="#equation-bray-curtis-dissimilarity" title="Permalink to this equation">¶</a></span>\[Bray\text{-}Curtis\,Dissimilarity_{AB} = \frac{ \sum_{i} | A_{i} - B_{i}|} {\sum_{i} (A_{i} + B_{i})}\]</div>
+<div class="margin sidebar">
+<p class="sidebar-title"></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In <a class="reference internal" href="#equation-bray-curtis-dissimilarity">(9.3)</a>, the <span class="math notranslate nohighlight">\(|\,|\)</span> symbols indicate absolute value. This differs from <a class="reference internal" href="#equation-jaccard-distance">(9.2)</a>, where the <span class="math notranslate nohighlight">\(|\,|\)</span> symbols indicate the size of a set.</p>
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(i\)</span> : a feature in the input feature table</p>
+<p><span class="math notranslate nohighlight">\(A_{i}\)</span> : the value (i.e., frequency or count) of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(A\)</span></p>
+<p><span class="math notranslate nohighlight">\(B_{i}\)</span> : the value (i.e., frequency or count) of feature <span class="math notranslate nohighlight">\(i\)</span> in sample <span class="math notranslate nohighlight">\(B\)</span></p>
+<p>This formula is relatively straight-forward to apply. To compute the numerator of the equation, sum the absolute differences of each feature’s count across samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Computing this for samples <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">e375</span></code> would look like the following:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_a_id</span> <span class="o">=</span> <span class="s1">&#39;4ac2&#39;</span>
+<span class="n">sample_b_id</span> <span class="o">=</span> <span class="s1">&#39;e375&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sample A id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sample_a_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sample B id: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">sample_b_id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="n">sample_a_vector</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sample_a_id</span><span class="p">]</span>
+<span class="n">sample_b_vector</span> <span class="o">=</span> <span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sample_b_id</span><span class="p">]</span>
+<span class="n">numerator_value</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+      <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; + &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;| </span><span class="si">%d</span><span class="s1"> - </span><span class="si">%d</span><span class="s1"> |&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sample_a_vector</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sample_b_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="n">numerator_value</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sample_a_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">sample_b_vector</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Numerator value: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">numerator_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table1</span>
-<span class="go">      A  B  C</span>
-<span class="go">OTU1  1  0  0</span>
-<span class="go">OTU2  3  2  0</span>
-<span class="go">OTU3  0  0  6</span>
-<span class="go">OTU4  1  4  2</span>
-<span class="go">OTU5  0  4  1</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sample A id: 4ac2
+Sample B id: e375
+
+| 4 - 1 | + | 5 - 4 | + | 1 - 0 | + | 0 - 2 | + | 0 - 3 | + | 0 - 0 | + | 0 - 0 |
+Numerator value: 10
 </pre></div>
 </div>
-<p>Let’s now apply this to some pairs of samples:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
-<span class="go">0.6</span>
+</div>
+</div>
+<p>To compute the denominator of the equation, sum each feature’s count across samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. Computing this for samples <code class="docutils literal notranslate"><span class="pre">4ac2</span></code> and <code class="docutils literal notranslate"><span class="pre">e375</span></code> would look like the following:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">denominator_value</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rarefied_feature_table_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+      <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; + &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;( </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> )&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sample_a_vector</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sample_b_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+      <span class="n">denominator_value</span> <span class="o">+=</span> <span class="n">sample_a_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">sample_b_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Denominator value: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">denominator_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="go">0.857142857143</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>( 4 + 1 ) + ( 5 + 4 ) + ( 1 + 0 ) + ( 0 + 2 ) + ( 0 + 3 ) + ( 0 + 0 ) + ( 0 + 0 )
+Denominator value: 20
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="go">0.684210526316</span>
+</div>
+</div>
+<p>Finally, divide the numerator by the denominator to get the Bray-Curtis dissimilarity between the samples:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bc</span> <span class="o">=</span> <span class="n">numerator_value</span> <span class="o">/</span> <span class="n">denominator_value</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%d</span><span class="s2"> / </span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">numerator_value</span><span class="p">,</span> <span class="n">denominator_value</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bray-Curtis dissimilarity between samples </span><span class="si">%s</span><span class="s1"> and </span><span class="si">%s</span><span class="s1">: </span><span class="si">%1.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sample_a_id</span><span class="p">,</span> <span class="n">sample_b_id</span><span class="p">,</span> <span class="n">bc</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">))</span>
-<span class="go">0.0</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10 / 20 
+Bray-Curtis dissimilarity between samples 4ac2 and e375: 0.50
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bray_curtis_distance</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
-<span class="go">0.684210526316</span>
+</div>
+</div>
+<p>Computing Bray-Curtis dissimilarities between all pairs of samples in our feature table would result in the following distance matrix:</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bray_curtis_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">rarefied_feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;braycurtis&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distance_matrix</span>
+<span class="n">bray_curtis_1</span> <span class="o">=</span> <span class="n">bray_curtis_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">DistanceMatrix</span><span class="p">)</span><span class="o">.</span><span class="n">to_data_frame</span><span class="p">()</span>
+<span class="n">bray_curtis_1</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_precision</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Ultimately, we likely want to apply this to all pairs of samples to get a distance matrix containing all pairwise distances. Let’s define a function for that, and then compute all pairwise Bray-Curtis distances between samples <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">skbio.stats.distance</span> <span class="kn">import</span> <span class="n">DistanceMatrix</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">table_to_distances</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">pairwise_distance_fn</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">sample_ids</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">columns</span>
-<span class="gp">... </span>    <span class="n">num_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample1_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">sample2_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span>
-<span class="gp">... </span>            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pairwise_distance_fn</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">sample1_id</span><span class="p">,</span> <span class="n">sample2_id</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">DistanceMatrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sample_ids</span><span class="p">)</span>
-</pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bc_dm</span> <span class="o">=</span> <span class="n">table_to_distances</span><span class="p">(</span><span class="n">table1</span><span class="p">,</span> <span class="n">bray_curtis_distance</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bc_dm</span><span class="p">)</span>
-<span class="go">3x3 distance matrix</span>
-<span class="go">IDs:</span>
-<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;</span>
-<span class="go">Data:</span>
-<span class="go">[[ 0.          0.6         0.85714286]</span>
-<span class="go"> [ 0.6         0.          0.68421053]</span>
-<span class="go"> [ 0.85714286  0.68421053  0.        ]]</span>
-</pre></div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >4ac2</th>        <th class="col_heading level0 col1" >e375</th>        <th class="col_heading level0 col2" >4gd8</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5level0_row0" class="row_heading level0 row0" >4ac2</th>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row0_col0" class="data row0 col0" >0.00</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row0_col1" class="data row0 col1" >0.50</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row0_col2" class="data row0 col2" >0.70</td>
+            </tr>
+            <tr>
+                        <th id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5level0_row1" class="row_heading level0 row1" >e375</th>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row1_col0" class="data row1 col0" >0.50</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row1_col1" class="data row1 col1" >0.00</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row1_col2" class="data row1 col2" >0.90</td>
+            </tr>
+            <tr>
+                        <th id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5level0_row2" class="row_heading level0 row2" >4gd8</th>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row2_col0" class="data row2 col0" >0.70</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row2_col1" class="data row2 col1" >0.90</td>
+                        <td id="T_11be58b2_96ec_11eb_9af7_000d3a9bfaf5row2_col2" class="data row2 col2" >0.00</td>
+            </tr>
+    </tbody></table></div></div>
 </div>
 </div>
 <div class="section" id="unweighted-unifrac-distance">
 <h3><span class="section-number">9.1.3. </span>Unweighted UniFrac distance<a class="headerlink" href="#unweighted-unifrac-distance" title="Permalink to this headline">¶</a></h3>
-<p>Just as phylogenetic alpha diversity metrics can be more informative than non-phylogenetic alpha diversity metrics, phylogenetic beta diversity metrics offer advantages over non-phylogenetic metrics such as Bray-Curtis. The most widely applied phylogenetic beta diversity metric as of this writing is unweighted UniFrac. UniFrac was initially presented in <a class="reference external" href="http://aem.asm.org/content/71/12/8228.abstract">Lozupone and Knight, 2005, Applied and Environmental Microbiology</a>, and has been widely applied in microbial ecology since (and the illustration of UniFrac computation presented below is derived from a similar example originally developed by Lozupone and Knight).</p>
-<p>The unweighted UniFrac distance between a pair of samples <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> is defined as follows:</p>
-<p><span class="math notranslate nohighlight">\(U_{AB} = \frac{unique}{observed}\)</span></p>
-<p>where:</p>
-<p><span class="math notranslate nohighlight">\(unique\)</span> : the unique branch length, or branch length that only leads to OTU(s) observed in sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span></p>
-<p><span class="math notranslate nohighlight">\(observed\)</span> : the total branch length observed in either sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span></p>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.png" align=right/></div>
-<p>To illustrate how UniFrac distances are computed, before we get into actually computing them, let’s look at a few examples. In these examples, imagine that we’re determining the pairwise UniFrac distance between two samples: a red sample, and a blue sample. If a red box appears next to an OTU, that indicates that it’s observed in the red sample; if a blue box appears next to the OTU, that indicates that it’s observed in the blue sample; if a red and blue box appears next to the OTU, that indicates that the OTU is present in both samples; and if no box is presented next to the OTU, that indicates that it’s present in neither sample.</p>
-<p>To compute the UniFrac distance between a pair of samples, we need to know the sum of the branch length that was observed in either sample (the <em>observed</em> branch length), and the sum of the branch length that was observed only in a single sample (the <em>unique</em> branch length). In these examples, we color all of the <em>observed</em> branch length. Branch length that is unique to the red sample is red, branch length that is unique to the blue sample is blue, and branch length that is observed in both samples is purple. Unobserved branch length is black (as is the vertical branches, as those don’t contribute to branch length - they are purely for visual presentation).</p>
-<p>In the tree on the right, all of the OTUs that are observed in either sample are observed in both samples. As a result, all of the observed branch length is purple. The unique branch length in this case is zero, so <strong>we have a UniFrac distance of 0 between the red and blue samples</strong>.</p>
-<hr>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d1.png" align=right/></div>
-<p>On the other end of the spectrum, in the second tree, all of the OTUs in the tree are observed either in the red sample, or in the blue sample. All of the observed branch length in the tree is either red or blue, meaning that if you follow a branch out to the tips, you will observe only red or blue samples. In this case the unique branch length is equal to the observed branch length, so <strong>we have a UniFrac distance of 1 between the red and blue samples</strong>.</p>
-<hr>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_d0.5.png" align=right/></div>
-<p>Finally, most of the time we’re somewhere in the middle. In this tree, some of our branch length is unique, and some is not. For example, OTU 1 is only observed in our red sample, so the terminal branch leading to OTU 1 is red (i.e., unique to the red sample). OTU 2 is only observed in our blue sample, so the terminal branch leading to OTU 2 is blue (i.e., unique to the blue sample). However, the internal branch leading to the node connecting OTU 1 and OTU 2 leads to OTUs observed in both the red and blue samples (i.e., OTU 1 and OTU 2), so is purple (i.e, observed branch length, but not unique branch length). In this case, <strong>we have an intermediate UniFrac distance between the red and blue samples, maybe somewhere around 0.5</strong>.</p>
-<hr>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances.png" align=right/></div>
-<p>Let’s now compute the Unweighted UniFrac distances between some samples. Imagine we have the following tree, paired with our table below (printed below, for quick reference).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">table1</span>
-<span class="go">      A  B  C</span>
-<span class="go">OTU1  1  0  0</span>
-<span class="go">OTU2  3  2  0</span>
-<span class="go">OTU3  0  0  6</span>
-<span class="go">OTU4  1  4  2</span>
-<span class="go">OTU5  0  4  1</span>
-</pre></div>
+<p>Just as some metrics of alpha diversity use a phylogenetic tree, some metrics of beta diversity also use a phylogenetic tree. The most widely applied phylogenetic beta diversity metric as of this writing is likely Unweighted UniFrac <span id="id2">[<span>Lozupone2005-we</span>]</span>. Unweighted UniFrac is closely related to the alpha diversity metric, <a class="reference internal" href="alpha-diversity.html#faith-pd"><span class="std std-ref">Faith’s Phylogenetic Diversity index</span></a>, and it is computed similarly. First, for each sample <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, the branches connecting the observed features to the root node of the tree are identified. The Unweighted UniFrac distance is then computed as the branch length that is unique to either sample <span class="math notranslate nohighlight">\(A\)</span> or sample <span class="math notranslate nohighlight">\(B\)</span>, divided by all of the branch length covered by both samples.</p>
+<p>The Unweighted UniFrac distance between a pair of samples <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> is defined as follows:</p>
+<div class="math notranslate nohighlight" id="equation-using-beta-diversity-0">
+<span class="eqno">(9.4)<a class="headerlink" href="#equation-using-beta-diversity-0" title="Permalink to this equation">¶</a></span>\[Unweighted\,UniFrac_{AB} = \frac{unique\,branch\,length}{observed\,branch\,length}\]</div>
+<div class="section" id="conceptual-overview-of-unweighted-unifrac">
+<h4><span class="section-number">9.1.3.1. </span>Conceptual overview of Unweighted UniFrac<a class="headerlink" href="#conceptual-overview-of-unweighted-unifrac" title="Permalink to this headline">¶</a></h4>
+<p>To illustrate how UniFrac distances are computed, before we get into actually computing them, let’s look at a few examples. In these examples, imagine that we’re determining the pairwise UniFrac distance between two samples: Sample 1 which we’ll illustrate in red, and Sample 2 which we’ll illustrate in blue. The evolutionary relationships between all of the features in the samples (amplicon sequence variants (ASVs) in this example), are represented with a phylogenetic tree. The count of each ASV in each sample appears to the right of the feature in the phylogenetic tree. As far as Unweighted UniFrac is concerned, a feature is observed in a sample if its count is greater than zero.</p>
+<p>To compute the UniFrac distance between a pair of samples, we need to sum the branch length that was observed only in a single sample (the <em>unique</em> branch length), and sum the branch length that was observed in either or both samples (the <em>observed</em> branch length). Branch length that is unique to Sample 1 will be colored red, branch length that is unique to Sample 2 will be colored blue, and branch length that is observed in both samples will be colored purple. Unobserved branch length is colored black (as are the vertical lines in the tree, as those don’t contribute to branch length - they are purely for visual presentation).</p>
+<div class="figure align-default" id="unifrac-tree-1">
+<img alt="../_images/unifrac-tree-1.png" src="../_images/unifrac-tree-1.png" />
+<p class="caption"><span class="caption-number">Fig. 9.1 </span><span class="caption-text">Attribution: this figure was created for a QIIME 2 workshop. I’m currently identifying who created this so I can give proper attribution.</span><a class="headerlink" href="#unifrac-tree-1" title="Permalink to this image">¶</a></p>
 </div>
-<div style="float: right; margin-left: 30px;"><img title="Image by @gregcaporaso." style="float: right; margin-left: 30px;" src="https://raw.githubusercontent.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics/master/book/applications/images/unifrac_tree_with_distances_ab.png" align=right/></div>
-<p>First, let’s compute the unweighted UniFrac distance between samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>. The <em>unweighted</em> in <em>unweighted UniFrac</em> means that this is a qualitative diversity metric, meaning that we don’t care about the abundances of the OTUs, only whether they are present in a given sample (<span class="math notranslate nohighlight">\(frequency &gt; 0\)</span>) or not present (<span class="math notranslate nohighlight">\(frequency = 0\)</span>).</p>
-<p>Start at the top right branch in the tree, and for each branch, determine if the branch is observed, and if so, if it is also unique. If it is observed then you add its length to your observed branch length. If it is observed and unique, then you also add its length to your unique branch length.</p>
-<p>For samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, I get the following (in the tree on the right, red branches are those observed in <span class="math notranslate nohighlight">\(A\)</span>, blue branches are those observed in <span class="math notranslate nohighlight">\(B\)</span>, and purple are observed in both):</p>
-<p><span class="math notranslate nohighlight">\(unique_{ab} = 0.5 + 0.75 = 1.25\)</span></p>
-<p><span class="math notranslate nohighlight">\(observed_{ab} = 0.5 + 0.5 + 0.5 + 1.0 + 1.25 + 0.75 + 0.75 = 5.25\)</span></p>
-<p><span class="math notranslate nohighlight">\(uu_{ab} = \frac{unique_{ab}}{observed_{ab}} = \frac{1.25}{5.25} = 0.238\)</span></p>
-<p>As an exercise, now compute the UniFrac distances between samples <span class="math notranslate nohighlight">\(B\)</span> and <span class="math notranslate nohighlight">\(C\)</span>, and samples <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(C\)</span>, using the above table and tree. When I do this, I get the following distance matrix.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.52</span><span class="p">],</span>
-<span class="gp">... </span>      <span class="p">[</span><span class="mf">0.24</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">],</span>
-<span class="gp">... </span>      <span class="p">[</span><span class="mf">0.52</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">DistanceMatrix</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
-<span class="go">3x3 distance matrix</span>
-<span class="go">IDs:</span>
-<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;</span>
-<span class="go">Data:</span>
-<span class="go">[[ 0.    0.24  0.52]</span>
-<span class="go"> [ 0.24  0.    0.35]</span>
-<span class="go"> [ 0.52  0.35  0.  ]]</span>
-</pre></div>
+<p>In <a class="reference internal" href="#unifrac-tree-1"><span class="std std-numref">Fig. 9.1</span></a>, all of the ASVs that are observed in either sample are observed in both samples. As a result, the unique branch length in this case is zero, so we have a UniFrac distance of 0 between the Sample 1 and Sample 2.</p>
+<div class="figure align-default" id="unifrac-tree-3">
+<img alt="../_images/unifrac-tree-3.png" src="../_images/unifrac-tree-3.png" />
+<p class="caption"><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Attribution: this figure was created for a QIIME 2 workshop. I’m currently identifying who created this so I can give proper attribution.</span><a class="headerlink" href="#unifrac-tree-3" title="Permalink to this image">¶</a></p>
 </div>
-<p><strong>TODO</strong>: Interface change so this code can be used with <code class="docutils literal notranslate"><span class="pre">table_to_distances</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">## This is untested!! I&#39;m not certain that it&#39;s exactly right, just a quick test.</span>
-<span class="gp">...</span>
-<span class="gp">... </span><span class="n">newick_tree1</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;(((((OTU1:0.5,OTU2:0.5):0.5,OTU3:1.0):1.0),(OTU4:0.75,OTU5:0.75):1.25))root;&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tree1</span> <span class="o">=</span> <span class="n">TreeNode</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">newick_tree1</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">unweighted_unifrac</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">observed_nodes1</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">observed_nodes2</span> <span class="o">=</span> <span class="n">get_observed_nodes</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">observed_branch_length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes1</span> <span class="o">|</span> <span class="n">observed_nodes2</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">shared_branch_length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">length</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">observed_nodes1</span> <span class="o">&amp;</span> <span class="n">observed_nodes2</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">unique_branch_length</span> <span class="o">=</span> <span class="n">observed_branch_length</span> <span class="o">-</span> <span class="n">shared_branch_length</span>
-<span class="gp">... </span>    <span class="n">unweighted_unifrac</span> <span class="o">=</span> <span class="n">unique_branch_length</span> <span class="o">/</span> <span class="n">observed_branch_length</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">unweighted_unifrac</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unweighted_unifrac</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="n">table1</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">))</span>
-<span class="go">0.23809523809523808</span>
-<span class="go">0.52</span>
-<span class="go">0.34782608695652173</span>
-</pre></div>
+<p>On the other end of the spectrum, in <a class="reference internal" href="#unifrac-tree-3"><span class="std std-numref">Fig. 9.2</span></a>, all of the ASVs in the tree are observed either in Sample 1 or Sample 2, but not in both samples. Furthermore, the ASVs observed in each sample are segregated into different clades in the phylogenetic tree such that there is no overlapping branch length at all. The unique branch length is therefore equal to the observed branch length, so we have a UniFrac distance of 1 between Sample A and Sample B.</p>
+<div class="figure align-default" id="unifrac-tree-2">
+<img alt="../_images/unifrac-tree-2.png" src="../_images/unifrac-tree-2.png" />
+<p class="caption"><span class="caption-number">Fig. 9.3 </span><span class="caption-text">Attribution: this figure was created for a QIIME 2 workshop. I’m currently identifying who created this so I can give proper attribution.</span><a class="headerlink" href="#unifrac-tree-2" title="Permalink to this image">¶</a></p>
+</div>
+<p>In most cases, our samples are somewhere between these extremes, as represented in <a class="reference internal" href="#unifrac-tree-2"><span class="std std-numref">Fig. 9.3</span></a>. In this tree, some of our branch length is unique, and some is not. For example, ASV.1 is only observed in Sample 1, so the terminal branch leading to ASV.1 is red. ASV.4 is only observed in Sample 2, so the terminal branch leading to ASV.4 is blue. However, the last internal branch that leads to both ASV.1 and ASV.4 is observed in both samples, so is purple. In this case, we have an intermediate UniFrac distance between Sample 1 and Sample 2, perhaps somewhere around 0.5.</p>
+</div>
+<div class="section" id="worked-example-of-unweighted-unifrac">
+<h4><span class="section-number">9.1.3.2. </span>Worked example of Unweighted UniFrac<a class="headerlink" href="#worked-example-of-unweighted-unifrac" title="Permalink to this headline">¶</a></h4>
 </div>
 </div>
 <div class="section" id="weighted-unifrac-distance">
@@ -834,13 +930,6 @@
 <p>Finally, let’s look at ordination, similar to that presented in panels A-D. The basic idea behind ordination is dimensionality reduction: we want to take high-dimensionality data (a distance matrix) and represent that in a few (usually two or three) dimensions. As humans, we’re very bad at interpreting high dimensionality data directly: with ordination, we can take an <span class="math notranslate nohighlight">\(n\)</span>-dimensional data set (e.g., a distance matrix of shape <span class="math notranslate nohighlight">\(n \times n\)</span>, representing the distances between <span class="math notranslate nohighlight">\(n\)</span> biological samples) and reduce that to a 2-dimensional scatter plot similar to that presented in panels A-D above.</p>
 <p>Ordination is a technique that is widely applied in ecology and in bioinformatics, but the math behind some of the methods such as <em>Principal Coordinates Analysis</em> is fairly complex, and as a result I’ve found that these methods are a black box for a lot of people. Possibly the most simple ordination technique is one called Polar Ordination. Polar Ordination is not widely applied because it has some inconvenient features, but I find that it is useful for introducing the idea behind ordination. Here we’ll work through a simple implementation of ordination to illustrate the process, which will help us to interpret ordination plots. In practice, you will use existing software, such as <a class="reference external" href="http://scikit-bio.org">scikit-bio</a>’s <a class="reference external" href="http://scikit-bio.org/maths.stats.ordination.html">ordination module</a>.</p>
 <p>An excellent site for learning more about ordination is <a class="reference external" href="http://ordination.okstate.edu/">Michael W. Palmer’s Ordination Methods page</a>.</p>
-<div class="section" id="polar-ordination">
-<h4><span class="section-number">9.2.3.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h4>
-<p>First, let’s print our distance matrix again so we have it nearby.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
