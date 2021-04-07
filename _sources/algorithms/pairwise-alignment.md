@@ -12,7 +12,7 @@ kernelspec:
   language: python
   name: python3
 ---
-
+(pairwise-alignment)=
 # Pairwise sequence alignment 
 
 One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology {cite}`Altschul1990-ds`. In this chapter we'll explore why determining biological sequence similarity is harder than it might initially seem, and learn about *pairwise sequence alignment*, the standard approach for determining sequence similarity.

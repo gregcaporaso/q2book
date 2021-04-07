@@ -510,7 +510,7 @@
               <div>
                 
   <div class="section" id="pairwise-sequence-alignment">
-<h1><span class="section-number">1. </span>Pairwise sequence alignment<a class="headerlink" href="#pairwise-sequence-alignment" title="Permalink to this headline">¶</a></h1>
+<span id="pairwise-alignment"></span><h1><span class="section-number">1. </span>Pairwise sequence alignment<a class="headerlink" href="#pairwise-sequence-alignment" title="Permalink to this headline">¶</a></h1>
 <p>One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology <span id="id1">[<a class="reference internal" href="#id22"><span>AGM+90</span></a>]</span>. In this chapter we’ll explore why determining biological sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
 <p>Imagine you have three protein sequences - call them <code class="docutils literal notranslate"><span class="pre">r1</span></code>and <code class="docutils literal notranslate"><span class="pre">r2</span></code> (<em>r</em> is for <em>reference</em>) and <code class="docutils literal notranslate"><span class="pre">q1</span></code> (<em>q</em> is for <em>query</em>) - and you want to know whether <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> or <code class="docutils literal notranslate"><span class="pre">r2</span></code>. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the <a class="reference external" href="http://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> between them) to figure this out. Here’s what this would look like using an implementation of Hamming distance from the SciPy Python library.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -2404,7 +2404,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>105 ms ± 329 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>95.5 ms ± 883 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2419,7 +2419,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>460 µs ± 3.57 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>404 µs ± 3.66 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2499,10 +2499,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ACTTGAAAAA
-TGGTAACGAA
-CCCCAGCCTTTTTTTATGGGGCTGA
-GATGCCGACAAAATGTGGTATACCCAAAGTCTTGGGAAGATTCGCAGGGT
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TTTTCTACCC
+GAAGCCGAGA
+ATAGTTGTACGTATTTGAATTACAA
+TAAACCTCTGGGTAGTACTACAGACTAGTACGGACCAGCTTATAGAGCAG
 </pre></div>
 </div>
 </div>
@@ -2571,32 +2571,32 @@ GATGCCGACAAAATGTGGTATACCCAAAGTCTTGGGAAGATTCGCAGGGT
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.202234</td>
+      <td>0.172877</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.222442</td>
+      <td>1.023082</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>2.674999</td>
+      <td>2.247742</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>4.311932</td>
+      <td>3.563828</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>6.260724</td>
+      <td>5.235024</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>8.558683</td>
+      <td>7.194904</td>
     </tr>
   </tbody>
 </table>
@@ -2621,7 +2621,7 @@ GATGCCGACAAAATGTGGTATACCCAAAGTCTTGGGAAGATTCGCAGGGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7cab08c240&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f79f5bd3978&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2645,7 +2645,7 @@ GATGCCGACAAAATGTGGTATACCCAAAGTCTTGGGAAGATTCGCAGGGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7cab056da0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f79f5bafc88&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />

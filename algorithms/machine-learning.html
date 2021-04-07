@@ -360,8 +360,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#applying-a-native-bayes-classifier">
-     3.1.6. Applying a Native Bayes classifier
+    <a class="reference internal nav-link" href="#applying-a-naive-bayes-classifier">
+     3.1.6. Applying a Naive Bayes classifier
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -617,7 +617,10 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AC CG GC CT TG GG GC CG GG GC CG GT TG GC CC CT TA AA AC CA AC CA AT TG GC CA AA AG GT TC CG GA AA AC CG GA AG GA AA AC CG GG GA AA AT TC CT TT TC CG GG GA AT TT TC CC CA AA AG GT TA AG GA AG GT TG GG GC CG GC CA AC CG GG GG GT TG GA AG GT TA AA AC CA AC CG GT TG GG GA AT TA AA AC CC CT TA AC CC CC CC CA AG GG GG GT TC CC CG GG GG GA AT TA AA AC CA AC CT TT TC CG GA AA AA AG GG GG GG GT TG GC CT TA AA AT TA AC CC CG GG GA AT TA AA AG GC CT TC CA AC CA AG GC CT TT TC CT TA AC CG GG GA AG GG GA AT TG GT TG GA AG GA AA AA AA AG GA AT TT TT TA AT TT TG GC CC CT TT TG GG GG GA AT TG GG GG GT TC CC CG GC CG GG GT TC CC CA AT TT TA AG GC CT TA AG GT TT TG GG GT TG GG GG GG GT TA AA AT TG GG GC CC CT TA AC CC CA AA AG GG GC CT TG GC CG GA AT TG GG GA AT TA AG GC CT TG GG GT TC CT TG GA AG GA AG GG GA AT TG GA AT TC CA AG GC CC CA AC CA AC CT TG GG GA AA AC CT TG GA AG GA AC CA AC CG GG GT TC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TG GG GG GG GA AA AT TT TT TT TG GC CG GC CA AA AT TG GG GG GG GG GA AA AA AC CC CC CT TG GA AC CG GC CA AG GC CA AA AC CG GC CC CG GC CG GT TG GA AA AG GG GA AT TG GA AA AG GG GC CC CT TT TT TG GG GG GT TC CG GT TA AA AA AC CT TT TC CT TG GT TC CA AG GA AG GG GG GG GA AA AG GA AA AA AT TA AC CC CC CG GC CA AA AG GG GG GA AG GC CT TG GA AC CG GG GT TA AC CC CC CT TC CA AA AA AG GG GA AA AG GC CA AC CC CG GG GC CT TA AA AC CT TC CC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GG GA AG GG GG GT TG GC CA AA AG GC CG GT TT TG GT TT TC CG GG GA AA AT TT TA AT TT TG GG GG GC CG GT TA AA AA AG GA AG GC CA AT TG GT TA AG GG GC CG GG GC CC CT TG GT TT TA AA AG GT TC CT TG GG GT TG GT TG GA AA AA AG GC CC CC CG GG GG GG GC CT TC CA AA AC CC CC CC CG GG GA AA AG GT TG GC CA AT TT TG GG GA AT TA AC CT TG GG GT TA AG GG GC CT TT TG GA AG GT TA AT TG GG GG GA AG GA AG GG GA AA AA AG GT TG GG GA AA AT TT TC CC CG GA AG GT TG GT TA AG GG GA AG GT TG GA AA AA AT TC CC CG GT TA AG GA AT TA AT TT TC CG GG GA AG GG GA AA AC CA AC CC CA AG GT TG GG GC CG GA AA AG GG GC CG GG GC CT TT TT TC CT TG GG GA AC CC CA AA AT TA AC CT TG GA AC CG GC CT TG GA AG GA AT TG GC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CG GT TA AA AA AC CG GA AT TG GG GG GT TA AC CT TA AG GG GT TG GT TT TG GC CG GG GG GT TA AA AC CC CA AC CT TC CC CT TG GC CA AG GT TG GC CC CG GC CA AG GC CT TA AA AC CG GC CA AT TT TA AA AG GT TA AC CC CC CC CG GC CC CT TG GG GG GG GA AG GT TA AC CG GG GC CC CG GC CA AA AG GG GC CT TA AA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GG GC CC CC CG GC CA AC CA AA AG GC CG GG GT TG GG GA AG GC CA AT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AC CG GC CA AA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CT TG GG GG GC CT TT TG GA AC CA AT TC CC CT TG GA AT TC CG GT TA AC CT TT TT TA AT TG GG GA AA AA AC CA AT TA AG GA AG GG GT TC CA AG GT TT TT TG GG GC CT TG GG GA AT TC CG GG GT TG GA AC CA AG GG GT TG GC CT TG GC CA AT TG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CT TT TG GT TC CC CT TC CA AG GT TT TG GC CC CA AT TC CA AT TT TA AA AG GT TT TG GG GG GC CA AC CT TC CT TG GG GG GG GA AG GA AC CT TG GC CC CG GG GT TG GT TT TA AA AA AC CC CG GG GA AG GG GA AA AG GG GT TG GG GG GG GA AT TG GA AC CG GT TC CA AA AG GT TC CC CT TC CA AT TG GG GC CC CC CT TT TA AT TG GT TC CC CA AG GG GG GC CT TA AC CA AC CA AC CG GT TG GC CT TA AC CA AA AT TG GG GC CC CG GG GT TA AC CA AA AA AG GG GG GC CA AG GC CG GA AT TA AC CC CG GC CA AA AG GG GT TG GG GA AG GC CA AA AA AT TC CC CC CA AG GA AA AA AG GC CC CG GG GT TC CT TC CA AG GT TT TC CG GG GA AT TT TG GG GA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TC CC CA AT TG GA AA AG GT TT TG GG GA AA AT TC CG GC CT TA AG GT TA AA AT TC CG GC CG GT TA AT TC CA AG GC CA AT TG GA AC CG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GC CC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AC CA AC CC CA AC CG GG GA AA AG GT TC CG GA AT TT TG GT TA AC CC CG GG GA AA AA AC CC CG GG GT TG GG GG GC CT TA AA AC CC CT TT TC CG GG GG GA AA AG GC CA AG GC CC CG GT TT TT TA AT TG GG GT TA AT TG GG GT TC CG GG GT TA AA AC CT TG GG GG GG GT TG GA AA AG GT TC CG GT TA AA AC CA AA AG GG GT TA 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TA AG GA AG GT TT TT TG GA AT TC CC CT TG GG GC CT TC CA AG GA AG GT TG GA AA AC CG GC CT TG GG GC CG GG GT TG GT TG GC CC CT TA AA AT TA AC CA AT TG GC CA AA AG GT TC CG GA AA AC CG GA AT TG GA AA AG GC CT TT TC CT TA AG GC CT TT TG GC CT TA AG GA AA AG GT TG GG GA AT TT TA AG GT TG GG GC CG GC CA AC CG GG GG GT TG GA AG GT TA AA AT TG GC CA AT TA AG GG GT TA AA AC CA AT TG GC CC CC CT TT TT TA AG GT TC CT TG GG GG GA AT TA AG GC CC CA AC CT TG GG GA AA AA AC CG GG GT TG GA AT TT TA AA AT TA AC CT TA AG GA AT TA AC CT TC CC CC CT TA AC CG GG GG GG GG GA AA AA AG GA AA AT TT TT TT TG GC CT TA AA AA AG GG GA AT TT TG GG GC CC CT TA AT TG GT TC CC CT TA AT TC CA AG GT TT TT TG GT TT TG GG GT TG GA AG GG GT TA AA AT TG GG GC CT TT TA AC CC CA AA AG GA AC CT TA AT TG GA AC CG GG GG GT TA AT TC CC CG GG GC CC CT TG GA AG GA AG GG GG GT TG GA AA AC CG GG GA AC CA AC CA AC CT TG GG GA AA AC CT TG GA AG GA AC CA AC CG GG GT TC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TA AG GG GG GA AA AT TA AT TT TG GC CT TC CA AA AT TG GG GG GG GG GA AA AA AC CC CC CT TG GA AA AG GC CA AG GC CA AA AC CA AC CC CG GC CG GT TG GG GA AG GG GA AT TG GA AA AG GG GT TT TT TT TA AG GG GA AT TT TG GT TA AA AA AC CT TC CC CT TT TT TT TA AT TA AA AG GA AG GA AA AG GA AT TT TA AT TG GA AC CG GG GT TA AT TC CT TT TA AT TG GA AA AT TA AA AG GC CA AC CC CG GG GC CT TA AA AC CT TC CC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GG GA AG GG GG GT TG GC CA AA AG GC CG GT TT TA AC CT TC CG GG GA AA AT TC CA AC CT TG GG GG GC CG GT TA AA AA AG GA AG GC CG GC CG GT TA AG GG GC CG GG GA AA AT TA AA AT TA AA AG GT TC CA AG GA AT TG GT TG GA AA AA AT TA AC CT TA AT TG GG GC CT TT TA AA AC CC CA AT TA AG GA AA AC CT TG GC CA AT TT TT TG GA AA AA AC CT TG GT TT TA AT TT TC CT TA AG GA AG GT TG GT TG GG GG GA AG GA AG GG GT TA AA AG GT TG GG GA AA AT TT TC CT TT TG GG GT TG GT TA AG GG GG GG GT TA AA AA AA AT TC CC CG GT TA AG GA AG GA AT TC CA AA AG GA AG GG GA AA AT TA AC CT TC CA AT TT TG GC CG GA AA AG GG GC CG GA AC CT TT TA AC CT TG GG GA AA AC CA AT TT TA AC CT TG GA AC CG GC CT TG GA AT TG GT TG GC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CC CT TA AA AA AC CT TA AT TG GG GA AT TG GC CT TA AG GT TT TG GT TT TG GC CT TC CT TG GC CT TT TG GT TC CA AG GG GG GC CA AG GT TA AA AT TG GT TA AG GC CT TA AA AC CG GC CA AT TT TA AA AG GC CA AT TC CC CC CG GC CC CT TG GG GG GG GA AG GT TA AC CG GG GT TC CG GC CA AA AG GA AT TT TA AA AA AA AC CT TC CA AA AA AG GG GA AA AT TA AG GA AC CG GG GG GG GA AC CC CC CG GC CA AC CA AA AG GC CG GG GT TG GG GA AG GC CA AT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AA AG GA AT TA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CT TA AG GG GC CT TT TG GA AC CA AT TT TG GA AT TA AG GA AA AT TT TT TG GT TT TA AG GA AG GA AT TA AG GC CA AA AA AG GT TG GC CC CA AC CG GC CA AA AG GT TG GG GA AG GC CT TT TG GA AA AA AA AC CA AG GG GT TG GC CT TG GC CA AC CG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CT TC CG GT TC CC CT TT TA AG GT TT TG GC CT TA AG GC CA AG GT TT TC CG GG GC CT TG GA AG GC CA AC CT TC CT TA AA AG GG GA AG GA AC CT TG GC CT TT TC CT TG GT TA AA AG GG GA AA AG GA AG GG GA AA AG GG GT TG GA AG GG GA AC CG GA AC CG GT TC CA AA AG GT TC CA AT TC CA AT TG GG GC CC CC CT TT TA AC CG GC CC CT TA AG GG GG GC CT TA AC CA AC CA AC CG GT TG GC CT TA AC CA AA AT TG GG GG GA AT TA AT TA AC CA AA AA AG GA AG GA AT TG GC CA AA AT TA AC CT TG GC CG GA AA AG GT TG GG GA AG GC CT TA AA AT TC CT TC CA AA AA AA AA AT TA AT TC CT TC CT TC CA AG GT TT TC CG GG GA AT TT TG GT TA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TA AC CA AT TG GA AA AG GC CT TG GG GA AA AT TC CG GC CT TA AG GT TA AA AT TC CG GT TG GA AA AT TC CA AG GC CC CA AT TG GT TC CA AC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GT TC CT TT TG GT TA AC CT TC CA AC CC CG GC CC CC CG GT 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TC CA AC CA AC CC CA AT TG GG GG GA AG GT TT TG GT TA AT TT TC CG GC CC CT TT TA AA AG GC CC CG GG GG GA AT TG GT TT TA AA AA AA AT TA AA AC CT TA AC CT TG GT TC CT TA AC CG GG GC CG GG GA AT TA AC CA AG GC CG GA AC CT TG GG GG GG GT TG GA AA AG GT TC CG GT TA AA AC CA AA AG GG GT TA AA AC CC CG GT 
 </pre></div>
 </div>
 </div>
@@ -630,7 +633,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AC&#39;: 88, &#39;CG&#39;: 97, &#39;GC&#39;: 100, &#39;CT&#39;: 71, &#39;TG&#39;: 106, &#39;GG&#39;: 160, &#39;GT&#39;: 103, &#39;CC&#39;: 84, &#39;TA&#39;: 71, &#39;AA&#39;: 107, &#39;CA&#39;: 83, &#39;AT&#39;: 66, &#39;AG&#39;: 104, &#39;TC&#39;: 63, &#39;GA&#39;: 104, &#39;TT&#39;: 57}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;TA&#39;: 104, &#39;AG&#39;: 116, &#39;GA&#39;: 112, &#39;GT&#39;: 97, &#39;TT&#39;: 68, &#39;TG&#39;: 108, &#39;AT&#39;: 86, &#39;TC&#39;: 62, &#39;CC&#39;: 55, &#39;CT&#39;: 91, &#39;GG&#39;: 117, &#39;GC&#39;: 90, &#39;CA&#39;: 74, &#39;AA&#39;: 118, &#39;AC&#39;: 88, &#39;CG&#39;: 75}
 </pre></div>
 </div>
 </div>
@@ -643,23 +646,23 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AC     88
-CG     97
-GC    100
-CT     71
-TG    106
-GG    160
-GT    103
-CC     84
-TA     71
-AA    107
-CA     83
-AT     66
-AG    104
-TC     63
-GA    104
-TT     57
-Name: 289410, dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TA    104
+AG    116
+GA    112
+GT     97
+TT     68
+TG    108
+AT     86
+TC     62
+CC     55
+CT     91
+GG    117
+GC     90
+CA     74
+AA    118
+AC     88
+CG     75
+Name: 113235, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -725,31 +728,55 @@ Name: 289410, dtype: int64
     <tr style="text-align: right;">
       <th></th>
       <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
-      <th>k__Bacteria; p__Cyanobacteria</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
-      <th>k__Bacteria; p__Acidobacteria</th>
       <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Actinobacteria</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__OP11</th>
-      <th>...</th>
-      <th>k__Bacteria; p__Actinobacteria</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
       <th>k__Bacteria; p__Chloroflexi</th>
-      <th>k__Bacteria; p__Acidobacteria</th>
+      <th>k__Bacteria; p__Synergistetes</th>
+      <th>k__Bacteria; p__Cyanobacteria</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__Bacteroidetes</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__Bacteroidetes</th>
+      <th>...</th>
+      <th>k__Bacteria; p__Planctomycetes</th>
+      <th>k__Bacteria; p__Firmicutes</th>
       <th>k__Bacteria; p__Proteobacteria</th>
       <th>k__Bacteria; p__Firmicutes</th>
       <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Gemmatimonadetes</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
+      <th>k__Archaea; p__Crenarchaeota</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__WS3</th>
+      <th>k__Bacteria; p__Bacteroidetes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>CCCGGAT</th>
+      <th>GTGCTTT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CTTACTC</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -773,103 +800,7 @@ Name: 289410, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>AAGGCAG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GTCGAAA</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>GCTCGCT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GGCGACG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CAGAATT</th>
+      <th>CATGCAG</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -893,31 +824,7 @@ Name: 289410, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>CAAGACC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>GCATGGA</th>
+      <th>CGAATGA</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -941,55 +848,31 @@ Name: 289410, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>GGGTAAT</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
+      <th>GTACAAT</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CCGGTAG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>CAGTTTT</th>
+      <th>GGAGTAG</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1013,7 +896,7 @@ Name: 289410, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>CGTAATC</th>
+      <th>GCGATGT</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1037,35 +920,11 @@ Name: 289410, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>TCCTAAA</th>
+      <th>CAGTCTG</th>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
       <td>0</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>AGCAGAC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1081,271 +940,415 @@ Name: 289410, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>ATTCTAT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>TCGCAGG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
+      <th>GGCGAAA</th>
       <td>0</td>
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>AGGCCAA</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CTACCAA</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GTCGCCG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GAAAACC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GATTATC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>ACTACCT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GAGCGAT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>TTCCTCC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>AACTCCG</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
       <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
       <td>2</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TCCGAGC</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>GCTACAA</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>CCGTGAT</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>ACGATTG</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>AGTCTCC</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CAAGCCG</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>TGCTGCC</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>AGAACCT</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CCCCAAC</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CGTGCAG</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>GCGCCAG</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CCCTTCT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>ACCCAGA</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>ACCGCCG</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>CAGGCCT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>AATTCCG</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
     </tr>
   </tbody>
@@ -1415,638 +1418,638 @@ Name: 289410, dtype: int64
     <tr style="text-align: right;">
       <th></th>
       <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
-      <th>k__Bacteria; p__Cyanobacteria</th>
-      <th>k__Bacteria; p__Acidobacteria</th>
       <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Actinobacteria</th>
-      <th>k__Bacteria; p__OP11</th>
-      <th>k__Bacteria; p__SAR406</th>
-      <th>k__Bacteria; p__Planctomycetes</th>
       <th>k__Bacteria; p__Chloroflexi</th>
+      <th>k__Bacteria; p__Synergistetes</th>
+      <th>k__Bacteria; p__Cyanobacteria</th>
+      <th>k__Bacteria; p__Bacteroidetes</th>
+      <th>k__Bacteria; p__Actinobacteria</th>
+      <th>k__Bacteria; p__Acidobacteria</th>
+      <th>k__Bacteria; p__Planctomycetes</th>
+      <th>k__Bacteria; p__Armatimonadetes</th>
       <th>...</th>
-      <th>k__Bacteria; p__BHI80-139</th>
-      <th>k__Bacteria; p__KSB3</th>
-      <th>k__Bacteria; p__PAUC34f</th>
-      <th>k__Bacteria; p__LD1</th>
-      <th>k__Bacteria; p__GN01</th>
-      <th>k__Bacteria; p__Thermotogae</th>
-      <th>k__Bacteria; p__Kazan-3B-28</th>
+      <th>k__Bacteria; p__LCP-89</th>
+      <th>k__Bacteria; p__WS4</th>
+      <th>k__Bacteria; p__TPD-58</th>
+      <th>k__Bacteria; p__AD3</th>
+      <th>k__Bacteria; p__SR1</th>
       <th>k__Bacteria; p__[Caldithrix]</th>
-      <th>k__Bacteria; p__Caldiserica</th>
-      <th>k__Bacteria; p__OP9</th>
+      <th>k__Bacteria; p__WS5</th>
+      <th>k__Bacteria; p__GAL15</th>
+      <th>k__Bacteria; p__NC10</th>
+      <th>k__Bacteria; p__GN01</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>CCCGGAT</th>
-      <td>0.026665</td>
-      <td>0.030893</td>
-      <td>0.025091</td>
-      <td>0.062233</td>
-      <td>0.007910</td>
-      <td>0.174416</td>
-      <td>0.048138</td>
-      <td>0.001556</td>
-      <td>0.022283</td>
-      <td>0.031917</td>
+      <th>GTGCTTT</th>
+      <td>0.019250</td>
+      <td>0.017614</td>
+      <td>0.030533</td>
+      <td>0.000525</td>
+      <td>0.025061</td>
+      <td>0.013149</td>
+      <td>0.044971</td>
+      <td>0.023299</td>
+      <td>0.030348</td>
+      <td>0.055964</td>
       <td>...</td>
-      <td>0.003631</td>
-      <td>0.003631</td>
-      <td>0.003631</td>
-      <td>0.005447</td>
-      <td>0.005447</td>
-      <td>0.502724</td>
-      <td>0.005447</td>
-      <td>0.505447</td>
-      <td>0.005447</td>
-      <td>0.005447</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.001471</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
+      <td>0.003677</td>
     </tr>
     <tr>
-      <th>AAGGCAG</th>
-      <td>0.199622</td>
-      <td>0.825173</td>
-      <td>0.392299</td>
-      <td>0.041844</td>
-      <td>0.081951</td>
-      <td>0.413081</td>
-      <td>0.336947</td>
-      <td>0.725128</td>
-      <td>0.094866</td>
-      <td>0.134241</td>
+      <th>CTTACTC</th>
+      <td>0.008144</td>
+      <td>0.000736</td>
+      <td>0.000017</td>
+      <td>0.000198</td>
+      <td>0.008356</td>
+      <td>0.018982</td>
+      <td>0.007501</td>
+      <td>0.029086</td>
+      <td>0.012138</td>
+      <td>0.000154</td>
       <td>...</td>
-      <td>0.025298</td>
-      <td>0.025298</td>
-      <td>0.025298</td>
-      <td>0.037946</td>
-      <td>0.037946</td>
-      <td>0.018973</td>
-      <td>0.537946</td>
-      <td>0.037946</td>
-      <td>0.037946</td>
-      <td>0.037946</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.000555</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
+      <td>0.001388</td>
     </tr>
     <tr>
-      <th>GTCGAAA</th>
-      <td>0.037471</td>
-      <td>0.030892</td>
-      <td>0.016749</td>
-      <td>0.025958</td>
-      <td>0.008628</td>
-      <td>0.039181</td>
-      <td>0.333806</td>
-      <td>0.144274</td>
-      <td>0.033388</td>
-      <td>0.019171</td>
+      <th>CATGCAG</th>
+      <td>0.039977</td>
+      <td>0.017615</td>
+      <td>0.030545</td>
+      <td>0.072093</td>
+      <td>0.016744</td>
+      <td>0.008773</td>
+      <td>0.052469</td>
+      <td>0.005868</td>
+      <td>0.030359</td>
+      <td>0.056073</td>
       <td>...</td>
-      <td>0.003306</td>
-      <td>0.003306</td>
-      <td>0.003306</td>
-      <td>0.004959</td>
-      <td>0.004959</td>
-      <td>0.002479</td>
-      <td>0.504959</td>
-      <td>0.004959</td>
-      <td>0.004959</td>
-      <td>0.004959</td>
+      <td>0.004654</td>
+      <td>0.004654</td>
+      <td>0.504654</td>
+      <td>0.004654</td>
+      <td>0.001861</td>
+      <td>0.004654</td>
+      <td>0.004654</td>
+      <td>0.504654</td>
+      <td>0.004654</td>
+      <td>0.004654</td>
     </tr>
     <tr>
-      <th>GCTCGCT</th>
-      <td>0.004327</td>
-      <td>0.039462</td>
-      <td>0.000052</td>
-      <td>0.057027</td>
-      <td>0.002878</td>
-      <td>0.032051</td>
-      <td>0.238390</td>
-      <td>0.000885</td>
-      <td>0.033368</td>
-      <td>0.038256</td>
+      <th>CGAATGA</th>
+      <td>0.013328</td>
+      <td>0.023482</td>
+      <td>0.000039</td>
+      <td>0.000451</td>
+      <td>0.016719</td>
+      <td>0.023367</td>
+      <td>0.003769</td>
+      <td>0.017479</td>
+      <td>0.012159</td>
+      <td>0.000351</td>
       <td>...</td>
-      <td>0.002065</td>
-      <td>0.002065</td>
-      <td>0.002065</td>
-      <td>0.003097</td>
-      <td>0.503097</td>
-      <td>0.001549</td>
-      <td>0.003097</td>
-      <td>0.003097</td>
-      <td>0.003097</td>
-      <td>0.003097</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.601263</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
+      <td>0.003158</td>
     </tr>
     <tr>
-      <th>GGCGACG</th>
-      <td>0.529633</td>
-      <td>0.303827</td>
-      <td>0.492759</td>
-      <td>0.290835</td>
-      <td>0.529548</td>
-      <td>0.477335</td>
-      <td>0.291955</td>
-      <td>0.161581</td>
-      <td>0.178506</td>
-      <td>0.249242</td>
+      <th>GTACAAT</th>
+      <td>0.013335</td>
+      <td>0.021288</td>
+      <td>0.500094</td>
+      <td>0.001096</td>
+      <td>0.008461</td>
+      <td>0.027760</td>
+      <td>0.116162</td>
+      <td>0.029159</td>
+      <td>0.006154</td>
+      <td>0.000853</td>
       <td>...</td>
-      <td>0.043688</td>
-      <td>0.710355</td>
-      <td>0.710355</td>
-      <td>0.065532</td>
-      <td>0.065532</td>
-      <td>0.782766</td>
-      <td>0.065532</td>
-      <td>0.065532</td>
-      <td>0.065532</td>
-      <td>0.065532</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.003070</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
+      <td>0.007675</td>
     </tr>
     <tr>
-      <th>CAGAATT</th>
-      <td>0.031705</td>
-      <td>0.008588</td>
-      <td>0.008391</td>
-      <td>0.031124</td>
-      <td>0.017246</td>
-      <td>0.014260</td>
-      <td>0.095568</td>
-      <td>0.000990</td>
-      <td>0.000038</td>
-      <td>0.044630</td>
+      <th>GGAGTAG</th>
+      <td>0.014071</td>
+      <td>0.027887</td>
+      <td>0.061033</td>
+      <td>0.000674</td>
+      <td>0.000079</td>
+      <td>0.035050</td>
+      <td>0.007526</td>
+      <td>0.029125</td>
+      <td>0.030360</td>
+      <td>0.056079</td>
       <td>...</td>
-      <td>0.002309</td>
-      <td>0.002309</td>
-      <td>0.002309</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.201886</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+      <td>0.004715</td>
+    </tr>
+    <tr>
+      <th>GCGATGT</th>
+      <td>0.025172</td>
+      <td>0.019081</td>
+      <td>0.006140</td>
+      <td>0.000495</td>
+      <td>0.025058</td>
+      <td>0.035047</td>
+      <td>0.033734</td>
+      <td>0.005854</td>
+      <td>0.036406</td>
+      <td>0.000385</td>
+      <td>...</td>
       <td>0.003464</td>
       <td>0.003464</td>
-      <td>0.001732</td>
+      <td>0.003464</td>
+      <td>0.503464</td>
+      <td>0.001385</td>
       <td>0.003464</td>
       <td>0.003464</td>
       <td>0.003464</td>
       <td>0.003464</td>
+      <td>0.003464</td>
     </tr>
     <tr>
-      <th>CAAGACC</th>
-      <td>0.085031</td>
-      <td>0.015477</td>
-      <td>0.125192</td>
-      <td>0.197011</td>
-      <td>0.061080</td>
-      <td>0.010758</td>
-      <td>0.001097</td>
-      <td>0.003291</td>
-      <td>0.116795</td>
-      <td>0.025624</td>
+      <th>CAGTCTG</th>
+      <td>0.158424</td>
+      <td>0.068988</td>
+      <td>0.048970</td>
+      <td>0.430793</td>
+      <td>0.025259</td>
+      <td>0.056980</td>
+      <td>0.011352</td>
+      <td>0.337390</td>
+      <td>0.024431</td>
+      <td>0.112839</td>
       <td>...</td>
-      <td>0.007680</td>
-      <td>0.007680</td>
-      <td>0.007680</td>
-      <td>0.011520</td>
-      <td>0.011520</td>
-      <td>0.005760</td>
-      <td>0.011520</td>
-      <td>0.011520</td>
-      <td>0.011520</td>
-      <td>0.511520</td>
+      <td>0.015548</td>
+      <td>0.515548</td>
+      <td>0.515548</td>
+      <td>0.015548</td>
+      <td>0.206219</td>
+      <td>0.515548</td>
+      <td>0.015548</td>
+      <td>0.015548</td>
+      <td>0.515548</td>
+      <td>0.015548</td>
     </tr>
     <tr>
-      <th>GCATGGA</th>
-      <td>0.007211</td>
-      <td>0.030890</td>
-      <td>0.016743</td>
-      <td>0.000047</td>
-      <td>0.040955</td>
-      <td>0.032061</td>
-      <td>0.000434</td>
-      <td>0.144161</td>
-      <td>0.138940</td>
-      <td>0.038275</td>
+      <th>GGCGAAA</th>
+      <td>0.322060</td>
+      <td>0.237052</td>
+      <td>0.610381</td>
+      <td>0.078750</td>
+      <td>0.867521</td>
+      <td>0.105259</td>
+      <td>0.401133</td>
+      <td>0.500596</td>
+      <td>0.806682</td>
+      <td>0.394583</td>
       <td>...</td>
-      <td>0.003041</td>
-      <td>0.003041</td>
-      <td>0.003041</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-      <td>0.002281</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
+      <td>0.551251</td>
+      <td>0.051251</td>
+      <td>0.551251</td>
+      <td>0.551251</td>
+      <td>0.020500</td>
+      <td>0.051251</td>
+      <td>0.551251</td>
+      <td>0.051251</td>
+      <td>0.551251</td>
+      <td>0.551251</td>
     </tr>
     <tr>
-      <th>GGGTAAT</th>
-      <td>0.278146</td>
-      <td>0.061863</td>
-      <td>0.125552</td>
-      <td>0.456301</td>
-      <td>0.079071</td>
-      <td>0.320520</td>
-      <td>0.669819</td>
-      <td>0.152313</td>
-      <td>0.511479</td>
-      <td>0.197874</td>
+      <th>TCCGAGC</th>
+      <td>0.008890</td>
+      <td>0.005877</td>
+      <td>0.000064</td>
+      <td>0.000748</td>
+      <td>0.016754</td>
+      <td>0.150380</td>
+      <td>0.048728</td>
+      <td>0.023317</td>
+      <td>0.012185</td>
+      <td>0.056137</td>
       <td>...</td>
-      <td>0.022063</td>
-      <td>0.022063</td>
-      <td>0.688730</td>
-      <td>0.533094</td>
-      <td>0.033094</td>
-      <td>0.266547</td>
-      <td>0.533094</td>
-      <td>0.533094</td>
-      <td>0.533094</td>
-      <td>0.533094</td>
+      <td>0.005233</td>
+      <td>0.005233</td>
+      <td>0.005233</td>
+      <td>0.005233</td>
+      <td>0.202093</td>
+      <td>0.005233</td>
+      <td>0.505233</td>
+      <td>0.005233</td>
+      <td>0.005233</td>
+      <td>0.005233</td>
     </tr>
     <tr>
-      <th>CCGGTAG</th>
-      <td>0.051184</td>
-      <td>0.056678</td>
-      <td>0.033695</td>
-      <td>0.440640</td>
-      <td>0.041698</td>
-      <td>0.117592</td>
-      <td>0.002068</td>
-      <td>0.149061</td>
-      <td>0.833575</td>
-      <td>0.554417</td>
+      <th>GCTACAA</th>
+      <td>0.744050</td>
+      <td>0.681006</td>
+      <td>0.970799</td>
+      <td>0.872220</td>
+      <td>0.310092</td>
+      <td>0.487899</td>
+      <td>0.865959</td>
+      <td>0.943088</td>
+      <td>0.619461</td>
+      <td>0.956171</td>
       <td>...</td>
-      <td>0.347808</td>
-      <td>0.681141</td>
-      <td>0.014475</td>
-      <td>0.021712</td>
-      <td>0.021712</td>
-      <td>0.510856</td>
-      <td>0.521712</td>
-      <td>0.021712</td>
-      <td>0.021712</td>
-      <td>0.521712</td>
+      <td>0.605539</td>
+      <td>0.105539</td>
+      <td>0.605539</td>
+      <td>0.605539</td>
+      <td>0.042215</td>
+      <td>0.605539</td>
+      <td>0.105539</td>
+      <td>0.605539</td>
+      <td>0.605539</td>
+      <td>0.605539</td>
     </tr>
     <tr>
-      <th>CAGTTTT</th>
-      <td>0.005765</td>
-      <td>0.027448</td>
-      <td>0.000018</td>
-      <td>0.000011</td>
-      <td>0.002157</td>
-      <td>0.000008</td>
-      <td>0.047722</td>
-      <td>0.143167</td>
-      <td>0.000012</td>
-      <td>0.000014</td>
+      <th>CCGTGAT</th>
+      <td>0.038496</td>
+      <td>0.019815</td>
+      <td>0.018341</td>
+      <td>0.000569</td>
+      <td>0.008400</td>
+      <td>0.004391</td>
+      <td>0.003775</td>
+      <td>0.029116</td>
+      <td>0.066715</td>
+      <td>0.000442</td>
       <td>...</td>
-      <td>0.000722</td>
-      <td>0.000722</td>
-      <td>0.000722</td>
-      <td>0.001083</td>
-      <td>0.001083</td>
-      <td>0.000542</td>
-      <td>0.501083</td>
-      <td>0.001083</td>
-      <td>0.001083</td>
-      <td>0.001083</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.001593</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
+      <td>0.003982</td>
     </tr>
     <tr>
-      <th>CGTAATC</th>
-      <td>0.003604</td>
-      <td>0.008580</td>
-      <td>0.000020</td>
-      <td>0.000012</td>
-      <td>0.003594</td>
-      <td>0.003567</td>
-      <td>0.000112</td>
-      <td>0.000336</td>
-      <td>0.011124</td>
-      <td>0.012754</td>
-      <td>...</td>
-      <td>0.000783</td>
-      <td>0.000783</td>
-      <td>0.000783</td>
-      <td>0.001175</td>
-      <td>0.001175</td>
-      <td>0.000587</td>
-      <td>0.001175</td>
-      <td>0.001175</td>
-      <td>0.001175</td>
-      <td>0.001175</td>
-    </tr>
-    <tr>
-      <th>TCCTAAA</th>
-      <td>0.017295</td>
-      <td>0.017163</td>
-      <td>0.016715</td>
-      <td>0.005211</td>
-      <td>0.013654</td>
-      <td>0.003579</td>
-      <td>0.000275</td>
-      <td>0.000824</td>
-      <td>0.005588</td>
-      <td>0.070100</td>
-      <td>...</td>
-      <td>0.001922</td>
-      <td>0.001922</td>
-      <td>0.001922</td>
-      <td>0.002884</td>
-      <td>0.002884</td>
-      <td>0.001442</td>
-      <td>0.002884</td>
-      <td>0.002884</td>
-      <td>0.002884</td>
-      <td>0.002884</td>
-    </tr>
-    <tr>
-      <th>AGCAGAC</th>
-      <td>0.010089</td>
-      <td>0.010299</td>
-      <td>0.033368</td>
-      <td>0.000021</td>
-      <td>0.013652</td>
-      <td>0.000015</td>
-      <td>0.333530</td>
-      <td>0.000589</td>
-      <td>0.005578</td>
-      <td>0.025504</td>
-      <td>...</td>
-      <td>0.001373</td>
-      <td>0.001373</td>
-      <td>0.001373</td>
-      <td>0.002060</td>
-      <td>0.002060</td>
-      <td>0.001030</td>
-      <td>0.002060</td>
-      <td>0.002060</td>
-      <td>0.002060</td>
-      <td>0.002060</td>
-    </tr>
-    <tr>
-      <th>ATTCTAT</th>
-      <td>0.002162</td>
-      <td>0.008578</td>
-      <td>0.000010</td>
-      <td>0.010369</td>
-      <td>0.001438</td>
-      <td>0.017798</td>
-      <td>0.000057</td>
-      <td>0.000170</td>
-      <td>0.000007</td>
-      <td>0.000008</td>
-      <td>...</td>
-      <td>0.000397</td>
-      <td>0.000397</td>
-      <td>0.000397</td>
-      <td>0.000595</td>
-      <td>0.000595</td>
-      <td>0.000298</td>
-      <td>0.000595</td>
-      <td>0.000595</td>
-      <td>0.000595</td>
-      <td>0.000595</td>
-    </tr>
-    <tr>
-      <th>TCGCAGG</th>
-      <td>0.030996</td>
-      <td>0.008614</td>
-      <td>0.416851</td>
-      <td>0.145192</td>
-      <td>0.099872</td>
-      <td>0.042783</td>
-      <td>0.143911</td>
-      <td>0.003161</td>
-      <td>0.194567</td>
-      <td>0.089313</td>
-      <td>...</td>
-      <td>0.007375</td>
-      <td>0.007375</td>
-      <td>0.007375</td>
-      <td>0.011062</td>
-      <td>0.011062</td>
-      <td>0.255531</td>
-      <td>0.011062</td>
-      <td>0.011062</td>
-      <td>0.011062</td>
-      <td>0.011062</td>
-    </tr>
-    <tr>
-      <th>AGGCCAA</th>
-      <td>0.012250</td>
-      <td>0.005152</td>
-      <td>0.000031</td>
-      <td>0.005200</td>
-      <td>0.011497</td>
-      <td>0.003572</td>
-      <td>0.000176</td>
-      <td>0.000527</td>
-      <td>0.027798</td>
-      <td>0.012762</td>
-      <td>...</td>
-      <td>0.001231</td>
-      <td>0.001231</td>
-      <td>0.001231</td>
-      <td>0.001846</td>
-      <td>0.001846</td>
-      <td>0.000923</td>
-      <td>0.001846</td>
-      <td>0.001846</td>
-      <td>0.001846</td>
-      <td>0.001846</td>
-    </tr>
-    <tr>
-      <th>CTACCAA</th>
-      <td>0.460440</td>
-      <td>0.061905</td>
-      <td>0.359089</td>
-      <td>0.275081</td>
-      <td>0.224203</td>
-      <td>0.406017</td>
-      <td>0.813844</td>
-      <td>0.298675</td>
-      <td>0.228282</td>
-      <td>0.440068</td>
-      <td>...</td>
-      <td>0.363574</td>
-      <td>0.030241</td>
-      <td>0.696908</td>
-      <td>0.045362</td>
-      <td>0.045362</td>
-      <td>0.022681</td>
-      <td>0.045362</td>
-      <td>0.045362</td>
-      <td>0.045362</td>
-      <td>0.545362</td>
-    </tr>
-    <tr>
-      <th>GTCGCCG</th>
-      <td>0.015135</td>
-      <td>0.013734</td>
-      <td>0.000057</td>
-      <td>0.082937</td>
-      <td>0.003597</td>
-      <td>0.010700</td>
+      <th>ACGATTG</th>
+      <td>0.011847</td>
+      <td>0.033020</td>
+      <td>0.018328</td>
+      <td>0.000416</td>
+      <td>0.025049</td>
+      <td>0.016067</td>
+      <td>0.007512</td>
+      <td>0.011662</td>
+      <td>0.012157</td>
       <td>0.000324</td>
-      <td>0.000972</td>
-      <td>0.144482</td>
-      <td>0.038260</td>
       <td>...</td>
-      <td>0.002268</td>
-      <td>0.002268</td>
-      <td>0.002268</td>
-      <td>0.003403</td>
-      <td>0.003403</td>
-      <td>0.001701</td>
-      <td>0.003403</td>
-      <td>0.003403</td>
-      <td>0.003403</td>
-      <td>0.003403</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.001166</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
+      <td>0.002914</td>
     </tr>
     <tr>
-      <th>GAAAACC</th>
-      <td>0.073505</td>
-      <td>0.073798</td>
-      <td>0.050203</td>
-      <td>0.093390</td>
-      <td>0.107058</td>
-      <td>0.106848</td>
-      <td>0.048777</td>
-      <td>0.003474</td>
-      <td>0.033468</td>
-      <td>0.025633</td>
+      <th>AGTCTCC</th>
+      <td>0.004443</td>
+      <td>0.003670</td>
+      <td>0.018309</td>
+      <td>0.000194</td>
+      <td>0.058356</td>
+      <td>0.002924</td>
+      <td>0.000010</td>
+      <td>0.011644</td>
+      <td>0.006077</td>
+      <td>0.000151</td>
       <td>...</td>
-      <td>0.008107</td>
-      <td>0.008107</td>
-      <td>0.008107</td>
-      <td>0.012161</td>
-      <td>0.012161</td>
-      <td>0.256080</td>
-      <td>0.012161</td>
-      <td>0.012161</td>
-      <td>0.012161</td>
-      <td>0.012161</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.000543</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
+      <td>0.001358</td>
     </tr>
     <tr>
-      <th>GATTATC</th>
-      <td>0.008649</td>
-      <td>0.025736</td>
-      <td>0.000036</td>
-      <td>0.025929</td>
-      <td>0.008624</td>
-      <td>0.003574</td>
-      <td>0.095443</td>
-      <td>0.000615</td>
-      <td>0.083357</td>
+      <th>CAAGCCG</th>
+      <td>0.219129</td>
+      <td>0.088073</td>
+      <td>0.335632</td>
+      <td>0.503115</td>
+      <td>0.092030</td>
+      <td>0.105173</td>
+      <td>0.075070</td>
+      <td>0.093277</td>
+      <td>0.133598</td>
+      <td>0.224645</td>
+      <td>...</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.208721</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+      <td>0.021803</td>
+    </tr>
+    <tr>
+      <th>TGCTGCC</th>
+      <td>0.002223</td>
+      <td>0.007339</td>
+      <td>0.018312</td>
+      <td>0.143082</td>
+      <td>0.025026</td>
+      <td>0.005844</td>
+      <td>0.011248</td>
+      <td>0.029088</td>
+      <td>0.036383</td>
+      <td>0.000175</td>
+      <td>...</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.000629</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.001572</td>
+      <td>0.501572</td>
+    </tr>
+    <tr>
+      <th>AGAACCT</th>
+      <td>0.806237</td>
+      <td>0.943673</td>
+      <td>0.958693</td>
+      <td>0.944690</td>
+      <td>0.901881</td>
+      <td>0.047045</td>
+      <td>0.970883</td>
+      <td>0.931545</td>
+      <td>0.946822</td>
+      <td>0.956981</td>
+      <td>...</td>
+      <td>0.612832</td>
+      <td>0.612832</td>
+      <td>0.612832</td>
+      <td>0.612832</td>
+      <td>0.045133</td>
+      <td>0.612832</td>
+      <td>0.112832</td>
+      <td>0.612832</td>
+      <td>0.612832</td>
+      <td>0.612832</td>
+    </tr>
+    <tr>
+      <th>CCCCAAC</th>
+      <td>0.003703</td>
+      <td>0.004404</td>
+      <td>0.006113</td>
+      <td>0.000181</td>
+      <td>0.041688</td>
+      <td>0.008763</td>
+      <td>0.003755</td>
+      <td>0.000015</td>
+      <td>0.042440</td>
+      <td>0.000141</td>
+      <td>...</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.000507</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+      <td>0.001266</td>
+    </tr>
+    <tr>
+      <th>CGTGCAG</th>
+      <td>0.042957</td>
+      <td>0.031574</td>
+      <td>0.250217</td>
+      <td>0.073968</td>
+      <td>0.116963</td>
+      <td>0.509541</td>
+      <td>0.071294</td>
+      <td>0.000207</td>
+      <td>0.072943</td>
+      <td>0.001975</td>
+      <td>...</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.007110</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+      <td>0.017775</td>
+    </tr>
+    <tr>
+      <th>GCGCCAG</th>
+      <td>0.009625</td>
+      <td>0.005138</td>
+      <td>0.024410</td>
+      <td>0.000229</td>
       <td>0.000027</td>
+      <td>0.010224</td>
+      <td>0.011248</td>
+      <td>0.017460</td>
+      <td>0.006080</td>
+      <td>0.000178</td>
       <td>...</td>
-      <td>0.001434</td>
-      <td>0.001434</td>
-      <td>0.001434</td>
-      <td>0.002151</td>
-      <td>0.002151</td>
-      <td>0.001076</td>
-      <td>0.002151</td>
-      <td>0.002151</td>
-      <td>0.002151</td>
-      <td>0.002151</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.000641</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
+      <td>0.001602</td>
     </tr>
     <tr>
-      <th>ACTACCT</th>
-      <td>0.018015</td>
-      <td>0.015445</td>
-      <td>0.025035</td>
-      <td>0.005203</td>
-      <td>0.009342</td>
-      <td>0.007132</td>
-      <td>0.047818</td>
-      <td>0.000597</td>
-      <td>0.000023</td>
-      <td>0.006396</td>
+      <th>CCCTTCT</th>
+      <td>0.022215</td>
+      <td>0.074111</td>
+      <td>0.048860</td>
+      <td>0.000926</td>
+      <td>0.008441</td>
+      <td>0.026296</td>
+      <td>0.033756</td>
+      <td>0.017517</td>
+      <td>0.030382</td>
+      <td>0.000721</td>
       <td>...</td>
-      <td>0.001394</td>
-      <td>0.001394</td>
-      <td>0.001394</td>
-      <td>0.002090</td>
-      <td>0.002090</td>
-      <td>0.001045</td>
-      <td>0.002090</td>
-      <td>0.502090</td>
-      <td>0.002090</td>
-      <td>0.002090</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.002594</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
+      <td>0.006485</td>
     </tr>
     <tr>
-      <th>GAGCGAT</th>
-      <td>0.030275</td>
-      <td>0.029196</td>
-      <td>0.041844</td>
-      <td>0.171095</td>
-      <td>0.108492</td>
-      <td>0.035663</td>
-      <td>0.001016</td>
-      <td>0.003047</td>
-      <td>0.127896</td>
-      <td>0.172110</td>
+      <th>ACCCAGA</th>
+      <td>0.025913</td>
+      <td>0.013212</td>
+      <td>0.097610</td>
+      <td>0.000578</td>
+      <td>0.000067</td>
+      <td>0.021910</td>
+      <td>0.029993</td>
+      <td>0.040745</td>
+      <td>0.048534</td>
+      <td>0.056005</td>
       <td>...</td>
-      <td>0.007110</td>
-      <td>0.007110</td>
-      <td>0.007110</td>
-      <td>0.010665</td>
-      <td>0.010665</td>
-      <td>0.005333</td>
-      <td>0.010665</td>
-      <td>0.010665</td>
-      <td>0.010665</td>
-      <td>0.010665</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.201617</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
+      <td>0.004043</td>
     </tr>
     <tr>
-      <th>TTCCTCC</th>
-      <td>0.005045</td>
-      <td>0.000003</td>
-      <td>0.000016</td>
-      <td>0.000010</td>
-      <td>0.005748</td>
-      <td>0.024918</td>
-      <td>0.047708</td>
-      <td>0.000266</td>
-      <td>0.000010</td>
-      <td>0.000012</td>
+      <th>ACCGCCG</th>
+      <td>0.079216</td>
+      <td>0.031563</td>
+      <td>0.128177</td>
+      <td>0.001502</td>
+      <td>0.075175</td>
+      <td>0.030688</td>
+      <td>0.127420</td>
+      <td>0.046634</td>
+      <td>0.145582</td>
+      <td>0.501168</td>
       <td>...</td>
-      <td>0.000620</td>
-      <td>0.000620</td>
-      <td>0.000620</td>
-      <td>0.000931</td>
-      <td>0.000931</td>
-      <td>0.500465</td>
-      <td>0.000931</td>
-      <td>0.000931</td>
-      <td>0.000931</td>
-      <td>0.000931</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
+      <td>0.510513</td>
+      <td>0.404205</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
+      <td>0.010513</td>
     </tr>
     <tr>
-      <th>AACTCCG</th>
-      <td>0.533238</td>
-      <td>0.924758</td>
-      <td>0.709448</td>
-      <td>0.446289</td>
-      <td>0.313315</td>
-      <td>0.206882</td>
-      <td>0.101610</td>
-      <td>0.161973</td>
-      <td>0.222966</td>
-      <td>0.090024</td>
+      <th>CAGGCCT</th>
+      <td>0.244294</td>
+      <td>0.052855</td>
+      <td>0.030737</td>
+      <td>0.145776</td>
+      <td>0.008674</td>
+      <td>0.271592</td>
+      <td>0.022625</td>
+      <td>0.017679</td>
+      <td>0.024490</td>
+      <td>0.002270</td>
       <td>...</td>
-      <td>0.377937</td>
-      <td>0.711270</td>
-      <td>0.044604</td>
-      <td>0.566906</td>
-      <td>0.066906</td>
-      <td>0.283453</td>
-      <td>0.066906</td>
-      <td>0.566906</td>
-      <td>0.066906</td>
-      <td>0.066906</td>
+      <td>0.020430</td>
+      <td>0.020430</td>
+      <td>0.020430</td>
+      <td>0.020430</td>
+      <td>0.008172</td>
+      <td>0.020430</td>
+      <td>0.020430</td>
+      <td>0.520430</td>
+      <td>0.020430</td>
+      <td>0.020430</td>
+    </tr>
+    <tr>
+      <th>AATTCCG</th>
+      <td>0.170270</td>
+      <td>0.049915</td>
+      <td>0.323383</td>
+      <td>0.002483</td>
+      <td>0.050290</td>
+      <td>0.160635</td>
+      <td>0.052565</td>
+      <td>0.087411</td>
+      <td>0.030514</td>
+      <td>0.057487</td>
+      <td>...</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.006951</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
+      <td>0.017379</td>
     </tr>
   </tbody>
 </table>
-<p>25 rows × 72 columns</p>
+<p>25 rows × 76 columns</p>
 </div></div></div>
 </div>
 <p>This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.</p>
 </div>
-<div class="section" id="applying-a-native-bayes-classifier">
-<h3><span class="section-number">3.1.6. </span>Applying a Native Bayes classifier<a class="headerlink" href="#applying-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="applying-a-naive-bayes-classifier">
+<h3><span class="section-number">3.1.6. </span>Applying a Naive Bayes classifier<a class="headerlink" href="#applying-a-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
 <p>With our kmer probability table we are now ready to classify unknown sequences. We’ll begin by defining some query sequences. We’ll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won’t be. We’ll also trim out 200 bases of our reference sequences since (as of this writing) we typically don’t obtain full-length 16S sequences from a DNA sequencing instrument. We’re thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we’ve observed before while others might represent previously unobserved sequences (or even previously unknown organisms).</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -2088,18 +2091,18 @@ Name: 289410, dtype: int64
 ---------------------------------------------------------------------
 Metadata:
     &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;4404012&#39;
+    &#39;id&#39;: &#39;669776&#39;
 Stats:
     length: 200
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 58.50%
+    GC-content: 55.00%
 ---------------------------------------------------------------------
-0   GAGTAACGCG TGGGTGACCT GCCTTCGAGT GGGGGATAAC GTTCCGAAAG GGACGATAAT
-60  ACCGCATGAC ATCCTGCCTT TGAACAGGCG GAGATCAAAG CTGGGTTGCA AGACCTGGCG
-120 CTTGAAGAGG GGCCCGCGTC CGATTAGCTA GTTGGTGGGG TAACGGCCTA CCAAGGCGAC
-180 GATCGGTAGC CGGCCTGAGA
+0   GTGAGTAACG CGTGAAGAAC CTGCCTTCAA CAGGGGGATA ACACTCCCAA CGGGGTGCTA
+60  ATACCGCATG AGACCACGGG GTCGCATGGC CCTGAGGTCA AAGGTGGCCT CTATTTATAA
+120 GCTACCGGTT GAAGATGGCT TCGCGTCCCA TTAGCTAGTT GGCGGTGTAA AAGACCACCA
+180 AGGCGACGAT GGGTAGCTGG
 </pre></div>
 </div>
 </div>
@@ -2138,7 +2141,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Acidobacteria
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__WS3
 </pre></div>
 </div>
 </div>
@@ -2151,7 +2154,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;k__Bacteria; p__Acidobacteria&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;k__Bacteria; p__WS3&#39;
 </pre></div>
 </div>
 </div>
@@ -2203,8 +2206,8 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Acidobacteria
-0.99
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__WS3
+0.66
 </pre></div>
 </div>
 </div>
@@ -2245,7 +2248,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f8d1df03630&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f525582e438&gt;
 </pre></div>
 </div>
 <img alt="../_images/machine-learning_39_1.png" src="../_images/machine-learning_39_1.png" />
