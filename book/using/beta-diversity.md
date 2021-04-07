@@ -240,13 +240,13 @@ Just as some metrics of alpha diversity use a phylogenetic tree, some metrics of
 The Unweighted UniFrac distance between a pair of samples `A` and `B` is defined as follows:
 
 ```{math}
-:label:
+:label: unweighted_unifrac
 Unweighted\,UniFrac_{AB} = \frac{unique\,branch\,length}{observed\,branch\,length}
 ```
 
 #### Conceptual overview of Unweighted UniFrac
 
-To illustrate how UniFrac distances are computed, before we get into actually computing them, let's look at a few examples. In these examples, imagine that we're determining the pairwise UniFrac distance between two samples: Sample 1 which we'll illustrate in red, and Sample 2 which we'll illustrate in blue. The evolutionary relationships between all of the features in the samples (amplicon sequence variants (ASVs) in this example), are represented with a phylogenetic tree. The count of each ASV in each sample appears to the right of the feature in the phylogenetic tree. As far as Unweighted UniFrac is concerned, a feature is observed in a sample if its count is greater than zero.
+To illustrate how UniFrac distances are computed, before we get into actually computing them, let's look at a few examples. In these examples, imagine that we're determining the pairwise UniFrac distance between two samples: Sample 1 which we'll illustrate in red, and Sample 2 which we'll illustrate in blue. The evolutionary relationships between all of the features in the samples (amplicon sequence variants (ASVs) in this example), are represented with a **phylogram** (a phylogenetic tree where branch lengths are computed from observed differences between features, such as number of differences between DNA sequences in a [pairwise alignment](pairwise-alignment)). The count of each ASV in each sample appears to the right of the feature in the phylogenetic tree. As far as Unweighted UniFrac is concerned, a feature is observed in a sample if its count is greater than zero.
 
 To compute the UniFrac distance between a pair of samples, we need to sum the branch length that was observed only in a single sample (the *unique* branch length), and sum the branch length that was observed in either or both samples (the *observed* branch length). Branch length that is unique to Sample 1 will be colored red, branch length that is unique to Sample 2 will be colored blue, and branch length that is observed in both samples will be colored purple. Unobserved branch length is colored black (as are the vertical lines in the tree, as those don't contribute to branch length - they are purely for visual presentation).
 
@@ -254,16 +254,22 @@ To compute the UniFrac distance between a pair of samples, we need to sum the br
 ---
 name: unifrac-tree-1
 ---
-Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
+Phylogram and feature table indicating which features (amplicon sequence variants or ASVs) are present in each of two samples. This example illustrates an Unweighted UniFrac distance of zero between the two samples.
 ```
 
-In {numref}`unifrac-tree-1`, all of the ASVs that are observed in either sample are observed in both samples. As a result, the unique branch length in this case is zero, so we have a UniFrac distance of 0 between the Sample 1 and Sample 2.
+````{margin}
+```{admonition} Attribution
+Phylogram figures in this section (such as {numref}`unifrac-tree-1`) were created by [@ebolyen](https://forum.qiime2.org/u/ebolyen/) using code he developed that is available [here](https://gist.github.com/ebolyen/99e1010cc9a84fbca661e42313c77f61).
+```
+````
+
+In {numref}`unifrac-tree-1`, all of the ASVs that are observed in either sample are observed in both samples. As a result, the unique branch length in this case is zero, so we have a UniFrac distance of 0 between Sample 1 and Sample 2.
 
 ```{figure} ./images/unifrac-tree-3.png
 ---
 name: unifrac-tree-3
 ---
-Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
+Phylogram and feature table indicating which features (amplicon sequence variants or ASVs) are present in each of two samples. This example illustrates an Unweighted UniFrac distance of one between the two samples.
 ```
 
 On the other end of the spectrum, in {numref}`unifrac-tree-3`, all of the ASVs in the tree are observed either in Sample 1 or Sample 2, but not in both samples. Furthermore, the ASVs observed in each sample are segregated into different clades in the phylogenetic tree such that there is no overlapping branch length at all. The unique branch length is therefore equal to the observed branch length, so we have a UniFrac distance of 1 between Sample A and Sample B.
@@ -272,12 +278,140 @@ On the other end of the spectrum, in {numref}`unifrac-tree-3`, all of the ASVs i
 ---
 name: unifrac-tree-2
 ---
-Attribution: this figure was created for a QIIME 2 workshop. I'm currently identifying who created this so I can give proper attribution.
+Phylogram and feature table indicating which features (amplicon sequence variants or ASVs) are present in each of two samples. This example illustrates an Unweighted UniFrac distance of approximately 0.5 between the two samples. The `*` indicates a branch length that is observed in both samples because descendant ASVs are observed in both samples.
 ```
 
-In most cases, our samples are somewhere between these extremes, as represented in {numref}`unifrac-tree-2`. In this tree, some of our branch length is unique, and some is not. For example, ASV.1 is only observed in Sample 1, so the terminal branch leading to ASV.1 is red. ASV.4 is only observed in Sample 2, so the terminal branch leading to ASV.4 is blue. However, the last internal branch that leads to both ASV.1 and ASV.4 is observed in both samples, so is purple. In this case, we have an intermediate UniFrac distance between Sample 1 and Sample 2, perhaps somewhere around 0.5.
+In most cases, our samples are somewhere between these extremes, as represented in {numref}`unifrac-tree-2`. In this tree, some of our branch length is unique, and some is not. For example, ASV.5 is only observed in Sample 1, so the terminal branch leading to ASV.5 is red. ASV.4 is only observed in Sample 2, so the terminal branch leading to ASV.4 is blue. However, the last internal branch that leads to both ASV.5 and ASV.4 (annotated with `*`) is observed in both samples because ASVs in that lineage (ASV.5 and ASV.4) are observed in both samples. That branch is therefore colored purple. In this case, we have an intermediate UniFrac distance between Sample 1 and Sample 2, perhaps somewhere around 0.5.
 
 #### Worked example of Unweighted UniFrac
+
+Now let's compute Unweighted UniFrac on our example feature table. We'll work with the same phylogenetic tree that we used when computing [Faith's Phylogenetic Diversity](faith_pd).
+
+```{figure} ./images/adiv-tree-1.png
+---
+name: bdiv-tree-1
+---
+A phylogenetic tree representing all of the features in our original feature table. (This tree isn't intended to accurately represent the relationship between the Bacteria, Archaea, and Eukarya.)
+```
+
+Here's the feature table again for convenience:
+
+```{code-cell}
+:tags: [hide-input]
+rarefied_feature_table_1.style
+```
+
+```{code-cell}
+:tags: [hide-cell]
+
+from io import StringIO
+from skbio.tree import TreeNode
+
+tree_1n = StringIO('((B1:0.1,B2:0.05):0.1,((B3:0.05,B4:0.1):0.1,B5:0.2):0.1,'
+                   '((A1:0.1,A2:0.05):0.3,'
+                   '(E1:0.1,E2:0.1):0.7):0.25);')
+
+tree_1 = TreeNode.read(tree_1n)
+tree_1 = tree_1.root_at_midpoint()
+
+tree_1a = qiime2.Artifact.import_data("Phylogeny[Rooted]", tree_1)
+```
+
+To compute Unweighted UniFrac by hand, I recommend taking a similar approach to the one that you used for computing Faith's Phylogenetic Diversity by hand. Print the phylogenetic tree {numref}`bdiv-tree-1`, and get two colored pens. This time, for each of the two features, trace the branches from the observed tips to the root of the tree in a different color for each sample. As a reminder, if you sum those branch lengths of each color, each sum will be the Faith's Phylogenetic Diversity for the corresponding sample. 
+
+To compute Unweighted UniFrac, you'll distinguish between branches that are traced in different ways. First, all of the branches that are colored (in either or both of your colors) are your **Observed Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the purple, blue, and red branches are the observed branches. The lengths of the observed branches are summed to give your **Observed branch length**. Each branch length should be included in the sum only one time. 
+
+Next, the branches that are colored in only one of the two colors are your **Unique Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the blue and red branches are the unique branches. The lengths of the unique branches are summed to give your **Unique branch length**. 
+
+Dividing the unique branch length by the observed branch length tells you what fraction of the total observed branch length is unique to one of the samples. The more of the branch length that is unique to one of the samples, the more different the samples are from one another. This value is the Unweighted UniFrac distance {eq}`unweighted_unifrac` between the pair of samples. 
+
+The computation of Unweighted UniFrac between samples `4ac2` and `e375` is detailed below. Try computing Unweighted UniFrac between these samples, and check your work against these details.
+
+```{code-cell}
+:tags: [hide-input]
+
+def get_observed_nodes(tree, table, sample_id, verbose=False):
+    if verbose:
+        print("Observed branch lengths for sample %s" % sample_id)
+        
+    sample_vector = table.T[sample_id]
+    observed_features = sample_vector.index[sample_vector.to_numpy().nonzero()[0]]
+    observed_nodes = set()
+    # iterate over the observed features
+    for feature_id in observed_features:
+        t = tree.find(feature_id)
+        observed_nodes.add(t)
+        if verbose:
+            print(t.name, t.length, end=' ')
+        for internal_node in t.ancestors():
+            if internal_node.length is None:
+                # we've hit the root
+                if verbose: print('')
+            else:
+                if verbose and internal_node not in observed_nodes:
+                    print(internal_node.length, end=' ')
+                observed_nodes.add(internal_node)
+    faith_pd = sum(o.length for o in observed_nodes)
+    if verbose:
+      print("Faith's Phylogenetic Diversity of sample %s: %1.2f" % (sample_id, faith_pd))
+    return observed_nodes
+
+def unweighted_unifrac(tree, table, sample_id1, sample_id2, verbose=False):
+    observed_nodes1 = get_observed_nodes(tree, table, sample_id1, verbose=verbose)
+    if verbose: print('')
+   
+    observed_nodes2 = get_observed_nodes(tree, table, sample_id2, verbose=verbose)
+    if verbose: print('')
+
+    observed_branches = observed_nodes1 | observed_nodes2
+    observed_branch_lengths = [o.length for o in observed_branches]
+    observed_branch_length = sum(observed_branch_lengths)    
+    
+    if verbose:
+        print('Observed branch lengths = %s' % str(observed_branch_lengths))
+        print('Sum of observed branch lengths: %1.2f' % observed_branch_length)
+        print('')
+    
+    shared_branches = observed_nodes1 & observed_nodes2
+    unique_branches = observed_branches - shared_branches
+    unique_branch_lengths = [u.length for u in unique_branches]
+    unique_branch_length = sum(unique_branch_lengths)
+    if verbose:
+        print('Unique branch lengths = %s' % str(unique_branch_lengths))
+        print('Sum of unique branch lengths: %1.2f' % unique_branch_length)
+        print('')
+    
+    unweighted_unifrac = unique_branch_length / observed_branch_length
+    if verbose:
+        print('Unweighted UniFrac = Unique branch length / Observed branch length')
+        print('Unweighted UniFrac = %1.2f / %1.2f' % (unique_branch_length, observed_branch_length))
+        print('Unweighted UniFrac between samples %s and %s = %1.2f' % 
+                  (sample_id1, sample_id2, unweighted_unifrac))
+    
+
+    return unweighted_unifrac
+
+_ = unweighted_unifrac(tree_1, rarefied_feature_table_1, '4ac2', 'e375', verbose=True)
+
+```
+
+Computing Unweighted UniFrac between all pairs of the samples in the feature table results in the following distance matrix:
+
+```{code-cell}
+:tags: [hide-input]
+unweighted_unifrac_1a = div.actions.beta_phylogenetic(
+                                         rarefied_feature_table_1a, 
+                                         tree_1a, 
+                                         metric='unweighted_unifrac').distance_matrix
+unweighted_unifrac_1 = unweighted_unifrac_1a.view(skbio.DistanceMatrix).to_data_frame()
+unweighted_unifrac_1.style.set_precision(2)
+```
+
+````{margin}
+```{admonition} Video
+In [this video](https://www.youtube.com/watch?v=NfbXrJ1N_40) I work through computing Jaccard, Bray-Curtis, and Unweighted UniFrac distance by hand.
+```
+````
 
 ### Weighted UniFrac distance
 
@@ -465,3 +599,9 @@ Finally, let's look at ordination, similar to that presented in panels A-D. The 
 Ordination is a technique that is widely applied in ecology and in bioinformatics, but the math behind some of the methods such as *Principal Coordinates Analysis* is fairly complex, and as a result I've found that these methods are a black box for a lot of people. Possibly the most simple ordination technique is one called Polar Ordination. Polar Ordination is not widely applied because it has some inconvenient features, but I find that it is useful for introducing the idea behind ordination. Here we'll work through a simple implementation of ordination to illustrate the process, which will help us to interpret ordination plots. In practice, you will use existing software, such as [scikit-bio](http://scikit-bio.org)'s [ordination module](http://scikit-bio.org/maths.stats.ordination.html).
 
 An excellent site for learning more about ordination is [Michael W. Palmer's Ordination Methods page](http://ordination.okstate.edu/).
+
+## List of works cited
+
+```{bibliography} ../references.bib
+:filter: docname in docnames
+```
