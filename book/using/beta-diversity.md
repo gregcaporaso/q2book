@@ -63,7 +63,7 @@ jaccard_1 = jaccard_1a.view(skbio.DistanceMatrix).to_data_frame()
 jaccard_1.style.set_precision(2)
 ```
 
-Ignoring for the moment exactly how these values are calculated, let discuss what this distance matrix tells. To find the distance between any pair of samples, look up the first sample id of the pair on one axis, and the other sample id of the pair on the other axis.
+Ignoring for the moment exactly how these values are calculated, let discuss what this distance matrix tells us. To find the distance between any pair of samples, look up the first sample id of the pair on one axis, and the other sample id of the pair on the other axis.
 
 First, notice that the diagonal of the matrix is all zeros. This is because the distance between a sample and itself (for example between `4ac2` and `4ac2`) is always zero by definition. 
 
@@ -285,7 +285,7 @@ In most cases, our samples are somewhere between these extremes, as represented 
 
 #### Worked example of Unweighted UniFrac
 
-Now let's compute Unweighted UniFrac on our example feature table. We'll work with the same phylogenetic tree that we used when computing [Faith's Phylogenetic Diversity](faith_pd).
+Now let's compute Unweighted UniFrac on our example feature table. We'll work with the same phylogenetic tree that we used when computing [Faith's Phylogenetic Diversity](faith_pd). I'll work through computing Unweighted UniFrac between samples `4ac2` and `e375`. Follow along with this computation, and then try computing Unweighted UniFrac distances between `4ac2` and `4gd8`, and then between `e375` and `4gd8`. I'll present the full distance matrix at the end of this section so you check your answers.
 
 ```{figure} ./images/adiv-tree-1.png
 ---
@@ -319,14 +319,6 @@ tree_1a = qiime2.Artifact.import_data("Phylogeny[Rooted]", tree_1)
 
 To compute Unweighted UniFrac by hand, I recommend taking a similar approach to the one that you used for computing Faith's Phylogenetic Diversity by hand. Print the phylogenetic tree {numref}`bdiv-tree-1`, and get two colored pens. This time, for each of the two features, trace the branches from the observed tips to the root of the tree in a different color for each sample. As a reminder, if you sum those branch lengths of each color, each sum will be the Faith's Phylogenetic Diversity for the corresponding sample. 
 
-To compute Unweighted UniFrac, you'll distinguish between branches that are traced in different ways. First, all of the branches that are colored (in either or both of your colors) are your **Observed Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the purple, blue, and red branches are the observed branches. The lengths of the observed branches are summed to give your **Observed branch length**. Each branch length should be included in the sum only one time. 
-
-Next, the branches that are colored in only one of the two colors are your **Unique Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the blue and red branches are the unique branches. The lengths of the unique branches are summed to give your **Unique branch length**. 
-
-Dividing the unique branch length by the observed branch length tells you what fraction of the total observed branch length is unique to one of the samples. The more of the branch length that is unique to one of the samples, the more different the samples are from one another. This value is the Unweighted UniFrac distance {eq}`unweighted_unifrac` between the pair of samples. 
-
-The computation of Unweighted UniFrac between samples `4ac2` and `e375` is detailed below. Try computing Unweighted UniFrac between these samples, and check your work against these details.
-
 ```{code-cell}
 :tags: [hide-input]
 
@@ -337,6 +329,7 @@ def get_observed_nodes(tree, table, sample_id, verbose=False):
     sample_vector = table.T[sample_id]
     observed_features = sample_vector.index[sample_vector.to_numpy().nonzero()[0]]
     observed_nodes = set()
+    
     # iterate over the observed features
     for feature_id in observed_features:
         t = tree.find(feature_id)
@@ -352,47 +345,55 @@ def get_observed_nodes(tree, table, sample_id, verbose=False):
                     print(internal_node.length, end=' ')
                 observed_nodes.add(internal_node)
     faith_pd = sum(o.length for o in observed_nodes)
+    
     if verbose:
       print("Faith's Phylogenetic Diversity of sample %s: %1.2f" % (sample_id, faith_pd))
     return observed_nodes
 
-def unweighted_unifrac(tree, table, sample_id1, sample_id2, verbose=False):
-    observed_nodes1 = get_observed_nodes(tree, table, sample_id1, verbose=verbose)
-    if verbose: print('')
-   
-    observed_nodes2 = get_observed_nodes(tree, table, sample_id2, verbose=verbose)
-    if verbose: print('')
+sample_id1 = '4ac2'
+sample_id2 = 'e375'
 
-    observed_branches = observed_nodes1 | observed_nodes2
-    observed_branch_lengths = [o.length for o in observed_branches]
-    observed_branch_length = sum(observed_branch_lengths)    
-    
-    if verbose:
-        print('Observed branch lengths = %s' % str(observed_branch_lengths))
-        print('Sum of observed branch lengths: %1.2f' % observed_branch_length)
-        print('')
-    
-    shared_branches = observed_nodes1 & observed_nodes2
-    unique_branches = observed_branches - shared_branches
-    unique_branch_lengths = [u.length for u in unique_branches]
-    unique_branch_length = sum(unique_branch_lengths)
-    if verbose:
-        print('Unique branch lengths = %s' % str(unique_branch_lengths))
-        print('Sum of unique branch lengths: %1.2f' % unique_branch_length)
-        print('')
-    
-    unweighted_unifrac = unique_branch_length / observed_branch_length
-    if verbose:
-        print('Unweighted UniFrac = Unique branch length / Observed branch length')
-        print('Unweighted UniFrac = %1.2f / %1.2f' % (unique_branch_length, observed_branch_length))
-        print('Unweighted UniFrac between samples %s and %s = %1.2f' % 
-                  (sample_id1, sample_id2, unweighted_unifrac))
-    
+observed_nodes1 = get_observed_nodes(tree_1, rarefied_feature_table_1, sample_id1, verbose=True)
+print('')
+observed_nodes2 = get_observed_nodes(tree_1, rarefied_feature_table_1, sample_id2, verbose=True)
 
-    return unweighted_unifrac
+```
 
-_ = unweighted_unifrac(tree_1, rarefied_feature_table_1, '4ac2', 'e375', verbose=True)
+To compute Unweighted UniFrac, you'll distinguish between branches that are traced in different ways. First, all of the branches that are colored (in either or both of your colors) are your **Observed Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the purple, blue, and red branches are the observed branches. The lengths of the observed branches are summed to give your **Observed branch length**. Each branch length should be included in the sum only one time. 
 
+```{code-cell}
+:tags: [hide-input]
+observed_branches = observed_nodes1 | observed_nodes2
+observed_branch_lengths = [o.length for o in observed_branches]
+observed_branch_length = sum(observed_branch_lengths)    
+
+print('Observed branch lengths = %s' % str(observed_branch_lengths))
+print('Sum of observed branch lengths: %1.2f' % observed_branch_length)
+```
+
+Next, the branches that are colored in only one of the two colors are your **Unique Branches**. In the phylograms above (e.g., {numref}`unifrac-tree-2`), the blue and red branches are the unique branches. The lengths of the unique branches are summed to give your **Unique branch length**. 
+
+```{code-cell}
+:tags: [hide-input]
+shared_branches = observed_nodes1 & observed_nodes2
+unique_branches = observed_branches - shared_branches
+unique_branch_lengths = [u.length for u in unique_branches]
+unique_branch_length = sum(unique_branch_lengths)
+
+print('Unique branch lengths = %s' % str(unique_branch_lengths))
+print('Sum of unique branch lengths: %1.2f' % unique_branch_length)
+```
+
+Dividing the unique branch length by the observed branch length tells you what fraction of the total observed branch length is unique to one of the samples. The more of the branch length that is unique to one of the samples, the more different the samples are from one another. This value is the Unweighted UniFrac distance {eq}`unweighted_unifrac` between the pair of samples. 
+
+```{code-cell}
+:tags: [hide-input]
+unweighted_unifrac = unique_branch_length / observed_branch_length
+
+print('Unweighted UniFrac = Unique branch length / Observed branch length')
+print('Unweighted UniFrac = %1.2f / %1.2f' % (unique_branch_length, observed_branch_length))
+print('Unweighted UniFrac between samples %s and %s = %1.2f' % 
+            (sample_id1, sample_id2, unweighted_unifrac))
 ```
 
 Computing Unweighted UniFrac between all pairs of the samples in the feature table results in the following distance matrix:
