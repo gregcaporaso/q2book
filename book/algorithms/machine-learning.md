@@ -17,11 +17,11 @@ kernelspec:
 
 In this chapter we'll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set. 
 
-Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Probably the most commonly used in bioinformatics are supervised classification and dimensionality reduction, and we'll experiment with both in this chapter. 
+Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
 
 In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, _healthy_ and _disease_), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn't known ahead of time, in attempt to predict the class from the features. 
 
-Dimensionality reduction tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
+Unsupervised classification tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
 
 ````{margin}
 ```{note}
@@ -455,18 +455,76 @@ ax
 
 What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
 
-### Classifying with confidence
-
-TODO: Integrate classifier code with confidence computations.
-
-### Precision, recall, and F-measure
-
-TODO: write this
-
 ```{admonition} Exercise
 Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parameters) and modify those values. How does the accuracy of the classifier change if you increase or decrease `k` while keeping the value of `taxonomic_level` fixed? How does the accuracy change if you increase or decrease the `taxonomic_level` while keeping `k` fixed? 
 ```
 
-## Dimensionality reduction
+## Unsupervised learning
 
-TODO: transfer content from IAB
+We'll next turn our exploration of machine learning approaches to **unsupervised learning**, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
+
+### Polar ordination
+
+
+### Principle Coordinates Analysis (PCoA)
+
+```
+import qiime2
+import qiime2.plugins.feature_table as ft
+import qiime2.plugins.diversity as div
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = []
+for reference_sequence in reference_db:
+    #taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=reference_sequence.metadata['id']))
+
+# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
+# display the first 25 rows of that table.
+per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+
+feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", per_sequence_kmer_counts.T)
+```
+
+```
+jaccard_1a = div.actions.beta(feature_table_1a, metric='jaccard').distance_matrix
+```
+
+```
+taxa_of_interest = ['k__Archaea', 'p__Cyanobacteria', 'p__Firmicutes', 'p__Bacteroidetes', 'p__Proteobacteria']
+metadata = {}
+for reference_sequence in reference_db:
+    id_ = reference_sequence.metadata['id']
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    label_as_other = True
+    for taxon_of_interest in taxa_of_interest:
+        # this approach is horrendous
+        if taxon_of_interest in taxon:
+            label_as_other = False
+    if label_as_other:
+        metadata[id_] = 'Other'
+    else:
+        metadata[id_] = taxon
+metadata = pd.Series(metadata, name='taxon').to_frame()
+metadata.index.name = 'id'
+metadata = qiime2.Metadata(metadata)
+```
+
+```
+pcoa_1a = div.actions.pcoa(jaccard_1a).pcoa
+```
+
+```
+import qiime2.plugins.emperor as emperor
+
+emperor.actions.plot(pcoa_1a, metadata).visualization
+```
+
+```
+import skbio.stats.ordination
+ordination = pcoa_1a.view(skbio.stats.ordination.OrdinationResults)
+
+_ = ordination.plot(metadata.to_dataframe(), column='taxon', cmap='Set1')
+```
