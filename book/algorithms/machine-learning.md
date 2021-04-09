@@ -17,7 +17,11 @@ kernelspec:
 
 In this chapter we'll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set. 
 
-Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
+Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics.
+
+<!-- TODO Add some illustrations of feature tables -->
+
+There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
 
 In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, _healthy_ and _disease_), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn't known ahead of time, in attempt to predict the class from the features. 
 
@@ -232,7 +236,7 @@ k = 7
 alphabet = skbio.DNA.nondegenerate_chars
 ```
 
-Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
+Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table. 
 
 ```{code-cell}
 # compute all kmers for the specified alphabet
@@ -256,9 +260,11 @@ for reference_sequence in reference_db:
 
 # Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
 # display the first 25 rows of that table.
-per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0)
 per_sequence_kmer_counts[:25]
 ```
+
+This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
 
 With this information, we'll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:
 
@@ -278,10 +284,10 @@ Our "kmer probability table" is $P(w_i | taxon)$ computed for all kmers in W and
 
 ```{code-cell}
 def compute_kmer_probability_table(per_sequence_kmer_counts):
-    N = len(per_sequence_kmer_counts) # number of training sequences
+    N = per_sequence_kmer_counts.shape[0] # number of training sequences
 
     # number of sequences containing kmer wi
-    n_wi = per_sequence_kmer_counts.astype(bool).sum(axis=1)
+    n_wi = per_sequence_kmer_counts.astype(bool).sum(axis=0)
     n_wi.name = 'n(w_i)'
 
     # probabilities of observing each kmer
@@ -289,8 +295,8 @@ def compute_kmer_probability_table(per_sequence_kmer_counts):
     Pi.name = 'P_i'
 
     # number of times each taxon appears in training set
-    taxon_counts = collections.Counter(per_sequence_kmer_counts.columns)
-    n_taxon_members_containing_kmer = per_sequence_kmer_counts.astype(bool).groupby(level=0, axis=1).sum()
+    taxon_counts = collections.Counter(per_sequence_kmer_counts.index)
+    n_taxon_members_containing_kmer = per_sequence_kmer_counts.astype(bool).groupby(level=0, axis=0).sum()
 
     # probabilities of observing each kmer in each taxon
     p_wi_t = []
@@ -463,8 +469,193 @@ Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parame
 
 We'll next turn our exploration of machine learning approaches to **unsupervised learning**, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
 
+
+
 ### Polar ordination
 
+First, let's print our distance matrix again so we have it nearby.
+
+```python
+>>> print(human_microbiome_dm)
+6x6 distance matrix
+IDs:
+'A', 'B', 'C', 'D', 'E', 'F'
+Data:
+[[ 0.    0.35  0.83  0.83  0.9   0.9 ]
+ [ 0.35  0.    0.86  0.85  0.92  0.91]
+ [ 0.83  0.86  0.    0.25  0.88  0.87]
+ [ 0.83  0.85  0.25  0.    0.88  0.88]
+ [ 0.9   0.92  0.88  0.88  0.    0.5 ]
+ [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
+```
+
+Polar ordination works in a few steps:
+
+**Step 1.** Identify the largest distance in the distance matrix.
+
+**Step 2.** Define a line, with the two samples contributing to that distance defining the endpoints.
+
+**Step 3.** Compute the location of each other sample on that axis as follows:
+
+$a = \frac{D^2 + D1^2 - D2^2}{2 \times D}$
+
+where:
+
+$D$ is distance between the endpoints
+
+$D1$ is distance between the current sample and endpoint 1
+
+$D2$ is distance between sample and endpoint 2.
+
+**Step 4.** Find the next largest distance that could be used to define an *uncorrelated axis*. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I'll pick one for the demo, and we'll wrap up by looking at all of the axes.)
+
+Here is what steps 2 and 3 look like in Python:
+
+```python
+>>> def compute_axis_values(dm, endpoint1, endpoint2):
+...     d = dm[endpoint1, endpoint2]
+...     result = {endpoint1: 0, endpoint2: d}
+...     non_endpoints = set(dm.ids) - set([endpoint1, endpoint2])
+...     for e in non_endpoints:
+...         d1 = dm[endpoint1, e]
+...         d2 = dm[endpoint2, e]
+...         result[e] = (d**2 + d1**2 - d2**2) / (2 * d)
+...     return d, [result[e] for e in dm.ids]
+```
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+>>> for sid, a1_value in zip(human_microbiome_dm.ids, a1_values):
+...     print(sid, a1_value)
+A 0.0863586956522
+B 0
+C 0.441086956522
+D 0.431793478261
+E 0.92
+F 0.774184782609
+```
+
+```python
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'D', 'E')
+>>> for sid, a2_value in zip(human_microbiome_dm.ids, a2_values):
+...     print(sid, a2_value)
+A 0.371193181818
+B 0.369602272727
+C 0.0355113636364
+D 0
+E 0.88
+F 0.737954545455
+```
+
+```python
+>>> from pylab import scatter
+>>> ord_plot = scatter(a1_values, a2_values, s=40)
+<Figure size 432x288 with 1 Axes>
+```
+
+And again, let's look at how including metadata helps us to interpret our results.
+
+First, we'll color the points by the body habitat that they're derived from:
+
+```python
+>>> colors = {'tongue': 'red', 'gut':'yellow', 'skin':'blue'}
+>>> c = [colors[human_microbiome_sample_md['body site'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+And next we'll color the samples by the person that they're derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.
+
+```python
+>>> person_colors = {'subject 1': 'red', 'subject 2':'yellow'}
+>>> person_c = [person_colors[human_microbiome_sample_md['individual'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=person_c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Determining the most important axes in polar ordination <link src='fb483b'/>
+
+Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:
+
+```python
+>>> from scipy.stats import spearmanr
+...
+>>> data = []
+>>> for i, sample_id1 in enumerate(human_microbiome_dm.ids):
+...     for sample_id2 in human_microbiome_dm.ids[:i]:
+...         d, axis_values = compute_axis_values(human_microbiome_dm, sample_id1, sample_id2)
+...         r, p = spearmanr(a1_values, axis_values)
+...         data.append((d, abs(r), sample_id1, sample_id2, axis_values))
+...
+>>> data.sort()
+>>> data.reverse()
+>>> for i, e in enumerate(data):
+...     print("axis %d:" % i, end=' ')
+...     print("\t%1.3f\t%1.3f\t%s\t%s" % e[:4])
+axis 0: 	0.920	1.000	E	B
+axis 1: 	0.910	0.943	F	B
+axis 2: 	0.900	0.928	E	A
+axis 3: 	0.900	0.886	F	A
+axis 4: 	0.880	0.543	E	D
+axis 5: 	0.880	0.429	F	D
+axis 6: 	0.880	0.429	E	C
+axis 7: 	0.870	0.371	F	C
+axis 8: 	0.860	0.543	C	B
+axis 9: 	0.850	0.486	D	B
+axis 10: 	0.830	0.429	C	A
+axis 11: 	0.830	0.406	D	A
+axis 12: 	0.500	0.232	F	E
+axis 13: 	0.350	0.143	B	A
+axis 14: 	0.250	0.493	D	C
+```
+
+So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let's look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.
+
+```python
+>>> ord_plot = scatter(data[0][4], data[1][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[13][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[14][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Interpreting ordination plots <link src='40e0a6'/>
+
+There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.
+
+**Directionality of the axes is not important (e.g., up/down/left/right)**
+
+One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'E', 'B')
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'E', 'D')
+>>> d, alt_a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+```
+
+```python
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(alt_a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+Some other important features:
+
+* Numerical scale of the axis is generally not useful
+* The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, ...)
+* Most techniques result in uncorrelated axes.
+* Additional axes can be generated (third, fourth, ...)
 
 ### Principle Coordinates Analysis (PCoA)
 
