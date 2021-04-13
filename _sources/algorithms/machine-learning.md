@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.12
-    jupytext_version: 1.9.1
+    jupytext_version: 1.8.2
 kernelspec:
   display_name: Python 3
   language: python
@@ -17,17 +17,63 @@ kernelspec:
 
 In this chapter we'll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set. 
 
-Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Probably the most commonly used in bioinformatics are supervised classification and dimensionality reduction, and we'll experiment with both in this chapter. 
+Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics.
+
+As is typically the case in this book, we'll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. [scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start. 
+
+scikit-learn also defines a few example feature tables that we can look at here to get an idea of what typical input looks like in a machine learning task.
+
+<!-- TODO: pick up here to discuss the features tables. then swap order of unsupervised and supervised learning to illustrate what you can do if you don't have labels and then what you can do if you do have labels-->
+
+```{code-cell} ipython3
+import sklearn.datasets
+import pandas as pd
+
+iris_dataset = sklearn.datasets.load_iris(as_frame=True)
+iris_feature_table = iris_dataset.frame.drop('target', axis=1)
+iris_feature_table.index.name = 'sample-id'
+iris_labels = pd.Series(iris_dataset.target_names[iris_dataset.target], 
+                        index=iris_dataset.target.index, name='label').to_frame()
+iris_labels.index.name = 'sample-id'
+```
+
+```{code-cell} ipython3
+iris_feature_table
+```
+
+```{code-cell} ipython3
+iris_labels
+```
+
+```{code-cell} ipython3
+diabetes_dataset = sklearn.datasets.load_diabetes(as_frame=True)
+
+diabetes_feature_table = diabetes_dataset.frame.drop('target', axis=1)
+diabetes_feature_table.index.name = 'sample-id'
+
+diabetes_labels = diabetes_dataset.target.to_frame()
+diabetes_labels.index.name = 'sample-id'
+```
+
+```{code-cell} ipython3
+diabetes_feature_table
+```
+
+```{code-cell} ipython3
+diabetes_labels
+```
+
+scikit-learn's excellent documentation illustrates ways that you can use the iris dataset and the diabetes dataset in classification and regression tasks, repectively. 
+
+
+
+There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
 
 In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, _healthy_ and _disease_), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn't known ahead of time, in attempt to predict the class from the features. 
 
-Dimensionality reduction tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
+Unsupervised classification tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
 
-````{margin}
-```{note}
-[scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start.
-```
-````
+
 
 ## Supervised classification
 
@@ -39,7 +85,7 @@ Briefly, the problem that we are going to address here is as follows. We have a 
 
 Before we get to this though, lets talk about what supervised classification algorithms are and how the classifiers they build are evaluated. 
 
-### Defining a classification tasks
+### Defining a classification task
 
 In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we run perform these kinds of tasks everyday. For example, if you're browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you're not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., "school", "entertainment", or "social media"). 
 
@@ -113,7 +159,7 @@ In this chapter, instead of using sequence alignment to identify the most likely
 
 We'll begin by {ref}`preparing our reference database and query sequences as we did previously <load-qdr>`.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
 
 # This cell performs some configuration for this notebook. It's hidden by
@@ -131,8 +177,9 @@ import collections
 import random
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
+
 import qiime_default_reference as qdr
 import skbio
 
@@ -161,28 +208,28 @@ def load_taxonomy_reference_database(verbose=True):
     return reference_taxonomy, reference_db
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 reference_taxonomy, reference_db = load_taxonomy_reference_database()
 ```
 
 Recall that we can look reference sequences up as follows, and that reference sequences have taxonomic annotations.
 
-```{code-cell}
+```{code-cell} ipython3
 reference_db[0]
 ```
 
 We'll again select a random subset of the reference database to work with here to get our analyses moving quickly.
 
-```{code-cell}
+```{code-cell} ipython3
 reference_db = random.sample(reference_db, k=5000)
 print("%s sequences are present in the subsampled database." % len(reference_db))
 ```
 
 ### Training a Native Bayes classifier 
 
-The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows. 
+The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows.
 
-```{code-cell}
+```{code-cell} ipython3
 alphabet = skbio.DNA.nondegenerate_chars
 k = 2
 
@@ -201,21 +248,21 @@ Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 ar
 
 The next thing we'll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the ``skbio.DNA`` sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:
 
-```{code-cell}
+```{code-cell} ipython3
 kmers = reference_db[0].iter_kmers(k=k)
 for kmer in kmers:
     print(kmer, end=' ')
 ```
 
-That's a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows. 
+That's a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows.
 
-```{code-cell}
+```{code-cell} ipython3
 print(reference_db[0].kmer_frequencies(k=k))
 ```
 
 This information can be convenient to store in a pandas ``Series`` object:
 
-```{code-cell}
+```{code-cell} ipython3
 pd.Series(reference_db[0].kmer_frequencies(k=k), name=reference_db[0].metadata['id'])
 ```
 
@@ -226,7 +273,8 @@ Next, how long should our kmers be? We don't have a good idea of this to start w
 Finally, we'll need to know the value of `W`, defined above as the set of all possible kmers given our alphabet and the value of `k`.
 
 (ml:define-nb-parameters)=
-```{code-cell}
+
+```{code-cell} ipython3
 taxonomic_level = 2
 k = 7
 alphabet = skbio.DNA.nondegenerate_chars
@@ -234,7 +282,7 @@ alphabet = skbio.DNA.nondegenerate_chars
 
 Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
 
-```{code-cell}
+```{code-cell} ipython3
 # compute all kmers for the specified alphabet
 W = compute_W(alphabet, k)
 
@@ -247,18 +295,33 @@ def get_taxon_at_level(taxon, level):
     return '; '.join(taxon[:level])
 
 # Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = []
+per_sequence_kmer_counts = {}
+sequence_labels = {}
 for reference_sequence in reference_db:
+    sequence_id = reference_sequence.metadata['id']
+    
     taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    sequence_labels[sequence_id] = taxon
+    
     kmer_counts = dict.fromkeys(W, 0)
     kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=taxon))
+    per_sequence_kmer_counts[sequence_id] = kmer_counts
 
-# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
-# display the first 25 rows of that table.
-per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-per_sequence_kmer_counts[:25]
+feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+sequence_labels = pd.Series(sequence_labels, name='taxon')
 ```
+
+```{code-cell} ipython3
+# Display the first 25 samples in the feature table
+feature_table[:25]
+```
+
+```{code-cell} ipython3
+# Display the taxon labels for the first 25 samples
+sequence_labels[:25].to_frame()
+```
+
+This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
 
 With this information, we'll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:
 
@@ -276,42 +339,46 @@ $P(w_i | taxon)$ : The probability of observing a kmer given a taxon. Again, it 
 
 Our "kmer probability table" is $P(w_i | taxon)$ computed for all kmers in W and all taxa represented in our reference database. We'll compute that and again look at the first 25 rows.
 
-```{code-cell}
-def compute_kmer_probability_table(per_sequence_kmer_counts):
-    N = len(per_sequence_kmer_counts) # number of training sequences
+```{code-cell} ipython3
+def compute_kmer_probability_table(feature_table, sequence_labels):
+    N = feature_table.shape[0] # number of training sequences
 
     # number of sequences containing kmer wi
-    n_wi = per_sequence_kmer_counts.astype(bool).sum(axis=1)
+    n_wi = feature_table.astype(bool).sum(axis=0)
     n_wi.name = 'n(w_i)'
 
     # probabilities of observing each kmer
     Pi = (n_wi + 0.5) / (N + 1)
     Pi.name = 'P_i'
-
+    
     # number of times each taxon appears in training set
-    taxon_counts = collections.Counter(per_sequence_kmer_counts.columns)
-    n_taxon_members_containing_kmer = per_sequence_kmer_counts.astype(bool).groupby(level=0, axis=1).sum()
+    taxon_counts = collections.Counter(sequence_labels)
 
+    
+    taxon_table = feature_table.astype(bool).groupby(by=sequence_labels, axis=0).sum()
+    
     # probabilities of observing each kmer in each taxon
     p_wi_t = []
     for taxon, count in taxon_counts.items():
-        p_wi_t.append(pd.Series((n_taxon_members_containing_kmer[taxon] + Pi) / (count + 1), name=taxon))
+        p_wi_t.append(pd.Series((taxon_table.loc[taxon] + Pi) / (count + 1), name=taxon))
 
     return pd.DataFrame(p_wi_t).T
 ```
 
-```{code-cell}
-kmer_probability_table = compute_kmer_probability_table(per_sequence_kmer_counts)
+```{code-cell} ipython3
+kmer_probability_table = compute_kmer_probability_table(feature_table, sequence_labels)
 kmer_probability_table[:25]
 ```
 
+```{raw-cell}
 This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.
 
 ### Applying a Naive Bayes classifier 
 
-With our kmer probability table we are now ready to classify unknown sequences. We'll begin by defining some query sequences. We'll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won't be. We'll also trim out 200 bases of our reference sequences since (as of this writing) we typically don't obtain full-length 16S sequences from a DNA sequencing instrument. We're thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we've observed before while others might represent previously unobserved sequences (or even previously unknown organisms). 
+With our kmer probability table we are now ready to classify unknown sequences. We'll begin by defining some query sequences. We'll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won't be. We'll also trim out 200 bases of our reference sequences since (as of this writing) we typically don't obtain full-length 16S sequences from a DNA sequencing instrument. We're thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we've observed before while others might represent previously unobserved sequences (or even previously unknown organisms).
+```
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
 
 def load_taxonomy_query_sequences(start_position=100, length=200):
@@ -329,7 +396,7 @@ def load_taxonomy_query_sequences(start_position=100, length=200):
 
 We'll load a collection of query sequences as we did in {doc}`database-searching`.
 
-```{code-cell}
+```{code-cell} ipython3
 import random
 
 queries = load_taxonomy_query_sequences()
@@ -338,7 +405,7 @@ queries = random.sample(queries, k=50)
 
 Again, we can index into these results to look at individual sequences. Note that because we're trying to emulate working with unannotated sequences here, the query sequences don't have taxonomic annotations in their metadata.
 
-```{code-cell}
+```{code-cell} ipython3
 queries[0]
 ```
 
@@ -346,7 +413,7 @@ For a given query sequence, its taxonomy will be classified as follows. First, t
 
 After computing $P(query | taxon)$ for all taxa, the taxonomy assignment returned is simply the one achieving the maximum probability. Here we'll classify a sequence and look at the resulting taxonomy assignment.
 
-```{code-cell}
+```{code-cell} ipython3
 # This function classifies a sequence that has already been split into a list
 # of kmers.
 def classify_V(V, kmer_probability_table):
@@ -366,15 +433,15 @@ def classify_sequence(query_sequence, kmer_probability_table, k):
     return classify_V(V, kmer_probability_table)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 query = queries[0]
 taxon_assignment, V = classify_sequence(query, kmer_probability_table, k)
 print(taxon_assignment)
 ```
 
-Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct? 
+Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?
 
-```{code-cell}
+```{code-cell} ipython3
 get_taxon_at_level(reference_taxonomy[query.metadata['id']], taxonomic_level)
 ```
 
@@ -390,7 +457,7 @@ We can quantify confidence using an approach called bootstrapping. With a bootst
 
 Let's now assign taxonomy and compute a confidence for that assignment.
 
-```{code-cell}
+```{code-cell} ipython3
 def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
                                       confidence_iterations=100):
     # classify the query sequence, as we did above
@@ -415,7 +482,7 @@ def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
     return (taxon, confidence)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 taxon_assignment, confidence = classify_sequence_with_confidence(queries[0], kmer_probability_table, k)
 print(taxon_assignment)
 print(confidence)
@@ -425,7 +492,7 @@ How did the computed confidence compare to the accuracy taxonomy assignment?
 
 At first glance, we don't necessarily have an idea of what good versus bad confidence scores are, but we can use our reference database to explore that. Knowing that can allows us to develop a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we might reject it. To explore this, let's compute taxonomy assignments and confidence for all of our query sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.
 
-```{code-cell}
+```{code-cell} ipython3
 correct_assignment_confidences = []
 incorrect_assignment_confidences = []
 summary = []
@@ -442,7 +509,7 @@ for query in queries:
 summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Actual taxonomy', 'Confidence'])
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 import seaborn as sns
 
 ax = sns.boxplot(data=[correct_assignment_confidences, incorrect_assignment_confidences])
@@ -455,18 +522,261 @@ ax
 
 What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
 
-### Classifying with confidence
-
-TODO: Integrate classifier code with confidence computations.
-
-### Precision, recall, and F-measure
-
-TODO: write this
-
 ```{admonition} Exercise
 Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parameters) and modify those values. How does the accuracy of the classifier change if you increase or decrease `k` while keeping the value of `taxonomic_level` fixed? How does the accuracy change if you increase or decrease the `taxonomic_level` while keeping `k` fixed? 
 ```
 
-## Dimensionality reduction
+## Unsupervised learning
 
-TODO: transfer content from IAB
+We'll next turn our exploration of machine learning approaches to **unsupervised learning**, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
+
+
+
+### Polar ordination
+
+First, let's print our distance matrix again so we have it nearby.
+
+```python
+>>> print(human_microbiome_dm)
+6x6 distance matrix
+IDs:
+'A', 'B', 'C', 'D', 'E', 'F'
+Data:
+[[ 0.    0.35  0.83  0.83  0.9   0.9 ]
+ [ 0.35  0.    0.86  0.85  0.92  0.91]
+ [ 0.83  0.86  0.    0.25  0.88  0.87]
+ [ 0.83  0.85  0.25  0.    0.88  0.88]
+ [ 0.9   0.92  0.88  0.88  0.    0.5 ]
+ [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
+```
+
+Polar ordination works in a few steps:
+
+**Step 1.** Identify the largest distance in the distance matrix.
+
+**Step 2.** Define a line, with the two samples contributing to that distance defining the endpoints.
+
+**Step 3.** Compute the location of each other sample on that axis as follows:
+
+$a = \frac{D^2 + D1^2 - D2^2}{2 \times D}$
+
+where:
+
+$D$ is distance between the endpoints
+
+$D1$ is distance between the current sample and endpoint 1
+
+$D2$ is distance between sample and endpoint 2.
+
+**Step 4.** Find the next largest distance that could be used to define an *uncorrelated axis*. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I'll pick one for the demo, and we'll wrap up by looking at all of the axes.)
+
+Here is what steps 2 and 3 look like in Python:
+
+```python
+>>> def compute_axis_values(dm, endpoint1, endpoint2):
+...     d = dm[endpoint1, endpoint2]
+...     result = {endpoint1: 0, endpoint2: d}
+...     non_endpoints = set(dm.ids) - set([endpoint1, endpoint2])
+...     for e in non_endpoints:
+...         d1 = dm[endpoint1, e]
+...         d2 = dm[endpoint2, e]
+...         result[e] = (d**2 + d1**2 - d2**2) / (2 * d)
+...     return d, [result[e] for e in dm.ids]
+```
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+>>> for sid, a1_value in zip(human_microbiome_dm.ids, a1_values):
+...     print(sid, a1_value)
+A 0.0863586956522
+B 0
+C 0.441086956522
+D 0.431793478261
+E 0.92
+F 0.774184782609
+```
+
+```python
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'D', 'E')
+>>> for sid, a2_value in zip(human_microbiome_dm.ids, a2_values):
+...     print(sid, a2_value)
+A 0.371193181818
+B 0.369602272727
+C 0.0355113636364
+D 0
+E 0.88
+F 0.737954545455
+```
+
+```python
+>>> from pylab import scatter
+>>> ord_plot = scatter(a1_values, a2_values, s=40)
+<Figure size 432x288 with 1 Axes>
+```
+
+And again, let's look at how including metadata helps us to interpret our results.
+
+First, we'll color the points by the body habitat that they're derived from:
+
+```python
+>>> colors = {'tongue': 'red', 'gut':'yellow', 'skin':'blue'}
+>>> c = [colors[human_microbiome_sample_md['body site'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+And next we'll color the samples by the person that they're derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.
+
+```python
+>>> person_colors = {'subject 1': 'red', 'subject 2':'yellow'}
+>>> person_c = [person_colors[human_microbiome_sample_md['individual'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=person_c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Determining the most important axes in polar ordination <link src='fb483b'/>
+
+Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:
+
+```python
+>>> from scipy.stats import spearmanr
+...
+>>> data = []
+>>> for i, sample_id1 in enumerate(human_microbiome_dm.ids):
+...     for sample_id2 in human_microbiome_dm.ids[:i]:
+...         d, axis_values = compute_axis_values(human_microbiome_dm, sample_id1, sample_id2)
+...         r, p = spearmanr(a1_values, axis_values)
+...         data.append((d, abs(r), sample_id1, sample_id2, axis_values))
+...
+>>> data.sort()
+>>> data.reverse()
+>>> for i, e in enumerate(data):
+...     print("axis %d:" % i, end=' ')
+...     print("\t%1.3f\t%1.3f\t%s\t%s" % e[:4])
+axis 0: 	0.920	1.000	E	B
+axis 1: 	0.910	0.943	F	B
+axis 2: 	0.900	0.928	E	A
+axis 3: 	0.900	0.886	F	A
+axis 4: 	0.880	0.543	E	D
+axis 5: 	0.880	0.429	F	D
+axis 6: 	0.880	0.429	E	C
+axis 7: 	0.870	0.371	F	C
+axis 8: 	0.860	0.543	C	B
+axis 9: 	0.850	0.486	D	B
+axis 10: 	0.830	0.429	C	A
+axis 11: 	0.830	0.406	D	A
+axis 12: 	0.500	0.232	F	E
+axis 13: 	0.350	0.143	B	A
+axis 14: 	0.250	0.493	D	C
+```
+
+So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let's look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.
+
+```python
+>>> ord_plot = scatter(data[0][4], data[1][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[13][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[14][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Interpreting ordination plots <link src='40e0a6'/>
+
+There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.
+
+**Directionality of the axes is not important (e.g., up/down/left/right)**
+
+One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'E', 'B')
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'E', 'D')
+>>> d, alt_a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+```
+
+```python
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(alt_a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+Some other important features:
+
+* Numerical scale of the axis is generally not useful
+* The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, ...)
+* Most techniques result in uncorrelated axes.
+* Additional axes can be generated (third, fourth, ...)
+
+### Principle Coordinates Analysis (PCoA)
+
+```
+import qiime2
+import qiime2.plugins.feature_table as ft
+import qiime2.plugins.diversity as div
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = []
+for reference_sequence in reference_db:
+    #taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=reference_sequence.metadata['id']))
+
+# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
+# display the first 25 rows of that table.
+per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+
+feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", per_sequence_kmer_counts.T)
+```
+
+```
+jaccard_1a = div.actions.beta(feature_table_1a, metric='jaccard').distance_matrix
+```
+
+```
+taxa_of_interest = ['k__Archaea', 'p__Cyanobacteria', 'p__Firmicutes', 'p__Bacteroidetes', 'p__Proteobacteria']
+metadata = {}
+for reference_sequence in reference_db:
+    id_ = reference_sequence.metadata['id']
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    label_as_other = True
+    for taxon_of_interest in taxa_of_interest:
+        # this approach is horrendous
+        if taxon_of_interest in taxon:
+            label_as_other = False
+    if label_as_other:
+        metadata[id_] = 'Other'
+    else:
+        metadata[id_] = taxon
+metadata = pd.Series(metadata, name='taxon').to_frame()
+metadata.index.name = 'id'
+metadata = qiime2.Metadata(metadata)
+```
+
+```
+pcoa_1a = div.actions.pcoa(jaccard_1a).pcoa
+```
+
+```
+import qiime2.plugins.emperor as emperor
+
+emperor.actions.plot(pcoa_1a, metadata).visualization
+```
+
+```
+import skbio.stats.ordination
+ordination = pcoa_1a.view(skbio.stats.ordination.OrdinationResults)
+
+_ = ordination.plot(metadata.to_dataframe(), column='taxon', cmap='Set1')
+```

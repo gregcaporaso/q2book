@@ -335,8 +335,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-a-classification-tasks">
-     3.1.1. Defining a classification tasks
+    <a class="reference internal nav-link" href="#defining-a-classification-task">
+     3.1.1. Defining a classification task
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -360,31 +360,42 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#applying-a-naive-bayes-classifier">
-     3.1.6. Applying a Naive Bayes classifier
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-     3.1.7. Evaluating our confidence in the results of the Naive Bayes classifier
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#classifying-with-confidence">
-     3.1.8. Classifying with confidence
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#precision-recall-and-f-measure">
-     3.1.9. Precision, recall, and F-measure
+     3.1.6. Evaluating our confidence in the results of the Naive Bayes classifier
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dimensionality-reduction">
-   3.2. Dimensionality reduction
+  <a class="reference internal nav-link" href="#unsupervised-learning">
+   3.2. Unsupervised learning
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#polar-ordination">
+     3.2.1. Polar ordination
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
+       3.2.1.1. Determining the most important axes in polar ordination
+       <link src="fb483b"/>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#interpreting-ordination-plots-link-src-40e0a6">
+       3.2.1.2. Interpreting ordination plots
+       <link src="40e0a6"/>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#principle-coordinates-analysis-pcoa">
+     3.2.2. Principle Coordinates Analysis (PCoA)
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -401,24 +412,533 @@
   <div class="section" id="machine-learning-in-bioinformatics">
 <h1><span class="section-number">3. </span>Machine learning in bioinformatics<a class="headerlink" href="#machine-learning-in-bioinformatics" title="Permalink to this headline">¶</a></h1>
 <p>In this chapter we’ll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set.</p>
-<p>Machine learning algorithms generally are provided with a table of samples and user-defined features of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. There are a few different high-level tasks that are common in machine learning. Probably the most commonly used in bioinformatics are supervised classification and dimensionality reduction, and we’ll experiment with both in this chapter.</p>
+<p>Machine learning algorithms generally are provided with a table of <strong>samples</strong> and user-defined <strong>features</strong> of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a <strong>feature table</strong>, and it is central to machine learning and many subfields of bioinformatics.</p>
+<p>As is typically the case in this book, we’ll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. <a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you’d like to start trying some of these tools out, scikit-learn is a great place to start.</p>
+<p>scikit-learn also defines a few example feature tables that we can look at here to get an idea of what typical input looks like in a machine learning task.</p>
+<!-- TODO: pick up here to discuss the features tables. then swap order of unsupervised and supervised learning to illustrate what you can do if you don't have labels and then what you can do if you do have labels--><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">iris_dataset</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">iris_feature_table</span> <span class="o">=</span> <span class="n">iris_dataset</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">iris_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
+<span class="n">iris_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target</span><span class="p">],</span> 
+                        <span class="n">index</span><span class="o">=</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">iris_labels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iris_feature_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+    </tr>
+    <tr>
+      <th>sample-id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>145</th>
+      <td>6.7</td>
+      <td>3.0</td>
+      <td>5.2</td>
+      <td>2.3</td>
+    </tr>
+    <tr>
+      <th>146</th>
+      <td>6.3</td>
+      <td>2.5</td>
+      <td>5.0</td>
+      <td>1.9</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>6.5</td>
+      <td>3.0</td>
+      <td>5.2</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>148</th>
+      <td>6.2</td>
+      <td>3.4</td>
+      <td>5.4</td>
+      <td>2.3</td>
+    </tr>
+    <tr>
+      <th>149</th>
+      <td>5.9</td>
+      <td>3.0</td>
+      <td>5.1</td>
+      <td>1.8</td>
+    </tr>
+  </tbody>
+</table>
+<p>150 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iris_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+    </tr>
+    <tr>
+      <th>sample-id</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>setosa</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>145</th>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <th>146</th>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <th>148</th>
+      <td>virginica</td>
+    </tr>
+    <tr>
+      <th>149</th>
+      <td>virginica</td>
+    </tr>
+  </tbody>
+</table>
+<p>150 rows × 1 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes_dataset</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">diabetes_feature_table</span> <span class="o">=</span> <span class="n">diabetes_dataset</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">diabetes_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
+
+<span class="n">diabetes_labels</span> <span class="o">=</span> <span class="n">diabetes_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">diabetes_labels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes_feature_table</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>sex</th>
+      <th>bmi</th>
+      <th>bp</th>
+      <th>s1</th>
+      <th>s2</th>
+      <th>s3</th>
+      <th>s4</th>
+      <th>s5</th>
+      <th>s6</th>
+    </tr>
+    <tr>
+      <th>sample-id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.038076</td>
+      <td>0.050680</td>
+      <td>0.061696</td>
+      <td>0.021872</td>
+      <td>-0.044223</td>
+      <td>-0.034821</td>
+      <td>-0.043401</td>
+      <td>-0.002592</td>
+      <td>0.019908</td>
+      <td>-0.017646</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.001882</td>
+      <td>-0.044642</td>
+      <td>-0.051474</td>
+      <td>-0.026328</td>
+      <td>-0.008449</td>
+      <td>-0.019163</td>
+      <td>0.074412</td>
+      <td>-0.039493</td>
+      <td>-0.068330</td>
+      <td>-0.092204</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.085299</td>
+      <td>0.050680</td>
+      <td>0.044451</td>
+      <td>-0.005671</td>
+      <td>-0.045599</td>
+      <td>-0.034194</td>
+      <td>-0.032356</td>
+      <td>-0.002592</td>
+      <td>0.002864</td>
+      <td>-0.025930</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.089063</td>
+      <td>-0.044642</td>
+      <td>-0.011595</td>
+      <td>-0.036656</td>
+      <td>0.012191</td>
+      <td>0.024991</td>
+      <td>-0.036038</td>
+      <td>0.034309</td>
+      <td>0.022692</td>
+      <td>-0.009362</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.005383</td>
+      <td>-0.044642</td>
+      <td>-0.036385</td>
+      <td>0.021872</td>
+      <td>0.003935</td>
+      <td>0.015596</td>
+      <td>0.008142</td>
+      <td>-0.002592</td>
+      <td>-0.031991</td>
+      <td>-0.046641</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>437</th>
+      <td>0.041708</td>
+      <td>0.050680</td>
+      <td>0.019662</td>
+      <td>0.059744</td>
+      <td>-0.005697</td>
+      <td>-0.002566</td>
+      <td>-0.028674</td>
+      <td>-0.002592</td>
+      <td>0.031193</td>
+      <td>0.007207</td>
+    </tr>
+    <tr>
+      <th>438</th>
+      <td>-0.005515</td>
+      <td>0.050680</td>
+      <td>-0.015906</td>
+      <td>-0.067642</td>
+      <td>0.049341</td>
+      <td>0.079165</td>
+      <td>-0.028674</td>
+      <td>0.034309</td>
+      <td>-0.018118</td>
+      <td>0.044485</td>
+    </tr>
+    <tr>
+      <th>439</th>
+      <td>0.041708</td>
+      <td>0.050680</td>
+      <td>-0.015906</td>
+      <td>0.017282</td>
+      <td>-0.037344</td>
+      <td>-0.013840</td>
+      <td>-0.024993</td>
+      <td>-0.011080</td>
+      <td>-0.046879</td>
+      <td>0.015491</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>-0.045472</td>
+      <td>-0.044642</td>
+      <td>0.039062</td>
+      <td>0.001215</td>
+      <td>0.016318</td>
+      <td>0.015283</td>
+      <td>-0.028674</td>
+      <td>0.026560</td>
+      <td>0.044528</td>
+      <td>-0.025930</td>
+    </tr>
+    <tr>
+      <th>441</th>
+      <td>-0.045472</td>
+      <td>-0.044642</td>
+      <td>-0.073030</td>
+      <td>-0.081414</td>
+      <td>0.083740</td>
+      <td>0.027809</td>
+      <td>0.173816</td>
+      <td>-0.039493</td>
+      <td>-0.004220</td>
+      <td>0.003064</td>
+    </tr>
+  </tbody>
+</table>
+<p>442 rows × 10 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes_labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>target</th>
+    </tr>
+    <tr>
+      <th>sample-id</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>151.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>75.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>141.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>206.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>135.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>437</th>
+      <td>178.0</td>
+    </tr>
+    <tr>
+      <th>438</th>
+      <td>104.0</td>
+    </tr>
+    <tr>
+      <th>439</th>
+      <td>132.0</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>220.0</td>
+    </tr>
+    <tr>
+      <th>441</th>
+      <td>57.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>442 rows × 1 columns</p>
+</div></div></div>
+</div>
+<p>scikit-learn’s excellent documentation illustrates ways that you can use the iris dataset and the diabetes dataset in classification and regression tasks, repectively.</p>
+<p>There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we’ll experiment with both in this chapter.</p>
 <p>In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, <em>healthy</em> and <em>disease</em>), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn’t known ahead of time, in attempt to predict the class from the features.</p>
-<p>Dimensionality reduction tasks, on the other hand, generally don’t have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.</p>
-<div class="margin sidebar">
-<p class="sidebar-title"></p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you’d like to start trying some of these tools out, scikit-learn is a great place to start.</p>
-</div>
-</div>
+<p>Unsupervised classification tasks, on the other hand, generally don’t have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.</p>
 <div class="section" id="supervised-classification">
 <h2><span class="section-number">3.1. </span>Supervised classification<a class="headerlink" href="#supervised-classification" title="Permalink to this headline">¶</a></h2>
 <p>We’ll begin our exploration of machine learning approaches with <strong>supervised classification</strong>, and specifically with an algorithm called <strong>Naive Bayes</strong>.  We’ll implement Naive Bayes to gain an understanding of how it works, and I think you’ll discover that this idea of machines learning isn’t quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it’s a good place to get started.</p>
 <p>We’ll explore supervised classification in the context of a now familiar topic: taxonomic classification of 16S rRNA sequences. We previously explored this problem in <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>, so it’s worth spending a few minutes skimming that chapter if it’s not fresh in your mind.</p>
 <p>Briefly, the problem that we are going to address here is as follows. We have a query sequence (<span class="math notranslate nohighlight">\(q_i\)</span>) which is not taxonomically annotated (meaning we don’t know the taxonomy of the organism whose genome it is found in), and a reference database (<span class="math notranslate nohighlight">\(R\)</span>) of taxonomically annotated sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, r_n\)</span>). We want to infer a taxonomic annotation for <span class="math notranslate nohighlight">\(q_i\)</span>. We’ll again work with <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a>, a 16S rRNA sequence database, which we’ll access using <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. (This should all sound very familiar - if not, I again suggest that you review <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>.)</p>
 <p>Before we get to this though, lets talk about what supervised classification algorithms are and how the classifiers they build are evaluated.</p>
-<div class="section" id="defining-a-classification-tasks">
-<h3><span class="section-number">3.1.1. </span>Defining a classification tasks<a class="headerlink" href="#defining-a-classification-tasks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="defining-a-classification-task">
+<h3><span class="section-number">3.1.1. </span>Defining a classification task<a class="headerlink" href="#defining-a-classification-task" title="Permalink to this headline">¶</a></h3>
 <p>In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we run perform these kinds of tasks everyday. For example, if you’re browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you’re not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., “school”, “entertainment”, or “social media”).</p>
 <p>When we’re working with large data sets, supervised classification algorithms can help us with classification tasks that will make us more efficient or help us understand our data. A classic example of this outside of bioinformatics is an email spam filter. For every email that is received, the spam filter must define it as spam or not spam so the message can directed either to the user’s spam folder or the user’s inbox. The stakes can be high: a filter that is too permissive will cause the user’s inbox to get filled with junk mail, while a filter that is overly restrictive could cause relevant messages to be directed to the spam folder. In either case, the email user could miss important messages.</p>
 <p>In the case of taxonomic assignment, our classes will be taxonomic groups at a user-defined taxonomic level. For example, a phylum classifier for 16S rRNA sequences would take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.</p>
@@ -597,7 +1117,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, T, A, G
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: A, T, C, G
 For an alphabet size of 4, W contains 16 length-2 kmers.
 </pre></div>
 </div>
@@ -617,7 +1137,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG GA AG GT TT TT TG GA AT TC CC CT TG GG GC CT TC CA AG GG GA AC CG GA AA AC CG GC CT TG GG GC CG GG GC CG GT TG GC CC CT TA AA AT TA AC CA AT TG GC CA AA AG GT TC CG GA AG GC CG GG GA AC CC CC CA AG GT TG GT TT TT TC CC CT TT TC CG GG GG GA AA AA AC CA AC CG GA AG GG GT TT TA AG GC CG GG GC CG GG GA AC CG GG GG GT TG GA AG GT TA AA AC CA AC CG GT TA AG GG GT TA AA AC CC CT TG GC CC CC CA AT TA AA AG GA AC CC CG GG GG GA AT TA AA AC CA AT TT TC CG GG GA AA AA AC CG GA AA AT TG GC CT TA AA AT TA AC CC CA AG GA AT TA AC CG GC CG GA AT TC CC CT TC CT TC CG GC CA AT TG GA AG GA AG GG GA AT TC CG GG GG GA AA AA AG GG GC CG GG GA AG GC CA AA AT TC CT TG GT TC CA AC CT TT TA AT TG GG GA AT TG GG GA AC CC CT TG GC CG GG GC CG GC CA AT TT TA AG GC CT TA AG GT TT TG GG GT TG GA AG GG GT TA AA AC CG GG GC CT TC CA AC CC CA AA AG GG GC CG GA AC CG GA AT TG GC CG GT TA AG GC CC CG GA AC CC CT TG GA AG GA AG GG GG GT TG GA AT TC CG GG GC CC CA AC CA AC CT TG GG GG GA AC CT TG GA AG GA AC CA AC CG GG GC CC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TA AG GG GG GA AA AT TC CT TT TC CC CG GC CA AA AT TG GG GA AC CG GA AA AA AG GT TC CT TG GA AC CG GG GA AG GC CA AA AC CG GC CC CG GC CG GT TG GA AG GT TG GA AT TG GA AA AG GG GT TT TT TT TC CG GG GA AT TC CG GT TA AA AA AG GC CT TC CT TG GT TT TG GC CC CA AG GG GG GA AA AG GA AA AC CG GC CT TA AA AA AG GA AG GA AG GT TA AA AC CT TG GC CT TC CT TT TT TA AG GG GT TG GA AC CG GG GT TA AC CC CT TG GA AG GA AA AG GA AA AA AG GC CC CC CC CG GG GC CT TA AA AC CT TA AC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GT TA AG GG GG GG GG GC CA AA AG GC CG GT TT TG GT TC CC CG GG GA AA AT TT TA AT TT TG GG GG GC CG GT TA AA AA AG GC CG GC CG GC CG GC CA AG GG GC CG GG GT TC CA AA AT TT TA AA AG GT TC CT TG GG GT TG GT TT TT TA AA AG GG GC CT TG GT TG GG GC CT TC CA AA AC CC CA AC CA AG GT TT TC CG GC CA AC CT TG GG GA AA AA AC CT TG GG GT TT TG GA AC CT TT TG GA AG GT TG GC CA AG GA AA AG GA AG GG GA AA AA AG GT TG GG GA AA AT TT TC CC CA AC CG GT TG GT TA AG GC CG GG GT TG GA AA AA AT TG GC CG GT TA AG GA AG GA AT TG GT TG GG GA AG GG GA AA AC CA AC CC CA AG GT TG GG GC CG GA AA AG GG GC CG GA AC CT TT TT TC CT TG GG GG GC CT TG GT TA AA AC CT TG GA AC CG GC CT TG GA AG GG GC CG GC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CG GT TA AA AA AC CG GA AT TG GA AA AT TG GC CT TA AG GG GT TG GT TT TA AG GG GG GG GT TT TT TC CG GA AT TA AC CC CC CT TT TG GG GT TG GC CC CG GA AA AG GT TT TA AA AC CA AC CA AT TT TA AA AG GC CA AT TT TC CC CG GC CC CT TG GG GG GG GA AG GT TA AC CG GG GT TC CG GC CA AA AG GA AC CT TG GA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GA AC CC CC CG GC CA AC CA AA AG GC CA AG GT TG GG GA AG GT TA AT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AA AG GC CA AA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CA AG GG GT TC CT TT TG GA AC CA AT TG GC CC CT TC CT TG GA AC CC CG GC CT TC CT TA AG GA AG GA AT TA AG GA AG GC CT TT TT TC CC CT TT TC CG GG GG GA AC CA AG GG GG GG GA AC CA AC CA AG GG GT TG GG GT TG GC CA AT TG GG GT TT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CC CT TA AA AT TG GT TT TA AG GT TT TG GC CC CA AG GC CA AC CC CT TT TG GG GG GT TG GG GG GC CA AC CT TC CT TA AA AC CG GT TG GA AC CT TG GC CC CG GG GT TG GA AC CA AA AA AC CC CG GG GA AG GG GA AA AG GG GT TG GG GG GG GA AT TG GA AC CG GT TC CA AA AA AT TC CA AT TC CA AT TG GC CC CC CC CT TT TA AT TG GA AC CC CT TG GG GG GC CT TA AC CA AC CA AC CG GT TA AC CT TA AC CA AA AT TG GG GC CC CA AG GT TA AC CA AA AC CG GG GG GA AA AG GC CG GA AA AG GT TC CG GC CG GA AG GA AT TG GG GA AG GC CC CA AA AT TC CC CT TA AG GC CA AA AA AG GC CT TG GG GT TC CT TC CA AG GT TT TC CG GG GA AT TT TG GC CA AG GG GC CT TG GC CA AA AC CT TC CG GC CC CT TG GC CA AT TG GA AA AG GT TC CG GG GA AA AT TT TG GC CT TA AG GT TA AA AT TC CG GC CG GG GA AT TC CA AG GC CA AT TG GC CC CG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GT TC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AC CA AC CC CA AC CG GA AG GA AG GT TT TT TA AC CA AA AC CA AC CC CC CG GA AA AG GC CC CG GG GT TG GG GG GG GT TA AA AC CC CC CG GC CA AA AG GG GG GA AG GC CC CA AG GC CC CG GT TC CG GA AA AG GG GT TG GG GG GG GT TA AG GA AT TG GA AT TT TG GG GG GG GT TG GA AA AG GT TC CG GT TA AA AC CA AA AG GG GT TA AA AC CC 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TG GG GC CT TC CA AG GG GA AC CG GA AA AC CG GC CT TG GG GC CG GG GC CG GC CG GC CC CT TA AA AC CA AC CA AT TG GC CA AA AG GT TC CG GA AA AC CG GA AG GC CG GA AG GA AG GA AG GA AG GC CT TT TG GC CT TT TT TC CT TT TG GA AG GC CG GA AG GT TG GG GC CG GA AA AC CG GG GG GT TG GA AG GT TA AA AC CG GC CG GT TG GA AG GG GA AA AC CC CT TG GC CC CT TC CA AA AA AG GA AG GG GG GG GG GA AC CA AA AC CA AG GT TT TG GG GA AA AA AC CG GA AC CT TG GC CT TA AA AT TA AC CC CG GC CA AT TA AA AG GC CC CC CA AC CG GG GC CT TC CG GG GC CA AT TC CG GA AG GC CA AG GA AG GG GG GA AA AA AA AG GG GA AG GC CA AA AT TC CC CG GC CT TT TT TG GA AG GA AT TG GG GC CC CT TC CG GC CG GT TC CC CG GA AT TT TA AG GC CT TA AG GT TT TG GG GT TG GA AG GG GT TA AA AC CG GG GC CC CC CA AC CC CA AA AG GG GC CG GA AC CG GA AT TC CG GG GT TA AG GC CC CG GG GA AC CT TG GA AG GA AG GG GT TT TG GA AA AC CG GG GC CC CA AC CA AT TT TG GG GG GA AC CT TG GA AG GA AC CA AC CG GG GC CC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TG GG GG GG GA AA AT TA AT TT TG GC CA AC CA AA AT TG GG GG GG GG GA AA AA AC CC CC CT TG GA AT TG GC CA AG GC CG GA AC CG GC CC CG GC CG GT TG GG GA AG GG GA AA AG GA AA AG GG GT TC CT TT TC CG GG GA AT TT TG GT TA AA AA AC CT TC CC CT TG GT TT TG GT TT TG GA AG GG GA AA AG GA AT TA AA AT TG GA AC CG GG GT TA AC CT TC CA AA AC CA AA AG GG GA AA AG GT TG GA AC CG GG GC CT TA AA AC CT TA AC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AA AA AC CG GT TA AG GG GT TC CA AC CA AA AG GC CG GT TT TG GT TC CC CG GG GA AA AT TT TA AC CT TG GG GG GT TG GT TA AA AA AG GG GG GA AG GC CG GC CA AG GG GC CG GG GG GA AA AG GA AC CA AA AG GT TT TG GG GA AA AG GT TG GA AA AA AT TC CC CA AT TG GG GG GC CT TC CA AA AC CC CC CA AT TG GA AA AC CT TG GC CT TT TT TC CA AA AA AA AC CT TG GT TT TT TT TT TC CT TT TG GA AG GT TA AG GT TG GC CA AG GA AG GG GT TA AG GG GC CG GG GA AA AT TT TC CC CC CG GG GT TG GT TA AG GC CG GG GT TG GG GA AA AT TG GC CG GT TA AG GA AT TA AT TC CG GG GG GA AG GG GA AA AC CA AC CC CA AG GT TG GG GC CG GA AA AG GG GC CG GG GC CC CT TA AC CT TG GG GG GC CA AT TC CA AA AC CT TG GA AC CG GC CT TG GA AG GG GC CT TC CG GA AA AA AG GT TG GT TG GG GG GT TA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CA AC CT TG GT TA AA AA AC CG GA AT TG GA AT TT TA AC CT TA AG GG GT TG GT TT TG GG GA AG GG GA AT TT TG GA AC CC CC CC CT TT TC CA AG GT TG GC CC CG GC CA AG GT TT TA AA AC CA AC CA AA AT TA AA AG GT TA AA AA AT TC CC CA AC CC CT TG GG GG GG GA AG GT TA AC CG GA AC CC CG GC CA AA AG GG GG GT TT TG GA AA AC CT TC CA AA AA AG GG GG GA AT TT TT TG GA AC CG GG GG GG GG GC CC CC CC CG GC CA AC CA AA AG GC CA AG GT TG GG GA AG GT TA AT TG GT TG GG GT TT TT TA AA AT TT TC CC CA AC CG GC CA AA AC CC CC CG GA AA AA AA AA AC CC CT TT TA AC CC CC CA AG GT TC CT TT TG GA AC CT TT TC CC CT TG GC CG GA AC CC CC CC CC CA AT TA AA AA AA AA AT TA AT TG GT TG GT TT TT TC CC CT TT TC CG GG GA AA AC CG GC CA AG GA AG GA AC CA AG GG GT TG GG GT TG GC CA AT TG GG GT TT TG GT TT TG GT TC CA AG GC CT TC CG GT TG GT TC CA AT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CT TC CG GC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CT TT TA AT TG GG GT TC CA AG GT TT TA AG GT TA AC CG GC CA AA AG GA AG GG GA AC CT TC CT TG GA AC CC CA AG GA AC CG GG GC CC CG GT TT TG GA AC CA AA AA AA AC CG GG GA AG GG GA AA AG GG GT TG GG GG GG GA AT TG GA AC CG GT TC CA AA AA AT TC CA AT TC CA AT TG GC CC CC CT TT TT TA AT TG GA AC CT TT TG GG GG GT TT TA AC CA AC CA AC CG GT TA AC CT TA AC CA AA AT TG GG GC CG GT TT TA AA AA AC CA AA AA AG GA AG GA AA AG GC CA AA AG GA AC CC CG GC CG GA AG GG GT TG GG GA AG GC CA AA AA AA AC CT TC CA AG GA AA AA AC CA AA AC CG GT TC CC CC CA AG GT TT TC CG GG GA AC CT TG GC CA AG GG GC CT TG GC CA AA AC CT TC CG GC CC CT TG GC CA AC CG GA AA AG GT TC CG GG GA AA AT TT TG GC CT TA AG GT TA AA AT TC CG GC CA AG GA AT TC CA AG GC CA AT TG GC CT TG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GC CC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AC CA AC CC CA AT TG GA AG GA AG GC CC CG GG GG GG GG GG GA AC CC CC CG GA AA AG GT TC CG GG GT TA AG GT TC CT TA AA AC CC CG GC CA AA AG GG GA AG GG GA AC CG GC CC CG GC CC CG GA AA AG GG GT TA AA AA AA AC CT 
 </pre></div>
 </div>
 </div>
@@ -630,7 +1150,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AG&#39;: 118, &#39;GA&#39;: 122, &#39;GT&#39;: 104, &#39;TT&#39;: 61, &#39;TG&#39;: 106, &#39;AT&#39;: 61, &#39;TC&#39;: 63, &#39;CC&#39;: 80, &#39;CT&#39;: 73, &#39;GG&#39;: 143, &#39;GC&#39;: 108, &#39;CA&#39;: 88, &#39;AC&#39;: 101, &#39;CG&#39;: 110, &#39;AA&#39;: 108, &#39;TA&#39;: 69}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;TG&#39;: 97, &#39;GG&#39;: 131, &#39;GC&#39;: 96, &#39;CT&#39;: 65, &#39;TC&#39;: 55, &#39;CA&#39;: 93, &#39;AG&#39;: 113, &#39;GA&#39;: 119, &#39;AC&#39;: 103, &#39;CG&#39;: 96, &#39;AA&#39;: 119, &#39;CC&#39;: 79, &#39;TA&#39;: 58, &#39;AT&#39;: 54, &#39;GT&#39;: 91, &#39;TT&#39;: 61}
 </pre></div>
 </div>
 </div>
@@ -643,23 +1163,23 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG    118
-GA    122
-GT    104
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TG     97
+GG    131
+GC     96
+CT     65
+TC     55
+CA     93
+AG    113
+GA    119
+AC    103
+CG     96
+AA    119
+CC     79
+TA     58
+AT     54
+GT     91
 TT     61
-TG    106
-AT     61
-TC     63
-CC     80
-CT     73
-GG    143
-GC    108
-CA     88
-AC    101
-CG    110
-AA    108
-TA     69
-Name: 270826, dtype: int64
+Name: 2544615, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -691,17 +1211,28 @@ Name: 270826, dtype: int64
     <span class="k">return</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">taxon</span><span class="p">[:</span><span class="n">level</span><span class="p">])</span>
 
 <span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="n">sequence_id</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    
     <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="n">sequence_labels</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
+    
     <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
-    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">taxon</span><span class="p">))</span>
+    <span class="n">per_sequence_kmer_counts</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmer_counts</span>
 
-<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
-<span class="c1"># display the first 25 rows of that table.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">per_sequence_kmer_counts</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
+<span class="n">feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the first 25 samples in the feature table</span>
+<span class="n">feature_table</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -724,56 +1255,32 @@ Name: 270826, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Spirochaetes</th>
-      <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Chlorobi</th>
-      <th>k__Bacteria; p__Verrucomicrobia</th>
-      <th>k__Bacteria; p__Planctomycetes</th>
-      <th>k__Bacteria; p__WS6</th>
-      <th>k__Bacteria; p__Cyanobacteria</th>
-      <th>k__Bacteria; p__Chloroflexi</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
+      <th>GGAGCCC</th>
+      <th>ATGTCTC</th>
+      <th>GCGTTAC</th>
+      <th>AATCAGG</th>
+      <th>GTAAATA</th>
+      <th>TACGAAT</th>
+      <th>CCCATTT</th>
+      <th>ACCGACA</th>
+      <th>ACGTGAT</th>
+      <th>GAGTCTC</th>
       <th>...</th>
-      <th>k__Archaea; p__Crenarchaeota</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Actinobacteria</th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Fusobacteria</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
-      <th>k__Bacteria; p__TM7</th>
-      <th>k__Bacteria; p__Chlorobi</th>
-      <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Planctomycetes</th>
+      <th>GCACAAA</th>
+      <th>CGCAGGT</th>
+      <th>GCACTCT</th>
+      <th>GCCAACA</th>
+      <th>GTCTTGA</th>
+      <th>GTAGTAG</th>
+      <th>CAGATTT</th>
+      <th>CTCCGGT</th>
+      <th>AAAGTGC</th>
+      <th>ACACTAG</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>TTACCTA</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>TAAGCGG</th>
+      <th>2544615</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -789,54 +1296,6 @@ Name: 270826, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>TAGTATC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>GTTGGAA</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -845,7 +1304,7 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>ATCATAG</th>
+      <th>1034839</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -859,104 +1318,8 @@ Name: 270826, dtype: int64
       <td>...</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CGAAATT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>AGACAGA</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CAACGCC</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>1</td>
-      <td>1</td>
       <td>2</td>
       <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>ATCTCAT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -965,127 +1328,7 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>AATGCAT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CAAACTC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>TAATAGC</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>ATGAGGA</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>AACAAGT</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>CCCCGCC</th>
+      <th>4348874</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1109,7 +1352,79 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>ACCCTCT</th>
+      <th>276134</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4363198</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>344523</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4426336</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1133,7 +1448,7 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>TACTTTC</th>
+      <th>972181</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1157,13 +1472,85 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>AGGTGGC</th>
+      <th>929908</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>298115</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1148221</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>666506</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1181,31 +1568,7 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>GCGAAAG</th>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>GGTATCG</th>
+      <th>301472</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1218,18 +1581,18 @@ Name: 270826, dtype: int64
       <td>0</td>
       <td>...</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>GGGTCCC</th>
+      <th>645965</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1241,7 +1604,7 @@ Name: 270826, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>...</td>
-      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1253,65 +1616,17 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>GGGGAGT</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>ACGGAGC</th>
-      <td>1</td>
+      <th>1120344</th>
       <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>CGATGGG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
       <td>...</td>
       <td>0</td>
       <td>1</td>
@@ -1325,34 +1640,385 @@ Name: 270826, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>GTACGAG</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <th>349639</th>
       <td>0</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2772774</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4385205</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4419665</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>219038</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3931048</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>335615</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>179695</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4421622</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>189592</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>25 rows × 5000 columns</p>
+<p>25 rows × 16384 columns</p>
 </div></div></div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the taxon labels for the first 25 samples</span>
+<span class="n">sequence_labels</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>taxon</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2544615</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>1034839</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>4348874</th>
+      <td>k__Bacteria; p__Deferribacteres</td>
+    </tr>
+    <tr>
+      <th>276134</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>4363198</th>
+      <td>k__Bacteria; p__LCP-89</td>
+    </tr>
+    <tr>
+      <th>344523</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>4426336</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>972181</th>
+      <td>k__Bacteria; p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>929908</th>
+      <td>k__Bacteria; p__Cyanobacteria</td>
+    </tr>
+    <tr>
+      <th>298115</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>1148221</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>666506</th>
+      <td>k__Bacteria; p__Gemmatimonadetes</td>
+    </tr>
+    <tr>
+      <th>301472</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>645965</th>
+      <td>k__Bacteria; p__Actinobacteria</td>
+    </tr>
+    <tr>
+      <th>1120344</th>
+      <td>k__Bacteria; p__Actinobacteria</td>
+    </tr>
+    <tr>
+      <th>349639</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>2772774</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>4385205</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>4419665</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>219038</th>
+      <td>k__Bacteria; p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>3931048</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>335615</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>179695</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>4421622</th>
+      <td>k__Bacteria; p__Tenericutes</td>
+    </tr>
+    <tr>
+      <th>189592</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This table of kmer counts per taxon is our *<em>feature table</em>. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon.</p>
 <p>With this information, we’ll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:</p>
 <p><span class="math notranslate nohighlight">\(N\)</span> : The total number of sequences in the training set (i.e., our reference database).</p>
 <p><span class="math notranslate nohighlight">\(W\)</span>: The set of all possible kmers, given <span class="math notranslate nohighlight">\(k\)</span> and an alphabet.</p>
@@ -1363,25 +2029,27 @@ Name: 270826, dtype: int64
 <p>Our “kmer probability table” is <span class="math notranslate nohighlight">\(P(w_i | taxon)\)</span> computed for all kmers in W and all taxa represented in our reference database. We’ll compute that and again look at the first 25 rows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_kmer_probability_table</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">):</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span> <span class="c1"># number of training sequences</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_kmer_probability_table</span><span class="p">(</span><span class="n">feature_table</span><span class="p">,</span> <span class="n">sequence_labels</span><span class="p">):</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">feature_table</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># number of training sequences</span>
 
     <span class="c1"># number of sequences containing kmer wi</span>
-    <span class="n">n_wi</span> <span class="o">=</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">n_wi</span> <span class="o">=</span> <span class="n">feature_table</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">n_wi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;n(w_i)&#39;</span>
 
     <span class="c1"># probabilities of observing each kmer</span>
     <span class="n">Pi</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_wi</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">Pi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;P_i&#39;</span>
-
+    
     <span class="c1"># number of times each taxon appears in training set</span>
-    <span class="n">taxon_counts</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-    <span class="n">n_taxon_members_containing_kmer</span> <span class="o">=</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">taxon_counts</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">)</span>
 
+    
+    <span class="n">taxon_table</span> <span class="o">=</span> <span class="n">feature_table</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    
     <span class="c1"># probabilities of observing each kmer in each taxon</span>
     <span class="n">p_wi_t</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">taxon</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">taxon_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">p_wi_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">((</span><span class="n">n_taxon_members_containing_kmer</span><span class="p">[</span><span class="n">taxon</span><span class="p">]</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">taxon</span><span class="p">))</span>
+        <span class="n">p_wi_t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">((</span><span class="n">taxon_table</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">taxon</span><span class="p">]</span> <span class="o">+</span> <span class="n">Pi</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">taxon</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">p_wi_t</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
@@ -1390,7 +2058,7 @@ Name: 270826, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_probability_table</span> <span class="o">=</span> <span class="n">compute_kmer_probability_table</span><span class="p">(</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_probability_table</span> <span class="o">=</span> <span class="n">compute_kmer_probability_table</span><span class="p">(</span><span class="n">feature_table</span><span class="p">,</span> <span class="n">sequence_labels</span><span class="p">)</span>
 <span class="n">kmer_probability_table</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1415,639 +2083,634 @@ Name: 270826, dtype: int64
     <tr style="text-align: right;">
       <th></th>
       <th>k__Bacteria; p__Firmicutes</th>
-      <th>k__Bacteria; p__Spirochaetes</th>
-      <th>k__Bacteria; p__Chlorobi</th>
-      <th>k__Bacteria; p__Verrucomicrobia</th>
-      <th>k__Bacteria; p__Planctomycetes</th>
-      <th>k__Bacteria; p__WS6</th>
-      <th>k__Bacteria; p__Cyanobacteria</th>
-      <th>k__Bacteria; p__Chloroflexi</th>
       <th>k__Bacteria; p__Proteobacteria</th>
+      <th>k__Bacteria; p__Deferribacteres</th>
+      <th>k__Bacteria; p__LCP-89</th>
       <th>k__Bacteria; p__Bacteroidetes</th>
+      <th>k__Bacteria; p__Cyanobacteria</th>
+      <th>k__Bacteria; p__Gemmatimonadetes</th>
+      <th>k__Bacteria; p__Actinobacteria</th>
+      <th>k__Bacteria; p__Tenericutes</th>
+      <th>k__Bacteria; p__Planctomycetes</th>
       <th>...</th>
-      <th>k__Bacteria; p__[Caldithrix]</th>
-      <th>k__Bacteria; p__WS1</th>
-      <th>k__Bacteria; p__LD1</th>
-      <th>k__Bacteria; p__Chlamydiae</th>
-      <th>k__Bacteria; p__FCPU426</th>
+      <th>k__Bacteria; p__AncK6</th>
+      <th>k__Bacteria; p__WWE1</th>
+      <th>k__Bacteria; p__WS4</th>
+      <th>k__Bacteria; p__WS6</th>
+      <th>k__Bacteria; p__OP9</th>
+      <th>k__Bacteria; p__Kazan-3B-28</th>
       <th>k__Bacteria; p__CD12</th>
-      <th>k__Bacteria; p__NC10</th>
-      <th>k__Bacteria; p__Hyd24-12</th>
-      <th>k__Bacteria; p__WPS-2</th>
-      <th>k__Bacteria; p__MAT-CR-M4-B07</th>
+      <th>k__Bacteria; p__EM3</th>
+      <th>k__Bacteria; p__BHI80-139</th>
+      <th>k__Bacteria; p__WS2</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>TTACCTA</th>
-      <td>0.058638</td>
-      <td>0.014820</td>
-      <td>0.386053</td>
-      <td>0.159972</td>
-      <td>0.049385</td>
-      <td>0.009345</td>
-      <td>0.000312</td>
-      <td>0.068749</td>
-      <td>0.288004</td>
-      <td>0.044468</td>
+      <th>GGAGCCC</th>
+      <td>0.030080</td>
+      <td>0.032243</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.006261</td>
+      <td>0.009669</td>
+      <td>0.149879</td>
+      <td>0.028526</td>
+      <td>0.104976</td>
+      <td>0.064211</td>
       <td>...</td>
-      <td>0.007476</td>
-      <td>0.012461</td>
-      <td>0.012461</td>
-      <td>0.018691</td>
-      <td>0.345794</td>
-      <td>0.012461</td>
-      <td>0.018691</td>
-      <td>0.018691</td>
-      <td>0.018691</td>
-      <td>0.018691</td>
+      <td>0.022146</td>
+      <td>0.014764</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
+      <td>0.022146</td>
     </tr>
     <tr>
-      <th>TAAGCGG</th>
-      <td>0.213485</td>
-      <td>0.129082</td>
-      <td>0.039836</td>
-      <td>0.138678</td>
-      <td>0.087627</td>
-      <td>0.008933</td>
-      <td>0.008631</td>
-      <td>0.034491</td>
-      <td>0.043222</td>
-      <td>0.171571</td>
+      <th>ATGTCTC</th>
+      <td>0.007696</td>
+      <td>0.015347</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.010856</td>
+      <td>0.009381</td>
+      <td>0.021555</td>
+      <td>0.003593</td>
+      <td>0.000452</td>
+      <td>0.052402</td>
       <td>...</td>
-      <td>0.007147</td>
-      <td>0.011911</td>
-      <td>0.011911</td>
-      <td>0.017867</td>
-      <td>0.011911</td>
-      <td>0.011911</td>
-      <td>0.017867</td>
-      <td>0.017867</td>
-      <td>0.017867</td>
-      <td>0.017867</td>
+      <td>0.006549</td>
+      <td>0.004366</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
+      <td>0.006549</td>
     </tr>
     <tr>
-      <th>TAGTATC</th>
-      <td>0.005791</td>
-      <td>0.014325</td>
-      <td>0.000107</td>
-      <td>0.053221</td>
-      <td>0.000015</td>
-      <td>0.000694</td>
-      <td>0.000023</td>
-      <td>0.000019</td>
-      <td>0.013681</td>
-      <td>0.013787</td>
+      <th>GCGTTAC</th>
+      <td>0.003517</td>
+      <td>0.065209</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.003146</td>
+      <td>0.018819</td>
+      <td>0.000691</td>
+      <td>0.003661</td>
+      <td>0.001120</td>
+      <td>0.006003</td>
       <td>...</td>
-      <td>0.000555</td>
-      <td>0.000926</td>
-      <td>0.000926</td>
-      <td>0.001388</td>
-      <td>0.000926</td>
-      <td>0.000926</td>
-      <td>0.001388</td>
-      <td>0.001388</td>
-      <td>0.001388</td>
-      <td>0.001388</td>
+      <td>0.016247</td>
+      <td>0.010831</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
+      <td>0.016247</td>
     </tr>
     <tr>
-      <th>GTTGGAA</th>
-      <td>0.247522</td>
-      <td>0.543935</td>
-      <td>0.272133</td>
-      <td>0.266760</td>
-      <td>0.366533</td>
-      <td>0.018866</td>
-      <td>0.258962</td>
-      <td>0.069010</td>
-      <td>0.311069</td>
-      <td>0.081279</td>
+      <th>AATCAGG</th>
+      <td>0.010491</td>
+      <td>0.007679</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.009308</td>
+      <td>0.027897</td>
+      <td>0.000274</td>
+      <td>0.000046</td>
+      <td>0.034927</td>
+      <td>0.011703</td>
       <td>...</td>
-      <td>0.015093</td>
-      <td>0.025155</td>
-      <td>0.025155</td>
-      <td>0.537733</td>
-      <td>0.025155</td>
-      <td>0.025155</td>
-      <td>0.037733</td>
-      <td>0.037733</td>
-      <td>0.037733</td>
-      <td>0.037733</td>
+      <td>0.006449</td>
+      <td>0.004299</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
+      <td>0.006449</td>
     </tr>
     <tr>
-      <th>ATCATAG</th>
-      <td>0.009408</td>
-      <td>0.000028</td>
-      <td>0.000076</td>
-      <td>0.000021</td>
-      <td>0.010940</td>
+      <th>GTAAATA</th>
+      <td>0.018881</td>
+      <td>0.019953</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.013961</td>
+      <td>0.009436</td>
+      <td>0.000406</td>
+      <td>0.007160</td>
+      <td>0.138590</td>
+      <td>0.011739</td>
+      <td>...</td>
+      <td>0.009548</td>
+      <td>0.006365</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+    </tr>
+    <tr>
+      <th>TACGAAT</th>
+      <td>0.005607</td>
+      <td>0.008453</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.114587</td>
+      <td>0.083549</td>
       <td>0.000496</td>
-      <td>0.000017</td>
-      <td>0.000014</td>
-      <td>0.006481</td>
-      <td>0.006129</td>
+      <td>0.007175</td>
+      <td>0.000803</td>
+      <td>0.011763</td>
       <td>...</td>
-      <td>0.000397</td>
-      <td>0.000661</td>
-      <td>0.000661</td>
-      <td>0.000992</td>
-      <td>0.000661</td>
-      <td>0.000661</td>
-      <td>0.000992</td>
-      <td>0.000992</td>
-      <td>0.000992</td>
-      <td>0.000992</td>
+      <td>0.011648</td>
+      <td>0.007765</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
+      <td>0.011648</td>
     </tr>
     <tr>
-      <th>CGAAATT</th>
-      <td>0.005068</td>
-      <td>0.014340</td>
-      <td>0.000147</td>
-      <td>0.010679</td>
-      <td>0.016414</td>
-      <td>0.000954</td>
-      <td>0.008365</td>
-      <td>0.006875</td>
-      <td>0.012242</td>
-      <td>0.012257</td>
+      <th>CCCATTT</th>
+      <td>0.002101</td>
+      <td>0.003839</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.012393</td>
+      <td>0.009316</td>
+      <td>0.000130</td>
+      <td>0.000022</td>
+      <td>0.000210</td>
+      <td>0.011663</td>
       <td>...</td>
-      <td>0.000763</td>
-      <td>0.001271</td>
-      <td>0.001271</td>
-      <td>0.001907</td>
-      <td>0.001271</td>
-      <td>0.001271</td>
-      <td>0.001907</td>
-      <td>0.001907</td>
-      <td>0.001907</td>
-      <td>0.001907</td>
+      <td>0.003049</td>
+      <td>0.002033</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
+      <td>0.003049</td>
     </tr>
     <tr>
-      <th>AGACAGA</th>
-      <td>0.032573</td>
-      <td>0.057380</td>
-      <td>0.039099</td>
-      <td>0.074644</td>
-      <td>0.120309</td>
-      <td>0.254143</td>
-      <td>0.058471</td>
-      <td>0.027511</td>
-      <td>0.088565</td>
-      <td>0.026059</td>
+      <th>ACCGACA</th>
+      <td>0.015385</td>
+      <td>0.019951</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.010861</td>
+      <td>0.000153</td>
+      <td>0.000351</td>
+      <td>0.003605</td>
+      <td>0.000569</td>
+      <td>0.005910</td>
       <td>...</td>
-      <td>0.003314</td>
-      <td>0.005523</td>
-      <td>0.005523</td>
-      <td>0.008285</td>
-      <td>0.005523</td>
-      <td>0.005523</td>
-      <td>0.008285</td>
-      <td>0.008285</td>
-      <td>0.008285</td>
-      <td>0.008285</td>
+      <td>0.008248</td>
+      <td>0.005499</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
+      <td>0.008248</td>
     </tr>
     <tr>
-      <th>CAACGCC</th>
-      <td>0.483420</td>
-      <td>0.029804</td>
-      <td>0.695626</td>
-      <td>0.139216</td>
-      <td>0.022329</td>
-      <td>0.021567</td>
-      <td>0.167386</td>
-      <td>0.582783</td>
-      <td>0.133971</td>
-      <td>0.016977</td>
+      <th>ACGTGAT</th>
+      <td>0.013297</td>
+      <td>0.028395</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.027906</td>
+      <td>0.018773</td>
+      <td>0.000585</td>
+      <td>0.071019</td>
+      <td>0.104396</td>
+      <td>0.040858</td>
       <td>...</td>
-      <td>0.817254</td>
-      <td>0.695423</td>
-      <td>0.028756</td>
-      <td>0.043134</td>
-      <td>0.028756</td>
-      <td>0.362089</td>
-      <td>0.043134</td>
-      <td>0.043134</td>
-      <td>0.043134</td>
-      <td>0.043134</td>
+      <td>0.013747</td>
+      <td>0.009165</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
+      <td>0.013747</td>
     </tr>
     <tr>
-      <th>ATCTCAT</th>
-      <td>0.020990</td>
-      <td>0.000110</td>
-      <td>0.000297</td>
-      <td>0.000082</td>
-      <td>0.016436</td>
-      <td>0.251930</td>
-      <td>0.158398</td>
-      <td>0.020601</td>
-      <td>0.025204</td>
-      <td>0.026046</td>
+      <th>GAGTCTC</th>
+      <td>0.005600</td>
+      <td>0.016882</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.012406</td>
+      <td>0.000131</td>
+      <td>0.021577</td>
+      <td>0.010688</td>
+      <td>0.000486</td>
+      <td>0.011710</td>
       <td>...</td>
-      <td>0.001544</td>
-      <td>0.002573</td>
-      <td>0.002573</td>
-      <td>0.003860</td>
-      <td>0.002573</td>
-      <td>0.002573</td>
-      <td>0.003860</td>
-      <td>0.503860</td>
-      <td>0.003860</td>
-      <td>0.003860</td>
+      <td>0.007049</td>
+      <td>0.004699</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
+      <td>0.007049</td>
     </tr>
     <tr>
-      <th>AATGCAT</th>
-      <td>0.023905</td>
-      <td>0.000525</td>
-      <td>0.078337</td>
-      <td>0.042944</td>
-      <td>0.164135</td>
-      <td>0.009193</td>
-      <td>0.025306</td>
-      <td>0.185183</td>
-      <td>0.095059</td>
-      <td>0.508479</td>
+      <th>ACCGACT</th>
+      <td>0.007692</td>
+      <td>0.004607</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.009299</td>
+      <td>0.009327</td>
+      <td>0.000155</td>
+      <td>0.007118</td>
+      <td>0.000252</td>
+      <td>0.000042</td>
       <td>...</td>
-      <td>0.007354</td>
-      <td>0.012257</td>
-      <td>0.012257</td>
-      <td>0.018386</td>
-      <td>0.345590</td>
-      <td>0.012257</td>
-      <td>0.018386</td>
-      <td>0.018386</td>
-      <td>0.018386</td>
-      <td>0.018386</td>
+      <td>0.003649</td>
+      <td>0.002433</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
+      <td>0.003649</td>
     </tr>
     <tr>
-      <th>CAAACTC</th>
-      <td>0.311899</td>
-      <td>0.100639</td>
-      <td>0.001719</td>
-      <td>0.032390</td>
-      <td>0.049425</td>
-      <td>0.011176</td>
-      <td>0.108706</td>
-      <td>0.020854</td>
-      <td>0.067707</td>
-      <td>0.205275</td>
+      <th>CAAGGTC</th>
+      <td>0.013288</td>
+      <td>0.003846</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007763</td>
+      <td>0.009399</td>
+      <td>0.085428</td>
+      <td>0.056791</td>
+      <td>0.000521</td>
+      <td>0.052413</td>
       <td>...</td>
-      <td>0.008941</td>
-      <td>0.014902</td>
-      <td>0.014902</td>
-      <td>0.022353</td>
-      <td>0.014902</td>
-      <td>0.014902</td>
-      <td>0.022353</td>
-      <td>0.022353</td>
-      <td>0.022353</td>
-      <td>0.022353</td>
+      <td>0.007548</td>
+      <td>0.005032</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
     </tr>
     <tr>
-      <th>TAATAGC</th>
-      <td>0.006519</td>
-      <td>0.014416</td>
-      <td>0.115736</td>
-      <td>0.021374</td>
-      <td>0.043766</td>
-      <td>0.252281</td>
-      <td>0.016743</td>
-      <td>0.006912</td>
-      <td>0.053282</td>
-      <td>0.006140</td>
-      <td>...</td>
-      <td>0.201825</td>
-      <td>0.003041</td>
-      <td>0.003041</td>
-      <td>0.004562</td>
-      <td>0.003041</td>
-      <td>0.336375</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-      <td>0.004562</td>
-    </tr>
-    <tr>
-      <th>ATGAGGA</th>
-      <td>0.025333</td>
-      <td>0.128717</td>
-      <td>0.038855</td>
-      <td>0.085215</td>
-      <td>0.027378</td>
-      <td>0.002556</td>
-      <td>0.000085</td>
-      <td>0.082262</td>
-      <td>0.021606</td>
-      <td>0.049020</td>
-      <td>...</td>
-      <td>0.002045</td>
-      <td>0.003408</td>
-      <td>0.003408</td>
-      <td>0.005111</td>
-      <td>0.336741</td>
-      <td>0.003408</td>
-      <td>0.005111</td>
-      <td>0.005111</td>
-      <td>0.005111</td>
-      <td>0.005111</td>
-    </tr>
-    <tr>
-      <th>AACAAGT</th>
-      <td>0.075983</td>
-      <td>0.014413</td>
-      <td>0.000344</td>
-      <td>0.021372</td>
-      <td>0.010978</td>
-      <td>0.002235</td>
-      <td>0.025075</td>
-      <td>0.000061</td>
-      <td>0.004326</td>
-      <td>0.019922</td>
-      <td>...</td>
-      <td>0.001788</td>
-      <td>0.002980</td>
-      <td>0.002980</td>
-      <td>0.004471</td>
-      <td>0.002980</td>
-      <td>0.002980</td>
-      <td>0.004471</td>
-      <td>0.004471</td>
-      <td>0.004471</td>
-      <td>0.004471</td>
-    </tr>
-    <tr>
-      <th>CCCCGCC</th>
-      <td>0.060086</td>
-      <td>0.143419</td>
-      <td>0.001513</td>
-      <td>0.032333</td>
-      <td>0.278903</td>
-      <td>0.009834</td>
-      <td>0.025328</td>
-      <td>0.089311</td>
-      <td>0.072023</td>
-      <td>0.023031</td>
-      <td>...</td>
-      <td>0.607867</td>
-      <td>0.346445</td>
-      <td>0.013112</td>
-      <td>0.019667</td>
-      <td>0.013112</td>
-      <td>0.346445</td>
-      <td>0.519667</td>
-      <td>0.519667</td>
-      <td>0.019667</td>
-      <td>0.019667</td>
-    </tr>
-    <tr>
-      <th>ACCCTCT</th>
-      <td>0.010859</td>
-      <td>0.014379</td>
-      <td>0.000250</td>
-      <td>0.042622</td>
-      <td>0.049216</td>
-      <td>0.001625</td>
-      <td>0.041721</td>
-      <td>0.089086</td>
-      <td>0.012244</td>
-      <td>0.004604</td>
-      <td>...</td>
-      <td>0.001300</td>
-      <td>0.002167</td>
-      <td>0.002167</td>
-      <td>0.003250</td>
-      <td>0.002167</td>
-      <td>0.002167</td>
-      <td>0.003250</td>
-      <td>0.003250</td>
-      <td>0.003250</td>
-      <td>0.003250</td>
-    </tr>
-    <tr>
-      <th>TACTTTC</th>
-      <td>0.018094</td>
-      <td>0.000077</td>
-      <td>0.077131</td>
-      <td>0.000057</td>
-      <td>0.005494</td>
-      <td>0.001350</td>
-      <td>0.016712</td>
-      <td>0.006886</td>
-      <td>0.029522</td>
-      <td>0.006134</td>
-      <td>...</td>
-      <td>0.001080</td>
-      <td>0.001800</td>
-      <td>0.001800</td>
-      <td>0.002701</td>
-      <td>0.001800</td>
-      <td>0.001800</td>
-      <td>0.002701</td>
-      <td>0.002701</td>
-      <td>0.002701</td>
-      <td>0.002701</td>
-    </tr>
-    <tr>
-      <th>AGGTGGC</th>
-      <td>0.317696</td>
-      <td>0.043664</td>
-      <td>0.117557</td>
-      <td>0.415495</td>
-      <td>0.213423</td>
-      <td>0.014121</td>
-      <td>0.367137</td>
-      <td>0.178469</td>
-      <td>0.092913</td>
-      <td>0.076656</td>
-      <td>...</td>
-      <td>0.211297</td>
-      <td>0.018828</td>
-      <td>0.018828</td>
-      <td>0.028242</td>
-      <td>0.685495</td>
-      <td>0.018828</td>
-      <td>0.028242</td>
-      <td>0.028242</td>
-      <td>0.028242</td>
-      <td>0.028242</td>
-    </tr>
-    <tr>
-      <th>GCGAAAG</th>
-      <td>0.459636</td>
-      <td>0.717394</td>
-      <td>0.585293</td>
-      <td>0.757634</td>
-      <td>0.935615</td>
-      <td>0.304402</td>
-      <td>0.910147</td>
-      <td>0.919299</td>
-      <td>0.778414</td>
-      <td>0.851788</td>
-      <td>...</td>
-      <td>0.843522</td>
-      <td>0.739203</td>
-      <td>0.072536</td>
-      <td>0.608804</td>
-      <td>0.072536</td>
-      <td>0.739203</td>
-      <td>0.608804</td>
-      <td>0.608804</td>
-      <td>0.608804</td>
-      <td>0.608804</td>
-    </tr>
-    <tr>
-      <th>GGTATCG</th>
-      <td>0.149083</td>
-      <td>0.014760</td>
-      <td>0.001278</td>
-      <td>0.000354</td>
-      <td>0.032968</td>
-      <td>0.008308</td>
-      <td>0.125277</td>
-      <td>0.212556</td>
-      <td>0.019462</td>
-      <td>0.193006</td>
-      <td>...</td>
-      <td>0.006646</td>
-      <td>0.011077</td>
-      <td>0.344411</td>
-      <td>0.016616</td>
-      <td>0.011077</td>
-      <td>0.011077</td>
-      <td>0.016616</td>
-      <td>0.016616</td>
-      <td>0.516616</td>
-      <td>0.016616</td>
-    </tr>
-    <tr>
-      <th>GGGTCCC</th>
-      <td>0.003621</td>
-      <td>0.000066</td>
+      <th>CTCTCGC</th>
+      <td>0.004905</td>
+      <td>0.042193</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.006222</td>
       <td>0.000177</td>
-      <td>0.031964</td>
-      <td>0.010954</td>
-      <td>0.001152</td>
-      <td>0.000038</td>
-      <td>0.020580</td>
-      <td>0.010802</td>
-      <td>0.032166</td>
+      <td>0.064236</td>
+      <td>0.021344</td>
+      <td>0.000658</td>
+      <td>0.005925</td>
       <td>...</td>
-      <td>0.000922</td>
-      <td>0.001536</td>
-      <td>0.001536</td>
-      <td>0.002304</td>
-      <td>0.001536</td>
-      <td>0.001536</td>
-      <td>0.002304</td>
-      <td>0.002304</td>
-      <td>0.002304</td>
-      <td>0.002304</td>
+      <td>0.009548</td>
+      <td>0.006365</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
+      <td>0.009548</td>
     </tr>
     <tr>
-      <th>GGGGAGT</th>
-      <td>0.937964</td>
-      <td>0.918080</td>
-      <td>0.625599</td>
-      <td>0.545378</td>
-      <td>0.941342</td>
-      <td>0.316395</td>
-      <td>0.760546</td>
-      <td>0.570312</td>
-      <td>0.895080</td>
-      <td>0.931494</td>
+      <th>CTCGAAC</th>
+      <td>0.005613</td>
+      <td>0.013061</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
+      <td>0.109956</td>
+      <td>0.009555</td>
+      <td>0.000679</td>
+      <td>0.017844</td>
+      <td>0.001100</td>
+      <td>0.017627</td>
       <td>...</td>
-      <td>0.853116</td>
-      <td>0.755193</td>
-      <td>0.755193</td>
-      <td>0.632789</td>
-      <td>0.088526</td>
-      <td>0.755193</td>
-      <td>0.632789</td>
-      <td>0.632789</td>
-      <td>0.632789</td>
-      <td>0.632789</td>
+      <td>0.015947</td>
+      <td>0.010631</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
+      <td>0.515947</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
+      <td>0.015947</td>
     </tr>
     <tr>
-      <th>ACGGAGC</th>
-      <td>0.187436</td>
-      <td>0.814808</td>
-      <td>0.001407</td>
-      <td>0.011028</td>
-      <td>0.278888</td>
-      <td>0.009147</td>
-      <td>0.766972</td>
-      <td>0.082442</td>
-      <td>0.033144</td>
-      <td>0.015370</td>
+      <th>ATAGTGC</th>
+      <td>0.006996</td>
+      <td>0.003843</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.007757</td>
+      <td>0.018621</td>
+      <td>0.000236</td>
+      <td>0.000039</td>
+      <td>0.034865</td>
+      <td>0.000065</td>
       <td>...</td>
-      <td>0.007318</td>
-      <td>0.012196</td>
-      <td>0.012196</td>
-      <td>0.018294</td>
-      <td>0.678863</td>
-      <td>0.678863</td>
-      <td>0.018294</td>
-      <td>0.018294</td>
-      <td>0.518294</td>
-      <td>0.018294</td>
+      <td>0.005549</td>
+      <td>0.670366</td>
+      <td>0.505549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
     </tr>
     <tr>
-      <th>CGATGGG</th>
-      <td>0.117977</td>
-      <td>0.143497</td>
-      <td>0.309414</td>
-      <td>0.021753</td>
-      <td>0.328113</td>
-      <td>0.011192</td>
-      <td>0.033706</td>
-      <td>0.144142</td>
-      <td>0.112343</td>
-      <td>0.154739</td>
+      <th>ACCAAAA</th>
+      <td>0.020282</td>
+      <td>0.026091</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.009324</td>
+      <td>0.018732</td>
+      <td>0.000491</td>
+      <td>0.007174</td>
+      <td>0.069762</td>
+      <td>0.000134</td>
       <td>...</td>
-      <td>0.608953</td>
-      <td>0.348256</td>
-      <td>0.014922</td>
-      <td>0.022383</td>
-      <td>0.014922</td>
-      <td>0.681589</td>
-      <td>0.522383</td>
-      <td>0.522383</td>
-      <td>0.522383</td>
-      <td>0.522383</td>
+      <td>0.011548</td>
+      <td>0.007698</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
+      <td>0.011548</td>
     </tr>
     <tr>
-      <th>GTACGAG</th>
-      <td>0.009412</td>
-      <td>0.028683</td>
-      <td>0.000302</td>
-      <td>0.010722</td>
-      <td>0.027365</td>
-      <td>0.001961</td>
-      <td>0.050065</td>
-      <td>0.034300</td>
-      <td>0.035283</td>
-      <td>0.024514</td>
+      <th>ATCAGCA</th>
+      <td>0.693640</td>
+      <td>0.598619</td>
+      <td>0.299490</td>
+      <td>0.799490</td>
+      <td>0.739317</td>
+      <td>0.320361</td>
+      <td>0.225510</td>
+      <td>0.956025</td>
+      <td>0.158586</td>
+      <td>0.166273</td>
       <td>...</td>
-      <td>0.201569</td>
-      <td>0.002614</td>
-      <td>0.002614</td>
-      <td>0.003921</td>
-      <td>0.002614</td>
-      <td>0.002614</td>
-      <td>0.003921</td>
-      <td>0.003921</td>
-      <td>0.003921</td>
-      <td>0.003921</td>
+      <td>0.799490</td>
+      <td>0.199660</td>
+      <td>0.799490</td>
+      <td>0.799490</td>
+      <td>0.799490</td>
+      <td>0.299490</td>
+      <td>0.299490</td>
+      <td>0.799490</td>
+      <td>0.799490</td>
+      <td>0.799490</td>
+    </tr>
+    <tr>
+      <th>CAAGAGG</th>
+      <td>0.051747</td>
+      <td>0.029946</td>
+      <td>0.024845</td>
+      <td>0.024845</td>
+      <td>0.012461</td>
+      <td>0.056016</td>
+      <td>0.043610</td>
+      <td>0.007268</td>
+      <td>0.036196</td>
+      <td>0.110754</td>
+      <td>...</td>
+      <td>0.024845</td>
+      <td>0.016563</td>
+      <td>0.024845</td>
+      <td>0.024845</td>
+      <td>0.024845</td>
+      <td>0.524845</td>
+      <td>0.524845</td>
+      <td>0.024845</td>
+      <td>0.024845</td>
+      <td>0.024845</td>
+    </tr>
+    <tr>
+      <th>TTGCATG</th>
+      <td>0.032883</td>
+      <td>0.035318</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+      <td>0.075937</td>
+      <td>0.019029</td>
+      <td>0.043725</td>
+      <td>0.021472</td>
+      <td>0.001900</td>
+      <td>0.122413</td>
+      <td>...</td>
+      <td>0.027544</td>
+      <td>0.018363</td>
+      <td>0.027544</td>
+      <td>0.527544</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+      <td>0.027544</td>
+    </tr>
+    <tr>
+      <th>GTGCAGA</th>
+      <td>0.125824</td>
+      <td>0.007710</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.010920</td>
+      <td>0.028280</td>
+      <td>0.064985</td>
+      <td>0.049838</td>
+      <td>0.001872</td>
+      <td>0.041013</td>
+      <td>...</td>
+      <td>0.027145</td>
+      <td>0.018096</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+    </tr>
+    <tr>
+      <th>GGTAATG</th>
+      <td>0.135753</td>
+      <td>0.345294</td>
+      <td>0.631524</td>
+      <td>0.131524</td>
+      <td>0.150562</td>
+      <td>0.270954</td>
+      <td>0.218363</td>
+      <td>0.469018</td>
+      <td>0.526312</td>
+      <td>0.361994</td>
+      <td>...</td>
+      <td>0.631524</td>
+      <td>0.087682</td>
+      <td>0.631524</td>
+      <td>0.131524</td>
+      <td>0.631524</td>
+      <td>0.131524</td>
+      <td>0.131524</td>
+      <td>0.631524</td>
+      <td>0.131524</td>
+      <td>0.131524</td>
+    </tr>
+    <tr>
+      <th>GGATCTA</th>
+      <td>0.006298</td>
+      <td>0.023015</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.013951</td>
+      <td>0.027890</td>
+      <td>0.000257</td>
+      <td>0.007135</td>
+      <td>0.000417</td>
+      <td>0.000070</td>
+      <td>...</td>
+      <td>0.006049</td>
+      <td>0.004033</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+      <td>0.006049</td>
+    </tr>
+    <tr>
+      <th>CTTACGG</th>
+      <td>0.039210</td>
+      <td>0.302998</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.020293</td>
+      <td>0.019530</td>
+      <td>0.023602</td>
+      <td>0.021664</td>
+      <td>0.003768</td>
+      <td>0.012263</td>
+      <td>...</td>
+      <td>0.054639</td>
+      <td>0.036426</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+      <td>0.054639</td>
+    </tr>
+    <tr>
+      <th>GTAGAAA</th>
+      <td>0.018189</td>
+      <td>0.009225</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+      <td>0.031004</td>
+      <td>0.111379</td>
+      <td>0.000615</td>
+      <td>0.035563</td>
+      <td>0.035479</td>
+      <td>0.023424</td>
+      <td>...</td>
+      <td>0.014447</td>
+      <td>0.009631</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+      <td>0.514447</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+      <td>0.014447</td>
+    </tr>
+    <tr>
+      <th>CCCACTA</th>
+      <td>0.004896</td>
+      <td>0.000005</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.010846</td>
+      <td>0.000060</td>
+      <td>0.000138</td>
+      <td>0.000023</td>
+      <td>0.000224</td>
+      <td>0.005852</td>
+      <td>...</td>
+      <td>0.003249</td>
+      <td>0.002166</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
+      <td>0.003249</td>
     </tr>
   </tbody>
 </table>
-<p>25 rows × 74 columns</p>
+<p>25 rows × 71 columns</p>
 </div></div></div>
 </div>
-<p>This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.</p>
-</div>
-<div class="section" id="applying-a-naive-bayes-classifier">
-<h3><span class="section-number">3.1.6. </span>Applying a Naive Bayes classifier<a class="headerlink" href="#applying-a-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
-<p>With our kmer probability table we are now ready to classify unknown sequences. We’ll begin by defining some query sequences. We’ll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won’t be. We’ll also trim out 200 bases of our reference sequences since (as of this writing) we typically don’t obtain full-length 16S sequences from a DNA sequencing instrument. We’re thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we’ve observed before while others might represent previously unobserved sequences (or even previously unknown organisms).</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_taxonomy_query_sequences</span><span class="p">(</span><span class="n">start_position</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
@@ -2088,18 +2751,18 @@ Name: 270826, dtype: int64
 ---------------------------------------------------------------------
 Metadata:
     &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;229436&#39;
+    &#39;id&#39;: &#39;181768&#39;
 Stats:
     length: 200
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 47.50%
+    GC-content: 49.00%
 ---------------------------------------------------------------------
-0   GGTGCGTAAC GCGTGAGCAA CATGCCCGTA TCAGGGGGAT AATCCAGGGA AACTTGGTCT
-60  AATACCCCAT AGTAATGTTT TCAGGCATCT GGAGATATTT AAAGCTTAGG TGGATACGGA
-120 TTGGCTCGCG TGACATTAGT TAGATGGTAG GGTAACGGCT TACCATGACT ATGATGTCTA
-180 GGGGTTCTGA GAGGAAGGTC
+0   AGTGGCGGAC GGGTGAGTAA CACGTGAGCA ACCTGCCTTT GAGAGAGGGA TAGCTTCTGG
+60  AAACGGATGG TAATACCTCA TAACATACAG ATACCGCATG GTGACTGTAT CAAAGATTTA
+120 TCACTCAAAG ATGGGCTCGC GTCTGATTAG ATAGTTGGTG AGGTAACGGC TCACCAAGTC
+180 GACGATCAGT AGCCGGACTG
 </pre></div>
 </div>
 </div>
@@ -2138,7 +2801,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Bacteroidetes
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Firmicutes
 </pre></div>
 </div>
 </div>
@@ -2151,7 +2814,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;k__Bacteria; p__Bacteroidetes&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;k__Bacteria; p__Firmicutes&#39;
 </pre></div>
 </div>
 </div>
@@ -2162,7 +2825,7 @@ Stats:
 </div>
 </div>
 <div class="section" id="evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-<h3><span class="section-number">3.1.7. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.1.6. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
 <p>Because the query and reference sequences that were working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. Chances are however that if you run the above steps multiple times you’ll get the wrong taxonomy assignment at least some of the time. Up to this point, we’ve left out an important piece of information: how confident should we be in our assignment, or in other words, how dependent is our taxonomy assignment on our specific query? If there were slight differences in our query (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because we sequenced a different region of the 16S sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is additionally important because our classifier will <em>always</em> return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.</p>
 <p>We can quantify confidence using an approach called bootstrapping. With a bootstrap approach, we’ll get our taxonomy assignment as we did above, but then for some user-specified number of times, we’ll create random subsets of V sampled with replacement. We’ll then assign taxonomy to each random subset of V, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to V. The count of times that they are the same divided by the number of iterations we’ve chosen to run will be our confidence value. If the assignments are often the same we’ll have a high confidence value. If the assignments are often different, we’ll have a low confidence value.</p>
 <p>Let’s now assign taxonomy and compute a confidence for that assignment.</p>
@@ -2203,8 +2866,8 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Bacteroidetes
-0.95
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Firmicutes
+0.91
 </pre></div>
 </div>
 </div>
@@ -2245,30 +2908,235 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f7f2c3fc8d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2377fdb278&gt;
 </pre></div>
 </div>
-<img alt="../_images/machine-learning_39_1.png" src="../_images/machine-learning_39_1.png" />
+<img alt="../_images/machine-learning_48_1.png" src="../_images/machine-learning_48_1.png" />
 </div>
 </div>
 <p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
-</div>
-<div class="section" id="classifying-with-confidence">
-<h3><span class="section-number">3.1.8. </span>Classifying with confidence<a class="headerlink" href="#classifying-with-confidence" title="Permalink to this headline">¶</a></h3>
-<p>TODO: Integrate classifier code with confidence computations.</p>
-</div>
-<div class="section" id="precision-recall-and-f-measure">
-<h3><span class="section-number">3.1.9. </span>Precision, recall, and F-measure<a class="headerlink" href="#precision-recall-and-f-measure" title="Permalink to this headline">¶</a></h3>
-<p>TODO: write this</p>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
 <p>Jump back up to where we <a class="reference internal" href="#ml-define-nb-parameters"><span class="std std-ref">defined <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code></span></a> and modify those values. How does the accuracy of the classifier change if you increase or decrease <code class="docutils literal notranslate"><span class="pre">k</span></code> while keeping the value of <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> fixed? How does the accuracy change if you increase or decrease the <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> while keeping <code class="docutils literal notranslate"><span class="pre">k</span></code> fixed?</p>
 </div>
 </div>
 </div>
-<div class="section" id="dimensionality-reduction">
-<h2><span class="section-number">3.2. </span>Dimensionality reduction<a class="headerlink" href="#dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
-<p>TODO: transfer content from IAB</p>
+<div class="section" id="unsupervised-learning">
+<h2><span class="section-number">3.2. </span>Unsupervised learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">¶</a></h2>
+<p>We’ll next turn our exploration of machine learning approaches to <strong>unsupervised learning</strong>, and specifically discuss ordination methods. We’ll work through ordination in two strokes. First, we’ll explore an approach called <strong>Polar Ordination</strong>, where the math is simple but which isn’t widely used in practice because it doesn’t work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we’ll apply an approach called <strong>Principal Coordinates Analysis (PCoA)</strong>. The math for PCoA is a bit more complicated than I want to get into in this book (I’m a biology teacher, after all), but we’ll apply it to a large data set to explore how these techniques can be used in practice.</p>
+<div class="section" id="polar-ordination">
+<h3><span class="section-number">3.2.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s print our distance matrix again so we have it nearby.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">)</span>
+<span class="go">6x6 distance matrix</span>
+<span class="go">IDs:</span>
+<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;</span>
+<span class="go">Data:</span>
+<span class="go">[[ 0.    0.35  0.83  0.83  0.9   0.9 ]</span>
+<span class="go"> [ 0.35  0.    0.86  0.85  0.92  0.91]</span>
+<span class="go"> [ 0.83  0.86  0.    0.25  0.88  0.87]</span>
+<span class="go"> [ 0.83  0.85  0.25  0.    0.88  0.88]</span>
+<span class="go"> [ 0.9   0.92  0.88  0.88  0.    0.5 ]</span>
+<span class="go"> [ 0.9   0.91  0.87  0.88  0.5   0.  ]]</span>
+</pre></div>
+</div>
+<p>Polar ordination works in a few steps:</p>
+<p><strong>Step 1.</strong> Identify the largest distance in the distance matrix.</p>
+<p><strong>Step 2.</strong> Define a line, with the two samples contributing to that distance defining the endpoints.</p>
+<p><strong>Step 3.</strong> Compute the location of each other sample on that axis as follows:</p>
+<p><span class="math notranslate nohighlight">\(a = \frac{D^2 + D1^2 - D2^2}{2 \times D}\)</span></p>
+<p>where:</p>
+<p><span class="math notranslate nohighlight">\(D\)</span> is distance between the endpoints</p>
+<p><span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and endpoint 1</p>
+<p><span class="math notranslate nohighlight">\(D2\)</span> is distance between sample and endpoint 2.</p>
+<p><strong>Step 4.</strong> Find the next largest distance that could be used to define an <em>uncorrelated axis</em>. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I’ll pick one for the demo, and we’ll wrap up by looking at all of the axes.)</p>
+<p>Here is what steps 2 and 3 look like in Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_axis_values</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">d</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">endpoint1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="n">non_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">non_endpoints</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">d1</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">d2</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint2</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">d2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a1_values</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span><span class="p">)</span>
+<span class="go">A 0.0863586956522</span>
+<span class="go">B 0</span>
+<span class="go">C 0.441086956522</span>
+<span class="go">D 0.431793478261</span>
+<span class="go">E 0.92</span>
+<span class="go">F 0.774184782609</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span><span class="p">)</span>
+<span class="go">A 0.371193181818</span>
+<span class="go">B 0.369602272727</span>
+<span class="go">C 0.0355113636364</span>
+<span class="go">D 0</span>
+<span class="go">E 0.88</span>
+<span class="go">F 0.737954545455</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">scatter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>And again, let’s look at how including metadata helps us to interpret our results.</p>
+<p>First, we’ll color the points by the body habitat that they’re derived from:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tongue&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;gut&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;skin&#39;</span><span class="p">:</span><span class="s1">&#39;blue&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>And next we’ll color the samples by the person that they’re derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">person_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject 1&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">person_colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;individual&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">person_c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
+<h4><span class="section-number">3.2.1.1. </span>Determining the most important axes in polar ordination <link src='fb483b'/><a class="headerlink" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b" title="Permalink to this headline">¶</a></h4>
+<p>Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample_id2</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="n">d</span><span class="p">,</span> <span class="n">axis_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis </span><span class="si">%d</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+<span class="go">axis 0: 	0.920	1.000	E	B</span>
+<span class="go">axis 1: 	0.910	0.943	F	B</span>
+<span class="go">axis 2: 	0.900	0.928	E	A</span>
+<span class="go">axis 3: 	0.900	0.886	F	A</span>
+<span class="go">axis 4: 	0.880	0.543	E	D</span>
+<span class="go">axis 5: 	0.880	0.429	F	D</span>
+<span class="go">axis 6: 	0.880	0.429	E	C</span>
+<span class="go">axis 7: 	0.870	0.371	F	C</span>
+<span class="go">axis 8: 	0.860	0.543	C	B</span>
+<span class="go">axis 9: 	0.850	0.486	D	B</span>
+<span class="go">axis 10: 	0.830	0.429	C	A</span>
+<span class="go">axis 11: 	0.830	0.406	D	A</span>
+<span class="go">axis 12: 	0.500	0.232	F	E</span>
+<span class="go">axis 13: 	0.350	0.143	B	A</span>
+<span class="go">axis 14: 	0.250	0.493	D	C</span>
+</pre></div>
+</div>
+<p>So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let’s look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">14</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interpreting-ordination-plots-link-src-40e0a6">
+<h4><span class="section-number">3.2.1.2. </span>Interpreting ordination plots <link src='40e0a6'/><a class="headerlink" href="#interpreting-ordination-plots-link-src-40e0a6" title="Permalink to this headline">¶</a></h4>
+<p>There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.</p>
+<p><strong>Directionality of the axes is not important (e.g., up/down/left/right)</strong></p>
+<p>One thing that you may have notices as you computed the polar ordination above is that the method is <em>not symmetric</em>: in other words, the axis values for axis <span class="math notranslate nohighlight">\(EB\)</span> are different than for axis <span class="math notranslate nohighlight">\(BE\)</span>. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">alt_a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">alt_a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>Some other important features:</p>
+<ul class="simple">
+<li><p>Numerical scale of the axis is generally not useful</p></li>
+<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, …)</p></li>
+<li><p>Most techniques result in uncorrelated axes.</p></li>
+<li><p>Additional axes can be generated (third, fourth, …)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="principle-coordinates-analysis-pcoa">
+<h3><span class="section-number">3.2.2. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2</span>
+<span class="kn">import</span> <span class="nn">qiime2.plugins.feature_table</span> <span class="k">as</span> <span class="nn">ft</span>
+<span class="kn">import</span> <span class="nn">qiime2.plugins.diversity</span> <span class="k">as</span> <span class="nn">div</span>
+
+<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="c1">#taxon = get_taxon_at_level(reference_sequence.metadata[&#39;taxonomy&#39;], taxonomic_level)</span>
+    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+
+<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
+<span class="c1"># display the first 25 rows of that table.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">feature_table_1a</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Artifact</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="s2">&quot;FeatureTable[Frequency]&quot;</span><span class="p">,</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jaccard_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;jaccard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distance_matrix</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxa_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k__Archaea&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Cyanobacteria&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Firmicutes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Bacteroidetes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Proteobacteria&#39;</span><span class="p">]</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="n">id_</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxa_of_interest</span><span class="p">:</span>
+        <span class="c1"># this approach is horrendous</span>
+        <span class="k">if</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxon</span><span class="p">:</span>
+            <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">label_as_other</span><span class="p">:</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">metadata</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcoa_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">jaccard_1a</span><span class="p">)</span><span class="o">.</span><span class="n">pcoa</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2.plugins.emperor</span> <span class="k">as</span> <span class="nn">emperor</span>
+
+<span class="n">emperor</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pcoa_1a</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">visualization</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
+<span class="n">ordination</span> <span class="o">=</span> <span class="n">pcoa_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ordination</span><span class="o">.</span><span class="n">OrdinationResults</span><span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">ordination</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
