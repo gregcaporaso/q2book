@@ -6,7 +6,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.12
-    jupytext_version: 1.9.1
+    jupytext_version: 1.8.2
 kernelspec:
   display_name: Python 3
   language: python
@@ -19,7 +19,53 @@ In this chapter we'll begin talking about machine learning algorithms. Machine l
 
 Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics.
 
-<!-- TODO Add some illustrations of feature tables -->
+As is typically the case in this book, we'll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. [scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start. 
+
+scikit-learn also defines a few example feature tables that we can look at here to get an idea of what typical input looks like in a machine learning task.
+
+<!-- TODO: pick up here to discuss the features tables. then swap order of unsupervised and supervised learning to illustrate what you can do if you don't have labels and then what you can do if you do have labels-->
+
+```{code-cell} ipython3
+import sklearn.datasets
+import pandas as pd
+
+iris_dataset = sklearn.datasets.load_iris(as_frame=True)
+iris_feature_table = iris_dataset.frame.drop('target', axis=1)
+iris_feature_table.index.name = 'sample-id'
+iris_labels = pd.Series(iris_dataset.target_names[iris_dataset.target], 
+                        index=iris_dataset.target.index, name='label').to_frame()
+iris_labels.index.name = 'sample-id'
+```
+
+```{code-cell} ipython3
+iris_feature_table
+```
+
+```{code-cell} ipython3
+iris_labels
+```
+
+```{code-cell} ipython3
+diabetes_dataset = sklearn.datasets.load_diabetes(as_frame=True)
+
+diabetes_feature_table = diabetes_dataset.frame.drop('target', axis=1)
+diabetes_feature_table.index.name = 'sample-id'
+
+diabetes_labels = diabetes_dataset.target.to_frame()
+diabetes_labels.index.name = 'sample-id'
+```
+
+```{code-cell} ipython3
+diabetes_feature_table
+```
+
+```{code-cell} ipython3
+diabetes_labels
+```
+
+scikit-learn's excellent documentation illustrates ways that you can use the iris dataset and the diabetes dataset in classification and regression tasks, repectively. 
+
+
 
 There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
 
@@ -27,11 +73,7 @@ In a supervised classification task, a user provides examples of data that fall 
 
 Unsupervised classification tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
 
-````{margin}
-```{note}
-[scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start.
-```
-````
+
 
 ## Supervised classification
 
@@ -43,7 +85,7 @@ Briefly, the problem that we are going to address here is as follows. We have a 
 
 Before we get to this though, lets talk about what supervised classification algorithms are and how the classifiers they build are evaluated. 
 
-### Defining a classification tasks
+### Defining a classification task
 
 In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we run perform these kinds of tasks everyday. For example, if you're browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you're not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., "school", "entertainment", or "social media"). 
 
@@ -117,7 +159,7 @@ In this chapter, instead of using sequence alignment to identify the most likely
 
 We'll begin by {ref}`preparing our reference database and query sequences as we did previously <load-qdr>`.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
 
 # This cell performs some configuration for this notebook. It's hidden by
@@ -135,8 +177,9 @@ import collections
 import random
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
+
 import qiime_default_reference as qdr
 import skbio
 
@@ -165,28 +208,28 @@ def load_taxonomy_reference_database(verbose=True):
     return reference_taxonomy, reference_db
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 reference_taxonomy, reference_db = load_taxonomy_reference_database()
 ```
 
 Recall that we can look reference sequences up as follows, and that reference sequences have taxonomic annotations.
 
-```{code-cell}
+```{code-cell} ipython3
 reference_db[0]
 ```
 
 We'll again select a random subset of the reference database to work with here to get our analyses moving quickly.
 
-```{code-cell}
+```{code-cell} ipython3
 reference_db = random.sample(reference_db, k=5000)
 print("%s sequences are present in the subsampled database." % len(reference_db))
 ```
 
 ### Training a Native Bayes classifier 
 
-The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows. 
+The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows.
 
-```{code-cell}
+```{code-cell} ipython3
 alphabet = skbio.DNA.nondegenerate_chars
 k = 2
 
@@ -205,21 +248,21 @@ Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 ar
 
 The next thing we'll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the ``skbio.DNA`` sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:
 
-```{code-cell}
+```{code-cell} ipython3
 kmers = reference_db[0].iter_kmers(k=k)
 for kmer in kmers:
     print(kmer, end=' ')
 ```
 
-That's a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows. 
+That's a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows.
 
-```{code-cell}
+```{code-cell} ipython3
 print(reference_db[0].kmer_frequencies(k=k))
 ```
 
 This information can be convenient to store in a pandas ``Series`` object:
 
-```{code-cell}
+```{code-cell} ipython3
 pd.Series(reference_db[0].kmer_frequencies(k=k), name=reference_db[0].metadata['id'])
 ```
 
@@ -230,15 +273,16 @@ Next, how long should our kmers be? We don't have a good idea of this to start w
 Finally, we'll need to know the value of `W`, defined above as the set of all possible kmers given our alphabet and the value of `k`.
 
 (ml:define-nb-parameters)=
-```{code-cell}
+
+```{code-cell} ipython3
 taxonomic_level = 2
 k = 7
 alphabet = skbio.DNA.nondegenerate_chars
 ```
 
-Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table. 
+Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
 
-```{code-cell}
+```{code-cell} ipython3
 # compute all kmers for the specified alphabet
 W = compute_W(alphabet, k)
 
@@ -251,17 +295,30 @@ def get_taxon_at_level(taxon, level):
     return '; '.join(taxon[:level])
 
 # Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = []
+per_sequence_kmer_counts = {}
+sequence_labels = {}
 for reference_sequence in reference_db:
+    sequence_id = reference_sequence.metadata['id']
+    
     taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    sequence_labels[sequence_id] = taxon
+    
     kmer_counts = dict.fromkeys(W, 0)
     kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=taxon))
+    per_sequence_kmer_counts[sequence_id] = kmer_counts
 
-# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
-# display the first 25 rows of that table.
-per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0)
-per_sequence_kmer_counts[:25]
+feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+sequence_labels = pd.Series(sequence_labels, name='taxon')
+```
+
+```{code-cell} ipython3
+# Display the first 25 samples in the feature table
+feature_table[:25]
+```
+
+```{code-cell} ipython3
+# Display the taxon labels for the first 25 samples
+sequence_labels[:25].to_frame()
 ```
 
 This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
@@ -282,42 +339,46 @@ $P(w_i | taxon)$ : The probability of observing a kmer given a taxon. Again, it 
 
 Our "kmer probability table" is $P(w_i | taxon)$ computed for all kmers in W and all taxa represented in our reference database. We'll compute that and again look at the first 25 rows.
 
-```{code-cell}
-def compute_kmer_probability_table(per_sequence_kmer_counts):
-    N = per_sequence_kmer_counts.shape[0] # number of training sequences
+```{code-cell} ipython3
+def compute_kmer_probability_table(feature_table, sequence_labels):
+    N = feature_table.shape[0] # number of training sequences
 
     # number of sequences containing kmer wi
-    n_wi = per_sequence_kmer_counts.astype(bool).sum(axis=0)
+    n_wi = feature_table.astype(bool).sum(axis=0)
     n_wi.name = 'n(w_i)'
 
     # probabilities of observing each kmer
     Pi = (n_wi + 0.5) / (N + 1)
     Pi.name = 'P_i'
-
+    
     # number of times each taxon appears in training set
-    taxon_counts = collections.Counter(per_sequence_kmer_counts.index)
-    n_taxon_members_containing_kmer = per_sequence_kmer_counts.astype(bool).groupby(level=0, axis=0).sum()
+    taxon_counts = collections.Counter(sequence_labels)
 
+    
+    taxon_table = feature_table.astype(bool).groupby(by=sequence_labels, axis=0).sum()
+    
     # probabilities of observing each kmer in each taxon
     p_wi_t = []
     for taxon, count in taxon_counts.items():
-        p_wi_t.append(pd.Series((n_taxon_members_containing_kmer[taxon] + Pi) / (count + 1), name=taxon))
+        p_wi_t.append(pd.Series((taxon_table.loc[taxon] + Pi) / (count + 1), name=taxon))
 
     return pd.DataFrame(p_wi_t).T
 ```
 
-```{code-cell}
-kmer_probability_table = compute_kmer_probability_table(per_sequence_kmer_counts)
+```{code-cell} ipython3
+kmer_probability_table = compute_kmer_probability_table(feature_table, sequence_labels)
 kmer_probability_table[:25]
 ```
 
+```{raw-cell}
 This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.
 
 ### Applying a Naive Bayes classifier 
 
-With our kmer probability table we are now ready to classify unknown sequences. We'll begin by defining some query sequences. We'll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won't be. We'll also trim out 200 bases of our reference sequences since (as of this writing) we typically don't obtain full-length 16S sequences from a DNA sequencing instrument. We're thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we've observed before while others might represent previously unobserved sequences (or even previously unknown organisms). 
+With our kmer probability table we are now ready to classify unknown sequences. We'll begin by defining some query sequences. We'll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won't be. We'll also trim out 200 bases of our reference sequences since (as of this writing) we typically don't obtain full-length 16S sequences from a DNA sequencing instrument. We're thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we've observed before while others might represent previously unobserved sequences (or even previously unknown organisms).
+```
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-cell]
 
 def load_taxonomy_query_sequences(start_position=100, length=200):
@@ -335,7 +396,7 @@ def load_taxonomy_query_sequences(start_position=100, length=200):
 
 We'll load a collection of query sequences as we did in {doc}`database-searching`.
 
-```{code-cell}
+```{code-cell} ipython3
 import random
 
 queries = load_taxonomy_query_sequences()
@@ -344,7 +405,7 @@ queries = random.sample(queries, k=50)
 
 Again, we can index into these results to look at individual sequences. Note that because we're trying to emulate working with unannotated sequences here, the query sequences don't have taxonomic annotations in their metadata.
 
-```{code-cell}
+```{code-cell} ipython3
 queries[0]
 ```
 
@@ -352,7 +413,7 @@ For a given query sequence, its taxonomy will be classified as follows. First, t
 
 After computing $P(query | taxon)$ for all taxa, the taxonomy assignment returned is simply the one achieving the maximum probability. Here we'll classify a sequence and look at the resulting taxonomy assignment.
 
-```{code-cell}
+```{code-cell} ipython3
 # This function classifies a sequence that has already been split into a list
 # of kmers.
 def classify_V(V, kmer_probability_table):
@@ -372,15 +433,15 @@ def classify_sequence(query_sequence, kmer_probability_table, k):
     return classify_V(V, kmer_probability_table)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 query = queries[0]
 taxon_assignment, V = classify_sequence(query, kmer_probability_table, k)
 print(taxon_assignment)
 ```
 
-Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct? 
+Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?
 
-```{code-cell}
+```{code-cell} ipython3
 get_taxon_at_level(reference_taxonomy[query.metadata['id']], taxonomic_level)
 ```
 
@@ -396,7 +457,7 @@ We can quantify confidence using an approach called bootstrapping. With a bootst
 
 Let's now assign taxonomy and compute a confidence for that assignment.
 
-```{code-cell}
+```{code-cell} ipython3
 def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
                                       confidence_iterations=100):
     # classify the query sequence, as we did above
@@ -421,7 +482,7 @@ def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
     return (taxon, confidence)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 taxon_assignment, confidence = classify_sequence_with_confidence(queries[0], kmer_probability_table, k)
 print(taxon_assignment)
 print(confidence)
@@ -431,7 +492,7 @@ How did the computed confidence compare to the accuracy taxonomy assignment?
 
 At first glance, we don't necessarily have an idea of what good versus bad confidence scores are, but we can use our reference database to explore that. Knowing that can allows us to develop a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we might reject it. To explore this, let's compute taxonomy assignments and confidence for all of our query sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.
 
-```{code-cell}
+```{code-cell} ipython3
 correct_assignment_confidences = []
 incorrect_assignment_confidences = []
 summary = []
@@ -448,7 +509,7 @@ for query in queries:
 summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Actual taxonomy', 'Confidence'])
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 import seaborn as sns
 
 ax = sns.boxplot(data=[correct_assignment_confidences, incorrect_assignment_confidences])
