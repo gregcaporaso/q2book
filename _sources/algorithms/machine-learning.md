@@ -15,15 +15,22 @@ kernelspec:
 
 # Machine learning in bioinformatics
 
-In this chapter we'll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set. 
+In this chapter we'll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex dataset. As is typically the case in this book, we'll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. [scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start. 
 
-Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics.
+```{warning}
+Machine learning algorithms can easily be misused, either intentionally or unintentionally, to provide misleading results. This chapter will cover some guidelines for how to use these techniques, but it is only intended as a primer to introduce machine learning. It's not a detailed discussion of how machine learning algorithms should and shouldn't be used. If you want to start applying machine learning tools in your own research, I recommend moving from this chapter to the scikit-learn documentation, and their content on [Common pitfalls and recommended practices](https://scikit-learn.org/stable/common_pitfalls.html).
+```
 
-As is typically the case in this book, we'll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. [scikit-learn](http://scikit-learn.org/) is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you'd like to start trying some of these tools out, scikit-learn is a great place to start. 
+## The feature table
 
-scikit-learn also defines a few example feature tables that we can look at here to get an idea of what typical input looks like in a machine learning task.
+Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics. The terms used here are purposefully general. Samples are intended to be any unit of study, and features are attributes of those samples. Sometimes **labels** or **response variables** will be associated with the samples, in which case a different class of methods can be applied. 
 
-<!-- TODO: pick up here to discuss the features tables. then swap order of unsupervised and supervised learning to illustrate what you can do if you don't have labels and then what you can do if you do have labels-->
+scikit-learn defines a few example datasets that we can look at here to get an idea of what typical input looks like in a machine learning task.
+
+### The Iris dataset
+
+The [first example dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset) that we'll look at is a classic dataset used in machine learning, originally published by RA Fisher {cite}`Fisher1936-tk`. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows: 
+
 
 ```{code-cell} ipython3
 import sklearn.datasets
@@ -32,8 +39,9 @@ import pandas as pd
 iris_dataset = sklearn.datasets.load_iris(as_frame=True)
 iris_feature_table = iris_dataset.frame.drop('target', axis=1)
 iris_feature_table.index.name = 'sample-id'
+# map target integers onto species names
 iris_labels = pd.Series(iris_dataset.target_names[iris_dataset.target], 
-                        index=iris_dataset.target.index, name='label').to_frame()
+                        index=iris_dataset.target.index, name='species').to_frame()
 iris_labels.index.name = 'sample-id'
 ```
 
@@ -41,9 +49,29 @@ iris_labels.index.name = 'sample-id'
 iris_feature_table
 ```
 
+The rows in this table represent our samples - in this case specimens of Iris plants. The columns represent features, or attributes of the samples. Each sample vector (i.e., row) will indicate a unique identifier for the sample (here these are simply integers), and values for each feature for that sample. This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we'll cover first in this chapter. 
+
+In addition to this feature table, the Iris dataset contains labels for each of the 150 samples indicating which species each sample belongs to:
+
 ```{code-cell} ipython3
 iris_labels
 ```
+
+The sample ids in this label vector must be the same as the sample ids in the feature table. The feature table and the sample labels together can be used as input data for supervised learning tasks, which we'll cover second in this chapter.
+
+There are three different labels, or classes, in this dataset:
+
+```{code-cell} ipython3
+iris_labels['species'].unique()
+```
+
+### The Diabetes dataset
+
+**TODO: These data are transformed, unfortunately, as described in the docs. If the raw feature table data isn't available I'm going to drop this example.**
+
+The [second example data set](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) that we'll look at here contains a feature table that describes 10 variables collected at a baseline time point on 442 patients with diabetes (original source: {cite}`Efron2004-fn`). The variables include age in years, sex, and blood serum measurements. 
+
+
 
 ```{code-cell} ipython3
 diabetes_dataset = sklearn.datasets.load_diabetes(as_frame=True)
@@ -51,7 +79,7 @@ diabetes_dataset = sklearn.datasets.load_diabetes(as_frame=True)
 diabetes_feature_table = diabetes_dataset.frame.drop('target', axis=1)
 diabetes_feature_table.index.name = 'sample-id'
 
-diabetes_labels = diabetes_dataset.target.to_frame()
+diabetes_labels = diabetes_dataset.target.to_frame(name='response')
 diabetes_labels.index.name = 'sample-id'
 ```
 
@@ -59,25 +87,284 @@ diabetes_labels.index.name = 'sample-id'
 diabetes_feature_table
 ```
 
+Labels are again available for the diabetes dataset. In this case, the labels are measurements of disease progression one year following the baseline data collection. 
+
 ```{code-cell} ipython3
 diabetes_labels
 ```
 
-scikit-learn's excellent documentation illustrates ways that you can use the iris dataset and the diabetes dataset in classification and regression tasks, repectively. 
+### Differences and commonalities between these datasets
 
+One difference between these two datasets is that the labels are discrete (i.e., categorical or qualitative) in the Iris dataset and continuous (i.e., quantitative) in the Diabetes dataset. Similarly, while most of the features in these two datasets contain continuous values, the Diabetes dataset contains a feature with discrete values - sex. Continuous and discrete feature and label values can be used in machine learning, but some methods can only be used with a particular value type. 
 
+Despite the difference in domains represented here (plant systematics versus human health) the data can be summarized with similar structures. This extends beyond biology as well: some of the other scikit-learn toy datasets include [housing market data](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset) and [hand-writing data](https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset). If you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data.
 
-There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we'll experiment with both in this chapter. 
+## Unsupervised versus supervised learning methods
 
-In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, _healthy_ and _disease_), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn't known ahead of time, in attempt to predict the class from the features. 
+Many machine learning methods are classified at a high level as either unsupervised or supervised learning methods. 
 
-Unsupervised classification tasks, on the other hand, generally don't have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.
+In **unsupervised learning** we either don't have or don't use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we'll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you have probably already encountered ordination plots (such as PCoA or NMDS plots in some of your reading). 
 
+In **supervised learning**, on the other hand, sample labels are used in addition to a feature table. As we saw above, the sample labels can be either discrete or continuous, and that distinction defines whether we're working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample's label from its feature values (for example, how much should we expect an individual's disease to progress in the next year based on measurements we take in the clinic today). 
 
+<!-- TODO: start here by moving feature table and label definitions to here from the supervised classification section below. -->
+
+## Unsupervised learning
+
+We'll begin our exploration of machine learning approaches with unsupervised learning, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
+
+### Polar ordination
+
+First, let's print our distance matrix again so we have it nearby.
+
+```python
+>>> print(human_microbiome_dm)
+6x6 distance matrix
+IDs:
+'A', 'B', 'C', 'D', 'E', 'F'
+Data:
+[[ 0.    0.35  0.83  0.83  0.9   0.9 ]
+ [ 0.35  0.    0.86  0.85  0.92  0.91]
+ [ 0.83  0.86  0.    0.25  0.88  0.87]
+ [ 0.83  0.85  0.25  0.    0.88  0.88]
+ [ 0.9   0.92  0.88  0.88  0.    0.5 ]
+ [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
+```
+
+Polar ordination works in a few steps:
+
+**Step 1.** Identify the largest distance in the distance matrix.
+
+**Step 2.** Define a line, with the two samples contributing to that distance defining the endpoints.
+
+**Step 3.** Compute the location of each other sample on that axis as follows:
+
+$a = \frac{D^2 + D1^2 - D2^2}{2 \times D}$
+
+where:
+
+$D$ is distance between the endpoints
+
+$D1$ is distance between the current sample and endpoint 1
+
+$D2$ is distance between sample and endpoint 2.
+
+**Step 4.** Find the next largest distance that could be used to define an *uncorrelated axis*. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I'll pick one for the demo, and we'll wrap up by looking at all of the axes.)
+
+Here is what steps 2 and 3 look like in Python:
+
+```python
+>>> def compute_axis_values(dm, endpoint1, endpoint2):
+...     d = dm[endpoint1, endpoint2]
+...     result = {endpoint1: 0, endpoint2: d}
+...     non_endpoints = set(dm.ids) - set([endpoint1, endpoint2])
+...     for e in non_endpoints:
+...         d1 = dm[endpoint1, e]
+...         d2 = dm[endpoint2, e]
+...         result[e] = (d**2 + d1**2 - d2**2) / (2 * d)
+...     return d, [result[e] for e in dm.ids]
+```
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+>>> for sid, a1_value in zip(human_microbiome_dm.ids, a1_values):
+...     print(sid, a1_value)
+A 0.0863586956522
+B 0
+C 0.441086956522
+D 0.431793478261
+E 0.92
+F 0.774184782609
+```
+
+```python
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'D', 'E')
+>>> for sid, a2_value in zip(human_microbiome_dm.ids, a2_values):
+...     print(sid, a2_value)
+A 0.371193181818
+B 0.369602272727
+C 0.0355113636364
+D 0
+E 0.88
+F 0.737954545455
+```
+
+```python
+>>> from pylab import scatter
+>>> ord_plot = scatter(a1_values, a2_values, s=40)
+<Figure size 432x288 with 1 Axes>
+```
+
+And again, let's look at how including metadata helps us to interpret our results.
+
+First, we'll color the points by the body habitat that they're derived from:
+
+```python
+>>> colors = {'tongue': 'red', 'gut':'yellow', 'skin':'blue'}
+>>> c = [colors[human_microbiome_sample_md['body site'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+And next we'll color the samples by the person that they're derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.
+
+```python
+>>> person_colors = {'subject 1': 'red', 'subject 2':'yellow'}
+>>> person_c = [person_colors[human_microbiome_sample_md['individual'][e]] for e in human_microbiome_dm.ids]
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=person_c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Determining the most important axes in polar ordination <link src='fb483b'/>
+
+Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:
+
+```python
+>>> from scipy.stats import spearmanr
+...
+>>> data = []
+>>> for i, sample_id1 in enumerate(human_microbiome_dm.ids):
+...     for sample_id2 in human_microbiome_dm.ids[:i]:
+...         d, axis_values = compute_axis_values(human_microbiome_dm, sample_id1, sample_id2)
+...         r, p = spearmanr(a1_values, axis_values)
+...         data.append((d, abs(r), sample_id1, sample_id2, axis_values))
+...
+>>> data.sort()
+>>> data.reverse()
+>>> for i, e in enumerate(data):
+...     print("axis %d:" % i, end=' ')
+...     print("\t%1.3f\t%1.3f\t%s\t%s" % e[:4])
+axis 0: 	0.920	1.000	E	B
+axis 1: 	0.910	0.943	F	B
+axis 2: 	0.900	0.928	E	A
+axis 3: 	0.900	0.886	F	A
+axis 4: 	0.880	0.543	E	D
+axis 5: 	0.880	0.429	F	D
+axis 6: 	0.880	0.429	E	C
+axis 7: 	0.870	0.371	F	C
+axis 8: 	0.860	0.543	C	B
+axis 9: 	0.850	0.486	D	B
+axis 10: 	0.830	0.429	C	A
+axis 11: 	0.830	0.406	D	A
+axis 12: 	0.500	0.232	F	E
+axis 13: 	0.350	0.143	B	A
+axis 14: 	0.250	0.493	D	C
+```
+
+So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let's look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.
+
+```python
+>>> ord_plot = scatter(data[0][4], data[1][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[13][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(data[0][4], data[14][4], s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+#### Interpreting ordination plots <link src='40e0a6'/>
+
+There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.
+
+**Directionality of the axes is not important (e.g., up/down/left/right)**
+
+One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
+
+```python
+>>> d, a1_values = compute_axis_values(human_microbiome_dm, 'E', 'B')
+>>> d, a2_values = compute_axis_values(human_microbiome_dm, 'E', 'D')
+>>> d, alt_a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
+```
+
+```python
+>>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+```python
+>>> ord_plot = scatter(alt_a1_values, a2_values, s=40, c=c)
+<Figure size 432x288 with 1 Axes>
+```
+
+Some other important features:
+
+* Numerical scale of the axis is generally not useful
+* The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, ...)
+* Most techniques result in uncorrelated axes.
+* Additional axes can be generated (third, fourth, ...)
+
+### Principle Coordinates Analysis (PCoA)
+
+```
+import qiime2
+import qiime2.plugins.feature_table as ft
+import qiime2.plugins.diversity as div
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = []
+for reference_sequence in reference_db:
+    #taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=reference_sequence.metadata['id']))
+
+# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
+# display the first 25 rows of that table.
+per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+
+feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", per_sequence_kmer_counts.T)
+```
+
+```
+jaccard_1a = div.actions.beta(feature_table_1a, metric='jaccard').distance_matrix
+```
+
+```
+taxa_of_interest = ['k__Archaea', 'p__Cyanobacteria', 'p__Firmicutes', 'p__Bacteroidetes', 'p__Proteobacteria']
+metadata = {}
+for reference_sequence in reference_db:
+    id_ = reference_sequence.metadata['id']
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    label_as_other = True
+    for taxon_of_interest in taxa_of_interest:
+        # this approach is horrendous
+        if taxon_of_interest in taxon:
+            label_as_other = False
+    if label_as_other:
+        metadata[id_] = 'Other'
+    else:
+        metadata[id_] = taxon
+metadata = pd.Series(metadata, name='taxon').to_frame()
+metadata.index.name = 'id'
+metadata = qiime2.Metadata(metadata)
+```
+
+```
+pcoa_1a = div.actions.pcoa(jaccard_1a).pcoa
+```
+
+```
+import qiime2.plugins.emperor as emperor
+
+emperor.actions.plot(pcoa_1a, metadata).visualization
+```
+
+```
+import skbio.stats.ordination
+ordination = pcoa_1a.view(skbio.stats.ordination.OrdinationResults)
+
+_ = ordination.plot(metadata.to_dataframe(), column='taxon', cmap='Set1')
+```
 
 ## Supervised classification
 
-We'll begin our exploration of machine learning approaches with **supervised classification**, and specifically with an algorithm called **Naive Bayes**.  We'll implement Naive Bayes to gain an understanding of how it works, and I think you'll discover that this idea of machines learning isn't quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it's a good place to get started. 
+We'll continue our exploration of machine learning approaches with **supervised classification**, and specifically with an algorithm called **Naive Bayes**.  We'll implement Naive Bayes to gain an understanding of how it works, and I think you'll discover that this idea of machines learning isn't quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it's a good place to get started. 
 
 We'll explore supervised classification in the context of a now familiar topic: taxonomic classification of 16S rRNA sequences. We previously explored this problem in {doc}`database-searching`, so it's worth spending a few minutes skimming that chapter if it's not fresh in your mind.
 
@@ -526,257 +813,8 @@ What does this plot tell you about how well setting a confidence threshold is li
 Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parameters) and modify those values. How does the accuracy of the classifier change if you increase or decrease `k` while keeping the value of `taxonomic_level` fixed? How does the accuracy change if you increase or decrease the `taxonomic_level` while keeping `k` fixed? 
 ```
 
-## Unsupervised learning
+## List of works cited
 
-We'll next turn our exploration of machine learning approaches to **unsupervised learning**, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
-
-
-
-### Polar ordination
-
-First, let's print our distance matrix again so we have it nearby.
-
-```python
->>> print(human_microbiome_dm)
-6x6 distance matrix
-IDs:
-'A', 'B', 'C', 'D', 'E', 'F'
-Data:
-[[ 0.    0.35  0.83  0.83  0.9   0.9 ]
- [ 0.35  0.    0.86  0.85  0.92  0.91]
- [ 0.83  0.86  0.    0.25  0.88  0.87]
- [ 0.83  0.85  0.25  0.    0.88  0.88]
- [ 0.9   0.92  0.88  0.88  0.    0.5 ]
- [ 0.9   0.91  0.87  0.88  0.5   0.  ]]
-```
-
-Polar ordination works in a few steps:
-
-**Step 1.** Identify the largest distance in the distance matrix.
-
-**Step 2.** Define a line, with the two samples contributing to that distance defining the endpoints.
-
-**Step 3.** Compute the location of each other sample on that axis as follows:
-
-$a = \frac{D^2 + D1^2 - D2^2}{2 \times D}$
-
-where:
-
-$D$ is distance between the endpoints
-
-$D1$ is distance between the current sample and endpoint 1
-
-$D2$ is distance between sample and endpoint 2.
-
-**Step 4.** Find the next largest distance that could be used to define an *uncorrelated axis*. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I'll pick one for the demo, and we'll wrap up by looking at all of the axes.)
-
-Here is what steps 2 and 3 look like in Python:
-
-```python
->>> def compute_axis_values(dm, endpoint1, endpoint2):
-...     d = dm[endpoint1, endpoint2]
-...     result = {endpoint1: 0, endpoint2: d}
-...     non_endpoints = set(dm.ids) - set([endpoint1, endpoint2])
-...     for e in non_endpoints:
-...         d1 = dm[endpoint1, e]
-...         d2 = dm[endpoint2, e]
-...         result[e] = (d**2 + d1**2 - d2**2) / (2 * d)
-...     return d, [result[e] for e in dm.ids]
-```
-
-```python
->>> d, a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
->>> for sid, a1_value in zip(human_microbiome_dm.ids, a1_values):
-...     print(sid, a1_value)
-A 0.0863586956522
-B 0
-C 0.441086956522
-D 0.431793478261
-E 0.92
-F 0.774184782609
-```
-
-```python
->>> d, a2_values = compute_axis_values(human_microbiome_dm, 'D', 'E')
->>> for sid, a2_value in zip(human_microbiome_dm.ids, a2_values):
-...     print(sid, a2_value)
-A 0.371193181818
-B 0.369602272727
-C 0.0355113636364
-D 0
-E 0.88
-F 0.737954545455
-```
-
-```python
->>> from pylab import scatter
->>> ord_plot = scatter(a1_values, a2_values, s=40)
-<Figure size 432x288 with 1 Axes>
-```
-
-And again, let's look at how including metadata helps us to interpret our results.
-
-First, we'll color the points by the body habitat that they're derived from:
-
-```python
->>> colors = {'tongue': 'red', 'gut':'yellow', 'skin':'blue'}
->>> c = [colors[human_microbiome_sample_md['body site'][e]] for e in human_microbiome_dm.ids]
->>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-And next we'll color the samples by the person that they're derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.
-
-```python
->>> person_colors = {'subject 1': 'red', 'subject 2':'yellow'}
->>> person_c = [person_colors[human_microbiome_sample_md['individual'][e]] for e in human_microbiome_dm.ids]
->>> ord_plot = scatter(a1_values, a2_values, s=40, c=person_c)
-<Figure size 432x288 with 1 Axes>
-```
-
-#### Determining the most important axes in polar ordination <link src='fb483b'/>
-
-Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:
-
-```python
->>> from scipy.stats import spearmanr
-...
->>> data = []
->>> for i, sample_id1 in enumerate(human_microbiome_dm.ids):
-...     for sample_id2 in human_microbiome_dm.ids[:i]:
-...         d, axis_values = compute_axis_values(human_microbiome_dm, sample_id1, sample_id2)
-...         r, p = spearmanr(a1_values, axis_values)
-...         data.append((d, abs(r), sample_id1, sample_id2, axis_values))
-...
->>> data.sort()
->>> data.reverse()
->>> for i, e in enumerate(data):
-...     print("axis %d:" % i, end=' ')
-...     print("\t%1.3f\t%1.3f\t%s\t%s" % e[:4])
-axis 0: 	0.920	1.000	E	B
-axis 1: 	0.910	0.943	F	B
-axis 2: 	0.900	0.928	E	A
-axis 3: 	0.900	0.886	F	A
-axis 4: 	0.880	0.543	E	D
-axis 5: 	0.880	0.429	F	D
-axis 6: 	0.880	0.429	E	C
-axis 7: 	0.870	0.371	F	C
-axis 8: 	0.860	0.543	C	B
-axis 9: 	0.850	0.486	D	B
-axis 10: 	0.830	0.429	C	A
-axis 11: 	0.830	0.406	D	A
-axis 12: 	0.500	0.232	F	E
-axis 13: 	0.350	0.143	B	A
-axis 14: 	0.250	0.493	D	C
-```
-
-So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let's look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.
-
-```python
->>> ord_plot = scatter(data[0][4], data[1][4], s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-```python
->>> ord_plot = scatter(data[0][4], data[13][4], s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-```python
->>> ord_plot = scatter(data[0][4], data[14][4], s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-#### Interpreting ordination plots <link src='40e0a6'/>
-
-There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.
-
-**Directionality of the axes is not important (e.g., up/down/left/right)**
-
-One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
-
-```python
->>> d, a1_values = compute_axis_values(human_microbiome_dm, 'E', 'B')
->>> d, a2_values = compute_axis_values(human_microbiome_dm, 'E', 'D')
->>> d, alt_a1_values = compute_axis_values(human_microbiome_dm, 'B', 'E')
-```
-
-```python
->>> ord_plot = scatter(a1_values, a2_values, s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-```python
->>> ord_plot = scatter(alt_a1_values, a2_values, s=40, c=c)
-<Figure size 432x288 with 1 Axes>
-```
-
-Some other important features:
-
-* Numerical scale of the axis is generally not useful
-* The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, ...)
-* Most techniques result in uncorrelated axes.
-* Additional axes can be generated (third, fourth, ...)
-
-### Principle Coordinates Analysis (PCoA)
-
-```
-import qiime2
-import qiime2.plugins.feature_table as ft
-import qiime2.plugins.diversity as div
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = []
-for reference_sequence in reference_db:
-    #taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=reference_sequence.metadata['id']))
-
-# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
-# display the first 25 rows of that table.
-per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-
-feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", per_sequence_kmer_counts.T)
-```
-
-```
-jaccard_1a = div.actions.beta(feature_table_1a, metric='jaccard').distance_matrix
-```
-
-```
-taxa_of_interest = ['k__Archaea', 'p__Cyanobacteria', 'p__Firmicutes', 'p__Bacteroidetes', 'p__Proteobacteria']
-metadata = {}
-for reference_sequence in reference_db:
-    id_ = reference_sequence.metadata['id']
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    label_as_other = True
-    for taxon_of_interest in taxa_of_interest:
-        # this approach is horrendous
-        if taxon_of_interest in taxon:
-            label_as_other = False
-    if label_as_other:
-        metadata[id_] = 'Other'
-    else:
-        metadata[id_] = taxon
-metadata = pd.Series(metadata, name='taxon').to_frame()
-metadata.index.name = 'id'
-metadata = qiime2.Metadata(metadata)
-```
-
-```
-pcoa_1a = div.actions.pcoa(jaccard_1a).pcoa
-```
-
-```
-import qiime2.plugins.emperor as emperor
-
-emperor.actions.plot(pcoa_1a, metadata).visualization
-```
-
-```
-import skbio.stats.ordination
-ordination = pcoa_1a.view(skbio.stats.ordination.OrdinationResults)
-
-_ = ordination.plot(metadata.to_dataframe(), column='taxon', cmap='Set1')
+```{bibliography} ../references.bib
+:filter: docname in docnames
 ```

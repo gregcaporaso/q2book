@@ -330,61 +330,51 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#supervised-classification">
-   3.1. Supervised classification
+  <a class="reference internal nav-link" href="#the-feature-table">
+   3.1. The feature table
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-a-classification-task">
-     3.1.1. Defining a classification task
+    <a class="reference internal nav-link" href="#the-iris-dataset">
+     3.1.1. The Iris dataset
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#training-data-test-data-and-cross-validation">
-     3.1.2. Training data, test data, and cross-validation
+    <a class="reference internal nav-link" href="#the-diabetes-dataset">
+     3.1.2. The Diabetes dataset
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#evaluating-a-binary-classifier">
-     3.1.3. Evaluating a binary classifier
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#naive-bayes-classifiers">
-     3.1.4. Naive Bayes classifiers
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#training-a-native-bayes-classifier">
-     3.1.5. Training a Native Bayes classifier
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-     3.1.6. Evaluating our confidence in the results of the Naive Bayes classifier
+    <a class="reference internal nav-link" href="#differences-and-commonalities-between-these-datasets">
+     3.1.3. Differences and commonalities between these datasets
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unsupervised-versus-supervised-learning-methods">
+   3.2. Unsupervised versus supervised learning methods
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#unsupervised-learning">
-   3.2. Unsupervised learning
+   3.3. Unsupervised learning
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#polar-ordination">
-     3.2.1. Polar ordination
+     3.3.1. Polar ordination
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
-       3.2.1.1. Determining the most important axes in polar ordination
+       3.3.1.1. Determining the most important axes in polar ordination
        <link src="fb483b"/>
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#interpreting-ordination-plots-link-src-40e0a6">
-       3.2.1.2. Interpreting ordination plots
+       3.3.1.2. Interpreting ordination plots
        <link src="40e0a6"/>
       </a>
      </li>
@@ -392,10 +382,52 @@
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#principle-coordinates-analysis-pcoa">
-     3.2.2. Principle Coordinates Analysis (PCoA)
+     3.3.2. Principle Coordinates Analysis (PCoA)
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#supervised-classification">
+   3.4. Supervised classification
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-a-classification-task">
+     3.4.1. Defining a classification task
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-data-test-data-and-cross-validation">
+     3.4.2. Training data, test data, and cross-validation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluating-a-binary-classifier">
+     3.4.3. Evaluating a binary classifier
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naive-bayes-classifiers">
+     3.4.4. Naive Bayes classifiers
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-a-native-bayes-classifier">
+     3.4.5. Training a Native Bayes classifier
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
+     3.4.6. Evaluating our confidence in the results of the Naive Bayes classifier
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#list-of-works-cited">
+   3.5. List of works cited
+  </a>
  </li>
 </ul>
 
@@ -411,11 +443,19 @@
                 
   <div class="section" id="machine-learning-in-bioinformatics">
 <h1><span class="section-number">3. </span>Machine learning in bioinformatics<a class="headerlink" href="#machine-learning-in-bioinformatics" title="Permalink to this headline">¶</a></h1>
-<p>In this chapter we’ll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex data set.</p>
-<p>Machine learning algorithms generally are provided with a table of <strong>samples</strong> and user-defined <strong>features</strong> of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a <strong>feature table</strong>, and it is central to machine learning and many subfields of bioinformatics.</p>
-<p>As is typically the case in this book, we’ll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. <a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you’d like to start trying some of these tools out, scikit-learn is a great place to start.</p>
-<p>scikit-learn also defines a few example feature tables that we can look at here to get an idea of what typical input looks like in a machine learning task.</p>
-<!-- TODO: pick up here to discuss the features tables. then swap order of unsupervised and supervised learning to illustrate what you can do if you don't have labels and then what you can do if you do have labels--><div class="cell docutils container">
+<p>In this chapter we’ll begin talking about machine learning algorithms. Machine learning algorithms are used in bioinformatics for tasks where the user would like an algorithm to assist in the identification of patterns in a complex dataset. As is typically the case in this book, we’ll work through implementing a few algorithms but these are not the implementations that you should use in practice. The code is written to be accessible for learning. <a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> is a popular and well-documented Python library for machine learning which many bioinformatics researchers and software developers use in their work. If you’d like to start trying some of these tools out, scikit-learn is a great place to start.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Machine learning algorithms can easily be misused, either intentionally or unintentionally, to provide misleading results. This chapter will cover some guidelines for how to use these techniques, but it is only intended as a primer to introduce machine learning. It’s not a detailed discussion of how machine learning algorithms should and shouldn’t be used. If you want to start applying machine learning tools in your own research, I recommend moving from this chapter to the scikit-learn documentation, and their content on <a class="reference external" href="https://scikit-learn.org/stable/common_pitfalls.html">Common pitfalls and recommended practices</a>.</p>
+</div>
+<div class="section" id="the-feature-table">
+<h2><span class="section-number">3.1. </span>The feature table<a class="headerlink" href="#the-feature-table" title="Permalink to this headline">¶</a></h2>
+<p>Machine learning algorithms generally are provided with a table of <strong>samples</strong> and user-defined <strong>features</strong> of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a <strong>feature table</strong>, and it is central to machine learning and many subfields of bioinformatics. The terms used here are purposefully general. Samples are intended to be any unit of study, and features are attributes of those samples. Sometimes <strong>labels</strong> or <strong>response variables</strong> will be associated with the samples, in which case a different class of methods can be applied.</p>
+<p>scikit-learn defines a few example datasets that we can look at here to get an idea of what typical input looks like in a machine learning task.</p>
+<div class="section" id="the-iris-dataset">
+<h3><span class="section-number">3.1.1. </span>The Iris dataset<a class="headerlink" href="#the-iris-dataset" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset">first example dataset</a> that we’ll look at is a classic dataset used in machine learning, originally published by RA Fisher <span id="id1">[<a class="reference internal" href="#id28"><span>Fis36</span></a>]</span>. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows:</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -423,8 +463,9 @@
 <span class="n">iris_dataset</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">iris_feature_table</span> <span class="o">=</span> <span class="n">iris_dataset</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">iris_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
+<span class="c1"># map target integers onto species names</span>
 <span class="n">iris_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target</span><span class="p">],</span> 
-                        <span class="n">index</span><span class="o">=</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+                        <span class="n">index</span><span class="o">=</span><span class="n">iris_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">iris_labels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
 </pre></div>
 </div>
@@ -551,6 +592,8 @@
 <p>150 rows × 4 columns</p>
 </div></div></div>
 </div>
+<p>The rows in this table represent our samples - in this case specimens of Iris plants. The columns represent features, or attributes of the samples. Each sample vector (i.e., row) will indicate a unique identifier for the sample (here these are simply integers), and values for each feature for that sample. This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we’ll cover first in this chapter.</p>
+<p>In addition to this feature table, the Iris dataset contains labels for each of the 150 samples indicating which species each sample belongs to:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iris_labels</span>
@@ -576,7 +619,7 @@
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>label</th>
+      <th>species</th>
     </tr>
     <tr>
       <th>sample-id</th>
@@ -633,6 +676,25 @@
 <p>150 rows × 1 columns</p>
 </div></div></div>
 </div>
+<p>The sample ids in this label vector must be the same as the sample ids in the feature table. The feature table and the sample labels together can be used as input data for supervised learning tasks, which we’ll cover second in this chapter.</p>
+<p>There are three different labels, or classes, in this dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iris_labels</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;setosa&#39;, &#39;versicolor&#39;, &#39;virginica&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-diabetes-dataset">
+<h3><span class="section-number">3.1.2. </span>The Diabetes dataset<a class="headerlink" href="#the-diabetes-dataset" title="Permalink to this headline">¶</a></h3>
+<p><strong>TODO: These data are transformed, unfortunately, as described in the docs. If the raw feature table data isn’t available I’m going to drop this example.</strong></p>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset">second example data set</a> that we’ll look at here contains a feature table that describes 10 variables collected at a baseline time point on 442 patients with diabetes (original source: <span id="id2">[<a class="reference internal" href="#id29"><span>EHJT04</span></a>]</span>). The variables include age in years, sex, and blood serum measurements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes_dataset</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_diabetes</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -640,7 +702,7 @@
 <span class="n">diabetes_feature_table</span> <span class="o">=</span> <span class="n">diabetes_dataset</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">diabetes_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
 
-<span class="n">diabetes_labels</span> <span class="o">=</span> <span class="n">diabetes_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">diabetes_labels</span> <span class="o">=</span> <span class="n">diabetes_dataset</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;response&#39;</span><span class="p">)</span>
 <span class="n">diabetes_labels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sample-id&#39;</span>
 </pre></div>
 </div>
@@ -845,6 +907,7 @@
 <p>442 rows × 10 columns</p>
 </div></div></div>
 </div>
+<p>Labels are again available for the diabetes dataset. In this case, the labels are measurements of disease progression one year following the baseline data collection.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">diabetes_labels</span>
@@ -870,7 +933,7 @@
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>target</th>
+      <th>response</th>
     </tr>
     <tr>
       <th>sample-id</th>
@@ -927,24 +990,251 @@
 <p>442 rows × 1 columns</p>
 </div></div></div>
 </div>
-<p>scikit-learn’s excellent documentation illustrates ways that you can use the iris dataset and the diabetes dataset in classification and regression tasks, repectively.</p>
-<p>There are a few different high-level tasks that are common in machine learning. Possibly the most commonly used in bioinformatics are supervised classification and ordination, and we’ll experiment with both in this chapter.</p>
-<p>In a supervised classification task, a user provides examples of data that fall into certain discrete classes (for example, <em>healthy</em> and <em>disease</em>), and tries to have the computer develop a model that can differentiate those classes based on the defined features. If successful, the resulting model could be applied to data where the class isn’t known ahead of time, in attempt to predict the class from the features.</p>
-<p>Unsupervised classification tasks, on the other hand, generally don’t have classes or labels assigned ahead of time, and the user is hoping to identify which samples are most similar to each other based on new features that are defined by the algorithm. The goal here might be to reduce the number of features from thousands or more to around two or three that explain most of the variation in the data. This allows the user to explore the samples visually, for example in a scatter plot, which would not be feasible if there were thousands of features.</p>
+</div>
+<div class="section" id="differences-and-commonalities-between-these-datasets">
+<h3><span class="section-number">3.1.3. </span>Differences and commonalities between these datasets<a class="headerlink" href="#differences-and-commonalities-between-these-datasets" title="Permalink to this headline">¶</a></h3>
+<p>One difference between these two datasets is that the labels are discrete (i.e., categorical or qualitative) in the Iris dataset and continuous (i.e., quantitative) in the Diabetes dataset. Similarly, while most of the features in these two datasets contain continuous values, the Diabetes dataset contains a feature with discrete values - sex. Continuous and discrete feature and label values can be used in machine learning, but some methods can only be used with a particular value type.</p>
+<p>Despite the difference in domains represented here (plant systematics versus human health) the data can be summarized with similar structures. This extends beyond biology as well: some of the other scikit-learn toy datasets include <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset">housing market data</a> and <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset">hand-writing data</a>. If you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data.</p>
+</div>
+</div>
+<div class="section" id="unsupervised-versus-supervised-learning-methods">
+<h2><span class="section-number">3.2. </span>Unsupervised versus supervised learning methods<a class="headerlink" href="#unsupervised-versus-supervised-learning-methods" title="Permalink to this headline">¶</a></h2>
+<p>Many machine learning methods are classified at a high level as either unsupervised or supervised learning methods.</p>
+<p>In <strong>unsupervised learning</strong> we either don’t have or don’t use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we’ll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you have probably already encountered ordination plots (such as PCoA or NMDS plots in some of your reading).</p>
+<p>In <strong>supervised learning</strong>, on the other hand, sample labels are used in addition to a feature table. As we saw above, the sample labels can be either discrete or continuous, and that distinction defines whether we’re working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample’s label from its feature values (for example, how much should we expect an individual’s disease to progress in the next year based on measurements we take in the clinic today).</p>
+<!-- TODO: start here by moving feature table and label definitions to here from the supervised classification section below. -->
+</div>
+<div class="section" id="unsupervised-learning">
+<h2><span class="section-number">3.3. </span>Unsupervised learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">¶</a></h2>
+<p>We’ll begin our exploration of machine learning approaches with unsupervised learning, and specifically discuss ordination methods. We’ll work through ordination in two strokes. First, we’ll explore an approach called <strong>Polar Ordination</strong>, where the math is simple but which isn’t widely used in practice because it doesn’t work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we’ll apply an approach called <strong>Principal Coordinates Analysis (PCoA)</strong>. The math for PCoA is a bit more complicated than I want to get into in this book (I’m a biology teacher, after all), but we’ll apply it to a large data set to explore how these techniques can be used in practice.</p>
+<div class="section" id="polar-ordination">
+<h3><span class="section-number">3.3.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h3>
+<p>First, let’s print our distance matrix again so we have it nearby.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">)</span>
+<span class="go">6x6 distance matrix</span>
+<span class="go">IDs:</span>
+<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;</span>
+<span class="go">Data:</span>
+<span class="go">[[ 0.    0.35  0.83  0.83  0.9   0.9 ]</span>
+<span class="go"> [ 0.35  0.    0.86  0.85  0.92  0.91]</span>
+<span class="go"> [ 0.83  0.86  0.    0.25  0.88  0.87]</span>
+<span class="go"> [ 0.83  0.85  0.25  0.    0.88  0.88]</span>
+<span class="go"> [ 0.9   0.92  0.88  0.88  0.    0.5 ]</span>
+<span class="go"> [ 0.9   0.91  0.87  0.88  0.5   0.  ]]</span>
+</pre></div>
+</div>
+<p>Polar ordination works in a few steps:</p>
+<p><strong>Step 1.</strong> Identify the largest distance in the distance matrix.</p>
+<p><strong>Step 2.</strong> Define a line, with the two samples contributing to that distance defining the endpoints.</p>
+<p><strong>Step 3.</strong> Compute the location of each other sample on that axis as follows:</p>
+<p><span class="math notranslate nohighlight">\(a = \frac{D^2 + D1^2 - D2^2}{2 \times D}\)</span></p>
+<p>where:</p>
+<p><span class="math notranslate nohighlight">\(D\)</span> is distance between the endpoints</p>
+<p><span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and endpoint 1</p>
+<p><span class="math notranslate nohighlight">\(D2\)</span> is distance between sample and endpoint 2.</p>
+<p><strong>Step 4.</strong> Find the next largest distance that could be used to define an <em>uncorrelated axis</em>. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I’ll pick one for the demo, and we’ll wrap up by looking at all of the axes.)</p>
+<p>Here is what steps 2 and 3 look like in Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_axis_values</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">d</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">endpoint1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
+<span class="gp">... </span>    <span class="n">non_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">non_endpoints</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">d1</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">d2</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint2</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">d2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a1_values</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span><span class="p">)</span>
+<span class="go">A 0.0863586956522</span>
+<span class="go">B 0</span>
+<span class="go">C 0.441086956522</span>
+<span class="go">D 0.431793478261</span>
+<span class="go">E 0.92</span>
+<span class="go">F 0.774184782609</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span><span class="p">)</span>
+<span class="go">A 0.371193181818</span>
+<span class="go">B 0.369602272727</span>
+<span class="go">C 0.0355113636364</span>
+<span class="go">D 0</span>
+<span class="go">E 0.88</span>
+<span class="go">F 0.737954545455</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">scatter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>And again, let’s look at how including metadata helps us to interpret our results.</p>
+<p>First, we’ll color the points by the body habitat that they’re derived from:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tongue&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;gut&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;skin&#39;</span><span class="p">:</span><span class="s1">&#39;blue&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>And next we’ll color the samples by the person that they’re derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">person_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject 1&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">person_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">person_colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;individual&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">person_c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
+<h4><span class="section-number">3.3.1.1. </span>Determining the most important axes in polar ordination <link src='fb483b'/><a class="headerlink" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b" title="Permalink to this headline">¶</a></h4>
+<p>Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample_id2</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="n">d</span><span class="p">,</span> <span class="n">axis_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis </span><span class="si">%d</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+<span class="go">axis 0: 	0.920	1.000	E	B</span>
+<span class="go">axis 1: 	0.910	0.943	F	B</span>
+<span class="go">axis 2: 	0.900	0.928	E	A</span>
+<span class="go">axis 3: 	0.900	0.886	F	A</span>
+<span class="go">axis 4: 	0.880	0.543	E	D</span>
+<span class="go">axis 5: 	0.880	0.429	F	D</span>
+<span class="go">axis 6: 	0.880	0.429	E	C</span>
+<span class="go">axis 7: 	0.870	0.371	F	C</span>
+<span class="go">axis 8: 	0.860	0.543	C	B</span>
+<span class="go">axis 9: 	0.850	0.486	D	B</span>
+<span class="go">axis 10: 	0.830	0.429	C	A</span>
+<span class="go">axis 11: 	0.830	0.406	D	A</span>
+<span class="go">axis 12: 	0.500	0.232	F	E</span>
+<span class="go">axis 13: 	0.350	0.143	B	A</span>
+<span class="go">axis 14: 	0.250	0.493	D	C</span>
+</pre></div>
+</div>
+<p>So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let’s look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">14</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interpreting-ordination-plots-link-src-40e0a6">
+<h4><span class="section-number">3.3.1.2. </span>Interpreting ordination plots <link src='40e0a6'/><a class="headerlink" href="#interpreting-ordination-plots-link-src-40e0a6" title="Permalink to this headline">¶</a></h4>
+<p>There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.</p>
+<p><strong>Directionality of the axes is not important (e.g., up/down/left/right)</strong></p>
+<p>One thing that you may have notices as you computed the polar ordination above is that the method is <em>not symmetric</em>: in other words, the axis values for axis <span class="math notranslate nohighlight">\(EB\)</span> are different than for axis <span class="math notranslate nohighlight">\(BE\)</span>. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">alt_a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">alt_a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</pre></div>
+</div>
+<p>Some other important features:</p>
+<ul class="simple">
+<li><p>Numerical scale of the axis is generally not useful</p></li>
+<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, …)</p></li>
+<li><p>Most techniques result in uncorrelated axes.</p></li>
+<li><p>Additional axes can be generated (third, fourth, …)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="principle-coordinates-analysis-pcoa">
+<h3><span class="section-number">3.3.2. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2</span>
+<span class="kn">import</span> <span class="nn">qiime2.plugins.feature_table</span> <span class="k">as</span> <span class="nn">ft</span>
+<span class="kn">import</span> <span class="nn">qiime2.plugins.diversity</span> <span class="k">as</span> <span class="nn">div</span>
+
+<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="c1">#taxon = get_taxon_at_level(reference_sequence.metadata[&#39;taxonomy&#39;], taxonomic_level)</span>
+    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
+
+<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
+<span class="c1"># display the first 25 rows of that table.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+<span class="n">feature_table_1a</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Artifact</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="s2">&quot;FeatureTable[Frequency]&quot;</span><span class="p">,</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jaccard_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;jaccard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distance_matrix</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxa_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k__Archaea&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Cyanobacteria&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Firmicutes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Bacteroidetes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Proteobacteria&#39;</span><span class="p">]</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="n">id_</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxa_of_interest</span><span class="p">:</span>
+        <span class="c1"># this approach is horrendous</span>
+        <span class="k">if</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxon</span><span class="p">:</span>
+            <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">label_as_other</span><span class="p">:</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">metadata</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcoa_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">jaccard_1a</span><span class="p">)</span><span class="o">.</span><span class="n">pcoa</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2.plugins.emperor</span> <span class="k">as</span> <span class="nn">emperor</span>
+
+<span class="n">emperor</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pcoa_1a</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">visualization</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
+<span class="n">ordination</span> <span class="o">=</span> <span class="n">pcoa_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ordination</span><span class="o">.</span><span class="n">OrdinationResults</span><span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">ordination</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="supervised-classification">
-<h2><span class="section-number">3.1. </span>Supervised classification<a class="headerlink" href="#supervised-classification" title="Permalink to this headline">¶</a></h2>
-<p>We’ll begin our exploration of machine learning approaches with <strong>supervised classification</strong>, and specifically with an algorithm called <strong>Naive Bayes</strong>.  We’ll implement Naive Bayes to gain an understanding of how it works, and I think you’ll discover that this idea of machines learning isn’t quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it’s a good place to get started.</p>
+<h2><span class="section-number">3.4. </span>Supervised classification<a class="headerlink" href="#supervised-classification" title="Permalink to this headline">¶</a></h2>
+<p>We’ll continue our exploration of machine learning approaches with <strong>supervised classification</strong>, and specifically with an algorithm called <strong>Naive Bayes</strong>.  We’ll implement Naive Bayes to gain an understanding of how it works, and I think you’ll discover that this idea of machines learning isn’t quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it’s a good place to get started.</p>
 <p>We’ll explore supervised classification in the context of a now familiar topic: taxonomic classification of 16S rRNA sequences. We previously explored this problem in <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>, so it’s worth spending a few minutes skimming that chapter if it’s not fresh in your mind.</p>
 <p>Briefly, the problem that we are going to address here is as follows. We have a query sequence (<span class="math notranslate nohighlight">\(q_i\)</span>) which is not taxonomically annotated (meaning we don’t know the taxonomy of the organism whose genome it is found in), and a reference database (<span class="math notranslate nohighlight">\(R\)</span>) of taxonomically annotated sequences (<span class="math notranslate nohighlight">\(r_1, r_2, r_3, r_n\)</span>). We want to infer a taxonomic annotation for <span class="math notranslate nohighlight">\(q_i\)</span>. We’ll again work with <a class="reference external" href="http://greengenes.secondgenome.com/">Greengenes</a>, a 16S rRNA sequence database, which we’ll access using <a class="reference external" href="https://github.com/biocore/qiime-default-reference">QIIME default reference project</a>. (This should all sound very familiar - if not, I again suggest that you review <a class="reference internal" href="database-searching.html"><span class="doc">Sequence homology searching</span></a>.)</p>
 <p>Before we get to this though, lets talk about what supervised classification algorithms are and how the classifiers they build are evaluated.</p>
 <div class="section" id="defining-a-classification-task">
-<h3><span class="section-number">3.1.1. </span>Defining a classification task<a class="headerlink" href="#defining-a-classification-task" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.1. </span>Defining a classification task<a class="headerlink" href="#defining-a-classification-task" title="Permalink to this headline">¶</a></h3>
 <p>In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we run perform these kinds of tasks everyday. For example, if you’re browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you’re not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., “school”, “entertainment”, or “social media”).</p>
 <p>When we’re working with large data sets, supervised classification algorithms can help us with classification tasks that will make us more efficient or help us understand our data. A classic example of this outside of bioinformatics is an email spam filter. For every email that is received, the spam filter must define it as spam or not spam so the message can directed either to the user’s spam folder or the user’s inbox. The stakes can be high: a filter that is too permissive will cause the user’s inbox to get filled with junk mail, while a filter that is overly restrictive could cause relevant messages to be directed to the spam folder. In either case, the email user could miss important messages.</p>
 <p>In the case of taxonomic assignment, our classes will be taxonomic groups at a user-defined taxonomic level. For example, a phylum classifier for 16S rRNA sequences would take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.</p>
 </div>
 <div class="section" id="training-data-test-data-and-cross-validation">
-<h3><span class="section-number">3.1.2. </span>Training data, test data, and cross-validation<a class="headerlink" href="#training-data-test-data-and-cross-validation" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.2. </span>Training data, test data, and cross-validation<a class="headerlink" href="#training-data-test-data-and-cross-validation" title="Permalink to this headline">¶</a></h3>
 <p>Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the <strong>training data</strong>. These labeled examples are the “supervision” aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the 16S taxonomy assignment example, this would be 16S sequences that are taxonomically annotated. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.</p>
 <p>In addition to the training data, an independent collection of observations with defined classes is needed as <strong>test data</strong>. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on <strong>real world</strong> data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the 16S rRNA taxonomy assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn’t be used for optimization of classifiers: in other words, you shouldn’t develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk <strong>over-fitting</strong> the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data.</p>
 <p>Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach call <strong>k-fold cross validation</strong> during classifier development and optimization <a class="reference internal" href="#cross-validation-1"><span class="std std-numref">Fig. 3.1</span></a>. In k-fold cross-validation, the training data is split into <code class="docutils literal notranslate"><span class="pre">k</span></code> different data sets, where <code class="docutils literal notranslate"><span class="pre">k</span></code> is usually five or ten. In each of the data sets, <span class="math notranslate nohighlight">\(1/k\)</span> of the entries are used as test data and all of the other entries are used as training data. In <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.</p>
@@ -955,7 +1245,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </div>
 </div>
 <div class="section" id="evaluating-a-binary-classifier">
-<h3><span class="section-number">3.1.3. </span>Evaluating a binary classifier<a class="headerlink" href="#evaluating-a-binary-classifier" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.3. </span>Evaluating a binary classifier<a class="headerlink" href="#evaluating-a-binary-classifier" title="Permalink to this headline">¶</a></h3>
 <p>As mentioned above, in a classification task there are two or more pre-defined classes. A binary classifier would be a specific type of classifier for which there are exactly two classes - for example, spam and not spam. We’ll start talking about how classifiers are evaluated by discussing binary classifiers because they’re the easiest to understand.</p>
 <p>Imagine we’re building a classifier that attempts to predict whether an individual is healthy or has some specific disease (let’s call it <em>Disease X</em>). Perhaps the data that the classifier uses is based on a variety of medical data that has undergone a feature extraction process to generate features that can be used by a supervised classification algorithm. When a classifier is developed, you can think of it like a function that will take a collection of features for a sample and return a value of “healthy” or “diseased”.</p>
 <p>The goal of our classifier is to serve as a diagnostic tool that identifies whether a patient has Disease X based on features of their medical data. A positive test result therefore indicates that the patient has Disease X while a negative test result indicates that they are healthy. When we apply our classifier to test data (i.e., where we know the correct class), there are a few possible outcomes.</p>
@@ -980,7 +1270,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 <p>Precision thus tells us how frequently our classifier yields false positives, while recall tells us how frequently our classifier yields false negatives. We of course would always like both of these values to be high, but depending on the application of our classifier, we may prefer high precision over high recall, or we may prefer high recall over high precision.</p>
 </div>
 <div class="section" id="naive-bayes-classifiers">
-<h3><span class="section-number">3.1.4. </span>Naive Bayes classifiers<a class="headerlink" href="#naive-bayes-classifiers" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.4. </span>Naive Bayes classifiers<a class="headerlink" href="#naive-bayes-classifiers" title="Permalink to this headline">¶</a></h3>
 <p>Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. In the case of taxonomic assignment of 16S sequences, the classes are different microbial taxonomy names at a given taxonomic level. For example, Proteobacteria and Cyanobacteria would be two classes if we were building a classifier for bacterial phyla. The data that is provided would be the 16S sequences associated with different representatives of the classes, but more specifically Naive Bayes needs these sequences broken into finer-grained features for it to work well. The development of features from raw training data is referred to as <strong>feature extraction</strong>. This can be part of the classifier training software, or it can be independent. Features of sequences could be nearly anything, such as sequence length, presence or absence of certain sequence patterns (or motifs), GC content, and so on. The most commonly used features for sequence classification tasks such as this is <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">overlapping kmers</span></a>, which we have previously seen when looking at heuristic algorithms for database searching. In this case, feature extraction for a given sequence would involve the identification of all of the kmers contained in that sequence.</p>
 <p>In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we’ll train Naive Bayes classifiers to do this by building <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">kmer</span></a>-based models of the 16S sequences of taxa in our reference database. We’ll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown.</p>
 <p>We’ll begin by <a class="reference internal" href="database-searching.html#load-qdr"><span class="std std-ref">preparing our reference database and query sequences as we did previously</span></a>.</p>
@@ -1099,7 +1389,7 @@ Stats:
 </div>
 </div>
 <div class="section" id="training-a-native-bayes-classifier">
-<h3><span class="section-number">3.1.5. </span>Training a Native Bayes classifier<a class="headerlink" href="#training-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.5. </span>Training a Native Bayes classifier<a class="headerlink" href="#training-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
 <p>The first thing our Naive Bayes classifier will need is the set of all possible words of length <code class="docutils literal notranslate"><span class="pre">k</span></code>. This will be dependent on the value of <code class="docutils literal notranslate"><span class="pre">k</span></code> and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as <code class="docutils literal notranslate"><span class="pre">W</span></code>, and can be computed as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1117,7 +1407,7 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, G, T, A
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: G, A, T, C
 For an alphabet size of 4, W contains 16 length-2 kmers.
 </pre></div>
 </div>
@@ -1137,16 +1427,10 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG GA AG GT TT TT TG GA AT TC CA AT TG GG GC CT TC CA AG GA AA AC CG GA AA AC CG GC CT TG GG GC CG GG GC CG GT TG GC CT TT TA AA AC CA AC CA AT TG GC CA AA AG GT TC CG GA AA AC CG GA AG GA AA AA AG GT TT TT TC CT TT TC CG GG GA AA AA AT TG GA AG GT TA AA AA AG GT TG GG GC CG GC CA AC CG GG GG GT TG GA AG GT TA AA AC CG GC CG GT TA AG GA AT TA AA AC CC CT TG GT TC CC CA AG GA AT TG GA AT TC CG GG GG GA AT TA AG GC CC CC CT TT TC CG GA AA AA AG GG GG GG GG GA AT TT TA AA AT TA AC CC CG GA AA AT TA AC CG GT TT TG GA AT TT TG GT TT TT TA AT TA AC CG GA AA AC CG GA AT TC CA AA AG GA AA AA AG GG GT TG GG GC CC CT TC CT TA AT TT TT TA AT TA AT TG GC CT TA AT TC CA AC CA AT TT TT TG GG GA AG GG GG GG GT TC CT TG GC CG GT TA AC CC CA AT TT TA AG GC CT TA AG GT TT TG GG GT TG GG GG GG GT TA AA AG GA AG GC CC CT TA AC CC CA AA AG GG GC CG GA AC CG GA AT TG GG GT TT TA AG GC CG GG GG GT TC CT TG GA AG GA AG GG GA AT TG GA AT TC CC CG GT TC CA AC CA AC CT TG GG GC CA AC CT TG GA AA AA AC CA AC CG GG GG GC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CA AG GC CA AG GT TG GA AG GG GA AA AT TA AT TT TG GC CG GC CA AA AT TG GG GG GG GG GC CA AA AC CC CC CT TG GA AC CG GC CA AG GC CG GA AC CG GC CC CG GC CG GT TG GG GG GT TG GA AG GG GA AA AG GG GC CT TT TT TC CG GG GG GT TC CG GT TA AA AA AA AC CC CC CT TG GT TC CA AG GA AT TG GG GG GA AA AG GA AA AA AT TG GC CT TT TG GT TA AG GG GT TT TA AA AT TA AT TC CC CT TG GT TA AA AG GT TT TT TG GA AC CG GG GT TA AC CC CA AT TT TA AA AA AG GG GA AA AG GC CA AC CC CG GG GC CT TA AA AC CT TC CC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GG GA AG GG GG GT TG GC CA AA AG GC CG GT TT TG GT TT TC CG GG GA AA AT TC CA AC CT TG GG GG GC CG GT TA AA AA AG GG GG GC CG GC CG GT TA AG GG GC CG GG GC CT TT TA AG GC CA AA AG GT TC CA AG GA AT TG GT TG GA AA AA AG GC CC CC CA AC CG GG GC CT TT TA AA AC CC CG GT TG GG GA AA AG GT TG GC CA AT TT TT TG GA AA AA AC CT TG GC CT TT TC CG GC CT TT TG GA AG GT TA AT TC CA AG GA AG GG GG GG GA AA AG GG GT TG GG GA AA AT TT TC CC CC CG GG GT 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CT TG GG GC CG GG GC CA AT TG GG GC CT TA AA AG GA AC CA AT TG GC CA AA AG GT TC CG GT TA AC CG GC CG GA AA AA AG GT TC CC CC CT TT TC CG GG GG GG GA AG GC CG GA AG GT TA AG GA AG GT TG GG GC CG GA AA AA AG GG GG GC CG GA AG GT TA AA AT TG GC CA AT TG GG GG GT TA AA AC CG GT TA AC CC CC CT TG GG GG GC CA AC CA AG GG GG GA AT TA AG GC CC CG GC CG GG GG GA AA AA AC CT TG GC CG GG GG GT TA AA AT TA AC CC CT TG GA AT TG GA AG GA AC CC CA AC CG GA AG GG GC CC CA AC CG GA AG GG GC CC CT TC CG GC CG GG GT TC CA AA AA AG GG GG GT TG GG GG GG GA AT TC CC CT TT TC CG GG GG GA AC CC CT TG GC CC CG GG GC CC CT TG GG GG GA AG GC CG GG GC CC CC CA AT TG GT TC CC CT TA AT TC CA AG GC CT TT TG GT TT TG GG GT TG GA AG GG GT TA AA AC CG GG GC CT TC CA AC CC CA AA AG GG GC CG GA AC CG GA AC CG GG GG GT TA AG GC CG GG GG GA AC CT TG GA AG GA AG GG GT TT TG GG GC CC CC CG GC CC CG GC CA AT TT TG GG GG GA AC CT TG GA AG GA AC CA AC CT TG GC CC CC CA AG GA AC CT TC CC CT TA AC CG GG GG GA AG GG GC CT TG GC CA AG GT TA AA AC CG GA AA AT TA AT TT TG GT TC CC CA AA AT TG GG GG GC CG GA AA AA AG GC CC CT TG GA AG GA AC CA AG GC CA AA AT TG GC CC CG GC CG GT TG GC CG GG GG GA AC CG GA AA AG GT TC CC CT TT TC CG GG GG GA AT TG GT TA AA AA AC CC CG GC CT TG GT TC CA AG GG GG GG GT TT TA AC CC CA AA AG GC CG GA AC CC CG GG GG GC CT TT TA AA AC CA AG GG GC CC CC CG GG GG GA AG GT TT TG GA AG GG GC CA AC CC CC CC CA AG GA AG GG GA AA AG GC CC CA AC CG GG GC CT TA AA AC CT TT TC CG GT TG GC CC CA AG GC CA AG GC CC CG GC CG GG GT TA AA AT TA AC CG GA AA AG GG GT TG GG GC CG GA AG GC CG GT TT TG GT TT TC CG GG GA AA AT TC CA AC CT TG GG GG GC CT TT TA AA AA AG GA AG GC CA AC CG GT TA AG GG GC CG GG GA AT TG GA AT TC CA AA AG GC CG GT TC CA AT TG GT TG GA AA AA AT TC CC CC CT TC CG GG GC CT TC CA AA AC CC CG GA AG GG GA AA AC CT TG GC CA AT TG GG GC CG GA AA AC CT TG GA AT TC CG GT TC CT TT TG GA AG GG GC CA AG GG GC CA AA AG GG GG GT TG GC CG GT TG GG GA AA AC CT TC CT TT TG GG GT TG GG GA AG GC CG GG GT TG GG GA AA AT TG GC CG GT TA AG GA AT TA AT TC CA AA AG GA AG GG GA AA AC CG GC CC CG GG GA AG GG GT TG GA AA AG GA AC CG GA AC CG GC CA AC CT TG GG GG GC CC CT TG GA AC CC CT TG GA AC CG GC CT TG GA AG GG GT TG GC CG GA AA AA AG GC CC CA AG GG GG GG GG GG GC CA AA AA AC CG GG GG GA AT TT TA AG GA AT TA AC CC CC CC 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TG GT TA AG GA AG GG GT TG GA AA AA AT TT TC CG GT TA AG GA AT TA AT TC CG GG GG GA AG GG GA AA AT TA AC CC CG GG GT TG GG GC CG GA AA AG GG GC CG GA AC CT TT TT TC CT TG GG GC CT TG GA AA AT TA AC CT TG GA AC CG GC CT TG GA AG GG GC CG GC CG GA AA AA AG GC CG GT TG GG GG GG GA AG GC CA AA AA AC CA AG GG GA AT TT TA AG GA AT TA AC CC CC CT TG GG GT TA AG GT TC CC CA AC CG GC CC CG GT TA AA AA AC CG GA AT TG GT TC CA AA AC CT TA AG GA AT TG GC CA AG GG GG GG GG GT TG GT TT TG GA AT TC CC CC CT TT TC CT TG GT TG GT TC CG GC CA AG GC CT TA AA AC CG GC CA AC CT TA AA AG GT TT TG GA AC CC CG GC CC CT TG GG GG GG GA AG GT TA AC CG GG GT TC CG GC CA AA AG GA AT TT TA AA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GG GC CC CC CG GC CA AC CA AA AG GC CG GG GT TG GG GA AG GT TA AT TG GT TG GG GT TT TT TA AA AT TT TC CG GA AT TG GC CA AA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AC CC CT TG GG GT TC CT TT TG GA AC CA AT TC CC CC CG GA AA AA AA AA AG GC CC CT TT TA AG GA AA AA AT TA AG GG GG GA AA AG GT TG GC CT TC CT TC CT TT TT TG GA AG GA AG GA AA AT TT TT TG GG GT TG GA AC CA AG GG GT TG GC CT TG GC CA AT TG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CA AC CA AA AC CG GA AG GC CG GC CA AA AC CC CC CT TC CG GC CC CA AT TT TA AG GT TT TG GC CC CA AG GC CA AT TT TT TA AG GT TT TG GG GG GT TA AC CT TC CT TA AA AT TG GG GG GA AC CT TG GC CC CG GG GT TG GT TC CA AA AA AC CC CG GG GA AG GG GA AA AG GG GC CG GG GG GG GA AT TG GA AC CG GT TC CA AA AG GT TC CC CT TC CA AT TG GG GC CC CT TT TT TA AT TG GA AC CC CA AG GG GG GC CT TA AC CA AC CA AC CG GT TA AC CT TA AC CA AA AT TG GG GC CC CG GA AT TA AC CA AA AC CG GG GG GC CA AG GC CC CA AC CT TT TC CG GC CA AA AG GA AA AG GG GC CG GC CA AA AA AT TC CC CC CT TA AA AA AA AG GT TC CG GG GT TC CT TC CA AG GT TC CC CG GG GA AT TC CG GG GA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TC CC CG GT TG GA AA 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG GT TT TG GG GA AA AT TC CG GC CT TA AG GT TA AA AT TC CG GC CG GG GA AT TC CA AG GC CA AT TG GC CC CG GC CG GG GT TG GA AA AT TA AC CG GT TT TC CC CC CG GG GG GC CC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AC CA AC CC CA AC CG GG GG GA AG GT TC CG GG GT TT TG GT TA AC CC CA AG GA AA AG GC CG GG GT TT TG GA AG GC CC CA 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AA AC CC CT TT TC CG GG GG GA AG GG GC CA AG GG GC CC CG GC CC CA AA AG GG GT TA AT TG GG GC CT TG GG GT TA AA AC CT TG GG GG GG GT TG GA AA AG GT TC CG GT TA AA AC CA AA AG GG GT TA 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CG GG GT TA AG GT TC CC CT TG GG GC CC CC CT TA AA AA AC CG GA AT TG GT TC CC CA AC CT TA AG GG GT TT TG GA AC CG GT TC CC CC CT TC CT TG GA AC CG GG GG GG GC CA AT TC CG GG GC CC CG GA AA AA AC CA AA AA AA AG GC CG GT TT TA AA AG GT TG GG GA AC CC CG GC CC CT TG GG GG GG GA AG GT TA AC CG GG GT TC CG GC CA AA AG GG GC CT TA AA AA AA AC CT TC CA AA AA AG GG GA AA AT TT TG GA AC CG GG GG GG GG GC CT TC CA AC CA AC CA AA AG GC CG GG GT TG GG GA AG GC CA AT TG GT TT TG GC CT TT TA AA AT TT TC CG GA AT TG GC CA AA AC CG GC CG GA AA AG GA AA AC CC CT TT TA AT TC CC CT TG GG GG GC CT TT TG GA AC CA AT TG GC CA AC CG GG GA AT TG GC CC CT TA AC CC CT TG GG GA AA AA AC CA AG GG GG GT TC CG GG GT TT TG GC CC CC CT TT TC CG GG GG GG GT TG GA AA AA AC CG GT TA AC CA AC CA AG GG GT TG GC CT TG GC CA AT TG GG GC CT TG GT TC CG GT TC CA AG GC CT TC CG GT TG GT TC CG GT TG GA AG GA AT TG GT TT TG GG GG GT TT TA AA AG GT TC CC CC CG GT TA AA AC CG GA AG GC CG GA AA AA AC CC CC CT TT TG GT TC CG GC CT TA AG GT TT TG GC CC CA AG GC CG GC CG GC CC CT TT TC CG GG GG GT TG GG GC CG GG GG GG GA AC CT TC CT TA AG GC CG GA AG GA AC CT TG GC CC CG GG GT TG GT TC CA AA AA AC CC CG GG GA AG GG GA AA AG GG GT TG GG GG GG GA AT TG GA AC CG GT TC CA AA AG GT TC CC CT TC CA AT TG GG GC CC CT TT TT TA AT TG GC CC CC CA AG GG GG GC CT TG GC CA AA AA AC CG GT TG GC CT TA AC CA AA AT TG GG GC CT TG GG GG GA AC CA AA AA AC CC CG GA AC CG GC CA AA AG GA AC CC CG GC CG GA AG GG GT TG GG GA AG GC CA AA AA AT TC CG GG GT TA AA AA AA AC CC CC CA AG GC CC CC CC CA AG GT TT TC CG GG GA AT TT TG GG GA AG GT TC CT TG GC CA AA AC CT TC CG GA AC CT TC CC CA AT TG GA AA AG GT TT TG GG GA AA AT TC CG GC CT TA AG GT TA AA AT TC CG GC CG GT TA AT TC CA AG GC CC CA AT TG GA AT TG GC CG GG GT TG GA AA AT TG GT TG GT TT TC CC CT TG GA AG GC CC CT TT TG GT TA AC CA AC CA AC CC CG GC CC CC CG GT TC CA AA AG GT TC CA AT TG GG GA AA AG GC CC CG GG GG GA AG GC CA AC CC CC CG GA AA AG GT TC CG 
 </pre></div>
 </div>
 </div>
@@ -1159,7 +1443,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AG&#39;: 110, &#39;GA&#39;: 110, &#39;GT&#39;: 107, &#39;TT&#39;: 71, &#39;TG&#39;: 104, &#39;AT&#39;: 73, &#39;TC&#39;: 71, &#39;CA&#39;: 82, &#39;GG&#39;: 149, &#39;GC&#39;: 104, &#39;CT&#39;: 72, &#39;AA&#39;: 118, &#39;AC&#39;: 86, &#39;CG&#39;: 107, &#39;TA&#39;: 77, &#39;CC&#39;: 74}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;CT&#39;: 74, &#39;TG&#39;: 106, &#39;GG&#39;: 161, &#39;GC&#39;: 117, &#39;CG&#39;: 114, &#39;CA&#39;: 78, &#39;AT&#39;: 54, &#39;TA&#39;: 48, &#39;AA&#39;: 100, &#39;AG&#39;: 98, &#39;GA&#39;: 111, &#39;AC&#39;: 85, &#39;GT&#39;: 89, &#39;TC&#39;: 63, &#39;CC&#39;: 92, &#39;TT&#39;: 40}
 </pre></div>
 </div>
 </div>
@@ -1172,23 +1456,23 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AG    110
-GA    110
-GT    107
-TT     71
-TG    104
-AT     73
-TC     71
-CA     82
-GG    149
-GC    104
-CT     72
-AA    118
-AC     86
-CG    107
-TA     77
-CC     74
-Name: 1107691, dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CT     74
+TG    106
+GG    161
+GC    117
+CG    114
+CA     78
+AT     54
+TA     48
+AA    100
+AG     98
+GA    111
+AC     85
+GT     89
+TC     63
+CC     92
+TT     40
+Name: 3585814, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -1264,33 +1548,128 @@ Name: 1107691, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>CCACCCC</th>
-      <th>GTAGATG</th>
-      <th>GCCACTT</th>
-      <th>TAACCCG</th>
-      <th>CTGTCAA</th>
-      <th>GCGAACG</th>
-      <th>GTCGCTG</th>
-      <th>AGTATAT</th>
-      <th>TTCGACC</th>
-      <th>CGATAGC</th>
+      <th>CAGTAAC</th>
+      <th>ATCTCTA</th>
+      <th>CAGCCCA</th>
+      <th>AATGGGG</th>
+      <th>GATCGGG</th>
+      <th>TCGACAT</th>
+      <th>CCAATGG</th>
+      <th>TACCCCA</th>
+      <th>AACTTAA</th>
+      <th>CTAGTGG</th>
       <th>...</th>
-      <th>ACGGAGA</th>
-      <th>CTTCGAT</th>
-      <th>ACACTCG</th>
-      <th>ATACTAA</th>
-      <th>CGGGCTT</th>
-      <th>ACATTGG</th>
-      <th>AATTTTT</th>
-      <th>CTGGCTT</th>
-      <th>ACTCAGG</th>
-      <th>GGCACTC</th>
+      <th>TTGAAGT</th>
+      <th>CGTGGCG</th>
+      <th>AAAGATC</th>
+      <th>AAGGCCA</th>
+      <th>GTTACTT</th>
+      <th>CGAAGGG</th>
+      <th>GGGCTAT</th>
+      <th>GCGGCCG</th>
+      <th>GCCGATA</th>
+      <th>AACGTTC</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1107691</th>
+      <th>3585814</th>
+      <td>1</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>769232</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>184440</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>678586</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8875</th>
       <td>0</td>
       <td>1</td>
       <td>0</td>
@@ -1300,29 +1679,6 @@ Name: 1107691, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2103326</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>...</td>
       <td>0</td>
@@ -1337,11 +1693,35 @@ Name: 1107691, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>248300</th>
+      <th>3019092</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>255205</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1361,19 +1741,307 @@ Name: 1107691, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>584055</th>
+      <th>790466</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>968354</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>803541</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>307934</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>530501</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>517695</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4422380</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1093740</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>181204</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2335039</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>538768</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>150304</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>706878</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
       <td>...</td>
-      <td>1</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1385,55 +2053,55 @@ Name: 1107691, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>276662</th>
+      <th>189611</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1114113</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
       <td>0</td>
       <td>2</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>344695</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>575851</th>
+      <th>208492</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1457,57 +2125,7 @@ Name: 1107691, dtype: int64
       <td>0</td>
     </tr>
     <tr>
-      <th>4437359</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2979060</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>814083</th>
-      <td>0</td>
-      <td>0</td>
+      <th>147946</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1516,194 +2134,28 @@ Name: 1107691, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>585619</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3852499</th>
+      <th>301603</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1021365</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4347358</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>183954</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1031437</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>323750</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>359433</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1715,174 +2167,6 @@ Name: 1107691, dtype: int64
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>676616</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>542423</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>192741</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>314676</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>48003</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1127853</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>264731</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1924,104 +2208,104 @@ Name: 1107691, dtype: int64
   </thead>
   <tbody>
     <tr>
-      <th>1107691</th>
-      <td>k__Bacteria; p__Proteobacteria</td>
-    </tr>
-    <tr>
-      <th>2103326</th>
-      <td>k__Bacteria; p__Elusimicrobia</td>
-    </tr>
-    <tr>
-      <th>248300</th>
-      <td>k__Bacteria; p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>584055</th>
-      <td>k__Bacteria; p__Acidobacteria</td>
-    </tr>
-    <tr>
-      <th>276662</th>
-      <td>k__Bacteria; p__</td>
-    </tr>
-    <tr>
-      <th>344695</th>
-      <td>k__Bacteria; p__Firmicutes</td>
-    </tr>
-    <tr>
-      <th>575851</th>
-      <td>k__Bacteria; p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>4437359</th>
-      <td>k__Bacteria; p__Firmicutes</td>
-    </tr>
-    <tr>
-      <th>2979060</th>
-      <td>k__Bacteria; p__</td>
-    </tr>
-    <tr>
-      <th>814083</th>
+      <th>3585814</th>
       <td>k__Bacteria; p__Planctomycetes</td>
     </tr>
     <tr>
-      <th>585619</th>
+      <th>769232</th>
       <td>k__Bacteria; p__Proteobacteria</td>
     </tr>
     <tr>
-      <th>3852499</th>
-      <td>k__Bacteria; p__Proteobacteria</td>
-    </tr>
-    <tr>
-      <th>1021365</th>
-      <td>k__Bacteria; p__Armatimonadetes</td>
-    </tr>
-    <tr>
-      <th>4347358</th>
+      <th>184440</th>
       <td>k__Bacteria; p__Firmicutes</td>
     </tr>
     <tr>
-      <th>183954</th>
+      <th>678586</th>
       <td>k__Bacteria; p__Firmicutes</td>
     </tr>
     <tr>
-      <th>1031437</th>
-      <td>k__Bacteria; p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>323750</th>
+      <th>8875</th>
       <td>k__Bacteria; p__Proteobacteria</td>
     </tr>
     <tr>
-      <th>359433</th>
+      <th>3019092</th>
       <td>k__Bacteria; p__Acidobacteria</td>
     </tr>
     <tr>
-      <th>676616</th>
-      <td>k__Bacteria; p__Bacteroidetes</td>
+      <th>255205</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
     </tr>
     <tr>
-      <th>542423</th>
-      <td>k__Bacteria; p__SAR406</td>
-    </tr>
-    <tr>
-      <th>192741</th>
+      <th>790466</th>
       <td>k__Bacteria; p__Firmicutes</td>
     </tr>
     <tr>
-      <th>314676</th>
+      <th>968354</th>
       <td>k__Bacteria; p__Firmicutes</td>
     </tr>
     <tr>
-      <th>48003</th>
+      <th>803541</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>307934</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>530501</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>517695</th>
       <td>k__Bacteria; p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>1127853</th>
+      <th>4422380</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>1093740</th>
+      <td>k__Bacteria; p__Chloroflexi</td>
+    </tr>
+    <tr>
+      <th>181204</th>
       <td>k__Bacteria; p__Firmicutes</td>
     </tr>
     <tr>
-      <th>264731</th>
+      <th>2335039</th>
+      <td>k__Archaea; p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>538768</th>
+      <td>k__Bacteria; p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>150304</th>
       <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>706878</th>
+      <td>k__Bacteria; p__Verrucomicrobia</td>
+    </tr>
+    <tr>
+      <th>189611</th>
+      <td>k__Bacteria; p__Firmicutes</td>
+    </tr>
+    <tr>
+      <th>1114113</th>
+      <td>k__Bacteria; p__Chloroflexi</td>
+    </tr>
+    <tr>
+      <th>208492</th>
+      <td>k__Bacteria; p__OP11</td>
+    </tr>
+    <tr>
+      <th>147946</th>
+      <td>k__Bacteria; p__Proteobacteria</td>
+    </tr>
+    <tr>
+      <th>301603</th>
+      <td>k__Bacteria; p__Spirochaetes</td>
     </tr>
   </tbody>
 </table>
@@ -2091,633 +2375,633 @@ Name: 1107691, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>k__Bacteria; p__Proteobacteria</th>
-      <th>k__Bacteria; p__Elusimicrobia</th>
-      <th>k__Bacteria; p__Bacteroidetes</th>
-      <th>k__Bacteria; p__Acidobacteria</th>
-      <th>k__Bacteria; p__</th>
-      <th>k__Bacteria; p__Firmicutes</th>
       <th>k__Bacteria; p__Planctomycetes</th>
-      <th>k__Bacteria; p__Armatimonadetes</th>
-      <th>k__Bacteria; p__SAR406</th>
+      <th>k__Bacteria; p__Proteobacteria</th>
+      <th>k__Bacteria; p__Firmicutes</th>
+      <th>k__Bacteria; p__Acidobacteria</th>
       <th>k__Bacteria; p__Actinobacteria</th>
+      <th>k__Bacteria; p__Chloroflexi</th>
+      <th>k__Archaea; p__Crenarchaeota</th>
+      <th>k__Bacteria; p__Bacteroidetes</th>
+      <th>k__Bacteria; p__Verrucomicrobia</th>
+      <th>k__Bacteria; p__OP11</th>
       <th>...</th>
-      <th>k__Bacteria; p__WS6</th>
-      <th>k__Bacteria; p__GN01</th>
-      <th>k__Bacteria; p__GAL15</th>
-      <th>k__Bacteria; p__NPL-UPA2</th>
-      <th>k__Bacteria; p__LCP-89</th>
-      <th>k__Bacteria; p__SR1</th>
-      <th>k__Bacteria; p__PAUC34f</th>
-      <th>k__Bacteria; p__Kazan-3B-28</th>
+      <th>k__Bacteria; p__KSB3</th>
       <th>k__Bacteria; p__WPS-2</th>
+      <th>k__Bacteria; p__OP9</th>
+      <th>k__Bacteria; p__FBP</th>
+      <th>k__Bacteria; p__TA06</th>
+      <th>k__Bacteria; p__GOUTA4</th>
       <th>k__Bacteria; p__FCPU426</th>
+      <th>k__Bacteria; p__CD12</th>
+      <th>k__Bacteria; p__AD3</th>
+      <th>k__Bacteria; p__Chrysiogenetes</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>CCACCCC</th>
-      <td>0.010796</td>
-      <td>0.001391</td>
-      <td>0.033208</td>
-      <td>0.031953</td>
-      <td>0.001391</td>
-      <td>0.014181</td>
-      <td>0.005408</td>
-      <td>0.001113</td>
-      <td>0.001193</td>
-      <td>0.019148</td>
+      <th>CAGTAAC</th>
+      <td>0.195461</td>
+      <td>0.053323</td>
+      <td>0.084533</td>
+      <td>0.013322</td>
+      <td>0.075767</td>
+      <td>0.025976</td>
+      <td>0.591751</td>
+      <td>0.054335</td>
+      <td>0.060783</td>
+      <td>0.004349</td>
       <td>...</td>
-      <td>0.008348</td>
-      <td>0.008348</td>
-      <td>0.005566</td>
-      <td>0.008348</td>
-      <td>0.008348</td>
-      <td>0.004174</td>
-      <td>0.008348</td>
-      <td>0.008348</td>
-      <td>0.008348</td>
-      <td>0.008348</td>
+      <td>0.019571</td>
+      <td>0.019571</td>
+      <td>0.019571</td>
+      <td>0.039142</td>
+      <td>0.039142</td>
+      <td>0.039142</td>
+      <td>0.026095</td>
+      <td>0.039142</td>
+      <td>0.039142</td>
+      <td>0.539142</td>
     </tr>
     <tr>
-      <th>GTAGATG</th>
-      <td>0.013679</td>
-      <td>0.085675</td>
-      <td>0.054341</td>
-      <td>0.019287</td>
-      <td>0.002341</td>
-      <td>0.032832</td>
-      <td>0.016107</td>
-      <td>0.001873</td>
-      <td>0.002007</td>
-      <td>0.007741</td>
+      <th>ATCTCTA</th>
+      <td>0.031736</td>
+      <td>0.071055</td>
+      <td>0.005087</td>
+      <td>0.013116</td>
+      <td>0.011495</td>
+      <td>0.013032</td>
+      <td>0.129387</td>
+      <td>0.087419</td>
+      <td>0.190461</td>
+      <td>0.002561</td>
       <td>...</td>
-      <td>0.014047</td>
-      <td>0.014047</td>
-      <td>0.009365</td>
-      <td>0.014047</td>
-      <td>0.014047</td>
-      <td>0.007024</td>
-      <td>0.014047</td>
-      <td>0.014047</td>
-      <td>0.014047</td>
-      <td>0.014047</td>
+      <td>0.011523</td>
+      <td>0.011523</td>
+      <td>0.011523</td>
+      <td>0.023045</td>
+      <td>0.023045</td>
+      <td>0.023045</td>
+      <td>0.348697</td>
+      <td>0.523045</td>
+      <td>0.023045</td>
+      <td>0.023045</td>
     </tr>
     <tr>
-      <th>GCCACTT</th>
-      <td>0.011514</td>
-      <td>0.001358</td>
-      <td>0.051307</td>
-      <td>0.000104</td>
-      <td>0.001358</td>
-      <td>0.008961</td>
-      <td>0.021363</td>
-      <td>0.001086</td>
-      <td>0.001164</td>
-      <td>0.015329</td>
+      <th>CAGCCCA</th>
+      <td>0.006384</td>
+      <td>0.006403</td>
+      <td>0.023116</td>
+      <td>0.000097</td>
+      <td>0.015151</td>
+      <td>0.006466</td>
+      <td>0.026028</td>
+      <td>0.024119</td>
+      <td>0.000151</td>
+      <td>0.000839</td>
       <td>...</td>
-      <td>0.008148</td>
-      <td>0.008148</td>
-      <td>0.005432</td>
-      <td>0.008148</td>
-      <td>0.008148</td>
-      <td>0.004074</td>
-      <td>0.008148</td>
-      <td>0.008148</td>
-      <td>0.008148</td>
-      <td>0.008148</td>
+      <td>0.003774</td>
+      <td>0.003774</td>
+      <td>0.003774</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.005032</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
+      <td>0.007548</td>
     </tr>
     <tr>
-      <th>TAACCCG</th>
-      <td>0.095693</td>
-      <td>0.092407</td>
-      <td>0.090662</td>
-      <td>0.338273</td>
-      <td>0.259073</td>
-      <td>0.104481</td>
-      <td>0.096324</td>
-      <td>0.207259</td>
-      <td>0.007777</td>
-      <td>0.107286</td>
+      <th>AATGGGG</th>
+      <td>0.146847</td>
+      <td>0.458344</td>
+      <td>0.471010</td>
+      <td>0.380440</td>
+      <td>0.088108</td>
+      <td>0.142348</td>
+      <td>0.060221</td>
+      <td>0.227935</td>
+      <td>0.413486</td>
+      <td>0.186035</td>
       <td>...</td>
-      <td>0.054439</td>
-      <td>0.054439</td>
-      <td>0.036293</td>
-      <td>0.054439</td>
-      <td>0.554439</td>
-      <td>0.027220</td>
-      <td>0.054439</td>
-      <td>0.054439</td>
-      <td>0.054439</td>
-      <td>0.054439</td>
+      <td>0.587158</td>
+      <td>0.337158</td>
+      <td>0.587158</td>
+      <td>0.174315</td>
+      <td>0.174315</td>
+      <td>0.174315</td>
+      <td>0.116210</td>
+      <td>0.174315</td>
+      <td>0.174315</td>
+      <td>0.174315</td>
     </tr>
     <tr>
-      <th>CTGTCAA</th>
-      <td>0.048911</td>
-      <td>0.002958</td>
-      <td>0.021170</td>
-      <td>0.032073</td>
-      <td>0.002958</td>
-      <td>0.026126</td>
-      <td>0.053380</td>
-      <td>0.002366</td>
-      <td>0.073964</td>
-      <td>0.011586</td>
+      <th>GATCGGG</th>
+      <td>0.044417</td>
+      <td>0.042658</td>
+      <td>0.052031</td>
+      <td>0.096553</td>
+      <td>0.143631</td>
+      <td>0.159632</td>
+      <td>0.027238</td>
+      <td>0.063347</td>
+      <td>0.060623</td>
+      <td>0.003460</td>
       <td>...</td>
-      <td>0.017746</td>
-      <td>0.017746</td>
-      <td>0.011831</td>
-      <td>0.017746</td>
-      <td>0.017746</td>
-      <td>0.008873</td>
-      <td>0.017746</td>
-      <td>0.017746</td>
-      <td>0.017746</td>
-      <td>0.017746</td>
+      <td>0.015572</td>
+      <td>0.015572</td>
+      <td>0.015572</td>
+      <td>0.031144</td>
+      <td>0.031144</td>
+      <td>0.031144</td>
+      <td>0.020763</td>
+      <td>0.531144</td>
+      <td>0.031144</td>
+      <td>0.031144</td>
     </tr>
     <tr>
-      <th>GCGAACG</th>
-      <td>0.267652</td>
-      <td>0.025353</td>
-      <td>0.041183</td>
-      <td>0.377734</td>
-      <td>0.692020</td>
-      <td>0.187401</td>
-      <td>0.687789</td>
-      <td>0.886949</td>
-      <td>0.950303</td>
-      <td>0.924825</td>
+      <th>TCGACAT</th>
+      <td>0.006359</td>
+      <td>0.002139</td>
+      <td>0.005062</td>
+      <td>0.012892</td>
+      <td>0.000042</td>
+      <td>0.006440</td>
+      <td>0.000285</td>
+      <td>0.054234</td>
+      <td>0.030111</td>
+      <td>0.000617</td>
       <td>...</td>
-      <td>0.152120</td>
-      <td>0.652120</td>
-      <td>0.768080</td>
-      <td>0.652120</td>
-      <td>0.152120</td>
-      <td>0.076060</td>
-      <td>0.652120</td>
-      <td>0.652120</td>
-      <td>0.152120</td>
-      <td>0.652120</td>
+      <td>0.002774</td>
+      <td>0.002774</td>
+      <td>0.002774</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.003699</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
+      <td>0.005549</td>
     </tr>
     <tr>
-      <th>GTCGCTG</th>
-      <td>0.019436</td>
-      <td>0.086324</td>
-      <td>0.012121</td>
-      <td>0.051184</td>
-      <td>0.252991</td>
-      <td>0.010467</td>
-      <td>0.202319</td>
-      <td>0.002393</td>
-      <td>0.002564</td>
-      <td>0.003954</td>
-      <td>...</td>
-      <td>0.017946</td>
-      <td>0.017946</td>
-      <td>0.011964</td>
-      <td>0.017946</td>
-      <td>0.017946</td>
-      <td>0.008973</td>
-      <td>0.017946</td>
-      <td>0.017946</td>
-      <td>0.017946</td>
-      <td>0.017946</td>
-    </tr>
-    <tr>
-      <th>AGTATAT</th>
-      <td>0.009353</td>
-      <td>0.000808</td>
-      <td>0.031689</td>
-      <td>0.000062</td>
-      <td>0.000808</td>
-      <td>0.005227</td>
-      <td>0.000052</td>
-      <td>0.000647</td>
-      <td>0.000693</td>
-      <td>0.000037</td>
-      <td>...</td>
-      <td>0.004849</td>
-      <td>0.004849</td>
-      <td>0.003233</td>
-      <td>0.004849</td>
-      <td>0.004849</td>
-      <td>0.752425</td>
-      <td>0.004849</td>
-      <td>0.004849</td>
-      <td>0.004849</td>
-      <td>0.004849</td>
-    </tr>
-    <tr>
-      <th>TTCGACC</th>
-      <td>0.007925</td>
-      <td>0.001925</td>
-      <td>0.009085</td>
-      <td>0.140274</td>
-      <td>0.251925</td>
-      <td>0.003000</td>
-      <td>0.000123</td>
-      <td>0.001540</td>
-      <td>0.787364</td>
-      <td>0.007722</td>
-      <td>...</td>
-      <td>0.011548</td>
-      <td>0.011548</td>
-      <td>0.007698</td>
-      <td>0.011548</td>
-      <td>0.511548</td>
-      <td>0.005774</td>
-      <td>0.011548</td>
-      <td>0.011548</td>
-      <td>0.011548</td>
-      <td>0.011548</td>
-    </tr>
-    <tr>
-      <th>CGATAGC</th>
-      <td>0.017277</td>
-      <td>0.002708</td>
-      <td>0.096580</td>
-      <td>0.063901</td>
-      <td>0.002708</td>
-      <td>0.027616</td>
-      <td>0.010811</td>
-      <td>0.002166</td>
-      <td>0.073750</td>
-      <td>0.000124</td>
-      <td>...</td>
-      <td>0.016247</td>
-      <td>0.016247</td>
-      <td>0.344165</td>
-      <td>0.016247</td>
-      <td>0.016247</td>
-      <td>0.008123</td>
-      <td>0.016247</td>
-      <td>0.016247</td>
-      <td>0.016247</td>
-      <td>0.016247</td>
-    </tr>
-    <tr>
-      <th>TTGGTAT</th>
-      <td>0.007196</td>
-      <td>0.000841</td>
-      <td>0.016606</td>
-      <td>0.006434</td>
-      <td>0.000841</td>
-      <td>0.005228</td>
-      <td>0.037288</td>
-      <td>0.067340</td>
-      <td>0.000721</td>
-      <td>0.003855</td>
-      <td>...</td>
-      <td>0.005049</td>
-      <td>0.005049</td>
-      <td>0.003366</td>
-      <td>0.005049</td>
-      <td>0.005049</td>
-      <td>0.002524</td>
-      <td>0.005049</td>
-      <td>0.005049</td>
-      <td>0.005049</td>
-      <td>0.005049</td>
-    </tr>
-    <tr>
-      <th>AATCGAT</th>
-      <td>0.002162</td>
-      <td>0.000608</td>
-      <td>0.013586</td>
-      <td>0.000046</td>
-      <td>0.000608</td>
-      <td>0.008954</td>
-      <td>0.015996</td>
-      <td>0.000487</td>
-      <td>0.000521</td>
-      <td>0.003845</td>
-      <td>...</td>
-      <td>0.003649</td>
-      <td>0.003649</td>
-      <td>0.002433</td>
-      <td>0.003649</td>
-      <td>0.003649</td>
-      <td>0.001825</td>
-      <td>0.003649</td>
-      <td>0.003649</td>
-      <td>0.003649</td>
-      <td>0.003649</td>
-    </tr>
-    <tr>
-      <th>TTTAGGT</th>
-      <td>0.021576</td>
-      <td>0.001008</td>
-      <td>0.012085</td>
-      <td>0.000077</td>
-      <td>0.001008</td>
-      <td>0.004483</td>
-      <td>0.016022</td>
-      <td>0.067473</td>
+      <th>CCAATGG</th>
+      <td>0.050526</td>
+      <td>0.040507</td>
+      <td>0.011577</td>
+      <td>0.013036</td>
+      <td>0.079372</td>
+      <td>0.070278</td>
       <td>0.000864</td>
-      <td>0.003863</td>
+      <td>0.009087</td>
+      <td>0.040337</td>
+      <td>0.112983</td>
       <td>...</td>
-      <td>0.006049</td>
-      <td>0.006049</td>
-      <td>0.004033</td>
-      <td>0.006049</td>
-      <td>0.006049</td>
-      <td>0.003024</td>
-      <td>0.006049</td>
-      <td>0.006049</td>
-      <td>0.006049</td>
-      <td>0.006049</td>
+      <td>0.008423</td>
+      <td>0.008423</td>
+      <td>0.008423</td>
+      <td>0.516847</td>
+      <td>0.016847</td>
+      <td>0.016847</td>
+      <td>0.011231</td>
+      <td>0.016847</td>
+      <td>0.016847</td>
+      <td>0.016847</td>
     </tr>
     <tr>
-      <th>AAGGGCC</th>
-      <td>0.029500</td>
-      <td>0.169591</td>
-      <td>0.031727</td>
-      <td>0.032071</td>
-      <td>0.086258</td>
-      <td>0.011958</td>
-      <td>0.127846</td>
-      <td>0.069006</td>
-      <td>0.073935</td>
-      <td>0.034485</td>
+      <th>TACCCCA</th>
+      <td>0.094837</td>
+      <td>0.026335</td>
+      <td>0.028938</td>
+      <td>0.000507</td>
+      <td>0.019166</td>
+      <td>0.229803</td>
+      <td>0.078951</td>
+      <td>0.173312</td>
+      <td>0.080791</td>
+      <td>0.004394</td>
       <td>...</td>
-      <td>0.017546</td>
-      <td>0.517546</td>
-      <td>0.011698</td>
-      <td>0.017546</td>
-      <td>0.017546</td>
-      <td>0.008773</td>
-      <td>0.017546</td>
-      <td>0.017546</td>
-      <td>0.017546</td>
-      <td>0.017546</td>
+      <td>0.019771</td>
+      <td>0.019771</td>
+      <td>0.769771</td>
+      <td>0.039542</td>
+      <td>0.039542</td>
+      <td>0.039542</td>
+      <td>0.026361</td>
+      <td>0.039542</td>
+      <td>0.039542</td>
+      <td>0.039542</td>
     </tr>
     <tr>
-      <th>TCCCCTC</th>
-      <td>0.007915</td>
-      <td>0.000858</td>
-      <td>0.019623</td>
-      <td>0.025543</td>
-      <td>0.000858</td>
-      <td>0.008211</td>
-      <td>0.005374</td>
-      <td>0.000687</td>
-      <td>0.000736</td>
-      <td>0.007673</td>
+      <th>AACTTAA</th>
+      <td>0.000250</td>
+      <td>0.016363</td>
+      <td>0.031076</td>
+      <td>0.000254</td>
+      <td>0.003923</td>
+      <td>0.006622</td>
+      <td>0.924095</td>
+      <td>0.006084</td>
+      <td>0.000397</td>
+      <td>0.113316</td>
       <td>...</td>
-      <td>0.005149</td>
-      <td>0.005149</td>
-      <td>0.003433</td>
-      <td>0.005149</td>
-      <td>0.005149</td>
-      <td>0.002574</td>
-      <td>0.005149</td>
-      <td>0.005149</td>
-      <td>0.005149</td>
-      <td>0.005149</td>
+      <td>0.009923</td>
+      <td>0.009923</td>
+      <td>0.009923</td>
+      <td>0.019846</td>
+      <td>0.019846</td>
+      <td>0.019846</td>
+      <td>0.013231</td>
+      <td>0.019846</td>
+      <td>0.019846</td>
+      <td>0.019846</td>
     </tr>
     <tr>
-      <th>CCCACGT</th>
-      <td>0.019425</td>
-      <td>0.251691</td>
-      <td>0.021147</td>
-      <td>0.000129</td>
-      <td>0.001691</td>
-      <td>0.009709</td>
-      <td>0.058619</td>
-      <td>0.001353</td>
-      <td>0.001450</td>
+      <th>CTAGTGG</th>
+      <td>0.031907</td>
+      <td>0.074626</td>
+      <td>0.085251</td>
+      <td>0.032521</td>
+      <td>0.049333</td>
+      <td>0.108747</td>
+      <td>0.078802</td>
+      <td>0.012159</td>
+      <td>0.210733</td>
+      <td>0.059627</td>
+      <td>...</td>
+      <td>0.268321</td>
+      <td>0.518321</td>
+      <td>0.018321</td>
+      <td>0.036643</td>
+      <td>0.036643</td>
+      <td>0.036643</td>
+      <td>0.024428</td>
+      <td>0.036643</td>
+      <td>0.036643</td>
+      <td>0.536643</td>
+    </tr>
+    <tr>
+      <th>TGATCTG</th>
+      <td>0.019209</td>
+      <td>0.031999</td>
+      <td>0.075851</td>
+      <td>0.064451</td>
+      <td>0.151148</td>
+      <td>0.095887</td>
+      <td>0.001392</td>
+      <td>0.016648</td>
+      <td>0.080543</td>
+      <td>0.003016</td>
+      <td>...</td>
+      <td>0.013572</td>
+      <td>0.013572</td>
+      <td>0.013572</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.018096</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+      <td>0.027145</td>
+    </tr>
+    <tr>
+      <th>AACCCCA</th>
+      <td>0.138653</td>
+      <td>0.022050</td>
+      <td>0.083788</td>
+      <td>0.000294</td>
+      <td>0.019041</td>
+      <td>0.025770</td>
+      <td>0.052459</td>
+      <td>0.034708</td>
+      <td>0.000459</td>
+      <td>0.058105</td>
+      <td>...</td>
+      <td>0.011473</td>
+      <td>0.011473</td>
+      <td>0.011473</td>
+      <td>0.022945</td>
+      <td>0.022945</td>
+      <td>0.022945</td>
+      <td>0.015297</td>
+      <td>0.022945</td>
+      <td>0.022945</td>
+      <td>0.022945</td>
+    </tr>
+    <tr>
+      <th>AGGCACC</th>
+      <td>0.025248</td>
+      <td>0.017056</td>
+      <td>0.007953</td>
+      <td>0.006503</td>
+      <td>0.034017</td>
+      <td>0.012831</td>
+      <td>0.000372</td>
+      <td>0.010564</td>
+      <td>0.030145</td>
+      <td>0.000805</td>
+      <td>...</td>
+      <td>0.003624</td>
+      <td>0.003624</td>
+      <td>0.003624</td>
+      <td>0.007249</td>
+      <td>0.007249</td>
+      <td>0.007249</td>
+      <td>0.004832</td>
+      <td>0.007249</td>
+      <td>0.007249</td>
+      <td>0.007249</td>
+    </tr>
+    <tr>
+      <th>GGCAACT</th>
+      <td>0.069455</td>
+      <td>0.041934</td>
+      <td>0.017360</td>
+      <td>0.102842</td>
+      <td>0.000163</td>
+      <td>0.044862</td>
+      <td>0.026751</td>
+      <td>0.102475</td>
+      <td>0.010433</td>
+      <td>0.002405</td>
+      <td>...</td>
+      <td>0.010823</td>
+      <td>0.010823</td>
+      <td>0.010823</td>
+      <td>0.021646</td>
+      <td>0.021646</td>
+      <td>0.021646</td>
+      <td>0.014430</td>
+      <td>0.021646</td>
+      <td>0.021646</td>
+      <td>0.021646</td>
+    </tr>
+    <tr>
+      <th>CGCAGCT</th>
+      <td>0.001107</td>
+      <td>0.363051</td>
+      <td>0.108430</td>
+      <td>0.058821</td>
+      <td>0.328966</td>
+      <td>0.083924</td>
+      <td>0.004514</td>
+      <td>0.013819</td>
+      <td>0.031761</td>
+      <td>0.009781</td>
+      <td>...</td>
+      <td>0.044016</td>
+      <td>0.544016</td>
+      <td>0.294016</td>
+      <td>0.588032</td>
+      <td>0.088032</td>
+      <td>0.088032</td>
+      <td>0.392022</td>
+      <td>0.088032</td>
+      <td>0.088032</td>
+      <td>0.088032</td>
+    </tr>
+    <tr>
+      <th>TGTTGCT</th>
+      <td>0.088286</td>
+      <td>0.019913</td>
+      <td>0.015190</td>
+      <td>0.070753</td>
+      <td>0.105802</td>
+      <td>0.051194</td>
+      <td>0.077884</td>
+      <td>0.010599</td>
+      <td>0.050375</td>
+      <td>0.002083</td>
+      <td>...</td>
+      <td>0.009373</td>
+      <td>0.009373</td>
+      <td>0.009373</td>
+      <td>0.018746</td>
+      <td>0.518746</td>
+      <td>0.018746</td>
+      <td>0.012498</td>
+      <td>0.018746</td>
+      <td>0.018746</td>
+      <td>0.018746</td>
+    </tr>
+    <tr>
+      <th>GCACATT</th>
       <td>0.000077</td>
-      <td>...</td>
-      <td>0.010148</td>
-      <td>0.010148</td>
-      <td>0.006765</td>
-      <td>0.010148</td>
-      <td>0.010148</td>
-      <td>0.005074</td>
-      <td>0.010148</td>
-      <td>0.010148</td>
-      <td>0.010148</td>
-      <td>0.010148</td>
-    </tr>
-    <tr>
-      <th>TCTGGCC</th>
-      <td>0.035254</td>
-      <td>0.086558</td>
-      <td>0.013633</td>
-      <td>0.000246</td>
-      <td>0.003224</td>
-      <td>0.045517</td>
-      <td>0.010844</td>
-      <td>0.135913</td>
-      <td>0.145621</td>
-      <td>0.019232</td>
-      <td>...</td>
-      <td>0.019346</td>
-      <td>0.019346</td>
-      <td>0.012897</td>
-      <td>0.519346</td>
-      <td>0.019346</td>
-      <td>0.009673</td>
-      <td>0.019346</td>
-      <td>0.019346</td>
-      <td>0.019346</td>
-      <td>0.019346</td>
-    </tr>
-    <tr>
-      <th>CACCTTG</th>
-      <td>0.005760</td>
-      <td>0.001025</td>
-      <td>0.007560</td>
+      <td>0.009242</td>
+      <td>0.005063</td>
+      <td>0.000079</td>
+      <td>0.000046</td>
       <td>0.006448</td>
-      <td>0.001025</td>
-      <td>0.015669</td>
-      <td>0.010704</td>
-      <td>0.000820</td>
-      <td>0.000878</td>
-      <td>0.034398</td>
+      <td>0.025956</td>
+      <td>0.019597</td>
+      <td>0.060123</td>
+      <td>0.000683</td>
       <td>...</td>
-      <td>0.506149</td>
+      <td>0.003074</td>
+      <td>0.003074</td>
+      <td>0.003074</td>
+      <td>0.006149</td>
+      <td>0.006149</td>
       <td>0.006149</td>
       <td>0.004099</td>
       <td>0.006149</td>
       <td>0.006149</td>
-      <td>0.003074</td>
-      <td>0.006149</td>
-      <td>0.006149</td>
-      <td>0.006149</td>
       <td>0.006149</td>
     </tr>
     <tr>
-      <th>TCTGAGT</th>
-      <td>0.012233</td>
-      <td>0.084675</td>
-      <td>0.031698</td>
-      <td>0.019211</td>
-      <td>0.001341</td>
-      <td>0.008215</td>
-      <td>0.000086</td>
-      <td>0.001073</td>
-      <td>0.001150</td>
-      <td>0.011512</td>
+      <th>ACCAATT</th>
+      <td>0.000199</td>
+      <td>0.013517</td>
+      <td>0.002911</td>
+      <td>0.006613</td>
+      <td>0.003893</td>
+      <td>0.006571</td>
+      <td>0.000813</td>
+      <td>0.191313</td>
+      <td>0.010317</td>
+      <td>0.001761</td>
       <td>...</td>
-      <td>0.508048</td>
-      <td>0.008048</td>
-      <td>0.005366</td>
-      <td>0.008048</td>
-      <td>0.008048</td>
-      <td>0.004024</td>
-      <td>0.008048</td>
-      <td>0.008048</td>
-      <td>0.008048</td>
-      <td>0.008048</td>
+      <td>0.007923</td>
+      <td>0.007923</td>
+      <td>0.007923</td>
+      <td>0.015847</td>
+      <td>0.015847</td>
+      <td>0.015847</td>
+      <td>0.010565</td>
+      <td>0.015847</td>
+      <td>0.015847</td>
+      <td>0.015847</td>
     </tr>
     <tr>
-      <th>AAACACC</th>
-      <td>0.014394</td>
-      <td>0.001791</td>
-      <td>0.030198</td>
-      <td>0.019245</td>
-      <td>0.001791</td>
-      <td>0.021642</td>
-      <td>0.000114</td>
-      <td>0.001433</td>
-      <td>0.001535</td>
-      <td>0.045884</td>
+      <th>GTCCCTG</th>
+      <td>0.050500</td>
+      <td>0.005703</td>
+      <td>0.005075</td>
+      <td>0.006599</td>
+      <td>0.003885</td>
+      <td>0.012927</td>
+      <td>0.795628</td>
+      <td>0.010587</td>
+      <td>0.110295</td>
+      <td>0.001639</td>
       <td>...</td>
-      <td>0.010748</td>
-      <td>0.010748</td>
-      <td>0.007165</td>
-      <td>0.010748</td>
-      <td>0.010748</td>
-      <td>0.005374</td>
-      <td>0.010748</td>
-      <td>0.010748</td>
-      <td>0.010748</td>
-      <td>0.010748</td>
+      <td>0.007374</td>
+      <td>0.007374</td>
+      <td>0.257374</td>
+      <td>0.014747</td>
+      <td>0.014747</td>
+      <td>0.014747</td>
+      <td>0.009831</td>
+      <td>0.014747</td>
+      <td>0.014747</td>
+      <td>0.014747</td>
     </tr>
     <tr>
-      <th>GATCGAA</th>
-      <td>0.017999</td>
-      <td>0.003074</td>
-      <td>0.158427</td>
-      <td>0.025713</td>
-      <td>0.086408</td>
-      <td>0.006739</td>
-      <td>0.058707</td>
-      <td>0.135793</td>
-      <td>0.074064</td>
-      <td>0.007774</td>
+      <th>CGGCGAG</th>
+      <td>0.031706</td>
+      <td>0.081705</td>
+      <td>0.020246</td>
+      <td>0.025906</td>
+      <td>0.030344</td>
+      <td>0.076696</td>
+      <td>0.001059</td>
+      <td>0.015122</td>
+      <td>0.100413</td>
+      <td>0.002294</td>
       <td>...</td>
-      <td>0.018446</td>
-      <td>0.018446</td>
-      <td>0.012298</td>
-      <td>0.018446</td>
-      <td>0.018446</td>
-      <td>0.009223</td>
-      <td>0.018446</td>
-      <td>0.018446</td>
-      <td>0.018446</td>
-      <td>0.018446</td>
+      <td>0.010323</td>
+      <td>0.010323</td>
+      <td>0.010323</td>
+      <td>0.020646</td>
+      <td>0.020646</td>
+      <td>0.020646</td>
+      <td>0.013764</td>
+      <td>0.020646</td>
+      <td>0.020646</td>
+      <td>0.020646</td>
     </tr>
     <tr>
-      <th>TTACAAC</th>
-      <td>0.002880</td>
-      <td>0.000508</td>
-      <td>0.004534</td>
-      <td>0.000039</td>
-      <td>0.000508</td>
-      <td>0.014919</td>
-      <td>0.000032</td>
-      <td>0.000407</td>
-      <td>0.000436</td>
-      <td>0.000023</td>
+      <th>CTAAGCT</th>
+      <td>0.025297</td>
+      <td>0.008539</td>
+      <td>0.009402</td>
+      <td>0.019374</td>
+      <td>0.007631</td>
+      <td>0.000142</td>
+      <td>0.000572</td>
+      <td>0.066299</td>
+      <td>0.040223</td>
+      <td>0.001239</td>
       <td>...</td>
-      <td>0.003049</td>
-      <td>0.003049</td>
-      <td>0.002033</td>
-      <td>0.003049</td>
-      <td>0.003049</td>
-      <td>0.001525</td>
-      <td>0.003049</td>
-      <td>0.003049</td>
-      <td>0.003049</td>
-      <td>0.003049</td>
+      <td>0.005574</td>
+      <td>0.005574</td>
+      <td>0.005574</td>
+      <td>0.011148</td>
+      <td>0.011148</td>
+      <td>0.011148</td>
+      <td>0.007432</td>
+      <td>0.011148</td>
+      <td>0.011148</td>
+      <td>0.011148</td>
     </tr>
     <tr>
-      <th>CTATGAT</th>
-      <td>0.006485</td>
-      <td>0.001708</td>
-      <td>0.058854</td>
-      <td>0.051086</td>
-      <td>0.001708</td>
-      <td>0.013438</td>
-      <td>0.021386</td>
-      <td>0.001366</td>
-      <td>0.072893</td>
-      <td>0.000078</td>
+      <th>CGTATCA</th>
+      <td>0.176377</td>
+      <td>0.014236</td>
+      <td>0.005086</td>
+      <td>0.115666</td>
+      <td>0.007713</td>
+      <td>0.063974</td>
+      <td>0.001125</td>
+      <td>0.087415</td>
+      <td>0.290439</td>
+      <td>0.002438</td>
       <td>...</td>
-      <td>0.010248</td>
-      <td>0.010248</td>
-      <td>0.006832</td>
-      <td>0.010248</td>
-      <td>0.010248</td>
-      <td>0.005124</td>
-      <td>0.010248</td>
-      <td>0.010248</td>
-      <td>0.010248</td>
-      <td>0.010248</td>
+      <td>0.010973</td>
+      <td>0.010973</td>
+      <td>0.010973</td>
+      <td>0.021946</td>
+      <td>0.021946</td>
+      <td>0.021946</td>
+      <td>0.014630</td>
+      <td>0.021946</td>
+      <td>0.021946</td>
+      <td>0.021946</td>
     </tr>
     <tr>
-      <th>GAATTTC</th>
-      <td>0.202793</td>
-      <td>0.090374</td>
-      <td>0.030293</td>
-      <td>0.045124</td>
-      <td>0.090374</td>
-      <td>0.018706</td>
-      <td>0.027045</td>
-      <td>0.005632</td>
-      <td>0.006035</td>
-      <td>0.038490</td>
+      <th>CGCATTC</th>
+      <td>0.000022</td>
+      <td>0.004264</td>
+      <td>0.002169</td>
+      <td>0.006433</td>
+      <td>0.000013</td>
+      <td>0.000022</td>
+      <td>0.000090</td>
+      <td>0.004523</td>
+      <td>0.000035</td>
+      <td>0.000194</td>
       <td>...</td>
-      <td>0.042242</td>
-      <td>0.042242</td>
-      <td>0.028161</td>
-      <td>0.042242</td>
-      <td>0.042242</td>
-      <td>0.771121</td>
-      <td>0.042242</td>
-      <td>0.042242</td>
-      <td>0.042242</td>
-      <td>0.042242</td>
+      <td>0.000875</td>
+      <td>0.000875</td>
+      <td>0.000875</td>
+      <td>0.001750</td>
+      <td>0.001750</td>
+      <td>0.001750</td>
+      <td>0.001166</td>
+      <td>0.001750</td>
+      <td>0.001750</td>
+      <td>0.001750</td>
     </tr>
     <tr>
-      <th>AGTCCCA</th>
-      <td>0.014425</td>
-      <td>0.172057</td>
-      <td>0.149419</td>
-      <td>0.038629</td>
-      <td>0.005391</td>
-      <td>0.052994</td>
-      <td>0.170557</td>
-      <td>0.270979</td>
-      <td>0.004621</td>
-      <td>0.030781</td>
+      <th>TGGATCC</th>
+      <td>0.000108</td>
+      <td>0.016347</td>
+      <td>0.035391</td>
+      <td>0.012930</td>
+      <td>0.018932</td>
+      <td>0.000109</td>
+      <td>0.000438</td>
+      <td>0.001532</td>
+      <td>0.000171</td>
+      <td>0.000950</td>
       <td>...</td>
-      <td>0.032344</td>
-      <td>0.032344</td>
-      <td>0.354896</td>
-      <td>0.532344</td>
-      <td>0.032344</td>
+      <td>0.004274</td>
+      <td>0.004274</td>
+      <td>0.004274</td>
+      <td>0.008548</td>
+      <td>0.008548</td>
+      <td>0.008548</td>
+      <td>0.005699</td>
+      <td>0.008548</td>
+      <td>0.008548</td>
+      <td>0.008548</td>
+    </tr>
+    <tr>
+      <th>TACCTTT</th>
+      <td>0.044432</td>
+      <td>0.073199</td>
+      <td>0.041202</td>
+      <td>0.077338</td>
+      <td>0.041754</td>
+      <td>0.006781</td>
+      <td>0.001659</td>
+      <td>0.135640</td>
+      <td>0.030647</td>
+      <td>0.059149</td>
+      <td>...</td>
+      <td>0.016172</td>
+      <td>0.266172</td>
       <td>0.016172</td>
       <td>0.032344</td>
+      <td>0.032344</td>
+      <td>0.032344</td>
+      <td>0.021562</td>
       <td>0.032344</td>
       <td>0.032344</td>
       <td>0.032344</td>
     </tr>
   </tbody>
 </table>
-<p>25 rows × 73 columns</p>
+<p>25 rows × 69 columns</p>
 </div></div></div>
 </div>
 <div class="cell tag_hide-cell docutils container">
@@ -2760,18 +3044,18 @@ Name: 1107691, dtype: int64
 ---------------------------------------------------------------------
 Metadata:
     &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;288383&#39;
+    &#39;id&#39;: &#39;319175&#39;
 Stats:
     length: 200
     has gaps: False
     has degenerates: False
     has definites: True
-    GC-content: 54.00%
+    GC-content: 47.00%
 ---------------------------------------------------------------------
-0   GCGCACGGGT GAGTAACGCG TATCCAACCT GCCCCAAAGT AGGGAATAAT CCGTAGAAAT
-60  GCGGTCTAAT GCCCTATGTG GTGACAAGAA GACATCCGAT TGTCACTAAA GGTCCGCCGC
-120 TTTGGGATGG GGATGCGTCT GATTAGATTG TTGGCGGGGC AACGGCCCAC CAAGTCCACG
-180 ATCAGTAGGG GTTCTGAGAG
+0   TAGCCCGAAG AAATTCGGAT TAATACCCCA TAATAATAAG AAATGGCATC ATTTTTTATT
+60  TAAAGCTCCG GCGGTTGAAG ATGGGTATGC GGCCTATTAG TTTGTTGGCG AGGTAACGGC
+120 TCACCAAGAC TACGATAGGT AGGGGTTCTG AGAGGAAGAT CCCCCACACT GGTACTGAGA
+180 CACGGACCAG ACTCCTACGG
 </pre></div>
 </div>
 </div>
@@ -2834,7 +3118,7 @@ Stats:
 </div>
 </div>
 <div class="section" id="evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-<h3><span class="section-number">3.1.6. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<h3><span class="section-number">3.4.6. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
 <p>Because the query and reference sequences that were working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. Chances are however that if you run the above steps multiple times you’ll get the wrong taxonomy assignment at least some of the time. Up to this point, we’ve left out an important piece of information: how confident should we be in our assignment, or in other words, how dependent is our taxonomy assignment on our specific query? If there were slight differences in our query (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because we sequenced a different region of the 16S sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is additionally important because our classifier will <em>always</em> return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.</p>
 <p>We can quantify confidence using an approach called bootstrapping. With a bootstrap approach, we’ll get our taxonomy assignment as we did above, but then for some user-specified number of times, we’ll create random subsets of V sampled with replacement. We’ll then assign taxonomy to each random subset of V, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to V. The count of times that they are the same divided by the number of iterations we’ve chosen to run will be our confidence value. If the assignments are often the same we’ll have a high confidence value. If the assignments are often different, we’ll have a low confidence value.</p>
 <p>Let’s now assign taxonomy and compute a confidence for that assignment.</p>
@@ -2876,7 +3160,7 @@ Stats:
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria; p__Bacteroidetes
-0.75
+0.99
 </pre></div>
 </div>
 </div>
@@ -2917,10 +3201,10 @@ Stats:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2a0a1a11d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fb08f0a9898&gt;
 </pre></div>
 </div>
-<img alt="../_images/machine-learning_48_1.png" src="../_images/machine-learning_48_1.png" />
+<img alt="../_images/machine-learning_53_1.png" src="../_images/machine-learning_53_1.png" />
 </div>
 </div>
 <p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
@@ -2930,222 +3214,17 @@ Stats:
 </div>
 </div>
 </div>
-<div class="section" id="unsupervised-learning">
-<h2><span class="section-number">3.2. </span>Unsupervised learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">¶</a></h2>
-<p>We’ll next turn our exploration of machine learning approaches to <strong>unsupervised learning</strong>, and specifically discuss ordination methods. We’ll work through ordination in two strokes. First, we’ll explore an approach called <strong>Polar Ordination</strong>, where the math is simple but which isn’t widely used in practice because it doesn’t work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we’ll apply an approach called <strong>Principal Coordinates Analysis (PCoA)</strong>. The math for PCoA is a bit more complicated than I want to get into in this book (I’m a biology teacher, after all), but we’ll apply it to a large data set to explore how these techniques can be used in practice.</p>
-<div class="section" id="polar-ordination">
-<h3><span class="section-number">3.2.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h3>
-<p>First, let’s print our distance matrix again so we have it nearby.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">)</span>
-<span class="go">6x6 distance matrix</span>
-<span class="go">IDs:</span>
-<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;</span>
-<span class="go">Data:</span>
-<span class="go">[[ 0.    0.35  0.83  0.83  0.9   0.9 ]</span>
-<span class="go"> [ 0.35  0.    0.86  0.85  0.92  0.91]</span>
-<span class="go"> [ 0.83  0.86  0.    0.25  0.88  0.87]</span>
-<span class="go"> [ 0.83  0.85  0.25  0.    0.88  0.88]</span>
-<span class="go"> [ 0.9   0.92  0.88  0.88  0.    0.5 ]</span>
-<span class="go"> [ 0.9   0.91  0.87  0.88  0.5   0.  ]]</span>
-</pre></div>
-</div>
-<p>Polar ordination works in a few steps:</p>
-<p><strong>Step 1.</strong> Identify the largest distance in the distance matrix.</p>
-<p><strong>Step 2.</strong> Define a line, with the two samples contributing to that distance defining the endpoints.</p>
-<p><strong>Step 3.</strong> Compute the location of each other sample on that axis as follows:</p>
-<p><span class="math notranslate nohighlight">\(a = \frac{D^2 + D1^2 - D2^2}{2 \times D}\)</span></p>
-<p>where:</p>
-<p><span class="math notranslate nohighlight">\(D\)</span> is distance between the endpoints</p>
-<p><span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and endpoint 1</p>
-<p><span class="math notranslate nohighlight">\(D2\)</span> is distance between sample and endpoint 2.</p>
-<p><strong>Step 4.</strong> Find the next largest distance that could be used to define an <em>uncorrelated axis</em>. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I’ll pick one for the demo, and we’ll wrap up by looking at all of the axes.)</p>
-<p>Here is what steps 2 and 3 look like in Python:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_axis_values</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">d</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">]</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">endpoint1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
-<span class="gp">... </span>    <span class="n">non_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">non_endpoints</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">d1</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="n">d2</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint2</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">d2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a1_values</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span><span class="p">)</span>
-<span class="go">A 0.0863586956522</span>
-<span class="go">B 0</span>
-<span class="go">C 0.441086956522</span>
-<span class="go">D 0.431793478261</span>
-<span class="go">E 0.92</span>
-<span class="go">F 0.774184782609</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span><span class="p">)</span>
-<span class="go">A 0.371193181818</span>
-<span class="go">B 0.369602272727</span>
-<span class="go">C 0.0355113636364</span>
-<span class="go">D 0</span>
-<span class="go">E 0.88</span>
-<span class="go">F 0.737954545455</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">scatter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<p>And again, let’s look at how including metadata helps us to interpret our results.</p>
-<p>First, we’ll color the points by the body habitat that they’re derived from:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tongue&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;gut&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;skin&#39;</span><span class="p">:</span><span class="s1">&#39;blue&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<p>And next we’ll color the samples by the person that they’re derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">person_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject 1&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">person_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">person_colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;individual&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">person_c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<div class="section" id="determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
-<h4><span class="section-number">3.2.1.1. </span>Determining the most important axes in polar ordination <link src='fb483b'/><a class="headerlink" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b" title="Permalink to this headline">¶</a></h4>
-<p>Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample_id2</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
-<span class="gp">... </span>        <span class="n">d</span><span class="p">,</span> <span class="n">axis_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis </span><span class="si">%d</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
-<span class="go">axis 0: 	0.920	1.000	E	B</span>
-<span class="go">axis 1: 	0.910	0.943	F	B</span>
-<span class="go">axis 2: 	0.900	0.928	E	A</span>
-<span class="go">axis 3: 	0.900	0.886	F	A</span>
-<span class="go">axis 4: 	0.880	0.543	E	D</span>
-<span class="go">axis 5: 	0.880	0.429	F	D</span>
-<span class="go">axis 6: 	0.880	0.429	E	C</span>
-<span class="go">axis 7: 	0.870	0.371	F	C</span>
-<span class="go">axis 8: 	0.860	0.543	C	B</span>
-<span class="go">axis 9: 	0.850	0.486	D	B</span>
-<span class="go">axis 10: 	0.830	0.429	C	A</span>
-<span class="go">axis 11: 	0.830	0.406	D	A</span>
-<span class="go">axis 12: 	0.500	0.232	F	E</span>
-<span class="go">axis 13: 	0.350	0.143	B	A</span>
-<span class="go">axis 14: 	0.250	0.493	D	C</span>
-</pre></div>
-</div>
-<p>So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let’s look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">14</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="interpreting-ordination-plots-link-src-40e0a6">
-<h4><span class="section-number">3.2.1.2. </span>Interpreting ordination plots <link src='40e0a6'/><a class="headerlink" href="#interpreting-ordination-plots-link-src-40e0a6" title="Permalink to this headline">¶</a></h4>
-<p>There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.</p>
-<p><strong>Directionality of the axes is not important (e.g., up/down/left/right)</strong></p>
-<p>One thing that you may have notices as you computed the polar ordination above is that the method is <em>not symmetric</em>: in other words, the axis values for axis <span class="math notranslate nohighlight">\(EB\)</span> are different than for axis <span class="math notranslate nohighlight">\(BE\)</span>. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">alt_a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">alt_a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<p>Some other important features:</p>
-<ul class="simple">
-<li><p>Numerical scale of the axis is generally not useful</p></li>
-<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, …)</p></li>
-<li><p>Most techniques result in uncorrelated axes.</p></li>
-<li><p>Additional axes can be generated (third, fourth, …)</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="principle-coordinates-analysis-pcoa">
-<h3><span class="section-number">3.2.2. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2</span>
-<span class="kn">import</span> <span class="nn">qiime2.plugins.feature_table</span> <span class="k">as</span> <span class="nn">ft</span>
-<span class="kn">import</span> <span class="nn">qiime2.plugins.diversity</span> <span class="k">as</span> <span class="nn">div</span>
-
-<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
-    <span class="c1">#taxon = get_taxon_at_level(reference_sequence.metadata[&#39;taxonomy&#39;], taxonomic_level)</span>
-    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
-    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
-
-<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
-<span class="c1"># display the first 25 rows of that table.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-
-<span class="n">feature_table_1a</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Artifact</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="s2">&quot;FeatureTable[Frequency]&quot;</span><span class="p">,</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jaccard_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;jaccard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distance_matrix</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxa_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k__Archaea&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Cyanobacteria&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Firmicutes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Bacteroidetes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Proteobacteria&#39;</span><span class="p">]</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
-    <span class="n">id_</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
-    <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxa_of_interest</span><span class="p">:</span>
-        <span class="c1"># this approach is horrendous</span>
-        <span class="k">if</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxon</span><span class="p">:</span>
-            <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">label_as_other</span><span class="p">:</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-<span class="n">metadata</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcoa_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">jaccard_1a</span><span class="p">)</span><span class="o">.</span><span class="n">pcoa</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2.plugins.emperor</span> <span class="k">as</span> <span class="nn">emperor</span>
-
-<span class="n">emperor</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pcoa_1a</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">visualization</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
-<span class="n">ordination</span> <span class="o">=</span> <span class="n">pcoa_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ordination</span><span class="o">.</span><span class="n">OrdinationResults</span><span class="p">)</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">ordination</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<div class="section" id="list-of-works-cited">
+<h2><span class="section-number">3.5. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id29"><span class="brackets"><a class="fn-backref" href="#id2">EHJT04</a></span></dt>
+<dd><p>Bradley Efron, Trevor Hastie, Iain Johnstone, and Robert Tibshirani. Least angle regression. <em>aos</em>, 32(2):407–499, April 2004.</p>
+</dd>
+<dt class="label" id="id28"><span class="brackets"><a class="fn-backref" href="#id1">Fis36</a></span></dt>
+<dd><p>R A Fisher. The use of multiple measurements in taxonomic problems. <em>Ann. Eugen.</em>, 7(2):179–188, September 1936.</p>
+</dd>
+</dl>
+</p>
 </div>
 </div>
 
