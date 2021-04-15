@@ -25,12 +25,11 @@ Machine learning algorithms can easily be misused, either intentionally or unint
 
 Machine learning algorithms generally are provided with a table of **samples** and user-defined **features** of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a **feature table**, and it is central to machine learning and many subfields of bioinformatics. The terms used here are purposefully general. Samples are intended to be any unit of study, and features are attributes of those samples. Sometimes **labels** or **response variables** will be associated with the samples, in which case a different class of methods can be applied. 
 
-scikit-learn defines a few example datasets that we can look at here to get an idea of what typical input looks like in a machine learning task.
+scikit-learn provides a few example datasets that can be used for learning. Let's start by taking a look and one of them to get an idea of what input might look like in a machine learning task.
 
 ### The Iris dataset
 
-The [first example dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset) that we'll look at is a classic dataset used in machine learning, originally published by RA Fisher {cite}`Fisher1936-tk`. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows: 
-
+The [Iris dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset) is a classic example used in machine learning, originally published by RA Fisher {cite}`Fisher1936-tk`. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows:
 
 ```{code-cell} ipython3
 import sklearn.datasets
@@ -49,7 +48,9 @@ iris_labels.index.name = 'sample-id'
 iris_feature_table
 ```
 
-The rows in this table represent our samples - in this case specimens of Iris plants. The columns represent features, or attributes of the samples. Each sample vector (i.e., row) will indicate a unique identifier for the sample (here these are simply integers), and values for each feature for that sample. This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we'll cover first in this chapter. 
+The rows in this table represent our samples - in this case specimens of Iris. The columns represent features, or attributes of the samples. Each **sample vector** (i.e., row) will include a unique identifier for the sample which we usually call the _sample id_ (here these are simply integers), and values for each feature for that sample. Each **feature vector** (i.e., column) will similar contain an identifier for the feature, or the the _feature id_. These are often simplistic descriptions of the features, as they are in this example, but they don't need to be (integers would work fine as feature ids). The feature vector then contains the values measured for that feature in each sample.
+
+This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we'll cover first in this chapter. A goal of unsupervised learning might be to determine if there are clusters of samples that are most similar to one another. 
 
 In addition to this feature table, the Iris dataset contains labels for each of the 150 samples indicating which species each sample belongs to:
 
@@ -57,7 +58,7 @@ In addition to this feature table, the Iris dataset contains labels for each of 
 iris_labels
 ```
 
-The sample ids in this label vector must be the same as the sample ids in the feature table. The feature table and the sample labels together can be used as input data for supervised learning tasks, which we'll cover second in this chapter.
+The sample ids in this label vector must be the same as the sample ids in the feature table. The feature table and the sample labels together can be used as input data for supervised learning tasks, which we'll cover second in this chapter. A goal of supervised learning might be to develop a classifier that could report the species of an Iris if provided with values for its sepal length and width and its petal length and width (i.e., the features that the algorithm originally had access).
 
 There are three different labels, or classes, in this dataset:
 
@@ -65,49 +66,183 @@ There are three different labels, or classes, in this dataset:
 iris_labels['species'].unique()
 ```
 
-### The Diabetes dataset
-
-**TODO: These data are transformed, unfortunately, as described in the docs. If the raw feature table data isn't available I'm going to drop this example.**
-
-The [second example data set](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) that we'll look at here contains a feature table that describes 10 variables collected at a baseline time point on 442 patients with diabetes (original source: {cite}`Efron2004-fn`). The variables include age in years, sex, and blood serum measurements. 
-
-
-
-```{code-cell} ipython3
-diabetes_dataset = sklearn.datasets.load_diabetes(as_frame=True)
-
-diabetes_feature_table = diabetes_dataset.frame.drop('target', axis=1)
-diabetes_feature_table.index.name = 'sample-id'
-
-diabetes_labels = diabetes_dataset.target.to_frame(name='response')
-diabetes_labels.index.name = 'sample-id'
-```
-
-```{code-cell} ipython3
-diabetes_feature_table
-```
-
-Labels are again available for the diabetes dataset. In this case, the labels are measurements of disease progression one year following the baseline data collection. 
-
-```{code-cell} ipython3
-diabetes_labels
-```
-
-### Differences and commonalities between these datasets
-
-One difference between these two datasets is that the labels are discrete (i.e., categorical or qualitative) in the Iris dataset and continuous (i.e., quantitative) in the Diabetes dataset. Similarly, while most of the features in these two datasets contain continuous values, the Diabetes dataset contains a feature with discrete values - sex. Continuous and discrete feature and label values can be used in machine learning, but some methods can only be used with a particular value type. 
-
-Despite the difference in domains represented here (plant systematics versus human health) the data can be summarized with similar structures. This extends beyond biology as well: some of the other scikit-learn toy datasets include [housing market data](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset) and [hand-writing data](https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset). If you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data.
-
 ## Unsupervised versus supervised learning methods
 
 Many machine learning methods are classified at a high level as either unsupervised or supervised learning methods. 
 
-In **unsupervised learning** we either don't have or don't use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we'll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you have probably already encountered ordination plots (such as PCoA or NMDS plots in some of your reading). 
+In **unsupervised learning** we either don't have or don't use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we'll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you may have already encountered ordination plots (such as PCoA or NMDS plots in some of your own work). 
 
-In **supervised learning**, on the other hand, sample labels are used in addition to a feature table. As we saw above, the sample labels can be either discrete or continuous, and that distinction defines whether we're working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample's label from its feature values (for example, how much should we expect an individual's disease to progress in the next year based on measurements we take in the clinic today). 
+In **supervised learning**, on the other hand, sample labels are used in addition to a feature table. As we saw above, the sample labels can be either discrete or continuous, and that distinction defines whether we're working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample's label from its feature values (for example, what species does this Iris belong to, based on it's sepal and petal length and width).
 
-<!-- TODO: start here by moving feature table and label definitions to here from the supervised classification section below. -->
+## Machine learning methods applied to microbial sequence data
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+# This cell performs some configuration for this notebook. It's hidden by
+# default because it's not relevant to the content of this chapter. You'll
+# occasionally notice that I hide this type of information so it's not 
+# distracting.
+
+%pylab inline
+
+import pandas as pd
+import skbio
+import numpy as np
+import itertools
+import collections
+import random
+```
+
+In this chapter, we'll work with 16S rRNA data `as we did previously <load-qdr>`. Specifically, we'll load sequences from the Greengenes database and construct a feature table from them. We'll use this feature table in an unsupervised learning task and a supervised learning task. We'll also load labels for the sequences which we'll primarily use in a supervised learning task, but which we'll also use to aid in interpretation in an unsupervised learning task. 
+
+Our goal with these tasks will be to explore phylum-level taxonomy of five microbial phyla based on sequence data. In our unsupervised learning task, we'll determine if samples (i.e., sequences) coming from the same phyla appear to generally be more similar to each other than samples coming from different phyla. In our supervised learning task, we'll determine if we can develop a classifier to predict microbial phylum from an unlabeled sequence. 
+
+Let's start by loading an equal number of sequences from five specific microbial phyla from Greengenes.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+import qiime_default_reference as qdr
+import skbio
+
+def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose=True):
+    # Load the taxonomic data
+    seq_data = {}
+    phylum_to_seq_ids = {p: list() for p in phyla_of_interest}
+    
+    for e in open(qdr.get_reference_taxonomy()):
+        seq_id, seq_tax = e.strip().split('\t')
+        seq_tax = [e.strip() for e in seq_tax.split(';')]
+        seq_phylum = ';'.join(seq_tax[:2])
+            
+        try:
+            phylum_to_seq_ids[seq_phylum].append(seq_id)
+            seq_data[seq_id] = [seq_phylum]
+        except KeyError:
+            # if seq_phylum is not in phylum_to_seq_ids (i.e., it
+            # wasn't provided as a phylum of interest) skip this 
+            # record
+            pass
+
+    for e in skbio.io.read(qdr.get_reference_sequences(), format='fasta', constructor=skbio.DNA):
+        if e.has_degenerates():
+            # For the purpose of this lesson, we're going to ignore sequences that contain
+            # degenerate characters (i.e., characters other than A, C, G, or T)
+            continue
+        seq_id = e.metadata['id']
+        try:
+            seq_data[seq_id].append(e)
+        except KeyError:
+            # if this seq_id wasn't previously identified as being from one of our
+            # phyla of interest, skip this record
+            pass
+        
+    if verbose:
+        for phylum, seq_ids in phylum_to_seq_ids.items():
+            print("%d sequences were loaded for phylum %s." % (len(seq_ids), phylum))
+    
+    if class_size is not None:
+        sampled_seq_data = {}
+        for p, seq_ids in phylum_to_seq_ids.items():
+            if class_size > len(seq_ids):
+                raise ValueError("Class size (%d) too large for phylum %s, which has only %d sequences." % 
+                                 (class_size, p, len(seq_ids)))
+            sampled_seq_ids = random.sample(seq_ids, k=class_size)
+            phylum_to_seq_ids[p] = sampled_seq_ids
+            sampled_seq_data.update({seq_id: seq_data[seq_id] for seq_id in sampled_seq_ids})
+        seq_data = sampled_seq_data
+        if verbose:
+            print('\nAfter random sampling: ')
+            for phylum, seq_ids in phylum_to_seq_ids.items():
+                print(" %d sequences were retained for phylum %s." % (len(seq_ids), phylum))
+        
+
+    return seq_data, phylum_to_seq_ids
+```
+
+```{code-cell} ipython3
+phyla = {'k__Archaea;p__Crenarchaeota', 
+         'k__Archaea;p__Euryarchaeota',
+         'k__Bacteria;p__Firmicutes', 
+         'k__Bacteria;p__Cyanobacteria', 
+         'k__Bacteria;p__Bacteroidetes', 
+         'k__Bacteria;p__Actinobacteria'}
+
+seq_data, phylum_to_seq_ids = load_taxonomy_reference_database(phyla, 100)
+```
+
+<!-- pick up here - create the feature table and labels to user throughout the rest of the chapter>
+
+Recall that we can look reference sequences up as follows, and that reference sequences have taxonomic annotations.
+
+```{code-cell} ipython3
+reference_db[0]
+```
+
+We'll again select a random subset of the reference database to work with here to get our analyses moving quickly.
+
+```{code-cell} ipython3
+reference_db = random.sample(reference_db, k=5000)
+print("%s sequences are present in the subsampled database." % len(reference_db))
+```
+
+(ml:define-nb-parameters)=
+
+```{code-cell} ipython3
+taxonomic_level = 2
+k = 7
+alphabet = skbio.DNA.nondegenerate_chars
+```
+
+Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
+
+```{code-cell} ipython3
+# compute all kmers for the specified alphabet
+W = compute_W(alphabet, k)
+
+# Define a function that returns the taxonomy at a specified level given
+# a semi-colon separated taxonomic description.
+# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
+# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
+def get_taxon_at_level(taxon, level):
+    taxon = [l.strip() for l in taxon.split(';')]
+    return '; '.join(taxon[:level])
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = {}
+sequence_labels = {}
+for reference_sequence in reference_db:
+    sequence_id = reference_sequence.metadata['id']
+    
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    sequence_labels[sequence_id] = taxon
+    
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts[sequence_id] = kmer_counts
+
+feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+sequence_labels = pd.Series(sequence_labels, name='taxon')
+```
+
+```{code-cell} ipython3
+# Display the first 25 samples in the feature table
+feature_table[:25]
+```
+
+```{code-cell} ipython3
+# Display the taxon labels for the first 25 samples
+sequence_labels[:25].to_frame()
+```
+
+This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
+
+
+
+
+
+
 
 ## Unsupervised learning
 
@@ -444,73 +579,7 @@ Naive Bayes classifiers work by building a model of what different classes look 
 
 In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we'll train Naive Bayes classifiers to do this by building {ref}`kmer <kmer>`-based models of the 16S sequences of taxa in our reference database. We'll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown. 
 
-We'll begin by {ref}`preparing our reference database and query sequences as we did previously <load-qdr>`.
 
-```{code-cell} ipython3
-:tags: [hide-cell]
-
-# This cell performs some configuration for this notebook. It's hidden by
-# default because it's not relevant to the content of this chapter. You'll
-# occasionally notice that I hide this type of information so it's not 
-# distracting.
-
-%pylab inline
-
-import pandas as pd
-import skbio
-import numpy as np
-import itertools
-import collections
-import random
-```
-
-```{code-cell} ipython3
-:tags: [hide-cell]
-
-import qiime_default_reference as qdr
-import skbio
-
-def load_taxonomy_reference_database(verbose=True):
-    # Load the taxonomic data
-    reference_taxonomy = {}
-    for e in open(qdr.get_reference_taxonomy()):
-        seq_id, seq_tax = e.strip().split('\t')
-        reference_taxonomy[seq_id] = seq_tax
-
-    # Load the reference sequences, and associate the taxonomic annotation with
-    # each as metadata
-    reference_db = []
-    for e in skbio.io.read(qdr.get_reference_sequences(), format='fasta', constructor=skbio.DNA):
-        if e.has_degenerates():
-            # For the purpose of this lesson, we're going to ignore sequences that contain
-            # degenerate characters (i.e., characters other than A, C, G, or T)
-            continue
-        seq_tax = reference_taxonomy[e.metadata['id']]
-        e.metadata['taxonomy'] = seq_tax
-        reference_db.append(e)
-
-    if verbose:
-        print("%s sequences were loaded from the reference database." % len(reference_db))
-
-    return reference_taxonomy, reference_db
-```
-
-```{code-cell} ipython3
-reference_taxonomy, reference_db = load_taxonomy_reference_database()
-```
-
-Recall that we can look reference sequences up as follows, and that reference sequences have taxonomic annotations.
-
-```{code-cell} ipython3
-reference_db[0]
-```
-
-We'll again select a random subset of the reference database to work with here to get our analyses moving quickly.
-
-```{code-cell} ipython3
-reference_db = random.sample(reference_db, k=5000)
-print("%s sequences are present in the subsampled database." % len(reference_db))
-```
 
 ### Training a Native Bayes classifier 
 
@@ -559,56 +628,7 @@ Next, how long should our kmers be? We don't have a good idea of this to start w
 
 Finally, we'll need to know the value of `W`, defined above as the set of all possible kmers given our alphabet and the value of `k`.
 
-(ml:define-nb-parameters)=
 
-```{code-cell} ipython3
-taxonomic_level = 2
-k = 7
-alphabet = skbio.DNA.nondegenerate_chars
-```
-
-Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
-
-```{code-cell} ipython3
-# compute all kmers for the specified alphabet
-W = compute_W(alphabet, k)
-
-# Define a function that returns the taxonomy at a specified level given
-# a semi-colon separated taxonomic description.
-# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
-# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
-def get_taxon_at_level(taxon, level):
-    taxon = [l.strip() for l in taxon.split(';')]
-    return '; '.join(taxon[:level])
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = {}
-sequence_labels = {}
-for reference_sequence in reference_db:
-    sequence_id = reference_sequence.metadata['id']
-    
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    sequence_labels[sequence_id] = taxon
-    
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts[sequence_id] = kmer_counts
-
-feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-sequence_labels = pd.Series(sequence_labels, name='taxon')
-```
-
-```{code-cell} ipython3
-# Display the first 25 samples in the feature table
-feature_table[:25]
-```
-
-```{code-cell} ipython3
-# Display the taxon labels for the first 25 samples
-sequence_labels[:25].to_frame()
-```
-
-This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
 
 With this information, we'll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:
 
@@ -812,6 +832,14 @@ What does this plot tell you about how well setting a confidence threshold is li
 ```{admonition} Exercise
 Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parameters) and modify those values. How does the accuracy of the classifier change if you increase or decrease `k` while keeping the value of `taxonomic_level` fixed? How does the accuracy change if you increase or decrease the `taxonomic_level` while keeping `k` fixed? 
 ```
+
+## Variations on the input to machine learning algorithms
+
+As in the Iris dataset, the labels in our microbial data are discrete (i.e., categorical or qualitative) as opposed to continuous (i.e., quantitative). If our labels in a supervised learning project were continous instead of discrete - for example the abundance of an organism in an environment - we could still supervised learning, but we would work with different algorithms. Specifically, we'd used supervised regression algorithms, rather than supervised classification algorithms.  
+
+Similarly, while the features we worked with in our unsupervised and supervised learning examples were continuous values, feature values could also be discrete (e.g., the sex of a subject, or the species of a specimen in an environment). The applicable algorithms might change, but machine learning techniques in general would still be available. 
+
+scikit-learn provides other example datasets, including [the diabetes dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes), [the housing market dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset) and [the hand-writing dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset). These are good illustrations of other types of data that can be used in machine learning tasks. The message to take away is that if you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data. That said, and as I mentioned at the beginning of this chapter, this introduction barely scratches the surface of this complex branch of statistics and computer science. Especially with the accessible of these methods through software like scikit-learn, it's easy to get to the point where you know enough to get yourself into trouble by using machine learning methods inappropriately. If you'd like to apply these tools in your research, you must continue your learning. I recommend continuing with [scikit-learn's documentation](https://scikit-learn.org/).
 
 ## List of works cited
 
