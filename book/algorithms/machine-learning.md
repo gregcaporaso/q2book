@@ -94,89 +94,114 @@ import collections
 import random
 ```
 
-In this chapter, we'll work with 16S rRNA data `as we did previously <load-qdr>`. Specifically, we'll load sequences from the Greengenes database and construct a feature table from them. We'll use this feature table in an unsupervised learning task and a supervised learning task. We'll also load labels for the sequences which we'll primarily use in a supervised learning task, but which we'll also use to aid in interpretation in an unsupervised learning task. 
+In this chapter, we'll work with 16S rRNA data `as we did previously <load-qdr>`. Specifically, we'll load sequences from the Greengenes database and construct a feature table from them. We'll use this feature table in an unsupervised learning task and a supervised learning task. We'll also load labels for the sequences which we'll primarily use in our supervised learning task, but which we'll also use to aid in interpretation in our unsupervised learning task. 
 
 Our goal with these tasks will be to explore phylum-level taxonomy of a few microbial phyla based on sequence data. In our unsupervised learning task, we'll determine if samples (i.e., sequences) coming from the same phyla appear to generally be more similar to each other than samples coming from different phyla. In our supervised learning task, we'll determine if we can develop a classifier to predict microbial phylum from an unlabeled sequence. 
 
-Let's start by loading an equal number of sequences from five specific microbial phyla from Greengenes.
+Let's start by loading five sequences from each of five specific microbial phyla from Greengenes.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
 
 import qiime_default_reference as qdr
 import skbio
 
 def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose=True):
     # Load the taxonomic data
-    seq_data = {}
-    phylum_to_seq_ids = {p: list() for p in phyla_of_interest}
+    result = {}
+    
+    phylum_to_seq_ids = {p: set() for p in phyla_of_interest}        
+    
     for e in open(qdr.get_reference_taxonomy()):
         seq_id, seq_tax = e.strip().split('\t')
         seq_tax = [e.strip() for e in seq_tax.split(';')]
         seq_phylum = ';'.join(seq_tax[:2])
             
         try:
-            phylum_to_seq_ids[seq_phylum].append(seq_id)
-            seq_data[seq_id] = [seq_phylum]
+            phylum_to_seq_ids[seq_phylum].add(seq_id)
+            result[seq_id] = [seq_phylum]
         except KeyError:
             # if seq_phylum is not in phylum_to_seq_ids (i.e., it
             # wasn't provided as a phylum of interest) skip this 
             # record
             pass
+        
+    if verbose:
+        for phylum, seq_ids in phylum_to_seq_ids.items():
+            print("%d sequences were identified for phylum %s." % (len(seq_ids), phylum))
 
     for e in skbio.io.read(qdr.get_reference_sequences(), format='fasta', 
                            constructor=skbio.DNA):
         seq_id = e.metadata['id']
-
-        try:
-            seq_data[seq_id].append(e)
-        except KeyError:
+        
+        if seq_id in result:
+            if e.has_degenerates():
+                phylum = result[seq_id][0]
+                phylum_to_seq_ids[phylum].remove(seq_id)
+                # for the purpose of this exercise we'll skip records 
+                # that have non-ACGT characters
+                del result[seq_id]
+            else: 
+                result[seq_id].append(e)
+        else:
             # if this seq_id wasn't previously identified as being from one of our
             # phyla of interest, skip this record
             pass
-        
-    if verbose:
-        for phylum, seq_ids in phylum_to_seq_ids.items():
-            print("%d sequences were loaded for phylum %s." % (len(seq_ids), phylum))
     
     if class_size is not None:
-        sampled_seq_data = {}
+        sampled_result = {}
         for p, seq_ids in phylum_to_seq_ids.items():
             if class_size > len(seq_ids):
-                raise ValueError("Class size (%d) too large for phylum %s, which has only %d sequences." % 
+                raise ValueError("Class size (%d) too large for phylum %s, which has only %d non-degenerate sequences." % 
                                  (class_size, p, len(seq_ids)))
             sampled_seq_ids = random.sample(seq_ids, k=class_size)
-            phylum_to_seq_ids[p] = sampled_seq_ids
-            sampled_seq_data.update({seq_id: seq_data[seq_id] for seq_id in sampled_seq_ids})
-        seq_data = sampled_seq_data
-        if verbose:
-            print('\nAfter random sampling: ')
-            for phylum, seq_ids in phylum_to_seq_ids.items():
-                print(" %d sequences were retained for phylum %s." % (len(seq_ids), phylum))
-        
+            sampled_result.update({seq_id: result[seq_id] for seq_id in sampled_seq_ids})
+        result = sampled_result
 
-    return seq_data, phylum_to_seq_ids
+    return result
 ```
 
+(ml:define-sequences-per-phylum)=
 ```{code-cell} ipython3
 phyla = {'k__Archaea;p__Crenarchaeota', 
          'k__Archaea;p__Euryarchaeota',
-         'k__Bacteria;p__Firmicutes', 
          'k__Bacteria;p__Cyanobacteria', 
          'k__Bacteria;p__Bacteroidetes', 
          'k__Bacteria;p__Actinobacteria'}
-sequences_per_phylum = 100
+sequences_per_phylum = 5
 
-seq_data, phylum_to_seq_ids = load_taxonomy_reference_database(phyla, sequences_per_phylum)
+seq_data = load_taxonomy_reference_database(phyla, sequences_per_phylum)
+```
+
+We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source phylum for the sequence record, and a 16S rRNA sequence. 
+
+```{code-cell} ipython3
+for seq_id in random.sample(seq_data.keys(), 3):
+    print(seq_id)
+    print(seq_data[seq_id][0])
+    print(seq_data[seq_id][1])
+    print('🦠')
+```
+
+The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let's set $k=7$, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you've finished reading this chapter.
+
+(ml:define-k)=
+```{code-cell} ipython3
+k = 7
 ```
 
 ```{code-cell} ipython3
-phylum_to_seq_ids['k__Archaea;p__Crenarchaeota'][:5]
+kmer_frequencies = {seq_id : data[1].kmer_frequencies(k=k) for seq_id, data in seq_data.items()}
+sequence_feature_table = pd.DataFrame(kmer_frequencies).fillna(0).astype(int).T
+sequence_feature_table.index.name = 'id'
 ```
 
+After extracting all k-mers from the sequences and putting them in a table where the rows are our sequences (indexed by the unique sequence identifiers), the columns represent unique k-mers (labeled by the k-mer itself), and the values are the number of times each k-mer is observed in each sequence, we end up with our feature table for unsupervised and supervised learning.
+
 ```{code-cell} ipython3
-seq_data[phylum_to_seq_ids['k__Archaea;p__Crenarchaeota'][0]][1]
+sequence_feature_table
 ```
+
+As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We'll next compile our sample label vector.
 
 ```{code-cell} ipython3
 sequence_labels = pd.Series({k:v[0] for k, v in seq_data.items()}, name='phylum').to_frame()
@@ -184,89 +209,23 @@ sequence_labels.index.name = 'id'
 sequence_labels
 ```
 
-```{code-cell} ipython3
-sequences = pd.Series({seq_id : data[1] for seq_id, data in seq_data.items()}, 
-                      name='sequence').to_frame()
-sequences.index.name = 'id'
-```
-
-```{code-cell} ipython3
-sequences = pd.DataFrame(seq_data).T
-sequences[1][0]
-```
-
-(ml:define-nb-parameters)=
-
-```{code-cell} ipython3
-k = 7
-```
-
-```{code-cell} ipython3
-kmer_frequencies = {seq_id : data[1].kmer_frequencies(k=k) for seq_id, data in seq_data.items()}
-kmer_frequencies = pd.DataFrame(kmer_frequencies).fillna(0).astype(int).T
-kmer_frequencies.index.name = 'id'
-```
-
-```{code-cell} ipython3
-sequence_feature_table
-```
-
-```{code-cell} ipython3
-# pick up here with Jaccard(?) distance computation between sequences
-```
-
-Next, we'll compute a table of the per-sequence kmer counts for all kmers in `W` for all sequences in our reference database. We'll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas `DataFrame`, and then view the first 25 rows of that table.
-
-```{code-cell} ipython3
-# compute all kmers for the specified alphabet
-W = compute_W(alphabet, k)
-
-# Define a function that returns the taxonomy at a specified level given
-# a semi-colon separated taxonomic description.
-# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
-# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
-def get_taxon_at_level(taxon, level):
-    taxon = [l.strip() for l in taxon.split(';')]
-    return '; '.join(taxon[:level])
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = {}
-sequence_labels = {}
-for reference_sequence in reference_db:
-    sequence_id = reference_sequence.metadata['id']
-    
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    sequence_labels[sequence_id] = taxon
-    
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts[sequence_id] = kmer_counts
-
-feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-sequence_labels = pd.Series(sequence_labels, name='taxon')
-```
-
-```{code-cell} ipython3
-# Display the first 25 samples in the feature table
-feature_table[:25]
-```
-
-```{code-cell} ipython3
-# Display the taxon labels for the first 25 samples
-sequence_labels[:25].to_frame()
-```
-
-This table of kmer counts per taxon is our **feature table*. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon. 
-
-
-
-
-
-
+Our data is ready, so let's get started with unsupervised learning. 
 
 ## Unsupervised learning
 
+<!-- Pick up here - discuss Jaccard distance -->
+
 We'll begin our exploration of machine learning approaches with unsupervised learning, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
+
+```{code-cell} ipython3
+import skbio.diversity
+
+sequence_distance_matrix = skbio.diversity.beta_diversity('jaccard', sequence_feature_table, ids=sequence_feature_table.index)
+```
+
+```{code-cell} ipython3
+sequence_distance_matrix
+```
 
 ### Polar ordination
 
@@ -623,6 +582,36 @@ Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 ar
 ```
 
 The next thing we'll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the ``skbio.DNA`` sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:
+
+```{code-cell} ipython3
+## This cell needs revision to fit in to the refactored code
+# compute all kmers for the specified alphabet
+W = compute_W(alphabet, k)
+
+# Define a function that returns the taxonomy at a specified level given
+# a semi-colon separated taxonomic description.
+# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
+# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
+def get_taxon_at_level(taxon, level):
+    taxon = [l.strip() for l in taxon.split(';')]
+    return '; '.join(taxon[:level])
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = {}
+sequence_labels = {}
+for reference_sequence in reference_db:
+    sequence_id = reference_sequence.metadata['id']
+    
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    sequence_labels[sequence_id] = taxon
+    
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts[sequence_id] = kmer_counts
+
+feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+sequence_labels = pd.Series(sequence_labels, name='taxon')
+```
 
 ```{code-cell} ipython3
 kmers = reference_db[0].iter_kmers(k=k)
