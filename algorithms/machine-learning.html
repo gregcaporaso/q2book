@@ -725,141 +725,819 @@
 </div>
 </div>
 </div>
-<p>In this chapter, we’ll work with 16S rRNA data <code class="docutils literal notranslate"><span class="pre">as</span> <span class="pre">we</span> <span class="pre">did</span> <span class="pre">previously</span> <span class="pre">&lt;load-qdr&gt;</span></code>. Specifically, we’ll load sequences from the Greengenes database and construct a feature table from them. We’ll use this feature table in an unsupervised learning task and a supervised learning task. We’ll also load labels for the sequences which we’ll primarily use in a supervised learning task, but which we’ll also use to aid in interpretation in an unsupervised learning task.</p>
+<p>In this chapter, we’ll work with 16S rRNA data <code class="docutils literal notranslate"><span class="pre">as</span> <span class="pre">we</span> <span class="pre">did</span> <span class="pre">previously</span> <span class="pre">&lt;load-qdr&gt;</span></code>. Specifically, we’ll load sequences from the Greengenes database and construct a feature table from them. We’ll use this feature table in an unsupervised learning task and a supervised learning task. We’ll also load labels for the sequences which we’ll primarily use in our supervised learning task, but which we’ll also use to aid in interpretation in our unsupervised learning task.</p>
 <p>Our goal with these tasks will be to explore phylum-level taxonomy of a few microbial phyla based on sequence data. In our unsupervised learning task, we’ll determine if samples (i.e., sequences) coming from the same phyla appear to generally be more similar to each other than samples coming from different phyla. In our supervised learning task, we’ll determine if we can develop a classifier to predict microbial phylum from an unlabeled sequence.</p>
-<p>Let’s start by loading an equal number of sequences from five specific microbial phyla from Greengenes.</p>
-<div class="cell tag_hide-cell docutils container">
+<p>Let’s start by loading five sequences from each of five specific microbial phyla from Greengenes.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime_default_reference</span> <span class="k">as</span> <span class="nn">qdr</span>
 <span class="kn">import</span> <span class="nn">skbio</span>
 
 <span class="k">def</span> <span class="nf">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="c1"># Load the taxonomic data</span>
-    <span class="n">seq_data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">phylum_to_seq_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">phyla_of_interest</span><span class="p">}</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="n">phylum_to_seq_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">phyla_of_interest</span><span class="p">}</span>        
+    
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_taxonomy</span><span class="p">()):</span>
         <span class="n">seq_id</span><span class="p">,</span> <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">seq_tax</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">seq_tax</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
         <span class="n">seq_phylum</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq_tax</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
             
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
-            <span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span>
+            <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="c1"># if seq_phylum is not in phylum_to_seq_ids (i.e., it</span>
             <span class="c1"># wasn&#39;t provided as a phylum of interest) skip this </span>
             <span class="c1"># record</span>
             <span class="k">pass</span>
+        
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">phylum</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> sequences were identified for phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">),</span> <span class="n">phylum</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> 
                            <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
         <span class="n">seq_id</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+                <span class="n">phylum</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">phylum</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
+                <span class="c1"># for the purpose of this exercise we&#39;ll skip records </span>
+                <span class="c1"># that have non-ACGT characters</span>
+                <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
             <span class="c1"># if this seq_id wasn&#39;t previously identified as being from one of our</span>
             <span class="c1"># phyla of interest, skip this record</span>
             <span class="k">pass</span>
-        
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">phylum</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> sequences were loaded for phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">),</span> <span class="n">phylum</span><span class="p">))</span>
     
     <span class="k">if</span> <span class="n">class_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">sampled_seq_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">sampled_result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">class_size</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Class size (</span><span class="si">%d</span><span class="s2">) too large for phylum </span><span class="si">%s</span><span class="s2">, which has only </span><span class="si">%d</span><span class="s2"> sequences.&quot;</span> <span class="o">%</span> 
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Class size (</span><span class="si">%d</span><span class="s2">) too large for phylum </span><span class="si">%s</span><span class="s2">, which has only </span><span class="si">%d</span><span class="s2"> non-degenerate sequences.&quot;</span> <span class="o">%</span> 
                                  <span class="p">(</span><span class="n">class_size</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">)))</span>
             <span class="n">sampled_seq_ids</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">class_size</span><span class="p">)</span>
-            <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampled_seq_ids</span>
-            <span class="n">sampled_seq_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">seq_id</span><span class="p">:</span> <span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">sampled_seq_ids</span><span class="p">})</span>
-        <span class="n">seq_data</span> <span class="o">=</span> <span class="n">sampled_seq_data</span>
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">After random sampling: &#39;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">phylum</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%d</span><span class="s2"> sequences were retained for phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">),</span> <span class="n">phylum</span><span class="p">))</span>
-        
+            <span class="n">sampled_result</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">seq_id</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">sampled_seq_ids</span><span class="p">})</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">sampled_result</span>
 
-    <span class="k">return</span> <span class="n">seq_data</span><span class="p">,</span> <span class="n">phylum_to_seq_ids</span>
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell docutils container" id="ml-define-sequences-per-phylum">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phyla</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;k__Archaea;p__Crenarchaeota&#39;</span><span class="p">,</span> 
          <span class="s1">&#39;k__Archaea;p__Euryarchaeota&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;k__Bacteria;p__Firmicutes&#39;</span><span class="p">,</span> 
          <span class="s1">&#39;k__Bacteria;p__Cyanobacteria&#39;</span><span class="p">,</span> 
          <span class="s1">&#39;k__Bacteria;p__Bacteroidetes&#39;</span><span class="p">,</span> 
          <span class="s1">&#39;k__Bacteria;p__Actinobacteria&#39;</span><span class="p">}</span>
-<span class="n">sequences_per_phylum</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sequences_per_phylum</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="n">seq_data</span><span class="p">,</span> <span class="n">phylum_to_seq_ids</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla</span><span class="p">,</span> <span class="n">sequences_per_phylum</span><span class="p">)</span>
+<span class="n">seq_data</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla</span><span class="p">,</span> <span class="n">sequences_per_phylum</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>26661 sequences were loaded for phylum k__Bacteria;p__Firmicutes.
-833 sequences were loaded for phylum k__Archaea;p__Crenarchaeota.
-5565 sequences were loaded for phylum k__Bacteria;p__Actinobacteria.
-1518 sequences were loaded for phylum k__Archaea;p__Euryarchaeota.
-12958 sequences were loaded for phylum k__Bacteria;p__Bacteroidetes.
-2118 sequences were loaded for phylum k__Bacteria;p__Cyanobacteria.
-
-After random sampling: 
- 100 sequences were retained for phylum k__Bacteria;p__Firmicutes.
- 100 sequences were retained for phylum k__Archaea;p__Crenarchaeota.
- 100 sequences were retained for phylum k__Bacteria;p__Actinobacteria.
- 100 sequences were retained for phylum k__Archaea;p__Euryarchaeota.
- 100 sequences were retained for phylum k__Bacteria;p__Bacteroidetes.
- 100 sequences were retained for phylum k__Bacteria;p__Cyanobacteria.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5565 sequences were identified for phylum k__Bacteria;p__Actinobacteria.
+1518 sequences were identified for phylum k__Archaea;p__Euryarchaeota.
+2118 sequences were identified for phylum k__Bacteria;p__Cyanobacteria.
+833 sequences were identified for phylum k__Archaea;p__Crenarchaeota.
+12958 sequences were identified for phylum k__Bacteria;p__Bacteroidetes.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source phylum for the sequence record, and a 16S rRNA sequence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🦠&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>255722
+k__Archaea;p__Crenarchaeota
+ACCCGACTGCTATCGGAGTGGGACTAAGCCATGCGAGTCGTACGCTCCTTGACCACGTAAGGGGCGTGGCAGACGGCTCAGTAACACGTAGTCAACCTGCCCTGAGGACGGGGATAACCCCGGGAAACTGGGACTAATACCCGATAGGCCATCGATCCTGGAAGGGGCTTTGGCTGAGAGGGTTGGACAGGCATGTCTGTCCTTCCGCCTCAGGATGGGACTGCGGCCGATCAGGTGGTTGGCGGGGTAATGGCCCACCAAGCCTATAACCGGTACGGGCTTTGAGAGAAGGAGCCCGGAGATGGACACTGAGACAAGGGTCCAGGCCCTACGGGGCGCAGCAGGCGCGAAACCTTCGCAATGCGCGAAAGCGCGACGAGGCTACTCCGAGTGCCGTCCGCTGAGGATGGCTTTTCTCAGGTCTAAAAAGCCTGAGGAATAAGGGGAGGGCAAGACTGGTGTCAGCCGCCGCGGTAATACCGGCTCCCCGAGTGGTCGGGACGATTATTGGGCCTAAAGCATCCGTAGCCGGTCCCGTAGGTCTATCGTTAAATTCAACGGCTCAACCGTTGAGCTGCGATAGATACCGCGGGACTAGGAGGCGGGAGAGGCGGACGGTACTCCACGGGTAGGGGTAAAATCCTTTGATCCGTGGAAGACCACCAGTGGCGAAGGCGGTCCGCCAGAACGCGCTCGACGGTGAGGGATGAAAGCTGGGGGAGCGAACCGGATTAGATACCCGGGTAGTCCCAGCCGTAAACGATGCGAGCTAGGTGATGGAGTGGCTTAGGGCCATTCCAGTGCCGCAGGGAAGCCGTTAAGCTCGCCGCCTGGGGAGTACGGTCGCAAGACTGAAACTTAAAGGAATTGGCGGGGGAGCACCACAAGGGGTGAAGCCTGCGGTTCAATTGGAGTCAACGCCGGGAACCTTACCGGGAGAGACAGCAGGTTGAAGGTCAGGCTGAAGACCTTACCAGACGAGCTGAGAGGAGGTGCATGGCCGTCGCCAGCTCGTGCCGTGAGGTGTCCTGTTAAGTCAGGCAACGAGCGAGACCCCCGCTGCTAGTTGCTGCCATCAGCTGTAATGCTGGCGGCGCTAATTAGCAGGACTGCCGTCGACAAGACGGAGGAAGGAGGGGGCCACGGCAGGTCAGTATGCCCCGAAACTCCCGGGCCACACGCGGGCTGCAATGGTAGGGACAATGGGCTCCGACCTCGAAAGGGGAAGGCAATCCCGAAACCCTACCTCAGTTGTGATTGAGGGCTGAAACCCGCCCTCATGAATCTGGAATCCCTAGTAACCGCGTGTTATCATCGCGCGGTGAATACGTCCCTGCTCC
+🦠
+4446535
+k__Bacteria;p__Actinobacteria
+GTGGCGAATGGGTGAGTAACTTATGAGTAACCTGCCCTTAACTCTGGGATAAGCCTGGGAAACTGGGTCTAATACCGGATATGACTCCTCATCGCATGGTGGGGGGTGGAAAGCTTTTTGTGGTTTTGGATGGACTCGCGGCCTATCAGCTTGTTGGTGAGGTAATGGCTTACCAAGGCGACGACGGGTAGCCGGCCTGAGAGGGTGACCGGCCACACTGGGACTGAGACACGGCCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGCACAATGGGCGCAAGCCTGATGCAGCGACGCCGCGTGAGGGATGACGGCCTTCGGGTTGTAAACCTCTTTCATTAGGGAAGAAGCGAAAGTGACGGTACCTGCAGAAGAAGCGCCGGCTAACTACGTGCCAGCAGCCCCGGTAATACCTAGGCGCAAGCGTTATCCGGATTTATTGGGCGTAAAGAGCTCCGTAAGCGGTTGTCCCGTCTGCCGGGAAAAGTCCGGGCTTCACTTCCCTGAATCTGCGGTGGGGTACGGCCAGACTAAAGTGATTGTAGGGGAGACTGGGAATTCCTGGGTGTAGCGGTGAAATGCGCATAATATCAGGAGGAACACGATGGCGAAGGCAGGTCTCTGGGCATTAACTGACGACTGAGGAGCGAAAGCATGGGGGAGCGAACAGGAATAAAATACCCCGGTAGATCCATGGCTGTAAACGTTGGGCACTAGGTTGTGGGGGACAATTTCCACGTTTATCCGCGCCGGAAGTTAACGCATTATAGTGCCCCGCCCGGGGAGTACGGCCGCAAGGCTAAAAACTCAAAGGAATTGACGGGGGCCCGCCCAAAGCGGCGGAGCATGCGGATTAATTCGATGCAACGCGAAGAACCTTACCAAGGCTTGACATGAACCGGTAATACCTGGAGACAGGTGCCCCGCTTGCGGTCGGTTTACAGGTGGTGCATGGTTGTCGTCAGCTCGTGTCGTGAGATGTTGGGTTAAGTCCCGCAACGAGCGCAACCCTCGTTTTATGTTGCCAGCACGTGATGGTGGGGACTCATAGGAGACTGCCGGGGTCAACTCGGAGGAAGGTGGGGACGACGTCAAATCATCATGCCCCTTATGTCTTGGGCTTCACGCATGCTACAATGGCCGGTACAAAGGGTTGCGATACTGTGAGGTGGAGCTAATCCCAAAAAGCCGGTCTCAGTTCGGATTGGGGTCTGCAACTCGACCCCATGAAGTCGGAGTCGCTAGTAATCGCAGATCAGCAACGCTGCGGTGAATACGTTCCCGGGCCTTGTACACACCGCCCGTCAAGTCACGAAAGTTGGTAACACCCGAAGTCGGTGGCCTAACCCCTTGTGGGAGG
+🦠
+724
+k__Archaea;p__Euryarchaeota
+GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGTGGATAACATGCCCTTAAGTGGAGGATAATCTCGGGAAATTGAGGATAATACTCCATAGATCATGAAATCTGGAATGATTCATGGTTCAAAGTTCCGGCGCTTAAGGATTGGTCTGCGGCCCATCAGGTAGTAGTGGGTGTAACGTACCTACTAGCCTATGACGGGTATGGGCCTTGAGAGAGGGAGCCCAGAGTTGGATTCTGAGACACGAATCCAGGCCCTACGGGGCGCAGCAGTCGCGAAAACTTCACACTGGGGGCAACCCCGATGAGGGAATTCCTAGTGCTAGCGCTTTTTGTGCTAGCTTTTCTTCAGTATAGATAGCTGGAGGAATAAGGGCTGGGTAAGACGGGTGCCAGCCGCCGCGGTAATACCTGCAGCCCAAGTGGTGGTCGATTTTATTGAGTCTAAAACGTTCGTAGCCGGTTTGATAAATCCTTGGGTAAATCGGAGAGCTTAACTTTCCGACTTCCGAGGAGACTGTCAAACTTGGGACCGGGAGAGGCAAGAGGTACTTGAGGGGTAGGGGTAAAATCCTGTAATCCTTTAAGGACCACCGGTGGCGAAGGCGTCTTGCTAGAACGGATCCGACGGTGAGGGACGAAGCCCTGGGTCGCAAACGGGATTAGATACCCCGGTAGTCCAGGGTGTAAACGCTGCAGACTTGGTGTTGGAGATCCTTCGTGGGTATTCAGTGCCGGAGAGAAGTTGTTAAGTCTGCTACTTGGGGAGTACGTCCGCAAGGATGAAACTTAAAGGAATTGGCGGGGGAGCACCGCAACGGGAGGAGCGTGCGGTTTAATTGGATTCAACACCGGAAAACTCACCAGGAGCGACGGTTACATGAAAGTCAGGCTGATGACCTTACTCGATTTTCCGAGAGGTGGTGCATGGCCGTCGTCAGTTCGTACCGTAAGGCGTTCTCTTAAGTGAGATAACGAACGAGACCCTCACTAATAGTTGCTACTCCATCCTCCGGGGTGGAGGCACACTATTGGGACCGCTGGCGCTAAGTCAGAGGAAGGAGAGGTCAACGGTAGGTCAGTATGCCCCGAATCTCCTGGGCTACACGCGCGCTACAAAGGGCGGGACAATGGGCTCCGACGCCGAGAGGCGAAGGTAATCTCGAAACCCGTCCGTAGTTCGGATTGAGGGTTGTAACTCACCCTCATGAAGCTGGATTCCGTAGTAATCGCGAATCAACAATTCGCGGTGAATATGCCCCTGCTCCTTGCACACACCGCCCGTCAAACCACCCGAGTTGGGTTTCAGTGAGGCTGCCCTTTTATGGGGTTGTCGAACTGAGATTTAGCAAGGAGGGTTA
+🦠
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let’s set <span class="math notranslate nohighlight">\(k=7\)</span>, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you’ve finished reading this chapter.</p>
+<div class="cell docutils container" id="ml-define-k">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="s1">&#39;k__Archaea;p__Crenarchaeota&#39;</span><span class="p">][:</span><span class="mi">5</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">seq_id</span> <span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq_id</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+<span class="n">sequence_feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kmer_frequencies</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">sequence_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;590520&#39;, &#39;190482&#39;, &#39;200436&#39;, &#39;243880&#39;, &#39;1127869&#39;]
-</pre></div>
 </div>
-</div>
-</div>
+<p>After extracting all k-mers from the sequences and putting them in a table where the rows are our sequences (indexed by the unique sequence identifiers), the columns represent unique k-mers (labeled by the k-mer itself), and the values are the number of times each k-mer is observed in each sequence, we end up with our feature table for unsupervised and supervised learning.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seq_data</span><span class="p">[</span><span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="s1">&#39;k__Archaea;p__Crenarchaeota&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_feature_table</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
-----------------------------------------------------------------------
-Metadata:
-    &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;590520&#39;
-Stats:
-    length: 1305
-    has gaps: False
-    has degenerates: False
-    has definites: True
-    GC-content: 59.46%
-----------------------------------------------------------------------
-0    TTTCCGGTTG ATCCTGCCGG ACCCTACTGC TATCGGGGTG GGACTAAGAC ATGCGAGTTG
-60   CGCGTCTCTA AGCCATGGTA GAGACGCGGC ATACGGCTCA GTAACACGTG GCTAACCTAC
-...
-1200 GCAATGGCAG GGACAATGGG TTCCCACCTC GAAAGGGGGA GGCAATCCCG AAACCCTGCC
-1260 TCAGTTGGGA TCGAGGGCTG CAACCCGCCC TCGTGAACAT GGAAT
-</pre></div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GTCGAGC</th>
+      <th>TCGAGCG</th>
+      <th>CGAGCGA</th>
+      <th>GAGCGAT</th>
+      <th>AGCGATG</th>
+      <th>GCGATGA</th>
+      <th>CGATGAT</th>
+      <th>GATGATC</th>
+      <th>ATGATCC</th>
+      <th>TGATCCG</th>
+      <th>...</th>
+      <th>CTGGATG</th>
+      <th>TCTTTAA</th>
+      <th>CTTTAAA</th>
+      <th>TTTAAAA</th>
+      <th>ACCTATT</th>
+      <th>CCTATTT</th>
+      <th>CTATTTC</th>
+      <th>TATTTCA</th>
+      <th>ATTTCAG</th>
+      <th>GATCGGA</th>
+    </tr>
+    <tr>
+      <th>id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>137981</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>132390</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>586357</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4446535</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>215003</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>315627</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>724</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>290329</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>264985</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4479099</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>415943</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>56651</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>353545</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4311455</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>808810</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>18084</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4414549</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1608751</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>255722</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>178792</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1138574</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>196800</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1133453</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3765185</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4407311</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>25 rows × 10438 columns</p>
+</div></div></div>
 </div>
-</div>
-</div>
+<p>As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We’ll next compile our sample label vector.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;phylum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
@@ -896,186 +1574,139 @@ Stats:
   </thead>
   <tbody>
     <tr>
-      <th>187790</th>
-      <td>k__Bacteria;p__Firmicutes</td>
+      <th>137981</th>
+      <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>217139</th>
-      <td>k__Bacteria;p__Firmicutes</td>
+      <th>132390</th>
+      <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>141835</th>
-      <td>k__Bacteria;p__Firmicutes</td>
+      <th>586357</th>
+      <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>313741</th>
-      <td>k__Bacteria;p__Firmicutes</td>
+      <th>4446535</th>
+      <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>244503</th>
-      <td>k__Bacteria;p__Firmicutes</td>
+      <th>215003</th>
+      <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>...</th>
-      <td>...</td>
+      <th>315627</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
     </tr>
     <tr>
-      <th>133548</th>
+      <th>724</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>290329</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>264985</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>4479099</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>415943</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>812476</th>
+      <th>56651</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>733241</th>
+      <th>353545</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>215148</th>
+      <th>4311455</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>343561</th>
+      <th>808810</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
+    </tr>
+    <tr>
+      <th>18084</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>4414549</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>1608751</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>255722</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>178792</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>1138574</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>196800</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>1133453</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>3765185</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>4407311</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
   </tbody>
 </table>
-<p>600 rows × 1 columns</p>
 </div></div></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequences</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">seq_id</span> <span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">seq_id</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span> 
-                      <span class="n">name</span><span class="o">=</span><span class="s1">&#39;sequence&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-<span class="n">sequences</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequences</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">seq_data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DNA
-----------------------------------------------------------------------
-Metadata:
-    &#39;description&#39;: &#39;&#39;
-    &#39;id&#39;: &#39;187790&#39;
-Stats:
-    length: 1391
-    has gaps: False
-    has degenerates: False
-    has definites: True
-    GC-content: 54.64%
-----------------------------------------------------------------------
-0    TTAGAGTTTG ATCCTGGCTC AGGACGAACG CTGGCGGCGC GCCTAACACA TGCAAGTCGA
-60   ACGGGGCTTA TATTTCAGAA GTTTTCGGAT GGACGAGAGA TAAGCTTAGT GGCGGACGGG
-...
-1320 GAATCGCTAG TAATCGCGGA TCAGCATGCC GCGGTGAATA CGTTCCCGGG CCTTGCACTC
-1380 ACCGCCCGTC A
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container" id="ml-define-nb-parameters">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">7</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">seq_id</span> <span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq_id</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-<span class="n">kmer_frequencies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kmer_frequencies</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">kmer_frequencies</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_feature_table</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">15</span><span class="o">-</span><span class="mf">9894e745768</span><span class="n">b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sequence_feature_table</span>
-
-<span class="ne">NameError</span>: name &#39;sequence_feature_table&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pick up here with Jaccard(?) distance computation between sequences</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Next, we’ll compute a table of the per-sequence kmer counts for all kmers in <code class="docutils literal notranslate"><span class="pre">W</span></code> for all sequences in our reference database. We’ll also store the taxonomic identity of each of our reference sequences at our specified taxonomic level. We can store this information in a pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, and then view the first 25 rows of that table.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute all kmers for the specified alphabet</span>
-<span class="n">W</span> <span class="o">=</span> <span class="n">compute_W</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-
-<span class="c1"># Define a function that returns the taxonomy at a specified level given</span>
-<span class="c1"># a semi-colon separated taxonomic description.</span>
-<span class="c1"># For example, providing &#39;k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__&#39;</span>
-<span class="c1"># as input will return &#39;k__Bacteria; p__Gemmatimonadetes&#39; as output.</span>
-<span class="k">def</span> <span class="nf">get_taxon_at_level</span><span class="p">(</span><span class="n">taxon</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-    <span class="n">taxon</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">taxon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">taxon</span><span class="p">[:</span><span class="n">level</span><span class="p">])</span>
-
-<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
-    <span class="n">sequence_id</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-    
-    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
-    <span class="n">sequence_labels</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
-    
-    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
-    <span class="n">per_sequence_kmer_counts</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmer_counts</span>
-
-<span class="n">feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the first 25 samples in the feature table</span>
-<span class="n">feature_table</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display the taxon labels for the first 25 samples</span>
-<span class="n">sequence_labels</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>This table of kmer counts per taxon is our *<em>feature table</em>. In this case, taxa are our samples and kmers are our features. The values in the table represent the number of times each kmer was observed in each taxon.</p>
+<p>Our data is ready, so let’s get started with unsupervised learning.</p>
 </div>
 <div class="section" id="unsupervised-learning">
 <h2><span class="section-number">3.4. </span>Unsupervised learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this headline">¶</a></h2>
+<!-- Pick up here - discuss Jaccard distance -->
 <p>We’ll begin our exploration of machine learning approaches with unsupervised learning, and specifically discuss ordination methods. We’ll work through ordination in two strokes. First, we’ll explore an approach called <strong>Polar Ordination</strong>, where the math is simple but which isn’t widely used in practice because it doesn’t work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we’ll apply an approach called <strong>Principal Coordinates Analysis (PCoA)</strong>. The math for PCoA is a bit more complicated than I want to get into in this book (I’m a biology teacher, after all), but we’ll apply it to a large data set to explore how these techniques can be used in practice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.diversity</span>
+
+<span class="n">sequence_distance_matrix</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">diversity</span><span class="o">.</span><span class="n">beta_diversity</span><span class="p">(</span><span class="s1">&#39;jaccard&#39;</span><span class="p">,</span> <span class="n">sequence_feature_table</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">sequence_feature_table</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/sklearn/metrics/pairwise.py:1761: DataConversionWarning: Data was converted to boolean for metric jaccard
+  warnings.warn(msg, DataConversionWarning)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_distance_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_24_0.svg" src="../_images/machine-learning_24_0.svg" /></div>
+</div>
 <div class="section" id="polar-ordination">
 <h3><span class="section-number">3.4.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h3>
 <p>First, let’s print our distance matrix again so we have it nearby.</p>
@@ -1361,12 +1992,65 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, A, G, T
+For an alphabet size of 4, W contains 16 length-2 kmers.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
 <p>Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 7-mers are there? How many 7-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?</p>
 </div>
 <p>The next thing we’ll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the <code class="docutils literal notranslate"><span class="pre">skbio.DNA</span></code> sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## This cell needs revision to fit in to the refactored code</span>
+<span class="c1"># compute all kmers for the specified alphabet</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">compute_W</span><span class="p">(</span><span class="n">alphabet</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+<span class="c1"># Define a function that returns the taxonomy at a specified level given</span>
+<span class="c1"># a semi-colon separated taxonomic description.</span>
+<span class="c1"># For example, providing &#39;k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__&#39;</span>
+<span class="c1"># as input will return &#39;k__Bacteria; p__Gemmatimonadetes&#39; as output.</span>
+<span class="k">def</span> <span class="nf">get_taxon_at_level</span><span class="p">(</span><span class="n">taxon</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="n">taxon</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">taxon</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">taxon</span><span class="p">[:</span><span class="n">level</span><span class="p">])</span>
+
+<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
+<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+    <span class="n">sequence_id</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+    
+    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
+    <span class="n">sequence_labels</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
+    
+    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">per_sequence_kmer_counts</span><span class="p">[</span><span class="n">sequence_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">kmer_counts</span>
+
+<span class="n">feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">16</span><span class="o">-</span><span class="n">f2415c398283</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">sequence_id</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> 
+
+<span class="ne">NameError</span>: name &#39;reference_db&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmers</span> <span class="o">=</span> <span class="n">reference_db</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">iter_kmers</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
@@ -1604,7 +2288,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 <p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
-<p>Jump back up to where we <a class="reference internal" href="#ml-define-nb-parameters"><span class="std std-ref">defined <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code></span></a> and modify those values. How does the accuracy of the classifier change if you increase or decrease <code class="docutils literal notranslate"><span class="pre">k</span></code> while keeping the value of <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> fixed? How does the accuracy change if you increase or decrease the <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> while keeping <code class="docutils literal notranslate"><span class="pre">k</span></code> fixed?</p>
+<p>Jump back up to where we <span class="xref myst">defined <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code></span> and modify those values. How does the accuracy of the classifier change if you increase or decrease <code class="docutils literal notranslate"><span class="pre">k</span></code> while keeping the value of <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> fixed? How does the accuracy change if you increase or decrease the <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> while keeping <code class="docutils literal notranslate"><span class="pre">k</span></code> fixed?</p>
 </div>
 </div>
 </div>

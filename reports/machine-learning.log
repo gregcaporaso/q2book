@@ -17,14 +17,44 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-sequence_feature_table
+## This cell needs revision to fit in to the refactored code
+# compute all kmers for the specified alphabet
+W = compute_W(alphabet, k)
+
+# Define a function that returns the taxonomy at a specified level given
+# a semi-colon separated taxonomic description.
+# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
+# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
+def get_taxon_at_level(taxon, level):
+    taxon = [l.strip() for l in taxon.split(';')]
+    return '; '.join(taxon[:level])
+
+# Iterate over all of the reference sequences and compute their kmer frequencies.
+per_sequence_kmer_counts = {}
+sequence_labels = {}
+for reference_sequence in reference_db:
+    sequence_id = reference_sequence.metadata['id']
+    
+    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
+    sequence_labels[sequence_id] = taxon
+    
+    kmer_counts = dict.fromkeys(W, 0)
+    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
+    per_sequence_kmer_counts[sequence_id] = kmer_counts
+
+feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
+sequence_labels = pd.Series(sequence_labels, name='taxon')
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m<ipython-input-15-9894e745768b>[0m in [0;36m<module>[0;34m[0m
-[0;32m----> 1[0;31m [0msequence_feature_table[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;31mNameError[0m: name 'sequence_feature_table' is not defined
-NameError: name 'sequence_feature_table' is not defined
+[0;32m<ipython-input-16-f2415c398283>[0m in [0;36m<module>[0;34m[0m
+[1;32m     14[0m [0mper_sequence_kmer_counts[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     15[0m [0msequence_labels[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 16[0;31m [0;32mfor[0m [0mreference_sequence[0m [0;32min[0m [0mreference_db[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     17[0m     [0msequence_id[0m [0;34m=[0m [0mreference_sequence[0m[0;34m.[0m[0mmetadata[0m[0;34m[[0m[0;34m'id'[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m     18[0m [0;34m[0m[0m
+
+[0;31mNameError[0m: name 'reference_db' is not defined
+NameError: name 'reference_db' is not defined
 
