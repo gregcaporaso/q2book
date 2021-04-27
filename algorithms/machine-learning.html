@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3. Machine learning in bioinformatics &#8212; q2book</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -19,14 +20,10 @@
 
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/sphinx-book-theme.e7340bb3dbd8dde6db86f25597f54a1b.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
@@ -34,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -44,7 +41,7 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -58,14 +55,14 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="1. Getting started with developing with QIIME 2" href="../developing/getting-started.html" />
     <link rel="prev" title="2. Sequence homology searching" href="database-searching.html" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
-
-
-
+    
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
     
 
     <div class="container-xl">
@@ -74,44 +71,44 @@
 <div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
         <div class="navbar-brand-box">
-<a class="navbar-brand text-wrap" href="../index.html">
-  
-  <img src="../_static/logo.png" class="logo" alt="logo">
-  
-  
-  <h1 class="site-logo" id="site-title">q2book</h1>
-  
-</a>
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">q2book</h1>
+      
+    </a>
 </div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form>
-<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-    <ul class="nav sidenav_l1">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../front-matter/preface.html">
    Preface
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p class="caption">
  <span class="caption-text">
   Front Matter
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../front-matter/reading.html">
    1. Reading this book
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p class="caption">
  <span class="caption-text">
   Microbiome Bioinformatics with QIIME 2
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../using/getting-started.html">
    1. Getting started with using QIIME 2
@@ -163,12 +160,12 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p class="caption">
  <span class="caption-text">
   Understanding the algorithms
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="pairwise-alignment.html">
    1. Pairwise sequence alignment
@@ -185,12 +182,12 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p class="caption">
  <span class="caption-text">
   Developing with QIIME 2
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../developing/getting-started.html">
    1. Getting started with developing with QIIME 2
@@ -202,12 +199,12 @@
   </a>
  </li>
 </ul>
-<p class="caption collapsible-parent">
+<p class="caption">
  <span class="caption-text">
   Back Matter
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../back-matter/importing-examples.html">
    1. Appendix: Examples illustrating importing data into QIIME 2
@@ -240,6 +237,7 @@
  </li>
 </ul>
 
+    </div>
 </nav> <!-- To handle the deprecated key -->
 
 <div class="navbar_extra_footer">
@@ -292,12 +290,12 @@
 
             <!-- Source interaction buttons -->
 
-
             <!-- Full screen (wrap in <a> to have style consistency -->
-            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-                    title="Fullscreen mode"><i
-                        class="fas fa-expand"></i></button></a>
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
 
             <!-- Launch buttons -->
 
@@ -323,12 +321,11 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i>
-            Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#the-feature-table">
    3.1. The feature table
@@ -431,8 +428,7 @@
  </li>
 </ul>
 
-        </nav>
-        
+            </nav>
         </div>
     </div>
 </div>
@@ -450,14 +446,17 @@
 </div>
 <div class="section" id="the-feature-table">
 <h2><span class="section-number">3.1. </span>The feature table<a class="headerlink" href="#the-feature-table" title="Permalink to this headline">¶</a></h2>
-<p>Machine learning algorithms generally are provided with a table of <strong>samples</strong> and user-defined <strong>features</strong> of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a <strong>feature table</strong>, and it is central to machine learning and many subfields of bioinformatics. The terms used here are purposefully general. Samples are intended to be any unit of study, and features are attributes of those samples. Sometimes <strong>labels</strong> or <strong>response variables</strong> will be associated with the samples, in which case a different class of methods can be applied.</p>
+<p>Machine learning algorithms generally are provided with a table of <strong>samples</strong> and user-defined <strong>features</strong> of those samples. These data are typically represented in a matrix, where samples are the rows and features are the columns. This matrix is referred to as a <strong>feature table</strong>, and it is central to machine learning and many subfields of bioinformatics. The terms used here are purposefully general. Samples are intended to be any unit of study, and features are attributes of those samples. Sometimes <strong>labels</strong> or <strong>response variables</strong> will also be associated with the samples, in which case a different class of methods can be applied.</p>
 <p>scikit-learn provides a few example datasets that can be used for learning. Let’s start by taking a look and one of them to get an idea of what input might look like in a machine learning task.</p>
 <div class="section" id="the-iris-dataset">
 <h3><span class="section-number">3.1.1. </span>The Iris dataset<a class="headerlink" href="#the-iris-dataset" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset">Iris dataset</a> is a classic example used in machine learning, originally published by RA Fisher <span id="id1">[<a class="reference internal" href="#id27"><span>Fis36</span></a>]</span>. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows:</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell loads data from scikit-learn and organizes it into some strcutures that</span>
+<span class="c1"># we&#39;ll use to conviently view the data.</span>
+
+<span class="kn">import</span> <span class="nn">sklearn.datasets</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">iris_dataset</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -592,8 +591,8 @@
 <p>150 rows × 4 columns</p>
 </div></div></div>
 </div>
-<p>The rows in this table represent our samples - in this case specimens of Iris. The columns represent features, or attributes of the samples. Each <strong>sample vector</strong> (i.e., row) will include a unique identifier for the sample which we usually call the <em>sample id</em> (here these are simply integers), and values for each feature for that sample. Each <strong>feature vector</strong> (i.e., column) will similar contain an identifier for the feature, or the the <em>feature id</em>. These are often simplistic descriptions of the features, as they are in this example, but they don’t need to be (integers would work fine as feature ids). The feature vector then contains the values measured for that feature in each sample.</p>
-<p>This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we’ll cover first in this chapter. A goal of unsupervised learning might be to determine if there are clusters of samples that are most similar to one another.</p>
+<p>The rows in this table represent our samples - in this case specimens of Iris. The columns represent features, or attributes of the samples. Each <strong>sample vector</strong> (i.e., row) will include a unique identifier for the sample which we usually call the <em>sample id</em> (here these are simply integers), and values for each feature for that sample. Each <strong>feature vector</strong> (i.e., column) will similarly contain an identifier for the feature, or the the <em>feature id</em>. These are often simplistic descriptions of the features, as they are in this example, but they don’t need to be (integers would work fine as feature ids). The feature vector then contains the values measured for that feature in each sample.</p>
+<p>This feature table on its own can serve as an input dataset for unsupervised learning tasks, which we’ll cover first in this chapter. A goal of unsupervised learning might be to determine if there are groups of samples that are most similar to one another.</p>
 <p>In addition to this feature table, the Iris dataset contains labels for each of the 150 samples indicating which species each sample belongs to:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -696,8 +695,8 @@
 <div class="section" id="unsupervised-versus-supervised-learning-methods">
 <h2><span class="section-number">3.2. </span>Unsupervised versus supervised learning methods<a class="headerlink" href="#unsupervised-versus-supervised-learning-methods" title="Permalink to this headline">¶</a></h2>
 <p>Many machine learning methods are classified at a high level as either unsupervised or supervised learning methods.</p>
-<p>In <strong>unsupervised learning</strong> we either don’t have or don’t use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we’ll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you may have already encountered ordination plots (such as PCoA or NMDS plots in some of your own work).</p>
-<p>In <strong>supervised learning</strong>, on the other hand, sample labels are used in addition to a feature table. As we saw above, the sample labels can be either discrete or continuous, and that distinction defines whether we’re working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample’s label from its feature values (for example, what species does this Iris belong to, based on it’s sepal and petal length and width).</p>
+<p>In <strong>unsupervised learning</strong> we either don’t have or don’t use sample labels, and the algorithm therefore operates on a feature table alone. Typically the user is hoping to discover some structure in the data that can help them to understand which samples are most similar to each other based on their feature values. In this chapter we’ll introduce ordination as an unsupervised learning task. Ordination is very widely used in biology - you may have already encountered ordination plots (such as PCoA or NMDS plots) in some of your own work.</p>
+<p>In <strong>supervised learning</strong>, on the other hand, sample labels are used in addition to a feature table. The sample labels can be discrete, as in the Iris dataset, or continuous, and that distinction defines whether we’re working on a classification or regression task, respectively. The goal of a supervised learning task is typically to have the computer develop a model that can accurate predict an unlabeled sample’s label from its feature values (for example, what species does an Iris specimen belong to, based on its sepal and petal length and width).</p>
 </div>
 <div class="section" id="machine-learning-methods-applied-to-microbial-sequence-data">
 <h2><span class="section-number">3.3. </span>Machine learning methods applied to microbial sequence data<a class="headerlink" href="#machine-learning-methods-applied-to-microbial-sequence-data" title="Permalink to this headline">¶</a></h2>
@@ -725,7 +724,7 @@
 </div>
 </div>
 </div>
-<p>In this chapter, we’ll work with 16S rRNA data <code class="docutils literal notranslate"><span class="pre">as</span> <span class="pre">we</span> <span class="pre">did</span> <span class="pre">previously</span> <span class="pre">&lt;load-qdr&gt;</span></code>. Specifically, we’ll load sequences from the Greengenes database and construct a feature table from them. We’ll use this feature table in an unsupervised learning task and a supervised learning task. We’ll also load labels for the sequences which we’ll primarily use in our supervised learning task, but which we’ll also use to aid in interpretation in our unsupervised learning task.</p>
+<p>In this chapter, we’ll work with 16S rRNA data <a class="reference internal" href="database-searching.html#load-qdr"><span class="std std-ref">as we did previously</span></a>. Specifically, we’ll load sequences from the Greengenes database and construct a feature table from them. We’ll use this feature table in an unsupervised learning task and a supervised learning task. We’ll also load labels for the sequences which we’ll primarily use in our supervised learning task, but which we’ll also use to aid in interpretation in our unsupervised learning task.</p>
 <p>Our goal with these tasks will be to explore phylum-level taxonomy of a few microbial phyla based on sequence data. In our unsupervised learning task, we’ll determine if samples (i.e., sequences) coming from the same phyla appear to generally be more similar to each other than samples coming from different phyla. In our supervised learning task, we’ll determine if we can develop a classifier to predict microbial phylum from an unlabeled sequence.</p>
 <p>Let’s start by loading five sequences from each of five specific microbial phyla from Greengenes.</p>
 <div class="cell docutils container">
@@ -804,11 +803,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5565 sequences were identified for phylum k__Bacteria;p__Actinobacteria.
-1518 sequences were identified for phylum k__Archaea;p__Euryarchaeota.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12958 sequences were identified for phylum k__Bacteria;p__Bacteroidetes.
+5565 sequences were identified for phylum k__Bacteria;p__Actinobacteria.
 2118 sequences were identified for phylum k__Bacteria;p__Cyanobacteria.
+1518 sequences were identified for phylum k__Archaea;p__Euryarchaeota.
 833 sequences were identified for phylum k__Archaea;p__Crenarchaeota.
-12958 sequences were identified for phylum k__Bacteria;p__Bacteroidetes.
 </pre></div>
 </div>
 </div>
@@ -825,17 +824,17 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>255722
-k__Archaea;p__Crenarchaeota
-ACCCGACTGCTATCGGAGTGGGACTAAGCCATGCGAGTCGTACGCTCCTTGACCACGTAAGGGGCGTGGCAGACGGCTCAGTAACACGTAGTCAACCTGCCCTGAGGACGGGGATAACCCCGGGAAACTGGGACTAATACCCGATAGGCCATCGATCCTGGAAGGGGCTTTGGCTGAGAGGGTTGGACAGGCATGTCTGTCCTTCCGCCTCAGGATGGGACTGCGGCCGATCAGGTGGTTGGCGGGGTAATGGCCCACCAAGCCTATAACCGGTACGGGCTTTGAGAGAAGGAGCCCGGAGATGGACACTGAGACAAGGGTCCAGGCCCTACGGGGCGCAGCAGGCGCGAAACCTTCGCAATGCGCGAAAGCGCGACGAGGCTACTCCGAGTGCCGTCCGCTGAGGATGGCTTTTCTCAGGTCTAAAAAGCCTGAGGAATAAGGGGAGGGCAAGACTGGTGTCAGCCGCCGCGGTAATACCGGCTCCCCGAGTGGTCGGGACGATTATTGGGCCTAAAGCATCCGTAGCCGGTCCCGTAGGTCTATCGTTAAATTCAACGGCTCAACCGTTGAGCTGCGATAGATACCGCGGGACTAGGAGGCGGGAGAGGCGGACGGTACTCCACGGGTAGGGGTAAAATCCTTTGATCCGTGGAAGACCACCAGTGGCGAAGGCGGTCCGCCAGAACGCGCTCGACGGTGAGGGATGAAAGCTGGGGGAGCGAACCGGATTAGATACCCGGGTAGTCCCAGCCGTAAACGATGCGAGCTAGGTGATGGAGTGGCTTAGGGCCATTCCAGTGCCGCAGGGAAGCCGTTAAGCTCGCCGCCTGGGGAGTACGGTCGCAAGACTGAAACTTAAAGGAATTGGCGGGGGAGCACCACAAGGGGTGAAGCCTGCGGTTCAATTGGAGTCAACGCCGGGAACCTTACCGGGAGAGACAGCAGGTTGAAGGTCAGGCTGAAGACCTTACCAGACGAGCTGAGAGGAGGTGCATGGCCGTCGCCAGCTCGTGCCGTGAGGTGTCCTGTTAAGTCAGGCAACGAGCGAGACCCCCGCTGCTAGTTGCTGCCATCAGCTGTAATGCTGGCGGCGCTAATTAGCAGGACTGCCGTCGACAAGACGGAGGAAGGAGGGGGCCACGGCAGGTCAGTATGCCCCGAAACTCCCGGGCCACACGCGGGCTGCAATGGTAGGGACAATGGGCTCCGACCTCGAAAGGGGAAGGCAATCCCGAAACCCTACCTCAGTTGTGATTGAGGGCTGAAACCCGCCCTCATGAATCTGGAATCCCTAGTAACCGCGTGTTATCATCGCGCGGTGAATACGTCCCTGCTCC
-🦠
-4446535
-k__Bacteria;p__Actinobacteria
-GTGGCGAATGGGTGAGTAACTTATGAGTAACCTGCCCTTAACTCTGGGATAAGCCTGGGAAACTGGGTCTAATACCGGATATGACTCCTCATCGCATGGTGGGGGGTGGAAAGCTTTTTGTGGTTTTGGATGGACTCGCGGCCTATCAGCTTGTTGGTGAGGTAATGGCTTACCAAGGCGACGACGGGTAGCCGGCCTGAGAGGGTGACCGGCCACACTGGGACTGAGACACGGCCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGCACAATGGGCGCAAGCCTGATGCAGCGACGCCGCGTGAGGGATGACGGCCTTCGGGTTGTAAACCTCTTTCATTAGGGAAGAAGCGAAAGTGACGGTACCTGCAGAAGAAGCGCCGGCTAACTACGTGCCAGCAGCCCCGGTAATACCTAGGCGCAAGCGTTATCCGGATTTATTGGGCGTAAAGAGCTCCGTAAGCGGTTGTCCCGTCTGCCGGGAAAAGTCCGGGCTTCACTTCCCTGAATCTGCGGTGGGGTACGGCCAGACTAAAGTGATTGTAGGGGAGACTGGGAATTCCTGGGTGTAGCGGTGAAATGCGCATAATATCAGGAGGAACACGATGGCGAAGGCAGGTCTCTGGGCATTAACTGACGACTGAGGAGCGAAAGCATGGGGGAGCGAACAGGAATAAAATACCCCGGTAGATCCATGGCTGTAAACGTTGGGCACTAGGTTGTGGGGGACAATTTCCACGTTTATCCGCGCCGGAAGTTAACGCATTATAGTGCCCCGCCCGGGGAGTACGGCCGCAAGGCTAAAAACTCAAAGGAATTGACGGGGGCCCGCCCAAAGCGGCGGAGCATGCGGATTAATTCGATGCAACGCGAAGAACCTTACCAAGGCTTGACATGAACCGGTAATACCTGGAGACAGGTGCCCCGCTTGCGGTCGGTTTACAGGTGGTGCATGGTTGTCGTCAGCTCGTGTCGTGAGATGTTGGGTTAAGTCCCGCAACGAGCGCAACCCTCGTTTTATGTTGCCAGCACGTGATGGTGGGGACTCATAGGAGACTGCCGGGGTCAACTCGGAGGAAGGTGGGGACGACGTCAAATCATCATGCCCCTTATGTCTTGGGCTTCACGCATGCTACAATGGCCGGTACAAAGGGTTGCGATACTGTGAGGTGGAGCTAATCCCAAAAAGCCGGTCTCAGTTCGGATTGGGGTCTGCAACTCGACCCCATGAAGTCGGAGTCGCTAGTAATCGCAGATCAGCAACGCTGCGGTGAATACGTTCCCGGGCCTTGTACACACCGCCCGTCAAGTCACGAAAGTTGGTAACACCCGAAGTCGGTGGCCTAACCCCTTGTGGGAGG
-🦠
-724
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>692586
 k__Archaea;p__Euryarchaeota
-GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGTGGATAACATGCCCTTAAGTGGAGGATAATCTCGGGAAATTGAGGATAATACTCCATAGATCATGAAATCTGGAATGATTCATGGTTCAAAGTTCCGGCGCTTAAGGATTGGTCTGCGGCCCATCAGGTAGTAGTGGGTGTAACGTACCTACTAGCCTATGACGGGTATGGGCCTTGAGAGAGGGAGCCCAGAGTTGGATTCTGAGACACGAATCCAGGCCCTACGGGGCGCAGCAGTCGCGAAAACTTCACACTGGGGGCAACCCCGATGAGGGAATTCCTAGTGCTAGCGCTTTTTGTGCTAGCTTTTCTTCAGTATAGATAGCTGGAGGAATAAGGGCTGGGTAAGACGGGTGCCAGCCGCCGCGGTAATACCTGCAGCCCAAGTGGTGGTCGATTTTATTGAGTCTAAAACGTTCGTAGCCGGTTTGATAAATCCTTGGGTAAATCGGAGAGCTTAACTTTCCGACTTCCGAGGAGACTGTCAAACTTGGGACCGGGAGAGGCAAGAGGTACTTGAGGGGTAGGGGTAAAATCCTGTAATCCTTTAAGGACCACCGGTGGCGAAGGCGTCTTGCTAGAACGGATCCGACGGTGAGGGACGAAGCCCTGGGTCGCAAACGGGATTAGATACCCCGGTAGTCCAGGGTGTAAACGCTGCAGACTTGGTGTTGGAGATCCTTCGTGGGTATTCAGTGCCGGAGAGAAGTTGTTAAGTCTGCTACTTGGGGAGTACGTCCGCAAGGATGAAACTTAAAGGAATTGGCGGGGGAGCACCGCAACGGGAGGAGCGTGCGGTTTAATTGGATTCAACACCGGAAAACTCACCAGGAGCGACGGTTACATGAAAGTCAGGCTGATGACCTTACTCGATTTTCCGAGAGGTGGTGCATGGCCGTCGTCAGTTCGTACCGTAAGGCGTTCTCTTAAGTGAGATAACGAACGAGACCCTCACTAATAGTTGCTACTCCATCCTCCGGGGTGGAGGCACACTATTGGGACCGCTGGCGCTAAGTCAGAGGAAGGAGAGGTCAACGGTAGGTCAGTATGCCCCGAATCTCCTGGGCTACACGCGCGCTACAAAGGGCGGGACAATGGGCTCCGACGCCGAGAGGCGAAGGTAATCTCGAAACCCGTCCGTAGTTCGGATTGAGGGTTGTAACTCACCCTCATGAAGCTGGATTCCGTAGTAATCGCGAATCAACAATTCGCGGTGAATATGCCCCTGCTCCTTGCACACACCGCCCGTCAAACCACCCGAGTTGGGTTTCAGTGAGGCTGCCCTTTTATGGGGTTGTCGAACTGAGATTTAGCAAGGAGGGTTA
+ATTCCGGTTGATCCTGCCGGAGGCCATTGCTATCGGAGTCCGATTTAGCCATGCTAGTCGCACGAGTTCATACTCGTGGCATATAGCTCAGTAACACGTGGCCAAACTACCCTACAGCGACGGATAACCTCGGGAAACTGAGGCCAATCCGTCATAGCGCTCTCTCAGTGGAATACTGGAGAGTCACAAACGCTTCGGCGCTGTAGGATGTGGCTGCGGCCGATTAGGTAGACGGTGGGGTAACGGCCCACCGTGCCCATAATCGGTACGGGTTGTGAGAGCAAGAGCCCGGAGACGGAATCTGAGACAAGATTCCGGGCCCTACGGGGCGCAGCAGGCGCGAAACCTTTACACTGCACGCAAGTGCGATAAGGGGACTCCGAGTGCGAGGGCATATCGTCCTCGCTTTTCTGTACCGTAGGGCGGTACAGGAACAAGGACTGGGCAAGACCGGTGCCAGCCGCCGCGGTAATACCGGCAGTCCAAGTGATGGCCAATCTTATTGGGCCTAAAGCGTCCGTAGCCGGCCTCGAAAGTCCGTCGGGAAATCCACTGGCTCAACCAGTGGGCGTCCGGCGGAAACTTCGAGGCTTGGGACCGGAAGGCTCGAGGGGTACGTCCGGGGTAGGAGTGAAATCCTGTAATCCCGGACGGACCACCGATGGCGAAAGCACCTCGAGAAGACGGATCCGACGGTGAGGGACGAAAGCTAGGGTCTCGAACCGGATTAGATACCCGGGTAGTCCTAGCCGTAAACGATGTCCGCTAGGTGTGGCACTGGCTACGAGCCAGTGCTGCGCCGTAGGGAAGCCGAGAAGCGGACCGCCTGGGAAGTACGTCTGCAAGGATGAAACTTAAAGGAATTGGCGGGGGAGCACTACAACCGGAGGAGCGTGCGGTTTAATTGGACTCAACGCCGGACATCTCACCAGCCCCGACTACAGTGATGACGATCAGGTTGATGACCTCATCACGACGCTGTAGAGAGGAGGTGCATGGCCGCCGTCAGCTCGTACCGTGAGGCGTCCTGTTAAGTCAGGCAACGAGCGAGACCCGCACTCTTAATTGCCAGCAGCAGTTTCGACTGGCTGGGTACATTAGGAGGACTGCCAGTGCTAAACTGGAGGAAGGAACGGGCAACGGTAGGTCAGTATGCCCCGAATGGGCTGGGCTACACGCGGGCTACAATGGCCGGGACAATGGGTTGCAACCTCGAAAGAGGGCGCTAATCTCCGAAACCCGGTCGTAGTTCGGACTGAGGGCTGAAACTCGCCCTCACGAAGCTGGATTCGGTAGTAATCGCATTTCACCAGAGTGCGGTGAATACGTCCCTGCTCCTTGCACACACCGCCCGTCAAAGCACCCGAGTGAGGTCCGGATGAGGCCATTTCACAATGGTCGAATCTGGGCTTCGCAAGGGGGCTTAAGTCGTAACAAGGTAGCCGTAGGGGAATCTGCGGCTGGATCACCTCCT
+🦠
+518765
+k__Archaea;p__Crenarchaeota
+TTCCGGTTGATCCCGCCGGATCCGACTGCTATCCGGATGGGACTAAGCCATGCGAGTTGAATGGGAAGTCTTACTTTCCATAGCGCACTGCTCAGTAACAAGTTATCAACTTACCCTTTAGAGGGGCATAACCTCGGGAAACTGAGGATAATACCCCATAGTTGGATGAGCCTGGAATGGTTCTCCATCGAAAAGTCGTATCGAAATAGAGATACGTTTGCTGAAGGATAGGATTGCTCCCGATTATGGTAGTTGGTGAGGTAATGGCTCACCAAGCCTATGATCGGTAAGGGCCGTGAGAGCGGGAGCCCTGAGATGGGTACTGAGACAAGGACCCAGGCCTTACGAGGCGCAGCAGGCGCGAAACCTTTACAATGCGCGAAAGCGTGATAAGGTTATCCGGAGTGCTGAAAGCACAACTTTTAGCTGTTATCGGGCATAGATAACCCGATGAGAAAGGAGAGGGCAAGGCTGGTGCCAGCCGCCGCGGTAAAACCAGCTCTTCAAGTGGTCGGGACGATTATTGGGCTTAAAGTGTCCGTAGCCGGTTTGGTAAGTTCTTGGTTAAATCTGACAGCTTAACTGTCAGCGTGCTAAGAAGACTGCCTTACTAGGGGGCGGGAAAGGTCTGAGGTACTCCAGGGGTAGCGGTGAAATGTGATAATCCTTGGGGGACCACCAGTGGCGAAGGCGTCAGACTGGAACGCGCCCGACGGTGAGGGACGAAAGCTAGGGGAGCGAACGGGATCAGATACCCCGGTAGTCCTAGCTGTAAACGATGCGTGCTAGGTGTTGGTAGGGCTATGAGCTGTATCAGTGCCGTAGGGAAACTGTTAAGCACGCCGCCTGGGAAGTACGCTCGCAAGAGTGAAACTTAAAGGAATTGGCGGGGGAGCACCACAAGGGGTGAAGCCTGCGGTTCAATAGGACTCAACGCCGGGAAACTTACCGGGGGCGACAGCAGAATGAAGGTCAGGCTGACGACCTTACCAGACAAGCTGAGCGGAGGTGCATGGCCGTCGCCAGTCCGTGCCGTGAGGTATCCTGTTAAGTCAGGCAACGAACGAGACCCACATGTCTAGTTGCCAGCAAGAGACTTCGGCTTCGTTGGGAACGCTAGACAGACTGCCATCGTACAGATGGAGGAAGGGGTGGGCCACGGCAGGTCGGTATGCCCCTAATCCCCCGGGCCACACGCGGGCTGCAATGGTATGGACAATGGGTTGCAACTCTGAAAAGAGGAGCCAATCTCGAAACCATATCTCAGTTGGGATTGTTGGCTGTAACCCGCCGACATGAACGTGGAATCCCTAGTAATCGTGTGTCATCATCGCACGGTGAATACGTCTCTGCTCCTTGCACACACCGC
+🦠
+1004307
+k__Bacteria;p__Cyanobacteria
+GATGAACGCTGGCGGTATGCTTAACACATGCAAGTCGAACGGACTTCTTCGGAAGTTAGTGGCGGACGGGTGAGTAATGCGTAAGAATCTAGCTTGAGGTCGGGGACAACAGTTGGAAACGACTGCTAATACCGGATATGCGGAAACGTGAAAGTTTTAATGCCTTAAGAAGAGCCTGCGTCCGATTAGCTAGTTGGTAGGGTAAGAGCCTACCAAGGCACCGATCGGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATTTTCCGCAATGGGCGAAAGCCTGACGGAGCAATACCGCGTGAGGGAGGAAGGCTCTTGGGTTGTAAACCTCTTTTCTCAGGGAAGAATAATGACGGTACCTGAGGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGATGCAAGCGTTATCCGGAATGATTGGGCGTAAAGCGTCCGCAGGTGGTTTTGTATGTCTGCTGTTAAAGCGTGCGGCTTAACCGCATAAGGGCGGTGGAAACTACAAGACTAGAGTACGTTCGGGGCAGAGGGAATTCCCAGTGTAGCGGTGAAATGCGTAGAGATTGGGAAGAACATCGGTGGCGAAAGCGCTCTGCTAGGCCTGTACTGACACTGAGGGACGAAAGCTAGGGGAGCGAATGGGATTAGATACCCCAGTAGTCCTAGCCGTAAACGATGGATACTAGGCGTTGTCTGTATCGACCCGGACAGTGCCGTAGCTAACGCGTTAAGTATCCCGCCTGGGGAGTACGCAGGCAACTGTGAAACTCAAAGGAATTGACGGGGGCCCGCACAAGCGGTGGAGTATGTGGTTTAATTCGATGCAACGCGAAGAACCTTACCAAGACTTGACATGTCGCGAATTTCTGGGAAACTAGAAAGTGCCTTCGGGAGCGCGAACACAGGTGGTGCATGGCTGTCGTCAGCTCGTGTCGTGAGATGTTGGGTTAAGTCCCGCAACGAGCGCAACCCTCGTATTTAGTTGCCAGCATTGAGTTGGGCACTCTAGAGAGACTGCCGGTGACAAACCGGAGGAAGGTGGGGATGACGTCAAGTCAGCATGCCCCTTACGTCTTGGGCTACACACGTACTACAATGCTACGAACAAAGGGCAGCTACACAGCGATGTGATGCAAATCTCAGAAATCGTGGCTCAGTTCAGATCGCAGGCTGCAACTCGCCTGCGTGAAGTCGGAATCGCTAGTAATTGCAGGTCAGCATACTGCAGTGAATTCGTTCCCGGGCCT
 🦠
 </pre></div>
 </div>
@@ -884,27 +883,27 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>GTCGAGC</th>
-      <th>TCGAGCG</th>
-      <th>CGAGCGA</th>
-      <th>GAGCGAT</th>
-      <th>AGCGATG</th>
-      <th>GCGATGA</th>
-      <th>CGATGAT</th>
-      <th>GATGATC</th>
-      <th>ATGATCC</th>
-      <th>TGATCCG</th>
+      <th>GATGAAC</th>
+      <th>ATGAACG</th>
+      <th>TGAACGC</th>
+      <th>GAACGCT</th>
+      <th>AACGCTA</th>
+      <th>ACGCTAG</th>
+      <th>CGCTAGC</th>
+      <th>GCTAGCG</th>
+      <th>CTAGCGG</th>
+      <th>TAGCGGC</th>
       <th>...</th>
-      <th>CTGGATG</th>
-      <th>TCTTTAA</th>
-      <th>CTTTAAA</th>
-      <th>TTTAAAA</th>
-      <th>ACCTATT</th>
-      <th>CCTATTT</th>
-      <th>CTATTTC</th>
-      <th>TATTTCA</th>
-      <th>ATTTCAG</th>
-      <th>GATCGGA</th>
+      <th>CGCCGCA</th>
+      <th>CGCAGTT</th>
+      <th>GATCGAG</th>
+      <th>ATCGAGG</th>
+      <th>GTGAACG</th>
+      <th>AACCGCG</th>
+      <th>ACCGCGC</th>
+      <th>GCGTCAA</th>
+      <th>CGTCAAC</th>
+      <th>CAACATC</th>
     </tr>
     <tr>
       <th>id</th>
@@ -933,7 +932,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
   </thead>
   <tbody>
     <tr>
-      <th>137981</th>
+      <th>145633</th>
       <td>1</td>
       <td>1</td>
       <td>1</td>
@@ -957,17 +956,17 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>132390</th>
+      <th>511388</th>
+      <td>2</td>
       <td>1</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -981,57 +980,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>586357</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4446535</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>215003</th>
-      <td>1</td>
-      <td>1</td>
+      <th>330053</th>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1040,6 +989,8 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -1053,7 +1004,152 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>315627</th>
+      <th>1894033</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4337249</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>790384</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>253488</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4425792</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>239824</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1113958</th>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
@@ -1063,7 +1159,6 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -1077,57 +1172,10 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>724</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>290329</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>264985</th>
-      <td>0</td>
-      <td>0</td>
+      <th>629239</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1135,7 +1183,6 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -1149,60 +1196,36 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>4479099</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>415943</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>56651</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <th>1141758</th>
       <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1515792</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
@@ -1221,7 +1244,55 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>353545</th>
+      <th>1004307</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>516356</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>692586</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1245,7 +1316,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>4311455</th>
+      <th>1145401</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1269,7 +1340,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>808810</th>
+      <th>1000424</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1293,10 +1364,58 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>18084</th>
+      <th>559983</th>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4358884</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3347350</th>
       <td>0</td>
       <td>1</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1320,14 +1439,62 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <th>4414549</th>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>518765</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>348720</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -1341,7 +1508,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
     </tr>
     <tr>
-      <th>1608751</th>
+      <th>2083564</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1349,174 +1516,6 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>255722</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>178792</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1138574</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>196800</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1133453</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3765185</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4407311</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1534,7 +1533,7 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
     </tr>
   </tbody>
 </table>
-<p>25 rows × 10438 columns</p>
+<p>25 rows × 10387 columns</p>
 </div></div></div>
 </div>
 <p>As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We’ll next compile our sample label vector.</p>
@@ -1574,67 +1573,87 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
   </thead>
   <tbody>
     <tr>
-      <th>137981</th>
+      <th>145633</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>511388</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>330053</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>1894033</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>4337249</th>
+      <td>k__Bacteria;p__Bacteroidetes</td>
+    </tr>
+    <tr>
+      <th>790384</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>132390</th>
+      <th>253488</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>586357</th>
+      <th>4425792</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>4446535</th>
+      <th>239824</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>215003</th>
+      <th>1113958</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>315627</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>724</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>290329</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>264985</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>4479099</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>415943</th>
+      <th>629239</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>56651</th>
+      <th>1141758</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>353545</th>
+      <th>1515792</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>4311455</th>
+      <th>1004307</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>808810</th>
+      <th>516356</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>18084</th>
+      <th>692586</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>1145401</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>1000424</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>559983</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>4358884</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>3347350</th>
       <td>k__Archaea;p__Crenarchaeota</td>
     </tr>
     <tr>
@@ -1642,36 +1661,16 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
       <td>k__Archaea;p__Crenarchaeota</td>
     </tr>
     <tr>
-      <th>1608751</th>
+      <th>518765</th>
       <td>k__Archaea;p__Crenarchaeota</td>
     </tr>
     <tr>
-      <th>255722</th>
+      <th>348720</th>
       <td>k__Archaea;p__Crenarchaeota</td>
     </tr>
     <tr>
-      <th>178792</th>
+      <th>2083564</th>
       <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>1138574</th>
-      <td>k__Bacteria;p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>196800</th>
-      <td>k__Bacteria;p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>1133453</th>
-      <td>k__Bacteria;p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>3765185</th>
-      <td>k__Bacteria;p__Bacteroidetes</td>
-    </tr>
-    <tr>
-      <th>4407311</th>
-      <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
   </tbody>
 </table>
@@ -1710,19 +1709,6 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
 <div class="section" id="polar-ordination">
 <h3><span class="section-number">3.4.1. </span>Polar ordination<a class="headerlink" href="#polar-ordination" title="Permalink to this headline">¶</a></h3>
 <p>First, let’s print our distance matrix again so we have it nearby.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">)</span>
-<span class="go">6x6 distance matrix</span>
-<span class="go">IDs:</span>
-<span class="go">&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;</span>
-<span class="go">Data:</span>
-<span class="go">[[ 0.    0.35  0.83  0.83  0.9   0.9 ]</span>
-<span class="go"> [ 0.35  0.    0.86  0.85  0.92  0.91]</span>
-<span class="go"> [ 0.83  0.86  0.    0.25  0.88  0.87]</span>
-<span class="go"> [ 0.83  0.85  0.25  0.    0.88  0.88]</span>
-<span class="go"> [ 0.9   0.92  0.88  0.88  0.    0.5 ]</span>
-<span class="go"> [ 0.9   0.91  0.87  0.88  0.5   0.  ]]</span>
-</pre></div>
-</div>
 <p>Polar ordination works in a few steps:</p>
 <p><strong>Step 1.</strong> Identify the largest distance in the distance matrix.</p>
 <p><strong>Step 2.</strong> Define a line, with the two samples contributing to that distance defining the endpoints.</p>
@@ -1734,105 +1720,284 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
 <p><span class="math notranslate nohighlight">\(D2\)</span> is distance between sample and endpoint 2.</p>
 <p><strong>Step 4.</strong> Find the next largest distance that could be used to define an <em>uncorrelated axis</em>. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I’ll pick one for the demo, and we’ll wrap up by looking at all of the axes.)</p>
 <p>Here is what steps 2 and 3 look like in Python:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_axis_values</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">d</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">]</span>
-<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">endpoint1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
-<span class="gp">... </span>    <span class="n">non_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">non_endpoints</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">d1</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="n">d2</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint2</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
-<span class="gp">... </span>        <span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">d2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">sequence_distance_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a1_values</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span><span class="p">)</span>
-<span class="go">A 0.0863586956522</span>
-<span class="go">B 0</span>
-<span class="go">C 0.441086956522</span>
-<span class="go">D 0.431793478261</span>
-<span class="go">E 0.92</span>
-<span class="go">F 0.774184782609</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_axis</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">endpoint1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">:</span> <span class="n">d</span><span class="p">}</span>
+    <span class="n">non_endpoints</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">endpoint2</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">non_endpoints</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint1</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">dm</span><span class="p">[</span><span class="n">endpoint2</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">d1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">d2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a2_value</span><span class="p">)</span>
-<span class="go">A 0.371193181818</span>
-<span class="go">B 0.369602272727</span>
-<span class="go">C 0.0355113636364</span>
-<span class="go">D 0</span>
-<span class="go">E 0.88</span>
-<span class="go">F 0.737954545455</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">,</span> 
+                         <span class="n">sequence_distance_matrix</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+                         <span class="n">sequence_distance_matrix</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">a1_values</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="n">a1_value</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">scatter</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>145633 0.4152633039939994
+511388 0.3976209779350032
+330053 0.43882565069965535
+1894033 0.3890805230327296
+4337249 0.3868828436278016
+790384 0.392266149216624
+253488 0.389598781002786
+4425792 0.4007741804123069
+239824 0.38263579801443637
+1113958 0.3818192525566383
+629239 0.34822611774329393
+1141758 0.33627978603256875
+1515792 0.3301457771765045
+1004307 0.33620904035215743
+516356 0
+692586 0.7413969270086603
+1145401 0.5263925134684125
+1000424 0.5411924131756056
+559983 0.749422377145756
+4358884 0.9309369951534734
+3347350 0.5224516075959037
+4414549 0.5306560758370922
+518765 0.5153120440568656
+348720 0.510462872808632
+2083564 0.5363209197968591
 </pre></div>
 </div>
-<p>And again, let’s look at how including metadata helps us to interpret our results.</p>
-<p>First, we’ll color the points by the body habitat that they’re derived from:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;tongue&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;gut&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;skin&#39;</span><span class="p">:</span><span class="s1">&#39;blue&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;body site&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
 </div>
-<p>And next we’ll color the samples by the person that they’re derived from. Notice that this plot and the one above are identical except for coloring. Think about how the colors (and therefore the sample metadata) help you to interpret these plots.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">person_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;subject 1&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;subject 2&#39;</span><span class="p">:</span><span class="s1">&#39;yellow&#39;</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">person_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">person_colors</span><span class="p">[</span><span class="n">human_microbiome_sample_md</span><span class="p">[</span><span class="s1">&#39;individual&#39;</span><span class="p">][</span><span class="n">e</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">person_c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
 </div>
 <div class="section" id="determining-the-most-important-axes-in-polar-ordination-link-src-fb483b">
 <h4><span class="section-number">3.4.1.1. </span>Determining the most important axes in polar ordination <link src='fb483b'/><a class="headerlink" href="#determining-the-most-important-axes-in-polar-ordination-link-src-fb483b" title="Permalink to this headline">¶</a></h4>
 <p>Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">sample_id2</span> <span class="ow">in</span> <span class="n">human_microbiome_dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
-<span class="gp">... </span>        <span class="n">d</span><span class="p">,</span> <span class="n">axis_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">sample_id1</span><span class="p">,</span> <span class="n">sample_id2</span><span class="p">,</span> <span class="n">axis_values</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;axis </span><span class="si">%d</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%1.3f</span><span class="se">\t</span><span class="si">%s</span><span class="se">\t</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">e</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
-<span class="go">axis 0: 	0.920	1.000	E	B</span>
-<span class="go">axis 1: 	0.910	0.943	F	B</span>
-<span class="go">axis 2: 	0.900	0.928	E	A</span>
-<span class="go">axis 3: 	0.900	0.886	F	A</span>
-<span class="go">axis 4: 	0.880	0.543	E	D</span>
-<span class="go">axis 5: 	0.880	0.429	F	D</span>
-<span class="go">axis 6: 	0.880	0.429	E	C</span>
-<span class="go">axis 7: 	0.870	0.371	F	C</span>
-<span class="go">axis 8: 	0.860	0.543	C	B</span>
-<span class="go">axis 9: 	0.850	0.486	D	B</span>
-<span class="go">axis 10: 	0.830	0.429	C	A</span>
-<span class="go">axis 11: 	0.830	0.406	D	A</span>
-<span class="go">axis 12: 	0.500	0.232	F	E</span>
-<span class="go">axis 13: 	0.350	0.143	B	A</span>
-<span class="go">axis 14: 	0.250	0.493	D	C</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">polar_ordination</span><span class="p">(</span><span class="n">dm</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">id2</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">axis_label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">axis_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_axis</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">select_polar_ordination_axes</span><span class="p">(</span><span class="n">polar_ordination_result</span><span class="p">):</span>
+    <span class="n">distance_sorted_ord_axes</span> <span class="o">=</span> <span class="n">sequence_polar_ordination</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">first_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_ord_axes</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">corrs</span> <span class="o">=</span> <span class="n">sequence_polar_ordination</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;spearman&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">distance_sorted_ord_axes</span> <span class="o">/</span> <span class="n">corrs</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">distance_sorted_ord_axes</span><span class="p">,</span> <span class="n">corrs</span><span class="p">,</span> <span class="n">scores</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;maximum distance&#39;</span><span class="p">,</span> <span class="s1">&#39;corr with first axis&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">second_axis_idx</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">first_axis_idx</span><span class="p">,</span> <span class="n">second_axis_idx</span><span class="p">,</span> <span class="n">result</span>
 </pre></div>
 </div>
-<p>So why do we care about axes being uncorrelated? And why do we care about explaining a lot of the variation? Let’s look at a few of these plots and see how they compare to the plots above, where we compared axes 1 and 4.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_polar_ordination</span> <span class="o">=</span> <span class="n">polar_ordination</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">13</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_axis_idx</span><span class="p">,</span> <span class="n">second_axis_idx</span><span class="p">,</span> <span class="n">axis_summaries</span> <span class="o">=</span> <span class="n">select_polar_ordination_axes</span><span class="p">(</span><span class="n">sequence_polar_ordination</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">14</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">])</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_34_0.png" src="../_images/machine-learning_34_0.png" />
+</div>
+</div>
+<p>Add metadata</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_36_0.png" src="../_images/machine-learning_36_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">axis_summaries</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>maximum distance</th>
+      <th>corr with first axis</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2083564 to 1000424</th>
+      <td>0.858678</td>
+      <td>0.001538</td>
+      <td>558.140496</td>
+    </tr>
+    <tr>
+      <th>348720 to 3347350</th>
+      <td>0.709632</td>
+      <td>0.003077</td>
+      <td>230.630312</td>
+    </tr>
+    <tr>
+      <th>1113958 to 4425792</th>
+      <td>0.702097</td>
+      <td>0.006154</td>
+      <td>114.090687</td>
+    </tr>
+    <tr>
+      <th>4414549 to 1000424</th>
+      <td>0.864983</td>
+      <td>0.012308</td>
+      <td>70.279834</td>
+    </tr>
+    <tr>
+      <th>511388 to 145633</th>
+      <td>0.786270</td>
+      <td>0.031538</td>
+      <td>24.930513</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>559983 to 1515792</th>
+      <td>0.894928</td>
+      <td>0.956154</td>
+      <td>0.935966</td>
+    </tr>
+    <tr>
+      <th>559983 to 516356</th>
+      <td>0.919778</td>
+      <td>0.983077</td>
+      <td>0.935611</td>
+    </tr>
+    <tr>
+      <th>692586 to 1515792</th>
+      <td>0.895607</td>
+      <td>0.959231</td>
+      <td>0.933672</td>
+    </tr>
+    <tr>
+      <th>4358884 to 516356</th>
+      <td>0.930937</td>
+      <td>1.000000</td>
+      <td>0.930937</td>
+    </tr>
+    <tr>
+      <th>239824 to 4425792</th>
+      <td>0.603642</td>
+      <td>0.673077</td>
+      <td>0.896840</td>
+    </tr>
+  </tbody>
+</table>
+<p>300 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p>Why do we care about axes being uncorrelated?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the axis most correlated with first_axis_idx will be first_axis_idx, so </span>
+<span class="c1"># select the second axis</span>
+<span class="n">correlated_axis_idx</span> <span class="o">=</span> <span class="n">axis_summaries</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;corr with first axis&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">correlated_axis_idx</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_40_0.png" src="../_images/machine-learning_40_0.png" />
+</div>
+</div>
+<p>And why do we care about starting with large distances?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">small_distance_axis_idx</span> <span class="o">=</span> <span class="n">axis_summaries</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;maximum distance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">small_distance_axis_idx</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_43_0.png" src="../_images/machine-learning_43_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="interpreting-ordination-plots-link-src-40e0a6">
@@ -1840,25 +2005,12 @@ GCGGCCACCGCTATAGGAATTCGATTAAGACATGCGAGTCGAGAGTCGTAATGGACTCGGCGGACTGCTCAGTAACACGT
 <p>There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.</p>
 <p><strong>Directionality of the axes is not important (e.g., up/down/left/right)</strong></p>
 <p>One thing that you may have notices as you computed the polar ordination above is that the method is <em>not symmetric</em>: in other words, the axis values for axis <span class="math notranslate nohighlight">\(EB\)</span> are different than for axis <span class="math notranslate nohighlight">\(BE\)</span>. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">a2_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="p">,</span> <span class="n">alt_a1_values</span> <span class="o">=</span> <span class="n">compute_axis_values</span><span class="p">(</span><span class="n">human_microbiome_dm</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ord_plot</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">alt_a1_values</span><span class="p">,</span> <span class="n">a2_values</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
-<span class="go">&lt;Figure size 432x288 with 1 Axes&gt;</span>
-</pre></div>
-</div>
 <p>Some other important features:</p>
 <ul class="simple">
 <li><p>Numerical scale of the axis is generally not useful</p></li>
-<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, …)</p></li>
+<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, )</p></li>
 <li><p>Most techniques result in uncorrelated axes.</p></li>
-<li><p>Additional axes can be generated (third, fourth, …)</p></li>
+<li><p>Additional axes can be generated (third, fourth, )</p></li>
 </ul>
 </div>
 </div>
@@ -2039,7 +2191,7 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">16</span><span class="o">-</span><span class="n">f2415c398283</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="n">f2415c398283</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
@@ -2356,21 +2508,16 @@ For an alphabet size of 4, W contains 16 length-2 kmers.
 
       </div>
     </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-    
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-KZHV37SG3H"></script>
+<script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){ dataLayer.push(arguments); }
+                    gtag('config', 'G-KZHV37SG3H');
+                </script>
 
-
-    
-    <!-- Google Analytics -->
-    <script>
-      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-      ga('create', 'G-KZHV37SG3H', 'auto');
-      ga('set', 'anonymizeIp', true);
-      ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
-    
   </body>
 </html>
