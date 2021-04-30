@@ -219,9 +219,25 @@ Our data is ready, so let's get started with unsupervised learning.
 
 ## Unsupervised learning
 
-<!-- Pick up here - discuss Jaccard distance -->
+We'll begin our exploration of machine learning approaches with unsupervised learning, and specifically with ordination. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because more informative techniques exist. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want get into this book, but we'll look at how to apply PCoA using scikit-bio.
 
-We'll begin our exploration of machine learning approaches with unsupervised learning, and specifically discuss ordination methods. We'll work through ordination in two strokes. First, we'll explore an approach called **Polar Ordination**, where the math is simple but which isn't widely used in practice because it doesn't work well on large data sets. Working through this on a small data set will give you an idea of how ordination techniques can reduce the dimensionality of a data set and how to interpret the results of an ordination. Then, we'll apply an approach called **Principal Coordinates Analysis (PCoA)**. The math for PCoA is a bit more complicated than I want to get into in this book (I'm a biology teacher, after all), but we'll apply it to a large data set to explore how these techniques can be used in practice.
+### Computing distances between samples
+
+Most ordination techniques begin with computing **distances** between all pairs of samples. A simple and useful way to define distances between our samples is by computing the fraction of k-mers that are unique to either sample. This is known as the Jaccard Distance between the samples. This metric derives from set theory, and is the inverse of the Jaccard Index (or Jaccard Similarity). It is defined as follows:
+
+```{math}
+:label: jaccard_sim
+Jaccard \, Index_{(A,B)} = \frac{| A \cap B |}{| A \cup B |}
+```
+
+Let's break this formula down. First, $(A,B)$ defines the two samples we're computing distances between. We refer to them here with the variables $A$ and $B$. $| A \cap B |$ is the count of features that are observed, or that have a value of one or more, in both samples. If you've studied set theory, you may recognize this as the size of the intersection of the sets of k-mers in samples $A$ and $B$. That number is divided by $| A \cup B |$, which is the count of features that are observed in either or both of the samples. In set theory terminology, this is the size of the union of the sets of k-mers in samples $A$ and $B$. The resulting value is a measure of the similarity of the two samples. To make this a distance, we simply subtract that value from 1. 
+
+```{math}
+:label: jaccard_dist
+Jaccard \, Distance_{(A,B)} = 1 - Jaccard \, Index_{(A,B)}
+```
+
+If we apply this computation to all pairs of samples in our feature table, we can store the results in a **distance matrix**. This can be computed from our feature table as follows using scikit-bio.
 
 ```{code-cell} ipython3
 import skbio.diversity
@@ -229,42 +245,55 @@ import skbio.diversity
 sequence_distance_matrix = skbio.diversity.beta_diversity('jaccard', sequence_feature_table, ids=sequence_feature_table.index)
 ```
 
+A convenient way to get an initial glance at patterns in a small dataset like the one we're working with here would be to plot the distance matrix as a heatmap. Here, colors represent the distances and larger distances imply that a pair of samples are dissimilar from each other in their kmer content. 
+
+Notice that the values along the diagonal are zero: this is because the diagonal represents distances between a sequence and itself, which is always zero. In other words, $Jaccard \, Distance_{(A,A)} = 0$. Also notice that the matrix is symmetric, meaning that if you were to flip the values across the diagonal they would be equal to each other. In other words, $Jaccard \, Distance_{(A,B)} = Jaccard \, Distance_{(B,A)}$.
+
 ```{code-cell} ipython3
 sequence_distance_matrix
 ```
 
+```{admonition} Exercise
+If you refer back to the table of our sample labels (defined in the `sequence_labels` variable) above, do you notice any patterns emerging from this heatmap?
+```
+
+If you want to look up the distance between a specific pair of samples, you can do that as follows:
+
+```{code-cell} ipython3
+sample_id1 = sequence_feature_table.index[0]
+sample_id2 = sequence_feature_table.index[1]
+d = sequence_distance_matrix[sample_id1, sample_id2]
+print('The Jaccard Distance between samples %s and %s is %1.3f.' % (sample_id1, sample_id2, d))
+```
+
 ### Polar ordination
 
-First, let's print our distance matrix again so we have it nearby.
+Now that we have distances between all pairs of samples, we can perform a polar ordination on the samples. Results of ordination are typically viewed in a scatterplot with two or three dimensions, so I find it useful to think through polar ordination as an approach to build a scatterplot from this distance matrix. 
 
-+++
-
-Polar ordination works in a few steps:
-
-**Step 1.** Identify the largest distance in the distance matrix.
-
-**Step 2.** Define a line, with the two samples contributing to that distance defining the endpoints.
-
-**Step 3.** Compute the location of each other sample on that axis as follows:
-
-$a = \frac{D^2 + D1^2 - D2^2}{2 \times D}$
-
-where:
-
-$D$ is distance between the endpoints
-
-$D1$ is distance between the current sample and endpoint 1
-
-$D2$ is distance between sample and endpoint 2.
-
-**Step 4.** Find the next largest distance that could be used to define an *uncorrelated axis*. (This step can be labor-intensive to do by hand - usually you would compute all of the axes, along with correlation scores. I'll pick one for the demo, and we'll wrap up by looking at all of the axes.)
-
-Here is what steps 2 and 3 look like in Python:
+First, identify the largest distance in the distance matrix and note the sample ids associated with that distance. We'll refer to this distance as $D$.
 
 ```{code-cell} ipython3
 sorted_indices = np.argsort(sequence_distance_matrix.data, axis=None)[::-1]
 sorted_indices = np.unravel_index(sorted_indices, shape=sequence_distance_matrix.shape)
+sample_id1 = sequence_distance_matrix.ids[sorted_indices[0][0]]
+sample_id2 = sequence_distance_matrix.ids[sorted_indices[0][1]]
+D = sequence_distance_matrix[sample_id1, sample_id2]
+print('The largest distance in the distance matrix is %1.3f, between samples %s and %s.' % 
+    (D, sample_id1, sample_id2))
 ```
+
+These two samples define the first axis of your scatter plot. The length of this axis is $D$, and each sample will be placed at an endpoint on this axis. Choose one sample to be plotted at zero on this axis, and the other sample to plot at $D$ on this axis. It doesn't matter which sample you choose to plot at which endpoint. 
+
+Next, we'll identify the location of every other samples on this first axis. For each sample $s$, this computed with the following formula.
+
+```{math}
+:label: polar-ordination-axis
+A_s = \frac{D^2 + D1^2 - D2^2}{2 \times D}
+```
+
+In this formula, $A_s$ is the location of the current sample on the current axis. $D$ is distance between the endpoints. $D1$ is distance between the current sample and the sample at $0$ on this axis, which you can look up in the distance matrix computed above. $D1$ is distance between the current sample and the sample at $D$ on this axis, which is also looked up in the distance matrix. 
+
+The following Python function can be applied to compute the placement of all samples on a polar ordination axis, given the distances between all pairs of samples and the identifiers of the samples serving as the endpoints of this axis.
 
 ```{code-cell} ipython3
 def compute_axis(dm, endpoint1, endpoint2):
@@ -275,32 +304,71 @@ def compute_axis(dm, endpoint1, endpoint2):
         d1 = dm[endpoint1, e]
         d2 = dm[endpoint2, e]
         result[e] = (d**2 + d1**2 - d2**2) / (2 * d)
-    return [result[e] for e in dm.ids]
+    return pd.Series(result)
 ```
 
 ```{code-cell} ipython3
-a1_values = compute_axis(sequence_distance_matrix, 
-                         sequence_distance_matrix.ids[sorted_indices[0][0]],
-                         sequence_distance_matrix.ids[sorted_indices[1][0]])
-
-for sid, a1_value in zip(sequence_distance_matrix.ids, a1_values):
-    print(sid, a1_value)
+axis1_values = compute_axis(sequence_distance_matrix, 
+                            sample_id1,
+                            sample_id2)
 ```
 
-#### Determining the most important axes in polar ordination <link src='fb483b'/>
+At this stage, we have computed our first polar ordination axis. If we sort and view this axis we may even be able to see some clustering or grouping of samples along this axis.
 
-Generally, you would compute the polar ordination axes for all possible axes. You could then order the axes by which represent the largest differences in sample composition, and the lowest correlation with previous axes. This might look like the following:
+```{code-cell} ipython3
+axis1_values.sort_values()
+```
+
+```{admonition} Exercise
+If you again refer back to the table of our sample labels (defined in the `sequence_labels` variable) above, do you notice any patterns in the ordered samples along this axis?
+```
+
+We can plot this single axis using a strip plot. In this plot, only placement on the horizontal axis is meaningful. The variation in placement of points along the vertical axis is only to aid in visualization. In this plot, each point represents a single sample from our feature table. Samples that are closer in space along this axis are more similar to each other in their k-mer composition.
+
+```{code-cell} ipython3
+import seaborn as sns
+
+sns.stripplot(x=axis1_values)
+```
+
+While we may already be able to see some clustering of samples on the first axis, additional axes that are uncorrelated with this first axis can provide more information about which samples are most similar to each other. 
+
+Selecting the next axis to plot in polar ordination can be a little tricky however. Generally, you would begin by computing all axes, which would be defined for all pairs of samples, and then selecting the axes that represent the largest distances (as we did for our first axis above), and axes that are uncorrelated with previously selected axes. This Python function will compute all polar ordination axes. 
 
 ```{code-cell} ipython3
 def polar_ordination(dm):
-    result = {}
+    result = []
+    axis_labels = []
     for i, id1 in enumerate(dm.ids):
         for id2 in dm.ids[:i]:
             axis_label = '%s to %s' % (id1, id2)
-            result[axis_label] = compute_axis(dm, id1, id2) 
-    return pd.DataFrame(result, index=dm.ids)
+            axis_labels.append(axis_label)
+            result.append(compute_axis(dm, id1, id2) )
+    result = pd.concat(result)
+    result.set_index(axis_labels)
+    return result
+```
 
+We can apply this function to our distance matrix, and see all of the polar ordination axes.
+
+```{code-cell} ipython3
+sequence_polar_ordination = polar_ordination(sequence_distance_matrix)
+sequence_polar_ordination
+```
+
+This isn't much (or any) more interpretable than the distance matrix itself was, so the next step is to select the most informative axes to view. The first (most informative) axis will be the axis that we identified above as the one representing the largest distance in the distance matrix. The second will be an axis that also contains a large distance (relative to the other distances in the distance matrix), and is uncorrelated with the first axis. Selecting this axis based on these criteria is a bit subjective, so we need to come up with an objective approach so a computer can solve the problem. Here, I define an algorithm that will create a _score_ for each axis that is computed as the largest distance along that axis divided by the absolute value of the Spearman correlation coefficient between this axis and axis 1. In other words:
+
+```{math}
+:label: polar_ordination_axis_score
+Score_{axis i} = \frac{axis length}/{|Spearman(Axis 1, Axis 1)|}
+```
+
+This can be computed as follows:
+
+```{code-cell} ipython3
 def select_polar_ordination_axes(polar_ordination_result):
+    # this function would be better if it defined more axes, 
+    # eg by always looking for correlation with preceding axis. 
     distance_sorted_ord_axes = sequence_polar_ordination.max().sort_values(ascending=False)
     first_axis_idx = distance_sorted_ord_axes.index[0]
     corrs = sequence_polar_ordination.corrwith(sequence_polar_ordination[first_axis_idx], method='spearman').abs().sort_values(ascending=False)
@@ -312,9 +380,7 @@ def select_polar_ordination_axes(polar_ordination_result):
     return first_axis_idx, second_axis_idx, result
 ```
 
-```{code-cell} ipython3
-sequence_polar_ordination = polar_ordination(sequence_distance_matrix)
-```
+
 
 ```{code-cell} ipython3
 first_axis_idx, second_axis_idx, axis_summaries = select_polar_ordination_axes(sequence_polar_ordination)
@@ -377,7 +443,22 @@ There are a few points that are important to keep in mind when interpreting ordi
 
 One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
 
-+++
+```{code-cell} ipython3
+import skbio.stats.ordination
+
+
+sequence_pcoa_ordination = skbio.stats.ordination.pcoa(sequence_distance_matrix)
+
+_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
+                    y=sequence_pcoa_ordination.samples['PC2'])
+```
+
+```{code-cell} ipython3
+_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
+                    y=sequence_pcoa_ordination.samples['PC2'], 
+                    hue=sequence_labels['phylum'])
+_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
 
 Some other important features:
 

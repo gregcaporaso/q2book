@@ -568,6 +568,7 @@ In our next heuristic, we'll only align our query to the reference sequences wit
 Here's the source code:
 
 ```{code-cell}
+## TODO: Update this to be Jaccard index (or describe it that way, if it already is)
 def fraction_shared_kmers(kmer_freqs1, kmer_freqs2):
     """Compute the fraction of kmers in kmer_freqs1 that are also in kmer_freqs2
     Parameters
