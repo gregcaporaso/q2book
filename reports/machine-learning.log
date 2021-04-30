@@ -17,44 +17,29 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-## This cell needs revision to fit in to the refactored code
-# compute all kmers for the specified alphabet
-W = compute_W(alphabet, k)
-
-# Define a function that returns the taxonomy at a specified level given
-# a semi-colon separated taxonomic description.
-# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
-# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
-def get_taxon_at_level(taxon, level):
-    taxon = [l.strip() for l in taxon.split(';')]
-    return '; '.join(taxon[:level])
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = {}
-sequence_labels = {}
-for reference_sequence in reference_db:
-    sequence_id = reference_sequence.metadata['id']
-    
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    sequence_labels[sequence_id] = taxon
-    
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts[sequence_id] = kmer_counts
-
-feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-sequence_labels = pd.Series(sequence_labels, name='taxon')
+sequence_polar_ordination = polar_ordination(sequence_distance_matrix)
+sequence_polar_ordination
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m<ipython-input-29-f2415c398283>[0m in [0;36m<module>[0;34m[0m
-[1;32m     14[0m [0mper_sequence_kmer_counts[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     15[0m [0msequence_labels[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 16[0;31m [0;32mfor[0m [0mreference_sequence[0m [0;32min[0m [0mreference_db[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     17[0m     [0msequence_id[0m [0;34m=[0m [0mreference_sequence[0m[0;34m.[0m[0mmetadata[0m[0;34m[[0m[0;34m'id'[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
-[1;32m     18[0m [0;34m[0m[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+[0;32m<ipython-input-22-c9e6a8b3929a>[0m in [0;36m<module>[0;34m[0m
+[0;32m----> 1[0;31m [0msequence_polar_ordination[0m [0;34m=[0m [0mpolar_ordination[0m[0;34m([0m[0msequence_distance_matrix[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      2[0m [0msequence_polar_ordination[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mNameError[0m: name 'reference_db' is not defined
-NameError: name 'reference_db' is not defined
+[0;32m<ipython-input-21-3f6ec354d33c>[0m in [0;36mpolar_ordination[0;34m(dm)[0m
+[1;32m      8[0m             [0mresult[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mcompute_axis[0m[0;34m([0m[0mdm[0m[0;34m,[0m [0mid1[0m[0;34m,[0m [0mid2[0m[0;34m)[0m [0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      9[0m     [0mresult[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 10[0;31m     [0mresult[0m[0;34m.[0m[0mset_index[0m[0;34m([0m[0maxis_labels[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     11[0m     [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/pandas/core/generic.py[0m in [0;36m__getattr__[0;34m(self, name)[0m
+[1;32m   5139[0m             [0;32mif[0m [0mself[0m[0;34m.[0m[0m_info_axis[0m[0;34m.[0m[0m_can_hold_identifiers_and_holds_name[0m[0;34m([0m[0mname[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   5140[0m                 [0;32mreturn[0m [0mself[0m[0;34m[[0m[0mname[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 5141[0;31m             [0;32mreturn[0m [0mobject[0m[0;34m.[0m[0m__getattribute__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mname[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   5142[0m [0;34m[0m[0m
+[1;32m   5143[0m     [0;32mdef[0m [0m__setattr__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mname[0m[0;34m:[0m [0mstr[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m [0;34m->[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mAttributeError[0m: 'Series' object has no attribute 'set_index'
+AttributeError: 'Series' object has no attribute 'set_index'
 
