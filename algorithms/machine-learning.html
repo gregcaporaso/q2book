@@ -362,18 +362,32 @@
     <a class="reference internal nav-link" href="#polar-ordination">
      3.4.2. Polar ordination
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpreting-ordination-plots">
+     3.4.3. Interpreting ordination plots
+    </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#interpreting-ordination-plots-link-src-40e0a6">
-       3.4.2.1. Interpreting ordination plots
-       <link src="40e0a6"/>
+      <a class="reference internal nav-link" href="#axis-order">
+       3.4.3.1. Axis order
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#uncorrelated-axes">
+       3.4.3.2. Uncorrelated axes
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#directionality-of-the-axes">
+       3.4.3.3. Directionality of the axes
       </a>
      </li>
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#principle-coordinates-analysis-pcoa">
-     3.4.3. Principle Coordinates Analysis (PCoA)
+     3.4.4. Principle Coordinates Analysis (PCoA)
     </a>
    </li>
   </ul>
@@ -449,11 +463,11 @@
 <p>scikit-learn provides a few example datasets that can be used for learning. Let’s start by taking a look and one of them to get an idea of what input might look like in a machine learning task.</p>
 <div class="section" id="the-iris-dataset">
 <h3><span class="section-number">3.1.1. </span>The Iris dataset<a class="headerlink" href="#the-iris-dataset" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset">Iris dataset</a> is a classic example used in machine learning, originally published by RA Fisher <span id="id1">[<a class="reference internal" href="#id27"><span>Fis36</span></a>]</span>. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows:</p>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-plants-dataset">Iris dataset</a> is a classic example used in machine learning, originally published by RA Fisher <span id="id1">[<a class="reference internal" href="#id28"><span>Fis36</span></a>]</span>. This feature table describes four features of 150 specimens of Iris, a genus of flowering plant, representing three species. The feature table follows:</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This cell loads data from scikit-learn and organizes it into some strcutures that</span>
-<span class="c1"># we&#39;ll use to conviently view the data.</span>
+<span class="c1"># we&#39;ll use to conveniently view the data.</span>
 
 <span class="kn">import</span> <span class="nn">sklearn.datasets</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -802,9 +816,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1518 sequences were identified for phylum k__Archaea;p__Euryarchaeota.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2118 sequences were identified for phylum k__Bacteria;p__Cyanobacteria.
 833 sequences were identified for phylum k__Archaea;p__Crenarchaeota.
-2118 sequences were identified for phylum k__Bacteria;p__Cyanobacteria.
+1518 sequences were identified for phylum k__Archaea;p__Euryarchaeota.
 12958 sequences were identified for phylum k__Bacteria;p__Bacteroidetes.
 5565 sequences were identified for phylum k__Bacteria;p__Actinobacteria.
 </pre></div>
@@ -823,17 +837,17 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>137640
-k__Archaea;p__Euryarchaeota
-GCCGGAGATTACCGCTATCAGGATTCGATTTAGACATGCGAGGTGAATGCAGGCTTGTCCTGCATACCGAACGGCTCAGTAACACGTAGTTAATCTGGCCTCAGGTCGGGAATAACCCCGGGAAACTGGGATTAATGTCCGATAGGTTTTTGATACTGGAAGGTTCTTAAATCCAAAGCTCCGGCGCCTGAGGATGAGACTGCGGTGGATTAGGCTGTTGTTGGTGTAATGGACCAACAAACCTATAATCCATACGGGCGTTGAGAGACGTAGCCCGGAGATGTGTTCTGAGACACGAATACAGGCCCTACGGGGCGCAGCAGTTACGAAACCTTTACAATGCCTTCACGGGCGATAGGGGAATCCTGAGTGCTCTAGCAATGCTAGAGCTTTTATCTACTCCAAAAGGGTAGATGAATAAGCAGTGGGCAAGACGGGTGCCAGCCGCCACGGTAATACCCGCACTGCAAGTGGTGATCGCGTTTATTGGGTCTAAAGCGTTCGTAGCCGGTTTGGTAAATTTTTGGTGAAATCCTGTGTAAAACACAGGGCGTGCCAAAAACACTACCAGACTAGGGACCGGGAAAAGCTGAAGGTACTTTAGGGGTAGGGGCTAAATCCTGTAATCCTTGAAGGACCACCTGTGGCGAAAGCGTTCAGCTGGAACGGCTCCGACGGTGAGGGACGAAAGCCTGGGGAGCGAACGGGATTAGATACCCCGGTAGTCCAGGCCGTAAACGATGCCCGTTTGGTGTATCGTCTCCTTCGGGGAGGCGATGTGCCGTAGCGTAGGTGTTAAGCGGGCCACCTGGGGAGTACGGTCGCAAGACTTAAACTTAAGGGAATTGGCGGGGGAGCACCTCAAGGGGTGGAGGCTGCGGTTTAATTGGATTCAACGCCAGACATCTCACCAGAGAAGACAGCACTTTGACGGTCACCCTGAGGGGGTTACCTGAGGAGCTGAGAGGAGTTGCATGGCCATCGTCAGCTCGTGTCGTGAGGCGTGCAGTTAAGTCTGTCAACGAGCGAGACCCATGTCCTTATTTGCTACGCTATTCTTCGGAGTAGCGGCACTCTAAGGAGACCGCTGATGATAAATCAGAGGAGGGAATGGGCGACGGTAGGTCCGTATGGCCCGAATTCTCTGGGCTACACGCGGCCTACAATGGCTAGGACAATAGGTTGCAACACCGAAAGGTGGAGCTAATCCCTGAAACCTAGTCGTAGTTCAGATCGAGGGTTGAAACCCACCCTCGTGAAGCCGGAATCCCTAGTAAGCGAAAGTCACTATCTTTCGCTGAATACGACCCTGCTCCTTGCACACACCGCCCGTCAAGCCATCCGAGTGGAGTTTTGGTGAGGCCTTTCGTTACTTAGGGAGGTCGAACCTGGGTTCCGCAAGGCGGGCT
-🦠
-4419980
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4383109
 k__Bacteria;p__Bacteroidetes
-AGAGTTTGATCCTGGCTCAGGATGAACGCTAGCGGCAGGCTTAACACATGCAAGTCGAGGGGCAGCGAGGGTAGCAATACCTGTCGGCGACCGGGACCGGCGCACGGGTGCGTAACGCGTATGTAATCTACCATTAACCGGGGAATAGCCCAGAGAAATCTGGATTAATGCCCCATAGTATTATCGAAAGGCATCTTTTGATAATTAAAGCTCAGGCGGTTTTAGATGGGCATGCGCGTCATTAGTTTGTTGGTGAGGTAACGGCTCACCAAGACTACGATGACTAGGGGGTCTGAGAGGATGATCCCCCACACTGGTACTGAGACACGGACCAGACTCCTACGGGAGGCAGCAGTAAGGAATATTGGGCAATGGAGGCAACTCTGAACCAGCCATCCCGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATACACCAAGAAAAATCCCCACGTGTGGGTGCCCGACGGTACCCAAGGAGGAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGATGCAAGCGTTATCCGGATTCATTGGGTTTAAAGGGTGCGTAGGCGGCTTTTTAAGTCAGTGGTGAAATCCTGCCGCTTAACGGTAGAATTGCCATTGATACTGTTTTTCTTGAGTACATTTGAGGTAAGCGGAATGTGTAGTGTAGCGGTGAAATGCTTAGATATTACACAGAACACCAATTGCGAAGGCAGCTTACTAAACTGATACTGACGCTGATGCACGAAAGCGTGGGGAGCGAACAGGATTAGATACCCTGGTAGTCCACGCCGTAAACGATGCTCACTCGCTGTTTGCGATACACAGCAAGCGGCCAAGCGAAAGCATTAAGTGAGCCACCTGGGGAGTACGATCGCAAGGTTGAAACTCAAAGGAATTGACGGGGGCCCGCACAAGCGGAGGAACATGTGGTTTAATTCGATGATACGCGAGGAACCTTACCTGGGCTTAAATGCAGAATGACTTTTCTGGAAACAGATTTTCTCTTCGGAGCAGACTGCAAGGTGCTGCATGGTTGTCGTCAGCTCGTGCCGTGAGGTGTCGGGTTAAGTCCCATAACGAGCGCAACCCTTATCGTTAGTTGCCAGCGGGTAATGCCGGGGACTCTAATGAAACTGCCGGTGTAAACCGTGAGGAAGGTGGGGATGACGTCAAATCAGCACGGCCCTTATGTCCAGGGCTACACACGTGTTACAATGGTCGGTACAGAGGGCAGCTACCCCGCGAGGGGATGCAAATCTCGAAAGCCGGTCTTAGTTCGGATTGGAGTCTGCAACTCGACTCCATGAAGCTGGAATCGCTAGTAATCGCGCATCAGCCACGGCGCGGTGAATACGTTCCCGGGCCTTGTACACACCGCCCGTCAAGCCATGGAAGCTGGGGGTACCTGAAGTCTGTAACCGCAAGGAGCGGCCTAGGGTAAAACTAGTAACTGGGGCTAAGTCGTAACAAGGTAACC
+CCAGAGTTTGATCCTGGCTCAGGGTGAACGCTAGCGGCAGGCTTAATACATGCAAGTCGAACGGTAACAGGCCGTAGCAATACGGTGCTGACGAGTGGCGCACGGGTGCGTAACACGTATGCAACTTACCCTTTACTGGGGCATAACCCGGCGAAAGCCAGGCTAATTCCCCATAGTATTATTTTAAGGCATCTTAGAATAATTAAAGATTTATCGGTAAAGGATGGGCATGCGCCCCATTAGTTAGTTGGTAAGGTAACGGCTTACCAAGACGATGATGGGTAGGGGTTCTGAGAGGATTATCCCCCACACTGGTACTGAGACACGGACCAGACTCCTACGGGAGGCAGCAGTAAGGAATATTGGGCAATGGGCGCGAGCCTGACCCAGCCATGCCGCGTGCAGGAAGACGGCCTTATGGGTTGTAAACTGCTTTTCTATGGGAATAACACCACCGACGTGTCGGTGACTGCATGTACCATAGGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAGGATGCAAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGGCTGGTAAGTCAGTGGTGAAATTCCTGTGCTTAACATGGGAGCTGCCATTGATACTGTCAGTCTAGAGTTTAGTTGACGTTGGCGGAATGTGTCATGTAGCGGTGAAATGCATAGATATGACACAGAACACCGATAGCGAAGGCAGCTGACGAAACTAACACTGACGCTGATGCACGAAAGCGTGGGGATCAAACAGGATTAGATACCCTGGTAGTCCACGCCGTAAACGATGATCACTAGCTGTATGCGATACACAGTATGTGGCTAAGGGAAACCGATAAGTGATCCACCTGGGGAGTACGTCCGCAAGGATGAAACTCAAAGGAATTGACGGGGGCCCGCACAAGCGGAGGAGCATGTGGTTTAATTCGATGATACGCGAGGAACCCTACCTGGGCTTGAACGTATGGTGCATGAGTGTGAAAGCACTCTTTCCTTCGGGACTTCATACGAGGTGCTGCATGGTTGTCGTCAGCTCGTGCCGTGAGGTGTTAGGTTAAGTCCTGCAACGAGCGCAACCCCTATCTTTAGTTGCCATCAGGTTAAGCTGGGCACTCTAGAGAGACTGCCTGCGCAAGCAGAGAGGAAGGTGGGGATGACGTCAAATCAGCACGGCCCTTACGTCCAGGGCTACACACGTGCTACAATGGTCGGTACAGAGGGCAGCTACATGGTGACATGATGCCAATCTCCAAAGCCGGTCTTAGTTCGGATCGAAGTCTGCAACTCGACTTCGTGAAGCTGGATTCGCTAGTAATCGTATATCAGCCATGATACGGTGAATACGTTCCCGGGCCTTGTACACACCGCCCGTCAAGCCATGGAAGTTGGGGGTACCTGAAGTCGATTACCGCAAGGGATCGCCTAGGGTAAAACCGATAACTGGGGCTAAGTCGTAACAAGGTAACCGTA
 🦠
-772
-k__Archaea;p__Crenarchaeota
-CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAACACGTAGTTAACCTGACCCTTAGGACGGGTATAACCGTGGGAAACTGCGGCTAATACCCGATAGGTGAAATGGCCTGGAATGGTATTTCACTCAAAGGGCATCAGAAGCATGCTTTCTGATGTCGCCTAAGGATGGGACTGCGGCCGATTAGGTAGTCGGCGGTGTAACGGACCACCGAGCCGATAATCGGTACGGGCCATGTGAGTGGGAGCCCGGAGATGGGAACTGAGACAAGGTCCCAGGCCCTACGGGGCGCAGCAGGCGCGAAACCTCCACAATGCACAAAAGTGTGATGGGGTTACCCTGAGTGCCATCCGATGAGGACGGCTTTTCACCAGTGTAAGGCGCTGGTGGAATAAGGGGAGGGCAAGGCTGGTGCCAACCGCCGCGGTAAAAGCAACTCCTCGAATGGTCGGGATAATTATTGGGCCTAAAGCGTCCGTAGCCGGTCTGGTAAGTCCCCGGTTAAATCCGGCAGCCTAACTGTCGGCCTGCTGGGGATACTGCTAGACTTGGGGGTGGGATAGGCTAAAGGTACTCCCAGGGTAGGGGTGAAATCCTATAATCCTGGGGGGACCACCAGTGGCGAAGGCGTTTAGCTGGAACACGCCCGACGGTGAGGGACGAAAGCCAGGGGAGCAAACCGGATTAGATACCCGGGTAGTCCTGGCCGTAAACGGTGCGGGCTATGTGTTGGTCCGGCCACGAGCCGGATCAGTGCCGAAGAGTAGTCGTTAAGCTCGCCGCCTGGGGAGTACGGTCGCAAGACTGAAACTTAAAGGAATTGGCGGGGGAGCACCACAAGGGGTGAAGCCTGCGGTTTAATTGGACTCAACGCCGGGAAACTTACCGGAGGAGACAGCTGGATGATAGCCAAGCTGATGACTTTGCTTAACTAGCTGAGAGGTGGTGCATGGCCGTCGTCAGTTCGTGCCGTGAGGTGTCCTGTTAAGTCAGGCAACGAACGAGACCCGTGCCTTTATTTACCAGCGGATCCGACGGGATGCCGGGTACAATAAAGGGACTGCCCTCGACAAGGGGGAGGAAGGAGCGGGCCACGGCAGGTCAGTATGCCCTGAATCCTCCGGGCCACACGCGGGCTGCAATGGCTGGGACAATGGGCTTCGACACCGAAAGGTGAAGGTAATCCCCTAAACCCAGTCTCGGTTGGGATCGAGGGTTGCAACTCACCCTCGTGAACATGGAATCCCTAGTAACCGCGTGTCATCATCGCGCGGTGAATACGTCCCTGCTCCTTGCACACACCGCCCGTCGTTCCATCCGAGTCGGTTCTGGGTGAGGCCTGTTCCTTTGGGGCGGGTCGAACCTAGGGTCGGCAAGGAGGG
+587648
+k__Bacteria;p__Cyanobacteria
+AGAGTTTGATCCTGGCTCAGGATGAACGCTGGCGGTATGCCTAACACATGCAAGTCGTACGAGAGTTTTTAACTCTAGTGGCGGACGGGTGAGTAACACGTGAGAATTTGCCTTTAGGAGGGGGATAACAATTGGAAACGAATGCTAATACCCCATATGCTTTCGAGTGAAATGAATTTTTTATTTGCCTAAAGAGAAGCTCGCGGCTGATTAGCTTGTTGGTAAGGTAAGAGCTTACCAAGGCGACGATCAGTATCTGGTTTGAGAGGACGATCAGACACACTGGAACTGAGACACGGCCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCAATGCCGCGTGAGTGATGAAGGCCTTAGGGTTGTAAAGCTCTTTTACCAGGGATGATAATGACAGTACCTGGAGAATAAGCATCGGCTAACTCCGTGCCAGCAGCCGCGGTAAGACGGAGGATGCAAGTGTTATCCGGAATCACTGGGCGTAAAGCGTCTGTAGGTGGTTTAATAAGTCAACTGTTAAATCTTGATGGCTCAACTTCAAAATCGCAGTCGAAACTATTAGACTAGAGTATAGTAGAGGTAAAGGGAATTTCCAGTGGAGCGGTGAAATGCGTAGATATTGGAAAGAACACCGATGGCGAAAGCACTTTACTGGGCTATTACTAACACTCAGAGACGAAAGCTAGGGTAGCAAATGGGATTAGATACCCCAGTAGTCCTAGCTGTAAACAATGGATACTAGATGTTGAACAGATCGACCTGTGCAGTATCAAAGCTAACGCGTTAAGTATCCCGCCTGGGAAGTATGCTCGCAAGAGTGAAACTCAAAGGAATTGACGGGGGCCCGCACAAGCGGTGGAGCATGTGGTTTAATTCGATGCAACGCGAAGAACCTTACCAGGGTTTGACATGATACGAATTTCTTTGAAAGAAGAAAGTGCCGTTTGGAGCGTATACACAGGTGGTGCATGGCTGTCGTCAGCTCGTGTCGTGAGATGTTGGGTTAAGTCCCGCAACGAGCGCAACCCTTGTTTTTAGTTGCCTTTTATGGAACTCTAAAAAGACTGCTGGTTATAAACCGGAGGAAGGTGGGGATGACGTCAAGTCAGCATGCCCCTTACACCCTGGGCTACACACGTGCTACATTGGACGAGACAATGAGATGCAAACCTGTGAAGGCTAGCTAATCTATAAACTCGTTCTAAGTTCGGATTGTAGGCTGCAACTCGCCTACATGAAGGTGGAATCGCTAGTAATCGCTGGTCAGCTATACAGCGGTGAATTCGTTCCCGGGCCTTGTACACACCGCCCGTCACACCATGGAAGCTGGTTATGCCCGAAGTCATTACTCTAACCATTTGGGGGAGGGTGCCTAAGGTAGAATTAGTGACTGGGGTGAAGTCGTAACAAGGTAACC
+🦠
+592852
+k__Bacteria;p__Bacteroidetes
+AGAGTTTGATCATGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATATCGAAAGCTTGCTTTTGATGATGGCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTTCCCTATACTGGAGGATAGCCCGGCGAAAGTCGGATTAATACTCTATGTTCTTCGTAGAAGACATCTGAAATGAAGCAAAGGTTTACCGGTATAGGATGGGGATGCGTCTGATTAGGTTGTTGGCGGGGTAACGGCCCACCAAGCCTACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGACGAGAGTCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATACAGGGATAAAGTGACGTACGTGTACGTTTTTGTAGGTACTGTATGAATAAGGACCGGCTAATTCCGTGCCAGCAGCCGCGGTAATACGGAAGGTCCGGGCGTTATCCGGATTTATTGGGTTTAAAGGGAGCGCAGGCTGATGATTAAGCGTGACGTGAAATGTAGCCGCTCAACGGCTGAACTGCGTCGCGAACTGGTTATCTTGAGTGAGTTCGATGTTGGCGGAATTCGTGGTGTAGCGGTGAAATGCTTAGATATCACGAAGAACTCCGATTGCGAAGGCAGCCAACAAAGGCCTTTACTGACGCTAAAGCTCGAAGGTGCGGGTATCGAACAGGATTAGATACCCTGGTAGTCCGCACGGTAAACGATGGATGCCCGCTGTTTGCGATATACTGTGAGCGGCCAAGAGAAATCGTTAAGCATCCCACCTGGGGAGTACGCCGGCAACGGTGAAACTCAAAGGAATTGACGGGGGCCCGCACAAGCGGAGGAACATGTGGTTTAATTCGATGATACGCGAGGAACCTTACCCGGGCTTGAACTGCAGGAGAACGATCCAGAGATGGTGAGGCCCTTCGGGGCTCCTGTGGAGGTGCTGCATGGTTGTCGTCAGCTCGTGCCGTGAGGTGTCGGCTTAAGTGCCATAACGAGCGCAACCCCTGCCTATAGTTGCCATCGGGTTATGCCGGGCACTCTGTAGGGACTGCCACCGCAAGGTGTGAGGAAGGTGGGGATGACGTCAAATCAGCACGGCCCTTACGTCCGGGGCTACACACGTGTTACAATGGGGGGTACAGCGAGTCGGCCGTATGCAAATGCGGTCAAATCATGAAAGCCTCCCTCAGTTCGGATTGGGGTCTGCAACCCGACCCCATGAAGCTGGATTCGCTAGTAATCGCGCATCAGCCATGGCGCGGTGAATACGTTCCCGGGCCTTGTACACACCGCCCGTCAAGCCATGAAAGCCGGGGGCGCCTGAAGTCCGTGACCGCGAGGGTCGGCCTAGGGTGGTACCGGTGATTGGGGCTAAGTCGTAACAAGGTAGCCGTA
 🦠
 </pre></div>
 </div>
@@ -882,27 +896,27 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>GCCGGAG</th>
-      <th>CCGGAGA</th>
-      <th>CGGAGAT</th>
-      <th>GGAGATT</th>
-      <th>GAGATTA</th>
-      <th>AGATTAC</th>
-      <th>GATTACC</th>
-      <th>ATTACCG</th>
-      <th>TTACCGC</th>
-      <th>TACCGCT</th>
+      <th>AGAGTTT</th>
+      <th>GAGTTTG</th>
+      <th>AGTTTGA</th>
+      <th>GTTTGAT</th>
+      <th>TTTGATC</th>
+      <th>TTGATCC</th>
+      <th>TGATCCT</th>
+      <th>GATCCTG</th>
+      <th>ATCCTGG</th>
+      <th>TCCTGGC</th>
       <th>...</th>
-      <th>GGGATCT</th>
-      <th>GGATCTG</th>
-      <th>GATCTGG</th>
-      <th>TCTGGCG</th>
-      <th>CTGGCGA</th>
-      <th>GGCGACT</th>
-      <th>GCGACTT</th>
-      <th>CGACTTG</th>
-      <th>TGGGACG</th>
-      <th>ACGAAGT</th>
+      <th>TGGTTGG</th>
+      <th>GGTTGGT</th>
+      <th>TTCCATG</th>
+      <th>TCCATGT</th>
+      <th>CCATGTT</th>
+      <th>TGGGAGA</th>
+      <th>CCAACTC</th>
+      <th>ATGAGGT</th>
+      <th>CGATACC</th>
+      <th>AGTCTCA</th>
     </tr>
     <tr>
       <th>id</th>
@@ -931,9 +945,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
   </thead>
   <tbody>
     <tr>
-      <th>137640</th>
-      <td>1</td>
-      <td>2</td>
+      <th>587648</th>
       <td>2</td>
       <td>1</td>
       <td>1</td>
@@ -942,6 +954,8 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -955,35 +969,11 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>104223</th>
-      <td>0</td>
-      <td>1</td>
+      <th>209603</th>
       <td>1</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>150477</th>
-      <td>0</td>
       <td>1</td>
-      <td>1</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1003,83 +993,11 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>267307</th>
+      <th>175064</th>
       <td>1</td>
       <td>1</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1805758</th>
       <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>250424</th>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>772</th>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1099,175 +1017,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>197837</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>36629</th>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>694744</th>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>735769</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4422133</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>821509</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2544158</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>518543</th>
+      <th>4392251</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1291,7 +1041,31 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>277522</th>
+      <th>4384267</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>143713</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1315,7 +1089,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>4419980</th>
+      <th>739278</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1339,7 +1113,31 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>279461</th>
+      <th>3034532</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>111775</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1363,7 +1161,79 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>2636449</th>
+      <th>813203</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4346740</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>256706</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>135186</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1387,9 +1257,129 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>540563</th>
+      <th>136122</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4382014</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4383109</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>592852</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1110836</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>903536</th>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1411,7 +1401,31 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>237060</th>
+      <th>308647</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>966113</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1435,7 +1449,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>960702</th>
+      <th>243983</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1459,7 +1473,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>532193</th>
+      <th>2990918</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1483,8 +1497,8 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>113194</th>
-      <td>1</td>
+      <th>547232</th>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1507,7 +1521,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>0</td>
     </tr>
     <tr>
-      <th>4336475</th>
+      <th>384657</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1526,13 +1540,13 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
       <td>1</td>
       <td>1</td>
       <td>1</td>
-      <td>1</td>
+      <td>2</td>
       <td>1</td>
       <td>1</td>
     </tr>
   </tbody>
 </table>
-<p>25 rows × 10441 columns</p>
+<p>25 rows × 10277 columns</p>
 </div></div></div>
 </div>
 <p>As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We’ll next compile our sample label vector.</p>
@@ -1572,103 +1586,103 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
   </thead>
   <tbody>
     <tr>
-      <th>137640</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>104223</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>150477</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>267307</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>1805758</th>
-      <td>k__Archaea;p__Euryarchaeota</td>
-    </tr>
-    <tr>
-      <th>250424</th>
-      <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>772</th>
-      <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>197837</th>
-      <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>36629</th>
-      <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>694744</th>
-      <td>k__Archaea;p__Crenarchaeota</td>
-    </tr>
-    <tr>
-      <th>735769</th>
+      <th>587648</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>4422133</th>
+      <th>209603</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>821509</th>
+      <th>175064</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>2544158</th>
+      <th>4392251</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>518543</th>
+      <th>4384267</th>
       <td>k__Bacteria;p__Cyanobacteria</td>
     </tr>
     <tr>
-      <th>277522</th>
+      <th>143713</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>739278</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>3034532</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>111775</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>813203</th>
+      <td>k__Archaea;p__Crenarchaeota</td>
+    </tr>
+    <tr>
+      <th>4346740</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>256706</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>135186</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>136122</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>4382014</th>
+      <td>k__Archaea;p__Euryarchaeota</td>
+    </tr>
+    <tr>
+      <th>4383109</th>
       <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
     <tr>
-      <th>4419980</th>
+      <th>592852</th>
       <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
     <tr>
-      <th>279461</th>
+      <th>1110836</th>
       <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
     <tr>
-      <th>2636449</th>
+      <th>903536</th>
       <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
     <tr>
-      <th>540563</th>
+      <th>308647</th>
       <td>k__Bacteria;p__Bacteroidetes</td>
     </tr>
     <tr>
-      <th>237060</th>
+      <th>966113</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>960702</th>
+      <th>243983</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>532193</th>
+      <th>2990918</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>113194</th>
+      <th>547232</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
     <tr>
-      <th>4336475</th>
+      <th>384657</th>
       <td>k__Bacteria;p__Actinobacteria</td>
     </tr>
   </tbody>
@@ -1730,7 +1744,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 137640 and 104223 is 0.872.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 587648 and 209603 is 0.686.
 </pre></div>
 </div>
 </div>
@@ -1753,7 +1767,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.937, between samples 518543 and 197837.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.930, between samples 136122 and 4384267.
 </pre></div>
 </div>
 </div>
@@ -1762,7 +1776,7 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
 <p>Next, we’ll identify the location of every other samples on this first axis. For each sample <span class="math notranslate nohighlight">\(s\)</span>, this computed with the following formula.</p>
 <div class="math notranslate nohighlight" id="equation-polar-ordination-axis">
 <span class="eqno">(3.3)<a class="headerlink" href="#equation-polar-ordination-axis" title="Permalink to this equation">¶</a></span>\[A_s = \frac{D^2 + D1^2 - D2^2}{2 \times D}\]</div>
-<p>In this formula, <span class="math notranslate nohighlight">\(A_s\)</span> is the location of the current sample on the current axis. <span class="math notranslate nohighlight">\(D\)</span> is distance between the endpoints. <span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and the sample at <span class="math notranslate nohighlight">\(0\)</span> on this axis, which you can look up in the distance matrix computed above. <span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and the sample at <span class="math notranslate nohighlight">\(D\)</span> on this axis, which is also looked up in the distance matrix.</p>
+<p>In this formula, <span class="math notranslate nohighlight">\(A_s\)</span> is the location of the current sample on the current axis. <span class="math notranslate nohighlight">\(D\)</span> is the distance between the endpoints. <span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and the sample at <span class="math notranslate nohighlight">\(0\)</span> on this axis, which you can look up in the distance matrix computed above. <span class="math notranslate nohighlight">\(D1\)</span> is distance between the current sample and the sample at <span class="math notranslate nohighlight">\(D\)</span> on this axis, which is also looked up in the distance matrix.</p>
 <p>The following Python function can be applied to compute the placement of all samples on a polar ordination axis, given the distances between all pairs of samples and the identifiers of the samples serving as the endpoints of this axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1796,31 +1810,31 @@ CGACTGCTATCAGGGTGAGATTAAGCCATGCGAGTCGAGCGGCCCAAGCTATGGTGGGCAGCGGCAAACGGCTCAGTAAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>518543     0.000000
-2544158    0.329721
-735769     0.349748
-821509     0.359022
-4422133    0.378162
-960702     0.402577
-532193     0.405159
-237060     0.411062
-4336475    0.414479
-540563     0.415617
-4419980    0.416755
-279461     0.421509
-2636449    0.425402
-113194     0.429906
-277522     0.434348
-150477     0.493070
-267307     0.499807
-137640     0.500351
-1805758    0.531332
-694744     0.538884
-104223     0.543300
-772        0.561741
-36629      0.617013
-250424     0.622539
-197837     0.936975
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>136122     0.000000
+4382014    0.160747
+813203     0.388079
+256706     0.396915
+739278     0.400386
+4346740    0.400967
+3034532    0.405088
+135186     0.408574
+143713     0.412023
+111775     0.426294
+2990918    0.508606
+592852     0.518365
+308647     0.521221
+1110836    0.534415
+4383109    0.534922
+903536     0.536118
+384657     0.546870
+966113     0.553590
+547232     0.553659
+243983     0.560282
+175064     0.623456
+4392251    0.635922
+209603     0.679241
+587648     0.727068
+4384267    0.930140
 dtype: float64
 </pre></div>
 </div>
@@ -1835,31 +1849,26 @@ dtype: float64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2dd31cb898&gt;
-</pre></div>
-</div>
-<img alt="../_images/machine-learning_36_1.png" src="../_images/machine-learning_36_1.png" />
+<img alt="../_images/machine-learning_36_0.png" src="../_images/machine-learning_36_0.png" />
 </div>
 </div>
 <p>While we may already be able to see some clustering of samples on the first axis, additional axes that are uncorrelated with this first axis can provide more information about which samples are most similar to each other.</p>
-<p>Selecting the next axis to plot in polar ordination can be a little tricky however. Generally, you would begin by computing all axes, which would be defined for all pairs of samples, and then selecting the axes that represent the largest distances (as we did for our first axis above), and axes that are uncorrelated with previously selected axes. This Python function will compute all polar ordination axes.</p>
+<p>Selecting the next axes to plot in polar ordination is more complicated than choosing the first. Generally, you would begin by computing all axes, which would be defined for all pairs of samples. Then, you identify the axes that represent the largest distances (as we did for our first axis above), but that are also uncorrelated with previously selected axes.</p>
+<p>Let’s start this by computing all polar ordination axes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">polar_ordination</span><span class="p">(</span><span class="n">dm</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">axis_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">id1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">id2</span> <span class="ow">in</span> <span class="n">dm</span><span class="o">.</span><span class="n">ids</span><span class="p">[:</span><span class="n">i</span><span class="p">]:</span>
             <span class="n">axis_label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span>
-            <span class="n">axis_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">axis_label</span><span class="p">)</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_axis</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    <span class="n">result</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">axis_labels</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">axis_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_axis</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
@@ -1874,42 +1883,666 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="n">c9e6a8b3929a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sequence_polar_ordination</span> <span class="o">=</span> <span class="n">polar_ordination</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">sequence_polar_ordination</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="nn">&lt;ipython-input-21-3f6ec354d33c&gt;</span> in <span class="ni">polar_ordination</span><span class="nt">(dm)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_axis</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">10</span>     <span class="n">result</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">axis_labels</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">return</span> <span class="n">result</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="nn">/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/pandas/core/generic.py</span> in <span class="ni">__getattr__</span><span class="nt">(self, name)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5139</span>             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info_axis</span><span class="o">.</span><span class="n">_can_hold_identifiers_and_holds_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">5140</span>                 <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-<span class="ne">-&gt; </span><span class="mi">5141</span>             <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">5142</span> 
-<span class="g g-Whitespace">   </span><span class="mi">5143</span>     <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="ne">AttributeError</span>: &#39;Series&#39; object has no attribute &#39;set_index&#39;
-</pre></div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>209603 to 587648</th>
+      <th>175064 to 587648</th>
+      <th>175064 to 209603</th>
+      <th>4392251 to 587648</th>
+      <th>4392251 to 209603</th>
+      <th>4392251 to 175064</th>
+      <th>4384267 to 587648</th>
+      <th>4384267 to 209603</th>
+      <th>4384267 to 175064</th>
+      <th>4384267 to 4392251</th>
+      <th>...</th>
+      <th>384657 to 4382014</th>
+      <th>384657 to 4383109</th>
+      <th>384657 to 592852</th>
+      <th>384657 to 1110836</th>
+      <th>384657 to 903536</th>
+      <th>384657 to 308647</th>
+      <th>384657 to 966113</th>
+      <th>384657 to 243983</th>
+      <th>384657 to 2990918</th>
+      <th>384657 to 547232</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1110836</th>
+      <td>0.344467</td>
+      <td>0.370121</td>
+      <td>0.367747</td>
+      <td>0.363966</td>
+      <td>0.324005</td>
+      <td>0.371623</td>
+      <td>0.308388</td>
+      <td>0.337352</td>
+      <td>0.376243</td>
+      <td>0.362491</td>
+      <td>...</td>
+      <td>0.420668</td>
+      <td>0.524023</td>
+      <td>0.495408</td>
+      <td>0.862762</td>
+      <td>0.597911</td>
+      <td>0.477891</td>
+      <td>0.363361</td>
+      <td>0.324301</td>
+      <td>0.390750</td>
+      <td>0.338123</td>
+    </tr>
+    <tr>
+      <th>111775</th>
+      <td>0.330517</td>
+      <td>0.356086</td>
+      <td>0.366736</td>
+      <td>0.328368</td>
+      <td>0.298810</td>
+      <td>0.350626</td>
+      <td>0.288093</td>
+      <td>0.333230</td>
+      <td>0.373554</td>
+      <td>0.382038</td>
+      <td>...</td>
+      <td>0.491064</td>
+      <td>0.413398</td>
+      <td>0.413441</td>
+      <td>0.419781</td>
+      <td>0.413338</td>
+      <td>0.408846</td>
+      <td>0.376082</td>
+      <td>0.295091</td>
+      <td>0.415842</td>
+      <td>0.319328</td>
+    </tr>
+    <tr>
+      <th>135186</th>
+      <td>0.336121</td>
+      <td>0.357252</td>
+      <td>0.362657</td>
+      <td>0.339596</td>
+      <td>0.305504</td>
+      <td>0.360417</td>
+      <td>0.293821</td>
+      <td>0.332685</td>
+      <td>0.377050</td>
+      <td>0.375297</td>
+      <td>...</td>
+      <td>0.505993</td>
+      <td>0.427850</td>
+      <td>0.426941</td>
+      <td>0.436339</td>
+      <td>0.415254</td>
+      <td>0.418566</td>
+      <td>0.349281</td>
+      <td>0.309468</td>
+      <td>0.398930</td>
+      <td>0.316148</td>
+    </tr>
+    <tr>
+      <th>136122</th>
+      <td>0.335576</td>
+      <td>0.368208</td>
+      <td>0.374155</td>
+      <td>0.343411</td>
+      <td>0.310326</td>
+      <td>0.353483</td>
+      <td>0.310916</td>
+      <td>0.348764</td>
+      <td>0.380163</td>
+      <td>0.385986</td>
+      <td>...</td>
+      <td>0.760267</td>
+      <td>0.435519</td>
+      <td>0.443824</td>
+      <td>0.432821</td>
+      <td>0.419140</td>
+      <td>0.430430</td>
+      <td>0.353480</td>
+      <td>0.308283</td>
+      <td>0.424187</td>
+      <td>0.315584</td>
+    </tr>
+    <tr>
+      <th>143713</th>
+      <td>0.333392</td>
+      <td>0.371387</td>
+      <td>0.379390</td>
+      <td>0.328596</td>
+      <td>0.296074</td>
+      <td>0.335980</td>
+      <td>0.296177</td>
+      <td>0.337622</td>
+      <td>0.365117</td>
+      <td>0.388729</td>
+      <td>...</td>
+      <td>0.511754</td>
+      <td>0.429014</td>
+      <td>0.428368</td>
+      <td>0.432221</td>
+      <td>0.428372</td>
+      <td>0.419820</td>
+      <td>0.378116</td>
+      <td>0.306470</td>
+      <td>0.449704</td>
+      <td>0.327002</td>
+    </tr>
+    <tr>
+      <th>175064</th>
+      <td>0.340763</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.389494</td>
+      <td>0.356333</td>
+      <td>0.756122</td>
+      <td>0.322830</td>
+      <td>0.354261</td>
+      <td>0.750359</td>
+      <td>0.348377</td>
+      <td>...</td>
+      <td>0.366991</td>
+      <td>0.400779</td>
+      <td>0.398861</td>
+      <td>0.419937</td>
+      <td>0.409853</td>
+      <td>0.391604</td>
+      <td>0.355841</td>
+      <td>0.313841</td>
+      <td>0.369079</td>
+      <td>0.316634</td>
+    </tr>
+    <tr>
+      <th>209603</th>
+      <td>0.000000</td>
+      <td>0.412200</td>
+      <td>0.732586</td>
+      <td>0.343496</td>
+      <td>0.659541</td>
+      <td>0.310818</td>
+      <td>0.284766</td>
+      <td>0.669136</td>
+      <td>0.315914</td>
+      <td>0.363490</td>
+      <td>...</td>
+      <td>0.372647</td>
+      <td>0.413855</td>
+      <td>0.392784</td>
+      <td>0.418695</td>
+      <td>0.416387</td>
+      <td>0.394116</td>
+      <td>0.365667</td>
+      <td>0.326716</td>
+      <td>0.380083</td>
+      <td>0.338905</td>
+    </tr>
+    <tr>
+      <th>243983</th>
+      <td>0.330777</td>
+      <td>0.369433</td>
+      <td>0.379878</td>
+      <td>0.318428</td>
+      <td>0.287452</td>
+      <td>0.327985</td>
+      <td>0.291803</td>
+      <td>0.336332</td>
+      <td>0.363489</td>
+      <td>0.395532</td>
+      <td>...</td>
+      <td>0.205196</td>
+      <td>0.231456</td>
+      <td>0.226088</td>
+      <td>0.228181</td>
+      <td>0.212619</td>
+      <td>0.221173</td>
+      <td>0.276841</td>
+      <td>0.607048</td>
+      <td>0.260859</td>
+      <td>0.353316</td>
+    </tr>
+    <tr>
+      <th>256706</th>
+      <td>0.360481</td>
+      <td>0.386192</td>
+      <td>0.368866</td>
+      <td>0.353212</td>
+      <td>0.295349</td>
+      <td>0.345544</td>
+      <td>0.316522</td>
+      <td>0.328315</td>
+      <td>0.367092</td>
+      <td>0.380619</td>
+      <td>...</td>
+      <td>0.517217</td>
+      <td>0.422197</td>
+      <td>0.423120</td>
+      <td>0.432642</td>
+      <td>0.414476</td>
+      <td>0.416802</td>
+      <td>0.366520</td>
+      <td>0.315018</td>
+      <td>0.408128</td>
+      <td>0.326909</td>
+    </tr>
+    <tr>
+      <th>2990918</th>
+      <td>0.340176</td>
+      <td>0.379405</td>
+      <td>0.381077</td>
+      <td>0.357358</td>
+      <td>0.321098</td>
+      <td>0.356173</td>
+      <td>0.305763</td>
+      <td>0.339368</td>
+      <td>0.365027</td>
+      <td>0.367098</td>
+      <td>...</td>
+      <td>0.359455</td>
+      <td>0.348771</td>
+      <td>0.354241</td>
+      <td>0.357817</td>
+      <td>0.363934</td>
+      <td>0.338431</td>
+      <td>0.408516</td>
+      <td>0.339498</td>
+      <td>0.790047</td>
+      <td>0.326988</td>
+    </tr>
+    <tr>
+      <th>3034532</th>
+      <td>0.337137</td>
+      <td>0.366678</td>
+      <td>0.371159</td>
+      <td>0.366914</td>
+      <td>0.334920</td>
+      <td>0.377838</td>
+      <td>0.313099</td>
+      <td>0.349146</td>
+      <td>0.383429</td>
+      <td>0.363468</td>
+      <td>...</td>
+      <td>0.513056</td>
+      <td>0.421169</td>
+      <td>0.414200</td>
+      <td>0.439515</td>
+      <td>0.428436</td>
+      <td>0.415649</td>
+      <td>0.350551</td>
+      <td>0.307149</td>
+      <td>0.404400</td>
+      <td>0.302208</td>
+    </tr>
+    <tr>
+      <th>308647</th>
+      <td>0.344619</td>
+      <td>0.374658</td>
+      <td>0.372155</td>
+      <td>0.374111</td>
+      <td>0.335163</td>
+      <td>0.377086</td>
+      <td>0.297465</td>
+      <td>0.327279</td>
+      <td>0.362957</td>
+      <td>0.342605</td>
+      <td>...</td>
+      <td>0.406294</td>
+      <td>0.515533</td>
+      <td>0.559805</td>
+      <td>0.475900</td>
+      <td>0.460593</td>
+      <td>0.859167</td>
+      <td>0.340887</td>
+      <td>0.313031</td>
+      <td>0.368040</td>
+      <td>0.320135</td>
+    </tr>
+    <tr>
+      <th>384657</th>
+      <td>0.343209</td>
+      <td>0.370405</td>
+      <td>0.369209</td>
+      <td>0.344191</td>
+      <td>0.303256</td>
+      <td>0.352108</td>
+      <td>0.307960</td>
+      <td>0.338254</td>
+      <td>0.375619</td>
+      <td>0.382643</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4346740</th>
+      <td>0.342582</td>
+      <td>0.358274</td>
+      <td>0.357630</td>
+      <td>0.342879</td>
+      <td>0.302444</td>
+      <td>0.362618</td>
+      <td>0.289895</td>
+      <td>0.322494</td>
+      <td>0.372871</td>
+      <td>0.368526</td>
+      <td>...</td>
+      <td>0.531704</td>
+      <td>0.417590</td>
+      <td>0.420897</td>
+      <td>0.429591</td>
+      <td>0.413097</td>
+      <td>0.407938</td>
+      <td>0.350569</td>
+      <td>0.309550</td>
+      <td>0.429629</td>
+      <td>0.308200</td>
+    </tr>
+    <tr>
+      <th>4382014</th>
+      <td>0.332530</td>
+      <td>0.367486</td>
+      <td>0.376284</td>
+      <td>0.345876</td>
+      <td>0.316245</td>
+      <td>0.356583</td>
+      <td>0.302383</td>
+      <td>0.344140</td>
+      <td>0.373961</td>
+      <td>0.376116</td>
+      <td>...</td>
+      <td>0.916385</td>
+      <td>0.440924</td>
+      <td>0.436554</td>
+      <td>0.446813</td>
+      <td>0.424489</td>
+      <td>0.433351</td>
+      <td>0.357127</td>
+      <td>0.309760</td>
+      <td>0.416936</td>
+      <td>0.332107</td>
+    </tr>
+    <tr>
+      <th>4383109</th>
+      <td>0.342048</td>
+      <td>0.384322</td>
+      <td>0.384255</td>
+      <td>0.346221</td>
+      <td>0.306727</td>
+      <td>0.340558</td>
+      <td>0.294884</td>
+      <td>0.327572</td>
+      <td>0.351404</td>
+      <td>0.369333</td>
+      <td>...</td>
+      <td>0.405579</td>
+      <td>0.842925</td>
+      <td>0.492633</td>
+      <td>0.511975</td>
+      <td>0.472481</td>
+      <td>0.505787</td>
+      <td>0.362706</td>
+      <td>0.321391</td>
+      <td>0.372115</td>
+      <td>0.321760</td>
+    </tr>
+    <tr>
+      <th>4384267</th>
+      <td>0.400409</td>
+      <td>0.499373</td>
+      <td>0.444984</td>
+      <td>0.458650</td>
+      <td>0.371419</td>
+      <td>0.338149</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.368349</td>
+      <td>0.422334</td>
+      <td>0.412677</td>
+      <td>0.419394</td>
+      <td>0.407387</td>
+      <td>0.402663</td>
+      <td>0.362455</td>
+      <td>0.328834</td>
+      <td>0.379139</td>
+      <td>0.326039</td>
+    </tr>
+    <tr>
+      <th>4392251</th>
+      <td>0.265667</td>
+      <td>0.388126</td>
+      <td>0.459610</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.272029</td>
+      <td>0.385145</td>
+      <td>0.329175</td>
+      <td>0.709000</td>
+      <td>...</td>
+      <td>0.363298</td>
+      <td>0.411139</td>
+      <td>0.379777</td>
+      <td>0.402833</td>
+      <td>0.398047</td>
+      <td>0.369622</td>
+      <td>0.381155</td>
+      <td>0.343887</td>
+      <td>0.365188</td>
+      <td>0.346831</td>
+    </tr>
+    <tr>
+      <th>547232</th>
+      <td>0.324945</td>
+      <td>0.371657</td>
+      <td>0.387571</td>
+      <td>0.320650</td>
+      <td>0.295998</td>
+      <td>0.327986</td>
+      <td>0.300124</td>
+      <td>0.349867</td>
+      <td>0.368049</td>
+      <td>0.400356</td>
+      <td>...</td>
+      <td>0.218895</td>
+      <td>0.230557</td>
+      <td>0.214483</td>
+      <td>0.236711</td>
+      <td>0.224223</td>
+      <td>0.225056</td>
+      <td>0.294486</td>
+      <td>0.351541</td>
+      <td>0.249985</td>
+      <td>0.603998</td>
+    </tr>
+    <tr>
+      <th>587648</th>
+      <td>0.686160</td>
+      <td>0.734753</td>
+      <td>0.413419</td>
+      <td>0.735683</td>
+      <td>0.383152</td>
+      <td>0.378965</td>
+      <td>0.607510</td>
+      <td>0.258540</td>
+      <td>0.261371</td>
+      <td>0.233089</td>
+      <td>...</td>
+      <td>0.364651</td>
+      <td>0.412910</td>
+      <td>0.398147</td>
+      <td>0.419695</td>
+      <td>0.406330</td>
+      <td>0.395242</td>
+      <td>0.349936</td>
+      <td>0.312665</td>
+      <td>0.377449</td>
+      <td>0.318157</td>
+    </tr>
+    <tr>
+      <th>592852</th>
+      <td>0.349862</td>
+      <td>0.369577</td>
+      <td>0.362148</td>
+      <td>0.365446</td>
+      <td>0.320043</td>
+      <td>0.373592</td>
+      <td>0.287600</td>
+      <td>0.312946</td>
+      <td>0.359945</td>
+      <td>0.343143</td>
+      <td>...</td>
+      <td>0.405523</td>
+      <td>0.497497</td>
+      <td>0.851247</td>
+      <td>0.488796</td>
+      <td>0.452436</td>
+      <td>0.554644</td>
+      <td>0.354867</td>
+      <td>0.317037</td>
+      <td>0.381681</td>
+      <td>0.302282</td>
+    </tr>
+    <tr>
+      <th>739278</th>
+      <td>0.334716</td>
+      <td>0.362804</td>
+      <td>0.369541</td>
+      <td>0.345921</td>
+      <td>0.314021</td>
+      <td>0.361177</td>
+      <td>0.307084</td>
+      <td>0.346167</td>
+      <td>0.382352</td>
+      <td>0.380097</td>
+      <td>...</td>
+      <td>0.519205</td>
+      <td>0.428940</td>
+      <td>0.430735</td>
+      <td>0.435932</td>
+      <td>0.439492</td>
+      <td>0.428631</td>
+      <td>0.368398</td>
+      <td>0.320232</td>
+      <td>0.413635</td>
+      <td>0.305050</td>
+    </tr>
+    <tr>
+      <th>813203</th>
+      <td>0.331300</td>
+      <td>0.368704</td>
+      <td>0.378658</td>
+      <td>0.343533</td>
+      <td>0.314911</td>
+      <td>0.353120</td>
+      <td>0.305703</td>
+      <td>0.348416</td>
+      <td>0.375457</td>
+      <td>0.381392</td>
+      <td>...</td>
+      <td>0.521282</td>
+      <td>0.426932</td>
+      <td>0.424090</td>
+      <td>0.426614</td>
+      <td>0.423435</td>
+      <td>0.425546</td>
+      <td>0.366930</td>
+      <td>0.314902</td>
+      <td>0.405861</td>
+      <td>0.315636</td>
+    </tr>
+    <tr>
+      <th>903536</th>
+      <td>0.330738</td>
+      <td>0.366324</td>
+      <td>0.376798</td>
+      <td>0.353771</td>
+      <td>0.326916</td>
+      <td>0.365394</td>
+      <td>0.306480</td>
+      <td>0.349698</td>
+      <td>0.378416</td>
+      <td>0.371434</td>
+      <td>...</td>
+      <td>0.394137</td>
+      <td>0.476930</td>
+      <td>0.452231</td>
+      <td>0.589663</td>
+      <td>0.850861</td>
+      <td>0.456140</td>
+      <td>0.362216</td>
+      <td>0.298015</td>
+      <td>0.391948</td>
+      <td>0.315866</td>
+    </tr>
+    <tr>
+      <th>966113</th>
+      <td>0.327242</td>
+      <td>0.364807</td>
+      <td>0.378550</td>
+      <td>0.314637</td>
+      <td>0.286901</td>
+      <td>0.328792</td>
+      <td>0.293609</td>
+      <td>0.341597</td>
+      <td>0.369481</td>
+      <td>0.401013</td>
+      <td>...</td>
+      <td>0.271410</td>
+      <td>0.299673</td>
+      <td>0.290330</td>
+      <td>0.293312</td>
+      <td>0.296477</td>
+      <td>0.276322</td>
+      <td>0.696438</td>
+      <td>0.317607</td>
+      <td>0.360112</td>
+      <td>0.339556</td>
+    </tr>
+  </tbody>
+</table>
+<p>25 rows × 300 columns</p>
+</div></div></div>
 </div>
-</div>
-</div>
-<p>This isn’t much (or any) more interpretable than the distance matrix itself was, so the next step is to select the most informative axes to view. The first (most informative) axis will be the axis that we identified above as the one representing the largest distance in the distance matrix. The second will be an axis that also contains a large distance (relative to the other distances in the distance matrix), and is uncorrelated with the first axis. Selecting this axis based on these criteria is a bit subjective, so we need to come up with an objective approach so a computer can solve the problem. Here, I define an algorithm that will create a <em>score</em> for each axis that is computed as the largest distance along that axis divided by the absolute value of the Spearman correlation coefficient between this axis and axis 1. In other words:</p>
+<p>This isn’t much (or any) more interpretable than the distance matrix itself was, so the next step is to select the most informative axes to view. The first (most informative) axis will still be the axis that we identified above as the one representing the largest distance in the distance matrix. The second will be an axis that also contains a large distance (relative to the other distances in the distance matrix), and which is uncorrelated with the first axis. Selecting this axis based on these two criteria is subjective, because there is not a specific definition of “uncorrelated”. We need to come up with an objective approach so a computer can solve the problem. Here, I define a <em>score</em> metric that can be computed for each axis. This score is computed as the largest distance along the current axis divided by the absolute value of the Spearman correlation coefficient between the current axis and the first axis. In other words:</p>
 <div class="math notranslate nohighlight" id="equation-polar-ordination-axis-score">
-<span class="eqno">(3.4)<a class="headerlink" href="#equation-polar-ordination-axis-score" title="Permalink to this equation">¶</a></span>\[Score_{axis i} = \frac{axis length}/{|Spearman(Axis 1, Axis 1)|}\]</div>
-<p>This can be computed as follows:</p>
+<span class="eqno">(3.4)<a class="headerlink" href="#equation-polar-ordination-axis-score" title="Permalink to this equation">¶</a></span>\[Score_{A} = \frac{max \, distance \, on \, A}{|Spearman(Axis \, 1, A)|}\]</div>
+<p>In this formula, <span class="math notranslate nohighlight">\(A\)</span> represents the current axis, and <span class="math notranslate nohighlight">\(Axis 1\)</span> represents the first axis in the polar ordination.</p>
+<p>This can be computed as follows. This function takes a polar ordination result as input and returns the identifiers of the first two axes as well as a summary of the maximum distance along each axis, the correlation of each axis with the first axis, and the score (as defined by <a class="reference internal" href="#equation-polar-ordination-axis-score">(3.4)</a>) for each axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select_polar_ordination_axes</span><span class="p">(</span><span class="n">polar_ordination_result</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">select_polar_ordination_axes</span><span class="p">(</span><span class="n">polar_ordination</span><span class="p">):</span>
     <span class="c1"># this function would be better if it defined more axes, </span>
     <span class="c1"># eg by always looking for correlation with preceding axis. </span>
-    <span class="n">distance_sorted_ord_axes</span> <span class="o">=</span> <span class="n">sequence_polar_ordination</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">distance_sorted_ord_axes</span> <span class="o">=</span> <span class="n">polar_ordination</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">first_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_ord_axes</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">corrs</span> <span class="o">=</span> <span class="n">sequence_polar_ordination</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;spearman&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">corrs</span> <span class="o">=</span> <span class="n">polar_ordination</span><span class="o">.</span><span class="n">corrwith</span><span class="p">(</span><span class="n">polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;spearman&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">distance_sorted_ord_axes</span> <span class="o">/</span> <span class="n">corrs</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">distance_sorted_ord_axes</span><span class="p">,</span> <span class="n">corrs</span><span class="p">,</span> <span class="n">scores</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">result</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;maximum distance&#39;</span><span class="p">,</span> <span class="s1">&#39;corr with first axis&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]</span>
@@ -1923,40 +2556,202 @@ dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_axis_idx</span><span class="p">,</span> <span class="n">second_axis_idx</span><span class="p">,</span> <span class="n">axis_summaries</span> <span class="o">=</span> <span class="n">select_polar_ordination_axes</span><span class="p">(</span><span class="n">sequence_polar_ordination</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Axis 1 is defined by the distance from sample </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">first_axis_idx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Axis 2 is defined by the distance from sample </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">second_axis_idx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Axis 1 is defined by the distance from sample 136122 to 4384267
+Axis 2 is defined by the distance from sample 308647 to 592852
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
-                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Add metadata</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
-                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">],</span> 
-                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>For each axis, we can view the maximum distance along that axis, it’s correlation coefficient with the first axis, and the score of the axis, by viewing the summary returned from <code class="docutils literal notranslate"><span class="pre">select_polar_ordination_axes</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">axis_summaries</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>maximum distance</th>
+      <th>corr with first axis</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>308647 to 592852</th>
+      <td>0.713950</td>
+      <td>0.012308</td>
+      <td>58.008455</td>
+    </tr>
+    <tr>
+      <th>136122 to 143713</th>
+      <td>0.856952</td>
+      <td>0.016923</td>
+      <td>50.638065</td>
+    </tr>
+    <tr>
+      <th>903536 to 4383109</th>
+      <td>0.794013</td>
+      <td>0.018462</td>
+      <td>43.009011</td>
+    </tr>
+    <tr>
+      <th>4384267 to 209603</th>
+      <td>0.669136</td>
+      <td>0.016923</td>
+      <td>39.539843</td>
+    </tr>
+    <tr>
+      <th>2990918 to 308647</th>
+      <td>0.883632</td>
+      <td>0.023077</td>
+      <td>38.290708</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4382014 to 4384267</th>
+      <td>0.921021</td>
+      <td>0.987692</td>
+      <td>0.932498</td>
+    </tr>
+    <tr>
+      <th>4382014 to 209603</th>
+      <td>0.914040</td>
+      <td>0.980769</td>
+      <td>0.931962</td>
+    </tr>
+    <tr>
+      <th>136122 to 4384267</th>
+      <td>0.930140</td>
+      <td>1.000000</td>
+      <td>0.930140</td>
+    </tr>
+    <tr>
+      <th>4382014 to 4392251</th>
+      <td>0.904228</td>
+      <td>0.979231</td>
+      <td>0.923406</td>
+    </tr>
+    <tr>
+      <th>136122 to 4392251</th>
+      <td>0.905822</td>
+      <td>0.983846</td>
+      <td>0.920695</td>
+    </tr>
+  </tbody>
+</table>
+<p>300 rows × 3 columns</p>
+</div></div></div>
 </div>
-<p>Why do we care about axes being uncorrelated?</p>
+<p>Now we can expand our strip plot to a two-dimensional scatter plot where we plot the first two axes of our polar ordination. You should notice that there is some grouping or clustering of samples in this plot. This group should be more distinct than it was in the strip plot, since our samples can now separate along two axes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_47_0.png" src="../_images/machine-learning_47_0.png" />
+</div>
+</div>
+<p>This plot illustrates that there is some structure in our dataset. If you look up distances between samples that are closer to each other in space in the scatterplot, those distances on average will be smaller than the distances between samples that are farther apart in the scatterplot. This structure in the dataset is what has been “learned” by the polar ordination algorithm. Notice that the sequence labels were not used at all in this analysis, but if you look up where each sample is found on the plot, and cross-reference that against the sample labels, you’ll discover that samples that cluster together are from the same phylum.</p>
+<p>When labels are available for a collection of samples, labels can be used with an ordination plot to explore whether samples cluster by sample label. This is often achieved by coloring the points in a scatterplot by their label. We can do this for our sequence ordination as follows. Notice that the colors (the microbial phyla represented in our dataset) group together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_49_0.png" src="../_images/machine-learning_49_0.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember that while we used the sample labels to help us interpret the ordination plot, they were not used at all in computing the ordination. Not using the labels when computing the ordination is what defines this ordination approach as being unsupervised.</p>
+</div>
+</div>
+<div class="section" id="interpreting-ordination-plots">
+<h3><span class="section-number">3.4.3. </span>Interpreting ordination plots<a class="headerlink" href="#interpreting-ordination-plots" title="Permalink to this headline">¶</a></h3>
+<p>Let’s now work through some of the ideas we explored with polar ordination to understand general features of unsupervised ordination plots.</p>
+<div class="section" id="axis-order">
+<h4><span class="section-number">3.4.3.1. </span>Axis order<a class="headerlink" href="#axis-order" title="Permalink to this headline">¶</a></h4>
+<p>First, the order of the axes in an ordination is generally important. The first axis typically represents in the largest differences in the data set, and the second axis generally presents the next largest differences that are uncorrelated with the first axis. If we didn’t select axes that represented the largest distances, we would be less likely to see patterns in our data.</p>
+<p>For example, let’s focus on just a single axis again. We can sort our axis summary by maximum distance along an axis, and plot the axes that represent the largest and then the smallest distances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distance_sorted_axis_summary</span> <span class="o">=</span> <span class="n">axis_summaries</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;maximum distance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we’ll plot our samples along the axis representing the largest distance and we’ll separate the samples by phylum so we can see how their placement along the axes we define differ. You should notice here that the samples within each phylum roughly group together, and there may even be some separation of phyla on the axis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">largest_distance_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_axis_summary</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">largest_distance_axis_idx</span><span class="p">],</span> 
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_53_0.png" src="../_images/machine-learning_53_0.png" />
+</div>
+</div>
+<p>Now contrast this with what we’d see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by phylum should be much less apparent here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">smallest_distance_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_axis_summary</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">smallest_distance_axis_idx</span><span class="p">],</span> 
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_55_0.png" src="../_images/machine-learning_55_0.png" />
+</div>
+</div>
+<p>As you plot successive axes in an ordination, the axes represent smaller differences between samples. Typically you’ll want to focus on the first few ordination axes to the exclusion of later axes.</p>
+</div>
+<div class="section" id="uncorrelated-axes">
+<h4><span class="section-number">3.4.3.2. </span>Uncorrelated axes<a class="headerlink" href="#uncorrelated-axes" title="Permalink to this headline">¶</a></h4>
+<p>Next, ordination algorithms generally present uncorrelated axes as the most important axes. This is important because correlated axes, by definition, will present similar information.</p>
+<p>Let’s look at another example here where we’ll plot a second polar ordination axis that is highly correlated with the first axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the axis most correlated with first_axis_idx will be first_axis_idx, so </span>
@@ -1975,43 +2770,73 @@ dtype: float64
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_58_0.png" src="../_images/machine-learning_58_0.png" />
 </div>
-<p>And why do we care about starting with large distances?</p>
+</div>
+<p>You can see that we don’t get much additional information from the second axis than we do from the first. In fact, if we drew a line along the diagonal, the placement of points along that line would be almost identical to those that we observed in the strip plot of the first axis that we started with above. The correlated axis isn’t adding much new information to our understanding of the clustering of samples, so we might as well not have it.</p>
+</div>
+<div class="section" id="directionality-of-the-axes">
+<h4><span class="section-number">3.4.3.3. </span>Directionality of the axes<a class="headerlink" href="#directionality-of-the-axes" title="Permalink to this headline">¶</a></h4>
+<p>One thing that you may have noticed as you computed the polar ordination above is that our definitions of end points was arbitrary. We first encountered this when computing <a class="reference internal" href="#equation-polar-ordination-axis">(3.3)</a>, when we defined one of a pair of samples to be placed at <span class="math notranslate nohighlight">\(0\)</span> along an axis, and the other of the pair of samples to be placed at <span class="math notranslate nohighlight">\(D\)</span> along the axis. Let’s again look at placement of all samples along the axis represented the largest distance in our data set computed as we did initially.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">small_distance_axis_idx</span> <span class="o">=</span> <span class="n">axis_summaries</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;maximum distance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">axis1_values_a</span> <span class="o">=</span> <span class="n">compute_axis</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">,</span> 
+                              <span class="n">sample_id1</span><span class="p">,</span>
+                              <span class="n">sample_id2</span><span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values_a</span><span class="p">,</span> 
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_60_0.png" src="../_images/machine-learning_60_0.png" />
 </div>
+</div>
+<p>Now, let’s reverse the order of the sample ids that we’re providing as input to this function. In practice, this means that the sample that was previously placed at <span class="math notranslate nohighlight">\(0\)</span> will now be placed at <span class="math notranslate nohighlight">\(D\)</span> along this axis, and the sample that was previously placed at <span class="math notranslate nohighlight">\(D\)</span> will now be placed at <span class="math notranslate nohighlight">\(0\)</span> along this axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
-                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">small_distance_axis_idx</span><span class="p">],</span> 
-                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">axis1_values_b</span> <span class="o">=</span> <span class="n">compute_axis</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">,</span> 
+                              <span class="n">sample_id2</span><span class="p">,</span>
+                              <span class="n">sample_id1</span><span class="p">)</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values_b</span><span class="p">,</span> 
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_62_0.png" src="../_images/machine-learning_62_0.png" />
 </div>
-<div class="section" id="interpreting-ordination-plots-link-src-40e0a6">
-<h4><span class="section-number">3.4.2.1. </span>Interpreting ordination plots <link src='40e0a6'/><a class="headerlink" href="#interpreting-ordination-plots-link-src-40e0a6" title="Permalink to this headline">¶</a></h4>
-<p>There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.</p>
-<p><strong>Directionality of the axes is not important (e.g., up/down/left/right)</strong></p>
-<p>One thing that you may have notices as you computed the polar ordination above is that the method is <em>not symmetric</em>: in other words, the axis values for axis <span class="math notranslate nohighlight">\(EB\)</span> are different than for axis <span class="math notranslate nohighlight">\(BE\)</span>. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.</p>
+</div>
+<p>Notice that these two plots are mirror images of each other. Because they’re perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn’t impact your results at all (some tools for viewing ordination plots, such as Emperor <span id="id2">[<a class="reference internal" href="#id30"><span>VazquezBPGK13</span></a>]</span>, include functionality that allows the viewer to flip axes if they prefer a particular orientation).</p>
+</div>
+</div>
+<div class="section" id="principle-coordinates-analysis-pcoa">
+<h3><span class="section-number">3.4.4. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
+<p>Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinations analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
-
-
 <span class="n">sequence_pcoa_ordination</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ordination</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">sequence_distance_matrix</span><span class="p">)</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Just as with polar ordination, we can view a 2D scatterplot of these data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
                     <span class="n">y</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_66_0.png" src="../_images/machine-learning_66_0.png" />
 </div>
+</div>
+<p>That plot becomes more informative when we integration sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
@@ -2021,73 +2846,15 @@ dtype: float64
 </pre></div>
 </div>
 </div>
-</div>
-<p>Some other important features:</p>
-<ul class="simple">
-<li><p>Numerical scale of the axis is generally not useful</p></li>
-<li><p>The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, )</p></li>
-<li><p>Most techniques result in uncorrelated axes.</p></li>
-<li><p>Additional axes can be generated (third, fourth, )</p></li>
-</ul>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_68_0.png" src="../_images/machine-learning_68_0.png" />
 </div>
 </div>
-<div class="section" id="principle-coordinates-analysis-pcoa">
-<h3><span class="section-number">3.4.3. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2</span>
-<span class="kn">import</span> <span class="nn">qiime2.plugins.feature_table</span> <span class="k">as</span> <span class="nn">ft</span>
-<span class="kn">import</span> <span class="nn">qiime2.plugins.diversity</span> <span class="k">as</span> <span class="nn">div</span>
-
-<span class="c1"># Iterate over all of the reference sequences and compute their kmer frequencies.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
-    <span class="c1">#taxon = get_taxon_at_level(reference_sequence.metadata[&#39;taxonomy&#39;], taxonomic_level)</span>
-    <span class="n">kmer_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">kmer_counts</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">))</span>
-    <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kmer_counts</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span>
-
-<span class="c1"># Build a table of the kmer frequencies as a pandas.DataFrame object, and then </span>
-<span class="c1"># display the first 25 rows of that table.</span>
-<span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-
-<span class="n">feature_table_1a</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Artifact</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="s2">&quot;FeatureTable[Frequency]&quot;</span><span class="p">,</span> <span class="n">per_sequence_kmer_counts</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-</pre></div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>How does the clustering of samples compare between polar ordination and PCoA?</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jaccard_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">feature_table_1a</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;jaccard&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distance_matrix</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">taxa_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;k__Archaea&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Cyanobacteria&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Firmicutes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Bacteroidetes&#39;</span><span class="p">,</span> <span class="s1">&#39;p__Proteobacteria&#39;</span><span class="p">]</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
-    <span class="n">id_</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-    <span class="n">taxon</span> <span class="o">=</span> <span class="n">get_taxon_at_level</span><span class="p">(</span><span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;taxonomy&#39;</span><span class="p">],</span> <span class="n">taxonomic_level</span><span class="p">)</span>
-    <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxa_of_interest</span><span class="p">:</span>
-        <span class="c1"># this approach is horrendous</span>
-        <span class="k">if</span> <span class="n">taxon_of_interest</span> <span class="ow">in</span> <span class="n">taxon</span><span class="p">:</span>
-            <span class="n">label_as_other</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">if</span> <span class="n">label_as_other</span><span class="p">:</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">metadata</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxon</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-<span class="n">metadata</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-<span class="n">metadata</span> <span class="o">=</span> <span class="n">qiime2</span><span class="o">.</span><span class="n">Metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcoa_1a</span> <span class="o">=</span> <span class="n">div</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">pcoa</span><span class="p">(</span><span class="n">jaccard_1a</span><span class="p">)</span><span class="o">.</span><span class="n">pcoa</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime2.plugins.emperor</span> <span class="k">as</span> <span class="nn">emperor</span>
-
-<span class="n">emperor</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pcoa_1a</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span><span class="o">.</span><span class="n">visualization</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
-<span class="n">ordination</span> <span class="o">=</span> <span class="n">pcoa_1a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">skbio</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ordination</span><span class="o">.</span><span class="n">OrdinationResults</span><span class="p">)</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">ordination</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">column</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
+<!-- PICK UP HERE -->
 </div>
 </div>
 <div class="section" id="supervised-classification">
@@ -2161,6 +2928,12 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: G, A, T, C
+For an alphabet size of 4, W contains 16 length-2 kmers.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
@@ -2196,6 +2969,20 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 
 <span class="n">feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">per_sequence_kmer_counts</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;taxon&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">39</span><span class="o">-</span><span class="n">f2415c398283</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">per_sequence_kmer_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">sequence_labels</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">for</span> <span class="n">reference_sequence</span> <span class="ow">in</span> <span class="n">reference_db</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span>     <span class="n">sequence_id</span> <span class="o">=</span> <span class="n">reference_sequence</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> 
+
+<span class="ne">NameError</span>: name &#39;reference_db&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -2449,9 +3236,12 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </div>
 <div class="section" id="list-of-works-cited">
 <h2><span class="section-number">3.7. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
-<p id="id2"><dl class="citation">
-<dt class="label" id="id27"><span class="brackets"><a class="fn-backref" href="#id1">Fis36</a></span></dt>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id28"><span class="brackets"><a class="fn-backref" href="#id1">Fis36</a></span></dt>
 <dd><p>R A Fisher. The use of multiple measurements in taxonomic problems. <em>Ann. Eugen.</em>, 7(2):179–188, September 1936.</p>
+</dd>
+<dt class="label" id="id30"><span class="brackets"><a class="fn-backref" href="#id2">VazquezBPGK13</a></span></dt>
+<dd><p>Yoshiki Vázquez-Baeza, Meg Pirrung, Antonio Gonzalez, and Rob Knight. EMPeror: a tool for visualizing high-throughput microbial community data. <em>Gigascience</em>, 2(1):16, November 2013.</p>
 </dd>
 </dl>
 </p>
