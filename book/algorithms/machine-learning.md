@@ -35,7 +35,7 @@ The [Iris dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#iri
 :tags: [hide-cell]
 
 # This cell loads data from scikit-learn and organizes it into some strcutures that
-# we'll use to conviently view the data.
+# we'll use to conveniently view the data.
 
 import sklearn.datasets
 import pandas as pd
@@ -291,7 +291,7 @@ Next, we'll identify the location of every other samples on this first axis. For
 A_s = \frac{D^2 + D1^2 - D2^2}{2 \times D}
 ```
 
-In this formula, $A_s$ is the location of the current sample on the current axis. $D$ is distance between the endpoints. $D1$ is distance between the current sample and the sample at $0$ on this axis, which you can look up in the distance matrix computed above. $D1$ is distance between the current sample and the sample at $D$ on this axis, which is also looked up in the distance matrix. 
+In this formula, $A_s$ is the location of the current sample on the current axis. $D$ is the distance between the endpoints. $D1$ is distance between the current sample and the sample at $0$ on this axis, which you can look up in the distance matrix computed above. $D1$ is distance between the current sample and the sample at $D$ on this axis, which is also looked up in the distance matrix. 
 
 The following Python function can be applied to compute the placement of all samples on a polar ordination axis, given the distances between all pairs of samples and the identifiers of the samples serving as the endpoints of this axis.
 
@@ -328,24 +328,23 @@ We can plot this single axis using a strip plot. In this plot, only placement on
 ```{code-cell} ipython3
 import seaborn as sns
 
-sns.stripplot(x=axis1_values)
+_ = sns.stripplot(x=axis1_values)
 ```
 
 While we may already be able to see some clustering of samples on the first axis, additional axes that are uncorrelated with this first axis can provide more information about which samples are most similar to each other. 
 
-Selecting the next axis to plot in polar ordination can be a little tricky however. Generally, you would begin by computing all axes, which would be defined for all pairs of samples, and then selecting the axes that represent the largest distances (as we did for our first axis above), and axes that are uncorrelated with previously selected axes. This Python function will compute all polar ordination axes. 
+Selecting the next axes to plot in polar ordination is more complicated than choosing the first. Generally, you would begin by computing all axes, which would be defined for all pairs of samples. Then, you identify the axes that represent the largest distances (as we did for our first axis above), but that are also uncorrelated with previously selected axes. 
+
+Let's start this by computing all polar ordination axes.
 
 ```{code-cell} ipython3
 def polar_ordination(dm):
-    result = []
-    axis_labels = []
+    result = {}
     for i, id1 in enumerate(dm.ids):
         for id2 in dm.ids[:i]:
             axis_label = '%s to %s' % (id1, id2)
-            axis_labels.append(axis_label)
-            result.append(compute_axis(dm, id1, id2) )
-    result = pd.concat(result)
-    result.set_index(axis_labels)
+            result[axis_label] = compute_axis(dm, id1, id2)
+    result = pd.DataFrame(result)
     return result
 ```
 
@@ -356,22 +355,24 @@ sequence_polar_ordination = polar_ordination(sequence_distance_matrix)
 sequence_polar_ordination
 ```
 
-This isn't much (or any) more interpretable than the distance matrix itself was, so the next step is to select the most informative axes to view. The first (most informative) axis will be the axis that we identified above as the one representing the largest distance in the distance matrix. The second will be an axis that also contains a large distance (relative to the other distances in the distance matrix), and is uncorrelated with the first axis. Selecting this axis based on these criteria is a bit subjective, so we need to come up with an objective approach so a computer can solve the problem. Here, I define an algorithm that will create a _score_ for each axis that is computed as the largest distance along that axis divided by the absolute value of the Spearman correlation coefficient between this axis and axis 1. In other words:
+This isn't much (or any) more interpretable than the distance matrix itself was, so the next step is to select the most informative axes to view. The first (most informative) axis will still be the axis that we identified above as the one representing the largest distance in the distance matrix. The second will be an axis that also contains a large distance (relative to the other distances in the distance matrix), and which is uncorrelated with the first axis. Selecting this axis based on these two criteria is subjective, because there is not a specific definition of "uncorrelated". We need to come up with an objective approach so a computer can solve the problem. Here, I define a _score_ metric that can be computed for each axis. This score is computed as the largest distance along the current axis divided by the absolute value of the Spearman correlation coefficient between the current axis and the first axis. In other words:
 
 ```{math}
 :label: polar_ordination_axis_score
-Score_{axis i} = \frac{axis length}/{|Spearman(Axis 1, Axis 1)|}
+Score_{A} = \frac{max \, distance \, on \, A}{|Spearman(Axis \, 1, A)|}
 ```
 
-This can be computed as follows:
+In this formula, $A$ represents the current axis, and $Axis 1$ represents the first axis in the polar ordination.
+
+This can be computed as follows. This function takes a polar ordination result as input and returns the identifiers of the first two axes as well as a summary of the maximum distance along each axis, the correlation of each axis with the first axis, and the score (as defined by {eq}`polar_ordination_axis_score`) for each axis.
 
 ```{code-cell} ipython3
-def select_polar_ordination_axes(polar_ordination_result):
+def select_polar_ordination_axes(polar_ordination):
     # this function would be better if it defined more axes, 
     # eg by always looking for correlation with preceding axis. 
-    distance_sorted_ord_axes = sequence_polar_ordination.max().sort_values(ascending=False)
+    distance_sorted_ord_axes = polar_ordination.max().sort_values(ascending=False)
     first_axis_idx = distance_sorted_ord_axes.index[0]
-    corrs = sequence_polar_ordination.corrwith(sequence_polar_ordination[first_axis_idx], method='spearman').abs().sort_values(ascending=False)
+    corrs = polar_ordination.corrwith(polar_ordination[first_axis_idx], method='spearman').abs().sort_values(ascending=False)
     scores = distance_sorted_ord_axes / corrs
     result = pd.concat([distance_sorted_ord_axes, corrs, scores], axis=1)
     result.columns = ['maximum distance', 'corr with first axis', 'score']
@@ -380,34 +381,80 @@ def select_polar_ordination_axes(polar_ordination_result):
     return first_axis_idx, second_axis_idx, result
 ```
 
-
-
 ```{code-cell} ipython3
 first_axis_idx, second_axis_idx, axis_summaries = select_polar_ordination_axes(sequence_polar_ordination)
+print('Axis 1 is defined by the distance from sample %s' % first_axis_idx)
+print('Axis 2 is defined by the distance from sample %s' % second_axis_idx)
 ```
 
-```{code-cell} ipython3
-import matplotlib.pyplot as plt
-import seaborn as sns
+For each axis, we can view the maximum distance along that axis, it's correlation coefficient with the first axis, and the score of the axis, by viewing the summary returned from `select_polar_ordination_axes`.
 
+```{code-cell} ipython3
+axis_summaries
+```
+
+Now we can expand our strip plot to a two-dimensional scatter plot where we plot the first two axes of our polar ordination. You should notice that there is some grouping or clustering of samples in this plot. This group should be more distinct than it was in the strip plot, since our samples can now separate along two axes.
+
+```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx], 
                     y=sequence_polar_ordination[second_axis_idx])
 ```
 
-Add metadata
+This plot illustrates that there is some structure in our dataset. If you look up distances between samples that are closer to each other in space in the scatterplot, those distances on average will be smaller than the distances between samples that are farther apart in the scatterplot. This structure in the dataset is what has been "learned" by the polar ordination algorithm. Notice that the sequence labels were not used at all in this analysis, but if you look up where each sample is found on the plot, and cross-reference that against the sample labels, you'll discover that samples that cluster together are from the same phylum. 
+
+When labels are available for a collection of samples, labels can be used with an ordination plot to explore whether samples cluster by sample label. This is often achieved by coloring the points in a scatterplot by their label. We can do this for our sequence ordination as follows. Notice that the colors (the microbial phyla represented in our dataset) group together.
 
 ```{code-cell} ipython3
+import matplotlib.pyplot as plt
+
 _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx], 
                     y=sequence_polar_ordination[second_axis_idx], 
                     hue=sequence_labels['phylum'])
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
-```{code-cell} ipython3
-axis_summaries
+```{note}
+Remember that while we used the sample labels to help us interpret the ordination plot, they were not used at all in computing the ordination. Not using the labels when computing the ordination is what defines this ordination approach as being unsupervised.
 ```
 
-Why do we care about axes being uncorrelated?
+### Interpreting ordination plots
+
+Let's now work through some of the ideas we explored with polar ordination to understand general features of unsupervised ordination plots. 
+
+#### Axis order
+
+First, the order of the axes in an ordination is generally important. The first axis typically represents in the largest differences in the data set, and the second axis generally presents the next largest differences that are uncorrelated with the first axis. If we didn't select axes that represented the largest distances, we would be less likely to see patterns in our data. 
+
+For example, let's focus on just a single axis again. We can sort our axis summary by maximum distance along an axis, and plot the axes that represent the largest and then the smallest distances.
+
+```{code-cell} ipython3
+distance_sorted_axis_summary = axis_summaries.sort_values(by='maximum distance', ascending=True)
+```
+
+First, we'll plot our samples along the axis representing the largest distance and we'll separate the samples by phylum so we can see how their placement along the axes we define differ. You should notice here that the samples within each phylum roughly group together, and there may even be some separation of phyla on the axis.
+
+```{code-cell} ipython3
+largest_distance_axis_idx = distance_sorted_axis_summary.index[-1]
+_ = sns.stripplot(x=sequence_polar_ordination[largest_distance_axis_idx], 
+                  y=sequence_labels['phylum'])
+```
+
+Now contrast this with what we'd see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by phylum should be much less apparent here.
+
+```{code-cell} ipython3
+smallest_distance_axis_idx = distance_sorted_axis_summary.index[0]
+
+_ = sns.stripplot(x=sequence_polar_ordination[smallest_distance_axis_idx], 
+                  y=sequence_labels['phylum'])
+```
+
+As you plot successive axes in an ordination, the axes represent smaller differences between samples. Typically you'll want to focus on the first few ordination axes to the exclusion of later axes.
+
+#### Uncorrelated axes
+
+Next, ordination algorithms generally present uncorrelated axes as the most important axes. This is important because correlated axes, by definition, will present similar information. 
+
+Let's look at another example here where we'll plot a second polar ordination axis that is highly correlated with the first axis.
 
 ```{code-cell} ipython3
 # the axis most correlated with first_axis_idx will be first_axis_idx, so 
@@ -422,36 +469,51 @@ _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx],
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
- And why do we care about starting with large distances?
+You can see that we don't get much additional information from the second axis than we do from the first. In fact, if we drew a line along the diagonal, the placement of points along that line would be almost identical to those that we observed in the strip plot of the first axis that we started with above. The correlated axis isn't adding much new information to our understanding of the clustering of samples, so we might as well not have it.
+
+#### Directionality of the axes
+
+One thing that you may have noticed as you computed the polar ordination above is that our definitions of end points was arbitrary. We first encountered this when computing {eq}`polar-ordination-axis`, when we defined one of a pair of samples to be placed at $0$ along an axis, and the other of the pair of samples to be placed at $D$ along the axis. Let's again look at placement of all samples along the axis represented the largest distance in our data set computed as we did initially.
 
 ```{code-cell} ipython3
-small_distance_axis_idx = axis_summaries.sort_values(by='maximum distance', ascending=True).index[0]
+axis1_values_a = compute_axis(sequence_distance_matrix, 
+                              sample_id1,
+                              sample_id2)
+
+_ = sns.stripplot(x=axis1_values_a, 
+                  y=sequence_labels['phylum'])
 ```
+
+Now, let's reverse the order of the sample ids that we're providing as input to this function. In practice, this means that the sample that was previously placed at $0$ will now be placed at $D$ along this axis, and the sample that was previously placed at $D$ will now be placed at $0$ along this axis. 
 
 ```{code-cell} ipython3
-_ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx], 
-                    y=sequence_polar_ordination[small_distance_axis_idx], 
-                    hue=sequence_labels['phylum'])
-_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+axis1_values_b = compute_axis(sequence_distance_matrix, 
+                              sample_id2,
+                              sample_id1)
+
+_ = sns.stripplot(x=axis1_values_b, 
+                  y=sequence_labels['phylum'])
 ```
 
-#### Interpreting ordination plots <link src='40e0a6'/>
+Notice that these two plots are mirror images of each other. Because they're perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn't impact your results at all (some tools for viewing ordination plots, such as Emperor {cite}`Vazquez-Baeza2013-ss`, include functionality that allows the viewer to flip axes if they prefer a particular orientation). 
 
-There are a few points that are important to keep in mind when interpreting ordination plots. Review each one of these in the context of polar ordination to figure out the reason for each.
+### Principle Coordinates Analysis (PCoA)
 
-**Directionality of the axes is not important (e.g., up/down/left/right)**
-
-One thing that you may have notices as you computed the polar ordination above is that the method is *not symmetric*: in other words, the axis values for axis $EB$ are different than for axis $BE$. In practice though, we derive the same conclusions regardless of how we compute that axis: in this example, that samples cluster by body site.
+Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinations analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.
 
 ```{code-cell} ipython3
 import skbio.stats.ordination
-
-
 sequence_pcoa_ordination = skbio.stats.ordination.pcoa(sequence_distance_matrix)
+```
 
+Just as with polar ordination, we can view a 2D scatterplot of these data.
+
+```{code-cell}
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
                     y=sequence_pcoa_ordination.samples['PC2'])
 ```
+
+That plot becomes more informative when we integration sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.
 
 ```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
@@ -460,75 +522,11 @@ _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'],
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
-Some other important features:
-
-* Numerical scale of the axis is generally not useful
-* The order of axes is generally important (first axis explains the most variation, second axis explains the second most variation, )
-* Most techniques result in uncorrelated axes.
-* Additional axes can be generated (third, fourth, )
-
-### Principle Coordinates Analysis (PCoA)
-
-```
-import qiime2
-import qiime2.plugins.feature_table as ft
-import qiime2.plugins.diversity as div
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = []
-for reference_sequence in reference_db:
-    #taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts.append(pd.Series(kmer_counts, name=reference_sequence.metadata['id']))
-
-# Build a table of the kmer frequencies as a pandas.DataFrame object, and then 
-# display the first 25 rows of that table.
-per_sequence_kmer_counts = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-
-feature_table_1a = qiime2.Artifact.import_data("FeatureTable[Frequency]", per_sequence_kmer_counts.T)
+```{admonition} Exercise
+How does the clustering of samples compare between polar ordination and PCoA?
 ```
 
-```
-jaccard_1a = div.actions.beta(feature_table_1a, metric='jaccard').distance_matrix
-```
-
-```
-taxa_of_interest = ['k__Archaea', 'p__Cyanobacteria', 'p__Firmicutes', 'p__Bacteroidetes', 'p__Proteobacteria']
-metadata = {}
-for reference_sequence in reference_db:
-    id_ = reference_sequence.metadata['id']
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    label_as_other = True
-    for taxon_of_interest in taxa_of_interest:
-        # this approach is horrendous
-        if taxon_of_interest in taxon:
-            label_as_other = False
-    if label_as_other:
-        metadata[id_] = 'Other'
-    else:
-        metadata[id_] = taxon
-metadata = pd.Series(metadata, name='taxon').to_frame()
-metadata.index.name = 'id'
-metadata = qiime2.Metadata(metadata)
-```
-
-```
-pcoa_1a = div.actions.pcoa(jaccard_1a).pcoa
-```
-
-```
-import qiime2.plugins.emperor as emperor
-
-emperor.actions.plot(pcoa_1a, metadata).visualization
-```
-
-```
-import skbio.stats.ordination
-ordination = pcoa_1a.view(skbio.stats.ordination.OrdinationResults)
-
-_ = ordination.plot(metadata.to_dataframe(), column='taxon', cmap='Set1')
-```
+<!-- PICK UP HERE -->
 
 ## Supervised classification
 
@@ -611,8 +609,6 @@ Precision thus tells us how frequently our classifier yields false positives, wh
 Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. In the case of taxonomic assignment of 16S sequences, the classes are different microbial taxonomy names at a given taxonomic level. For example, Proteobacteria and Cyanobacteria would be two classes if we were building a classifier for bacterial phyla. The data that is provided would be the 16S sequences associated with different representatives of the classes, but more specifically Naive Bayes needs these sequences broken into finer-grained features for it to work well. The development of features from raw training data is referred to as **feature extraction**. This can be part of the classifier training software, or it can be independent. Features of sequences could be nearly anything, such as sequence length, presence or absence of certain sequence patterns (or motifs), GC content, and so on. The most commonly used features for sequence classification tasks such as this is {ref}`overlapping kmers <kmer>`, which we have previously seen when looking at heuristic algorithms for database searching. In this case, feature extraction for a given sequence would involve the identification of all of the kmers contained in that sequence.
 
 In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we'll train Naive Bayes classifiers to do this by building {ref}`kmer <kmer>`-based models of the 16S sequences of taxa in our reference database. We'll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown. 
-
-
 
 ### Training a Native Bayes classifier 
 
@@ -908,8 +904,4 @@ scikit-learn provides other example datasets, including [the diabetes dataset](h
 
 ```{bibliography} ../references.bib
 :filter: docname in docnames
-```
-
-```{code-cell} ipython3
-
 ```
