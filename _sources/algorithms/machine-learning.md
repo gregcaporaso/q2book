@@ -109,7 +109,7 @@ Let's start by loading five sequences from each of five specific microbial phyla
 import qiime_default_reference as qdr
 import skbio
 
-def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose=True):
+def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose=True, ids_to_exclude=None):
     # Load the taxonomic data
     result = {}
     
@@ -117,6 +117,10 @@ def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose
     
     for e in open(qdr.get_reference_taxonomy()):
         seq_id, seq_tax = e.strip().split('\t')
+        if ids_to_exclude is not None and seq_id in ids_to_exclude:
+            # if this id was tagged to not be included in the result, 
+            # move on to the next record
+            continue
         seq_tax = [e.strip() for e in seq_tax.split(';')]
         seq_phylum = ';'.join(seq_tax[:2])
             
@@ -484,7 +488,7 @@ _ = sns.stripplot(x=axis1_values_a,
                   y=sequence_labels['phylum'])
 ```
 
-Now, let's reverse the order of the sample ids that we're providing as input to this function. In practice, this means that the sample that was previously placed at $0$ will now be placed at $D$ along this axis, and the sample that was previously placed at $D$ will now be placed at $0$ along this axis. 
+Now, let's reverse the order of the sample ids that we're providing as input to this function. In practice, this means that the sample that was previously placed at $0$ will now be placed at $D$ along this axis, and the sample that was previously placed at $D$ will now be placed at $0$ along this axis.
 
 ```{code-cell} ipython3
 axis1_values_b = compute_axis(sequence_distance_matrix, 
@@ -508,7 +512,7 @@ sequence_pcoa_ordination = skbio.stats.ordination.pcoa(sequence_distance_matrix)
 
 Just as with polar ordination, we can view a 2D scatterplot of these data.
 
-```{code-cell}
+```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
                     y=sequence_pcoa_ordination.samples['PC2'])
 ```
@@ -526,31 +530,27 @@ _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 How does the clustering of samples compare between polar ordination and PCoA?
 ```
 
-<!-- PICK UP HERE -->
-
 ## Supervised classification
 
-We'll continue our exploration of machine learning approaches with **supervised classification**, and specifically with an algorithm called **Naive Bayes**.  We'll implement Naive Bayes to gain an understanding of how it works, and I think you'll discover that this idea of machines learning isn't quite as mysterious or science fiction-y as it sounds. The math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is  widely used and powerful, so it's a good place to get started. 
+We'll continue our exploration of machine learning approaches with **supervised classification**, and specifically with an algorithm called **Naive Bayes**.  We'll implement Naive Bayes to gain an understanding of how it works. Like Polar Ordination, the math involved in Naive Bayes is relatively straight-forward, which is why I chose this algorithm to present here. There are many machine algorithms with more complex math, but Naive Bayes is widely used and powerful, so I think it's a great place to get started. 
 
 We'll explore supervised classification in the context of a now familiar topic: taxonomic classification of 16S rRNA sequences. We previously explored this problem in {doc}`database-searching`, so it's worth spending a few minutes skimming that chapter if it's not fresh in your mind.
 
-Briefly, the problem that we are going to address here is as follows. We have a query sequence ($q_i$) which is not taxonomically annotated (meaning we don't know the taxonomy of the organism whose genome it is found in), and a reference database ($R$) of taxonomically annotated sequences ($r_1, r_2, r_3, r_n$). We want to infer a taxonomic annotation for $q_i$. We'll again work with [Greengenes](http://greengenes.secondgenome.com/), a 16S rRNA sequence database, which we'll access using [QIIME default reference project](https://github.com/biocore/qiime-default-reference). (This should all sound very familiar - if not, I again suggest that you review {doc}`database-searching`.)
-
-Before we get to this though, lets talk about what supervised classification algorithms are and how the classifiers they build are evaluated. 
+Briefly, the problem that we are going to address here is as follows. We have a query sequence ($q_i$) which is not taxonomically annotated (meaning we don't know the taxonomy of the organism whose genome it is found in), and a reference database ($R$) of taxonomically annotated sequences ($r_1, r_2, r_3, r_n$). We want to infer a taxonomic annotation for $q_i$. In {doc}`database-searching`, we solved this problem using pairwise sequence alignment. Here, we'll build a Naive Bayes classifier from our sequence feature table and labels, and then apply that classifier to unlabeled data.
 
 ### Defining a classification task
 
-In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we run perform these kinds of tasks everyday. For example, if you're browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you're not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., "school", "entertainment", or "social media"). 
+In a classification task, there are two or more pre-defined classes, and the goal is to assign observations to those classes. As humans, we perform these kinds of tasks everyday. For example, if you're browsing a bookstore you might classify titles as ones you want to read versus everything else (the ones you're not interested in reading). You might group the apps that you have on your phone into folders by classifying them by category (e.g., "school", "entertainment", or "social media"). 
 
 When we're working with large data sets, supervised classification algorithms can help us with classification tasks that will make us more efficient or help us understand our data. A classic example of this outside of bioinformatics is an email spam filter. For every email that is received, the spam filter must define it as spam or not spam so the message can directed either to the user's spam folder or the user's inbox. The stakes can be high: a filter that is too permissive will cause the user's inbox to get filled with junk mail, while a filter that is overly restrictive could cause relevant messages to be directed to the spam folder. In either case, the email user could miss important messages.
 
-In the case of taxonomic assignment, our classes will be taxonomic groups at a user-defined taxonomic level. For example, a phylum classifier for 16S rRNA sequences would take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.
+In the taxonomic assignment example that we'll work through in this chapter, our classes will be microbial phylum. Our phylum classifier for 16S rRNA sequences will take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.
 
 ### Training data, test data, and cross-validation
 
-Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the 16S taxonomy assignment example, this would be 16S sequences that are taxonomically annotated. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
+Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the phylum assignment example, this would be 16S sequences that are taxonomically annotated at the phylum level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
 
-In addition to the training data, an independent collection of observations with defined classes is needed as **test data**. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on **real world** data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the 16S rRNA taxonomy assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn't be used for optimization of classifiers: in other words, you shouldn't develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk **over-fitting** the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data. 
+In addition to the training data, an independent collection of observations with defined classes is needed as **test data**. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on **real world** data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the phylum assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn't be used for optimization of classifiers: in other words, you shouldn't develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk **over-fitting** the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data. 
 
 Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach call **k-fold cross validation** during classifier development and optimization {numref}`cross-validation-1`. In k-fold cross-validation, the training data is split into `k` different data sets, where `k` is usually five or ten. In each of the data sets, $1/k$ of the entries are used as test data and all of the other entries are used as training data. In `k` iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the `k` iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.
 
@@ -572,7 +572,7 @@ The goal of our classifier is to serve as a diagnostic tool that identifies whet
 
 * The classifier predicts a positive test result, and the sample is known to come from a patient with Disease X. This is a **true positive (TP)**. 
 * The classifier predicts a positive test result, and the sample is known to come from a healthy patient. This is a **false positive (FP)**. FPs are also referred to as type 1 errors.
-** The classifier predicts a negative test result, and the sample is known to come from a patient with Disease X. This is a **false negative (FN)**. FNs are also referred to as type 2 errors.
+* The classifier predicts a negative test result, and the sample is known to come from a patient with Disease X. This is a **false negative (FN)**. FNs are also referred to as type 2 errors.
 * The classifier predicts a negative test result, and the sample is known to come from a healthy patient. This is a **true negative (TN)**. 
 
 A classifier would typically be evaluated by running it on many samples and tallying the count of TP, FP, FN, and TN results. These tallies are typically presented in a structure known as a **confusion matrix**. For the confusion matrix, there many different values that can be computed which inform us of some aspect of classifier performance. 
@@ -584,7 +584,7 @@ The simplest way to think about evaluating the performance of our classifier fro
 accuracy = \frac{TP + TN}{TP + FP + FN + TN}
 ```
 
-In words, accuracy can be defined as the fraction of the total test cases that the classifier classified correctly. Accuracy gives us an idea of the classifier performance, but it hides some potentially relevant information from us. A low accuracy classifier could, for example, almost never achieve false positives but frequently achieve false negatives. Such a classifier could still be a clinically useful tool. Because false positives are very infrequent but false negatives are common, that means when the classifier indicates a positive test result that person nearly always has the disease. If the classifier indicates a negative result, that could be an indicator that additional testing is needed. Of course we would rather our classifier achieve fewer false negatives, but if this is a very cheap test and the additional tests are more expensive, it could be a useful first screening approach. 
+In words, accuracy can be defined as the fraction of the total test cases that the classifier classified correctly. Accuracy gives us an idea of the classifier performance, but it hides some potentially relevant information from us. Specifically, it doesn't tell us whether poor classifier performance is a result of primarily Type 1 errors, primarily Type 2 errors, or a balance of the two. A low accuracy classifier could, for example, frequently return false positives (Type 1 errors) but almost never return false negatives (Type 2 errors). Such a classifier could still be a clinically useful tool. Because false negatives are very infrequent but false positives are common, that means when the classifier indicates a negative test result that person doesn't have the disease. If the classifier indicates a positive result, that could be an indicator that additional testing is needed. Of course we would rather our classifier achieve fewer false positives, but if this is a very cheap test and the additional tests are more expensive, it can be a useful first screening approach. 
 
 Two other metrics are more widely used for evaluating classifiers, and these are typically computed as a pair. These metrics are **precision** and **recall** and they are more informative than accuracy because they indicate whether a classifier might suffer more from false positives or false negatives. 
 
@@ -606,17 +606,18 @@ Precision thus tells us how frequently our classifier yields false positives, wh
 
 ### Naive Bayes classifiers
 
-Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. In the case of taxonomic assignment of 16S sequences, the classes are different microbial taxonomy names at a given taxonomic level. For example, Proteobacteria and Cyanobacteria would be two classes if we were building a classifier for bacterial phyla. The data that is provided would be the 16S sequences associated with different representatives of the classes, but more specifically Naive Bayes needs these sequences broken into finer-grained features for it to work well. The development of features from raw training data is referred to as **feature extraction**. This can be part of the classifier training software, or it can be independent. Features of sequences could be nearly anything, such as sequence length, presence or absence of certain sequence patterns (or motifs), GC content, and so on. The most commonly used features for sequence classification tasks such as this is {ref}`overlapping kmers <kmer>`, which we have previously seen when looking at heuristic algorithms for database searching. In this case, feature extraction for a given sequence would involve the identification of all of the kmers contained in that sequence.
+
 
 In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we'll train Naive Bayes classifiers to do this by building {ref}`kmer <kmer>`-based models of the 16S sequences of taxa in our reference database. We'll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown. 
 
 ### Training a Native Bayes classifier 
 
+Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. As with unsupervised learning tasks, the starting point is a feature table representing instances of the different classes. In addition to the feature table, since this is a supervised learning task, the sequence labels (i.e., the class labels) will also be used to build this model. Building the Naive Bayes classifier model is referred to as **training the classifier**.
+
 The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows.
 
 ```{code-cell} ipython3
 alphabet = skbio.DNA.nondegenerate_chars
-k = 2
 
 def compute_W(alphabet, k):
     return set(map(''.join, itertools.product(alphabet, repeat=k)))
@@ -628,58 +629,10 @@ print('For an alphabet size of %d, W contains %d length-%d kmers.' % (len(alphab
 ```
 
 ```{admonition} Exercise
-Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 7-mers are there? How many 7-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?
+Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 5-mers are there? How many 5-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?
 ```
-
-The next thing we'll need to train our classifier is a way to extract all kmers from a given sequence. scikit-bio provides this functionality in the ``skbio.DNA`` sequence object (as well as in the other sequence object types). It also provides functionality for computing the kmer frequencies in a given sequence. This information can be obtained for one of our reference sequences as follows:
-
-```{code-cell} ipython3
-## This cell needs revision to fit in to the refactored code
-# compute all kmers for the specified alphabet
-W = compute_W(alphabet, k)
-
-# Define a function that returns the taxonomy at a specified level given
-# a semi-colon separated taxonomic description.
-# For example, providing 'k__Bacteria; p__Gemmatimonadetes; c__Gemm-1; o__; f__; g__; s__'
-# as input will return 'k__Bacteria; p__Gemmatimonadetes' as output.
-def get_taxon_at_level(taxon, level):
-    taxon = [l.strip() for l in taxon.split(';')]
-    return '; '.join(taxon[:level])
-
-# Iterate over all of the reference sequences and compute their kmer frequencies.
-per_sequence_kmer_counts = {}
-sequence_labels = {}
-for reference_sequence in reference_db:
-    sequence_id = reference_sequence.metadata['id']
-    
-    taxon = get_taxon_at_level(reference_sequence.metadata['taxonomy'], taxonomic_level)
-    sequence_labels[sequence_id] = taxon
-    
-    kmer_counts = dict.fromkeys(W, 0)
-    kmer_counts.update(reference_sequence.kmer_frequencies(k=k))
-    per_sequence_kmer_counts[sequence_id] = kmer_counts
-
-feature_table = pd.DataFrame(data=per_sequence_kmer_counts).fillna(0).T
-sequence_labels = pd.Series(sequence_labels, name='taxon')
-```
-
-```{code-cell} ipython3
-kmers = reference_db[0].iter_kmers(k=k)
-for kmer in kmers:
-    print(kmer, end=' ')
-```
-
-That's a lot of kmers, and of course many of them are present multiple times. Tallies of the frequencies of each kmer can be computed as follows.
-
-```{code-cell} ipython3
-print(reference_db[0].kmer_frequencies(k=k))
-```
-
-This information can be convenient to store in a pandas ``Series`` object:
-
-```{code-cell} ipython3
-pd.Series(reference_db[0].kmer_frequencies(k=k), name=reference_db[0].metadata['id'])
-```
+<!-- Pick up here with text -->
++++
 
 To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Let's start classifying at the phylum level to keep our task simple, since we're working with a small subset of the reference database here. In Greengenes, phylum is the second level of the taxonomy.
 
@@ -706,11 +659,13 @@ $P(w_i | taxon)$ : The probability of observing a kmer given a taxon. Again, it 
 Our "kmer probability table" is $P(w_i | taxon)$ computed for all kmers in W and all taxa represented in our reference database. We'll compute that and again look at the first 25 rows.
 
 ```{code-cell} ipython3
-def compute_kmer_probability_table(feature_table, sequence_labels):
+def compute_kmer_probability_table(feature_table, sequence_labels, W):
     N = feature_table.shape[0] # number of training sequences
 
     # number of sequences containing kmer wi
-    n_wi = feature_table.astype(bool).sum(axis=0)
+    n_wi = pd.Series(0, index=W)
+    n_wi = n_wi + feature_table.astype(bool).sum(axis=0)
+    n_wi = n_wi.fillna(0)
     n_wi.name = 'n(w_i)'
 
     # probabilities of observing each kmer
@@ -718,10 +673,10 @@ def compute_kmer_probability_table(feature_table, sequence_labels):
     Pi.name = 'P_i'
     
     # number of times each taxon appears in training set
-    taxon_counts = collections.Counter(sequence_labels)
-
-    
-    taxon_table = feature_table.astype(bool).groupby(by=sequence_labels, axis=0).sum()
+    taxon_counts = collections.Counter(sequence_labels.T.iloc[0])
+    taxon_table = pd.DataFrame(0, index=taxon_counts.keys(), columns=W)
+    taxon_table = taxon_table + feature_table.astype(bool).groupby(by=sequence_labels.T.iloc[0], axis=0).sum()
+    taxon_table = taxon_table.fillna(0)
     
     # probabilities of observing each kmer in each taxon
     p_wi_t = []
@@ -732,7 +687,7 @@ def compute_kmer_probability_table(feature_table, sequence_labels):
 ```
 
 ```{code-cell} ipython3
-kmer_probability_table = compute_kmer_probability_table(feature_table, sequence_labels)
+kmer_probability_table = compute_kmer_probability_table(sequence_feature_table, sequence_labels, W)
 kmer_probability_table[:25]
 ```
 
@@ -747,32 +702,15 @@ With our kmer probability table we are now ready to classify unknown sequences. 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-def load_taxonomy_query_sequences(start_position=100, length=200):
-    queries = []
-    for e in skbio.io.read(qdr.get_reference_sequences(), format='fasta', constructor=skbio.DNA):
-        if e.has_degenerates():
-            # For the purpose of this lesson, we're going to ignore sequences that contain
-            # degenerate characters (i.e., characters other than A, C, G, or T)
-            continue
-        e = e[start_position:start_position + length]
-        queries.append(e)
-
-    return queries
+query_seq_data = load_taxonomy_reference_database(phyla, sequences_per_phylum, verbose=False, ids_to_exclude=sequence_labels.index)
 ```
 
-We'll load a collection of query sequences as we did in {doc}`database-searching`.
-
 ```{code-cell} ipython3
-import random
-
-queries = load_taxonomy_query_sequences()
-queries = random.sample(queries, k=50)
-```
-
-Again, we can index into these results to look at individual sequences. Note that because we're trying to emulate working with unannotated sequences here, the query sequences don't have taxonomic annotations in their metadata.
-
-```{code-cell} ipython3
-queries[0]
+for seq_id in random.sample(query_seq_data.keys(), 3):
+    print(seq_id)
+    print(query_seq_data[seq_id][0])
+    print(query_seq_data[seq_id][1])
+    print('🦠')
 ```
 
 For a given query sequence, its taxonomy will be classified as follows. First, the set of all kmers will be extracted from the sequence. This is referred to as $V$. Then, for all taxa in the kmer probability table, the probability of observing the query sequence will be computed given that taxon: $P(query | taxon)$. This is computed as the product of all its kmer probabilities for the given taxon. (It should be clear based on this formula why it was necessary to add pseudocounts when computing our kmer probability table - if not, kmer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.)
@@ -786,10 +724,13 @@ def classify_V(V, kmer_probability_table):
     P_S_t = [] # probability of the sequence given the taxon
     for taxon in kmer_probability_table:
         kmer_probabilities = kmer_probability_table[taxon]
-        probability = 1.0
-        for v_i in V:
-            probability *= kmer_probabilities[v_i]
-        P_S_t.append((probability, taxon))
+        # TODO: Confirm this step
+        # Because we're multiplying many probabilities, we often will hit the lower
+        # limit of the computer's precision (i.e., our probability will be 
+        # less than machine epsilon). We therefore take the log of each observed 
+        # probability and sum those logs. 
+        query_log_probability = sum(list(map(np.log, kmer_probabilities[V])))
+        P_S_t.append((query_log_probability, taxon))
     return max(P_S_t)[1], V
 
 # This function is a little more convenient to use. It classifies a sequence 
@@ -800,15 +741,15 @@ def classify_sequence(query_sequence, kmer_probability_table, k):
 ```
 
 ```{code-cell} ipython3
-query = queries[0]
-taxon_assignment, V = classify_sequence(query, kmer_probability_table, k)
-print(taxon_assignment)
+query_id = random.sample(query_seq_data.keys(), 1)[0]
+taxon_assignment, V = classify_sequence(query_seq_data[query_id][1], kmer_probability_table, k)
+print("Sequence %s is predicted to be from the phylum %s." % (query_id, taxon_assignment))
 ```
 
 Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?
 
 ```{code-cell} ipython3
-get_taxon_at_level(reference_taxonomy[query.metadata['id']], taxonomic_level)
+print("Sequence %s is known to be from the phylum %s." % (query_id, query_seq_data[query_id][0]))
 ```
 
 ```{admonition} Exercise
@@ -849,7 +790,8 @@ def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
 ```
 
 ```{code-cell} ipython3
-taxon_assignment, confidence = classify_sequence_with_confidence(queries[0], kmer_probability_table, k)
+query_id = random.sample(query_seq_data.keys(), 1)[0]
+taxon_assignment, confidence = classify_sequence_with_confidence(query_seq_data[query_id][1], kmer_probability_table, k)
 print(taxon_assignment)
 print(confidence)
 ```
@@ -863,16 +805,16 @@ correct_assignment_confidences = []
 incorrect_assignment_confidences = []
 summary = []
 
-for query in queries:
-    predicted_taxonomy, confidence = classify_sequence_with_confidence(query, kmer_probability_table, k)
-    actual_taxonomy = get_taxon_at_level(reference_taxonomy[query.metadata['id']], taxonomic_level)
-    if actual_taxonomy == predicted_taxonomy:
+for query_id, (known_taxonomy, seq) in query_seq_data.items():
+    predicted_taxonomy, confidence = classify_sequence_with_confidence(seq, kmer_probability_table, k)
+    if known_taxonomy == predicted_taxonomy:
         correct_assignment_confidences.append(confidence)
     else:
         incorrect_assignment_confidences.append(confidence)
 
-    summary.append([predicted_taxonomy, actual_taxonomy, confidence])
-summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Actual taxonomy', 'Confidence'])
+    summary.append([predicted_taxonomy, known_taxonomy, confidence])
+summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Known taxonomy', 'Confidence'])
+summary
 ```
 
 ```{code-cell} ipython3
