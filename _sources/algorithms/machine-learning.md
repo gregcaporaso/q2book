@@ -109,7 +109,8 @@ Let's start by loading five sequences from each of five specific microbial phyla
 import qiime_default_reference as qdr
 import skbio
 
-def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose=True, ids_to_exclude=None):
+def load_taxonomy_reference_database(phyla_of_interest, class_size=None, sequence_length=500, verbose=True, ids_to_exclude=None):
+    
     # Load the taxonomic data
     result = {}
     
@@ -122,7 +123,7 @@ def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose
             # move on to the next record
             continue
         seq_tax = [e.strip() for e in seq_tax.split(';')]
-        seq_phylum = ';'.join(seq_tax[:2])
+        seq_phylum = ';'.join(seq_tax[:7])
             
         try:
             phylum_to_seq_ids[seq_phylum].add(seq_id)
@@ -149,7 +150,7 @@ def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose
                 # that have non-ACGT characters
                 del result[seq_id]
             else: 
-                result[seq_id].append(e)
+                result[seq_id].append(e[:sequence_length])
         else:
             # if this seq_id wasn't previously identified as being from one of our
             # phyla of interest, skip this record
@@ -171,11 +172,15 @@ def load_taxonomy_reference_database(phyla_of_interest, class_size=None, verbose
 (ml:define-sequences-per-phylum)=
 
 ```{code-cell} ipython3
-phyla = {'k__Archaea;p__Crenarchaeota', 
-         'k__Archaea;p__Euryarchaeota',
-         'k__Bacteria;p__Cyanobacteria', 
-         'k__Bacteria;p__Bacteroidetes', 
-         'k__Bacteria;p__Actinobacteria'}
+phyla={
+    'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea',
+    'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri',
+    'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica',
+    'k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans',
+    'k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes',
+    'k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii',
+    'k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava'
+}
 sequences_per_phylum = 5
 
 seq_data = load_taxonomy_reference_database(phyla, sequences_per_phylum)
@@ -196,7 +201,7 @@ The first thing we need to generate from these data is our feature table, which 
 (ml:define-k)=
 
 ```{code-cell} ipython3
-k = 7
+k = 4
 ```
 
 ```{code-cell} ipython3
@@ -631,7 +636,8 @@ print('For an alphabet size of %d, W contains %d length-%d kmers.' % (len(alphab
 ```{admonition} Exercise
 Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 5-mers are there? How many 5-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?
 ```
-<!-- Pick up here with text -->
+<!-- Pick up here with text; need to adapt all text to refer to species rather than phylum assignment (or maybe "taxa" more generically -->
+
 +++
 
 To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Let's start classifying at the phylum level to keep our task simple, since we're working with a small subset of the reference database here. In Greengenes, phylum is the second level of the taxonomy.
@@ -807,14 +813,24 @@ summary = []
 
 for query_id, (known_taxonomy, seq) in query_seq_data.items():
     predicted_taxonomy, confidence = classify_sequence_with_confidence(seq, kmer_probability_table, k)
-    if known_taxonomy == predicted_taxonomy:
+    correct_assignment = known_taxonomy == predicted_taxonomy
+    if correct_assignment:
         correct_assignment_confidences.append(confidence)
     else:
         incorrect_assignment_confidences.append(confidence)
 
-    summary.append([predicted_taxonomy, known_taxonomy, confidence])
-summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Known taxonomy', 'Confidence'])
+    summary.append([predicted_taxonomy, known_taxonomy, confidence, correct_assignment])
+summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Known taxonomy', 'Confidence', 'Correct assignment'])
 summary
+```
+
+<!-- Add confusion matrix computed from the above table. -->
+
+```{code-cell} ipython3
+n_correct_assignments = len(correct_assignment_confidences)
+n_incorrect_assignments = len(incorrect_assignment_confidences)
+accuracy = n_correct_assignments / (n_correct_assignments + n_incorrect_assignments)
+print('The accuracy of the classifier was %1.3f.' % accuracy)
 ```
 
 ```{code-cell} ipython3
