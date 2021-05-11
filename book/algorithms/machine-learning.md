@@ -106,65 +106,72 @@ Our goal with these tasks will be to explore phylum-level taxonomy of a few micr
 Let's start by loading five sequences from each of five specific microbial phyla from Greengenes.
 
 ```{code-cell} ipython3
+import collections
 import qiime_default_reference as qdr
 import skbio
 
-def load_taxonomy_reference_database(phyla_of_interest, class_size=None, sequence_length=500, verbose=True, ids_to_exclude=None):
+def load_annotated_sequences(taxa_of_interest, class_size=None, sequence_length=500, 
+                             verbose=True, ids_to_exclude=None):
     
     # Load the taxonomic data
     result = {}
+    SequenceRecord = collections.namedtuple(typename='SequenceRecord',
+                                            field_names=['identifier', 'split_taxonomy', 'taxonomy', 'sequence'])
     
-    phylum_to_seq_ids = {p: set() for p in phyla_of_interest}        
+    taxon_to_sequence_records = {t: list() for t in taxa_of_interest}        
     
-    for e in open(qdr.get_reference_taxonomy()):
-        seq_id, seq_tax = e.strip().split('\t')
-        if ids_to_exclude is not None and seq_id in ids_to_exclude:
+    id_to_taxonomy_record = {}
+    for line in open(qdr.get_reference_taxonomy()):
+        identifier, taxonomy = line.strip().split('\t')
+        id_to_taxonomy_record[identifier] = taxonomy
+    
+    for seq in skbio.io.read(qdr.get_reference_sequences(), format='fasta', 
+                             constructor=skbio.DNA):
+        identifier = seq.metadata['id']
+        if ids_to_exclude is not None and identifier in ids_to_exclude:
             # if this id was tagged to not be included in the result, 
             # move on to the next record
             continue
-        seq_tax = [e.strip() for e in seq_tax.split(';')]
-        seq_phylum = ';'.join(seq_tax[:7])
+        
+        tax = id_to_taxonomy_record[identifier]
+        split_taxonomy = [e.strip() for e in tax.split(';')]
+        taxonomy = ';'.join(split_taxonomy)
+        if taxonomy not in taxon_to_sequence_records:
+            # if this is not one of the taxa that we're interested in, 
+            # move on to the next record. 
+            continue
+        
+        if seq.has_degenerates():
+            # for the purpose of this exercise we'll skip records 
+            # that have non-ACGT characters. if degenerate characters
+            # are present, move on to the next record
+            continue
             
-        try:
-            phylum_to_seq_ids[seq_phylum].add(seq_id)
-            result[seq_id] = [seq_phylum]
-        except KeyError:
-            # if seq_phylum is not in phylum_to_seq_ids (i.e., it
-            # wasn't provided as a phylum of interest) skip this 
-            # record
-            pass
+        if sequence_length is not None:
+            sequence = seq[:sequence_length]
+        else:
+            sequence = seq
+
+        sr = SequenceRecord(identifier=identifier,
+                            split_taxonomy=split_taxonomy,
+                            taxonomy=taxonomy,
+                            sequence=sequence)
+        taxon_to_sequence_records[taxonomy].append(sr)
         
     if verbose:
-        for phylum, seq_ids in phylum_to_seq_ids.items():
-            print("%d sequences were identified for phylum %s." % (len(seq_ids), phylum))
-
-    for e in skbio.io.read(qdr.get_reference_sequences(), format='fasta', 
-                           constructor=skbio.DNA):
-        seq_id = e.metadata['id']
-        
-        if seq_id in result:
-            if e.has_degenerates():
-                phylum = result[seq_id][0]
-                phylum_to_seq_ids[phylum].remove(seq_id)
-                # for the purpose of this exercise we'll skip records 
-                # that have non-ACGT characters
-                del result[seq_id]
-            else: 
-                result[seq_id].append(e[:sequence_length])
-        else:
-            # if this seq_id wasn't previously identified as being from one of our
-            # phyla of interest, skip this record
-            pass
+        for taxon, srs in taxon_to_sequence_records.items():
+            print("%d sequences were identified for taxon %s." % (len(srs), taxon))
     
-    if class_size is not None:
-        sampled_result = {}
-        for p, seq_ids in phylum_to_seq_ids.items():
-            if class_size > len(seq_ids):
-                raise ValueError("Class size (%d) too large for phylum %s, which has only %d non-degenerate sequences." % 
-                                 (class_size, p, len(seq_ids)))
-            sampled_seq_ids = random.sample(seq_ids, k=class_size)
-            sampled_result.update({seq_id: result[seq_id] for seq_id in sampled_seq_ids})
-        result = sampled_result
+    if class_size is None:
+        result = {sr.identifier: sr for srs in taxon_to_sequence_records.values() for sr in srs}
+    else:
+        result = {}
+        for taxon, srs in taxon_to_sequence_records.items():
+            if class_size > len(srs):
+                raise ValueError("Class size (%d) too large for taxon %s, which has only %d non-degenerate sequences." % 
+                                 (class_size, t, len(srs)))
+            sampled_sequence_records = random.sample(srs, k=class_size)
+            result.update({sr.identifier: sr for sr in sampled_sequence_records})
 
     return result
 ```
@@ -172,7 +179,7 @@ def load_taxonomy_reference_database(phyla_of_interest, class_size=None, sequenc
 (ml:define-sequences-per-phylum)=
 
 ```{code-cell} ipython3
-phyla={
+taxa_of_interest = {
     'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea',
     'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri',
     'k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica',
@@ -181,18 +188,18 @@ phyla={
     'k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii',
     'k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava'
 }
-sequences_per_phylum = 5
+sequences_per_taxon = 5
 
-seq_data = load_taxonomy_reference_database(phyla, sequences_per_phylum)
+seq_data = load_annotated_sequences(taxa_of_interest, class_size=sequences_per_taxon)
 ```
 
 We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source phylum for the sequence record, and a 16S rRNA sequence.
 
 ```{code-cell} ipython3
-for seq_id in random.sample(seq_data.keys(), 3):
-    print(seq_id)
-    print(seq_data[seq_id][0])
-    print(seq_data[seq_id][1])
+for sr in random.sample(list(seq_data.values()), 3):
+    print(sr.identifier)
+    print(sr.taxonomy)
+    print(sr.sequence)
     print('🦠')
 ```
 
@@ -205,23 +212,37 @@ k = 4
 ```
 
 ```{code-cell} ipython3
-kmer_frequencies = {seq_id : data[1].kmer_frequencies(k=k) for seq_id, data in seq_data.items()}
-sequence_feature_table = pd.DataFrame(kmer_frequencies).fillna(0).astype(int).T
-sequence_feature_table.index.name = 'id'
+def feature_table_from_sequence_records(sequence_records, k):
+    kmer_frequencies = {id_ : sr.sequence.kmer_frequencies(k=k) for id_, sr in sequence_records.items()}
+    result = pd.DataFrame(kmer_frequencies).fillna(0).astype(int).T
+    result.index.name = 'id'
+    return result
 ```
 
 After extracting all k-mers from the sequences and putting them in a table where the rows are our sequences (indexed by the unique sequence identifiers), the columns represent unique k-mers (labeled by the k-mer itself), and the values are the number of times each k-mer is observed in each sequence, we end up with our feature table for unsupervised and supervised learning.
 
 ```{code-cell} ipython3
-sequence_feature_table
+sequence_feature_table = feature_table_from_sequence_records(seq_data, k)
+sequence_feature_table[:12]
 ```
 
 As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We'll next compile our sample label vector.
 
 ```{code-cell} ipython3
-sequence_labels = pd.Series({k:v[0] for k, v in seq_data.items()}, name='phylum').to_frame()
-sequence_labels.index.name = 'id'
-sequence_labels
+def feature_labels_from_sequence_records(sequence_records):
+    result = pd.DataFrame({id_:sr.split_taxonomy for id_, sr in sequence_records.items()}).T
+    result.columns = ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'species']
+    result.index.name = 'id'
+    legend_entries = []
+    for _, (g, s, p) in result[['genus', 'species', 'phylum']].iterrows():
+        legend_entries.append('%s %s (%s)' % (g[3:], s[3:], p[3:]))
+    result['legend entry'] = legend_entries
+    return result
+```
+
+```{code-cell} ipython3
+sequence_labels = feature_labels_from_sequence_records(seq_data)
+sequence_labels[:12]
 ```
 
 Our data is ready, so let's get started with unsupervised learning. 
@@ -418,7 +439,7 @@ import matplotlib.pyplot as plt
 
 _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx], 
                     y=sequence_polar_ordination[second_axis_idx], 
-                    hue=sequence_labels['phylum'])
+                    hue=sequence_labels['legend entry'])
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
@@ -445,7 +466,7 @@ First, we'll plot our samples along the axis representing the largest distance a
 ```{code-cell} ipython3
 largest_distance_axis_idx = distance_sorted_axis_summary.index[-1]
 _ = sns.stripplot(x=sequence_polar_ordination[largest_distance_axis_idx], 
-                  y=sequence_labels['phylum'])
+                  y=sequence_labels['legend entry'])
 ```
 
 Now contrast this with what we'd see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by phylum should be much less apparent here.
@@ -454,7 +475,7 @@ Now contrast this with what we'd see if we generated this same plot, but based o
 smallest_distance_axis_idx = distance_sorted_axis_summary.index[0]
 
 _ = sns.stripplot(x=sequence_polar_ordination[smallest_distance_axis_idx], 
-                  y=sequence_labels['phylum'])
+                  y=sequence_labels['legend entry'])
 ```
 
 As you plot successive axes in an ordination, the axes represent smaller differences between samples. Typically you'll want to focus on the first few ordination axes to the exclusion of later axes.
@@ -474,7 +495,7 @@ correlated_axis_idx = axis_summaries.sort_values(by='corr with first axis', asce
 ```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx], 
                     y=sequence_polar_ordination[correlated_axis_idx], 
-                    hue=sequence_labels['phylum'])
+                    hue=sequence_labels['legend entry'])
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
@@ -490,7 +511,7 @@ axis1_values_a = compute_axis(sequence_distance_matrix,
                               sample_id2)
 
 _ = sns.stripplot(x=axis1_values_a, 
-                  y=sequence_labels['phylum'])
+                  y=sequence_labels['legend entry'])
 ```
 
 Now, let's reverse the order of the sample ids that we're providing as input to this function. In practice, this means that the sample that was previously placed at $0$ will now be placed at $D$ along this axis, and the sample that was previously placed at $D$ will now be placed at $0$ along this axis.
@@ -501,7 +522,7 @@ axis1_values_b = compute_axis(sequence_distance_matrix,
                               sample_id1)
 
 _ = sns.stripplot(x=axis1_values_b, 
-                  y=sequence_labels['phylum'])
+                  y=sequence_labels['legend entry'])
 ```
 
 Notice that these two plots are mirror images of each other. Because they're perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn't impact your results at all (some tools for viewing ordination plots, such as Emperor {cite}`Vazquez-Baeza2013-ss`, include functionality that allows the viewer to flip axes if they prefer a particular orientation). 
@@ -523,6 +544,22 @@ _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'],
 ```
 
 That plot becomes more informative when we integration sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.
+
+```{code-cell} ipython3
+_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
+                    y=sequence_pcoa_ordination.samples['PC2'], 
+                    hue=sequence_labels['legend entry'])
+_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
+
+_TODO: discuss looking at additional axes and metadata categories._
+
+```{code-cell} ipython3
+_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
+                    y=sequence_pcoa_ordination.samples['PC3'], 
+                    hue=sequence_labels['legend entry'])
+_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
 
 ```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
@@ -679,9 +716,9 @@ def compute_kmer_probability_table(feature_table, sequence_labels, W):
     Pi.name = 'P_i'
     
     # number of times each taxon appears in training set
-    taxon_counts = collections.Counter(sequence_labels.T.iloc[0])
+    taxon_counts = collections.Counter(sequence_labels)
     taxon_table = pd.DataFrame(0, index=taxon_counts.keys(), columns=W)
-    taxon_table = taxon_table + feature_table.astype(bool).groupby(by=sequence_labels.T.iloc[0], axis=0).sum()
+    taxon_table = taxon_table + feature_table.astype(bool).groupby(by=sequence_labels, axis=0).sum()
     taxon_table = taxon_table.fillna(0)
     
     # probabilities of observing each kmer in each taxon
@@ -693,7 +730,7 @@ def compute_kmer_probability_table(feature_table, sequence_labels, W):
 ```
 
 ```{code-cell} ipython3
-kmer_probability_table = compute_kmer_probability_table(sequence_feature_table, sequence_labels, W)
+kmer_probability_table = compute_kmer_probability_table(sequence_feature_table, sequence_labels['legend entry'], W)
 kmer_probability_table[:25]
 ```
 
@@ -708,14 +745,16 @@ With our kmer probability table we are now ready to classify unknown sequences. 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-query_seq_data = load_taxonomy_reference_database(phyla, sequences_per_phylum, verbose=False, ids_to_exclude=sequence_labels.index)
+query_seq_data = load_annotated_sequences(taxa_of_interest, class_size=sequences_per_taxon, 
+                                          verbose=False, ids_to_exclude=sequence_labels.index)
+query_labels = feature_labels_from_sequence_records(query_seq_data)
 ```
 
 ```{code-cell} ipython3
-for seq_id in random.sample(query_seq_data.keys(), 3):
-    print(seq_id)
-    print(query_seq_data[seq_id][0])
-    print(query_seq_data[seq_id][1])
+for sr in random.sample(list(query_seq_data.values()), 3):
+    print(sr.identifier)
+    print(sr.taxonomy)
+    print(sr.sequence)
     print('🦠')
 ```
 
@@ -747,15 +786,20 @@ def classify_sequence(query_sequence, kmer_probability_table, k):
 ```
 
 ```{code-cell} ipython3
-query_id = random.sample(query_seq_data.keys(), 1)[0]
-taxon_assignment, V = classify_sequence(query_seq_data[query_id][1], kmer_probability_table, k)
-print("Sequence %s is predicted to be from the phylum %s." % (query_id, taxon_assignment))
+def random_sequence_record_choice(sequence_records):
+    return random.sample(list(sequence_records.values()), 1)[0]
+
+query_sr = random_sequence_record_choice(query_seq_data)
+taxon_assignment, V = classify_sequence(query_sr.sequence, kmer_probability_table, k)
+print("Sequence %s is predicted to be from the taxon %s." % (query_sr.identifier, taxon_assignment))
 ```
 
+```{raw-cell}
 Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?
+```
 
 ```{code-cell} ipython3
-print("Sequence %s is known to be from the phylum %s." % (query_id, query_seq_data[query_id][0]))
+print("Sequence %s is known to be from the phylum %s." % (query_sr.identifier, query_labels['legend entry'][query_sr.identifier]))
 ```
 
 ```{admonition} Exercise
@@ -796,8 +840,8 @@ def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
 ```
 
 ```{code-cell} ipython3
-query_id = random.sample(query_seq_data.keys(), 1)[0]
-taxon_assignment, confidence = classify_sequence_with_confidence(query_seq_data[query_id][1], kmer_probability_table, k)
+query_sr = random_sequence_record_choice(query_seq_data)
+taxon_assignment, confidence = classify_sequence_with_confidence(query_sr.sequence, kmer_probability_table, k)
 print(taxon_assignment)
 print(confidence)
 ```
@@ -811,8 +855,9 @@ correct_assignment_confidences = []
 incorrect_assignment_confidences = []
 summary = []
 
-for query_id, (known_taxonomy, seq) in query_seq_data.items():
-    predicted_taxonomy, confidence = classify_sequence_with_confidence(seq, kmer_probability_table, k)
+for query_id, query_sr in query_seq_data.items():
+    predicted_taxonomy, confidence = classify_sequence_with_confidence(query_sr.sequence, kmer_probability_table, k)
+    known_taxonomy = query_labels['legend entry'][query_sr.identifier]
     correct_assignment = known_taxonomy == predicted_taxonomy
     if correct_assignment:
         correct_assignment_confidences.append(confidence)
@@ -842,6 +887,13 @@ _ = ax.set_xticklabels(['Correct assignments', 'Incorrect assignments'])
 _ = ax.set_ylabel('Confidence')
 
 ax
+```
+
+```{code-cell} ipython3
+confusion_matrix = summary.groupby('Predicted taxonomy')['Known taxonomy'].value_counts().to_frame()
+confusion_matrix.columns = ['count']
+confusion_matrix = pd.pivot_table(confusion_matrix, index=['Predicted taxonomy'], columns=['Known taxonomy'], fill_value=0)
+confusion_matrix
 ```
 
 What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
