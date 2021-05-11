@@ -742,65 +742,72 @@
 <p>Let’s start by loading five sequences from each of five specific microbial phyla from Greengenes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">qiime_default_reference</span> <span class="k">as</span> <span class="nn">qdr</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">qiime_default_reference</span> <span class="k">as</span> <span class="nn">qdr</span>
 <span class="kn">import</span> <span class="nn">skbio</span>
 
-<span class="k">def</span> <span class="nf">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sequence_length</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ids_to_exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_annotated_sequences</span><span class="p">(</span><span class="n">taxa_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sequence_length</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> 
+                             <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ids_to_exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     
     <span class="c1"># Load the taxonomic data</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">SequenceRecord</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="n">typename</span><span class="o">=</span><span class="s1">&#39;SequenceRecord&#39;</span><span class="p">,</span>
+                                            <span class="n">field_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;identifier&#39;</span><span class="p">,</span> <span class="s1">&#39;split_taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;sequence&#39;</span><span class="p">])</span>
     
-    <span class="n">phylum_to_seq_ids</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="nb">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">phyla_of_interest</span><span class="p">}</span>        
+    <span class="n">taxon_to_sequence_records</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="p">:</span> <span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">taxa_of_interest</span><span class="p">}</span>        
     
-    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_taxonomy</span><span class="p">()):</span>
-        <span class="n">seq_id</span><span class="p">,</span> <span class="n">seq_tax</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ids_to_exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">ids_to_exclude</span><span class="p">:</span>
+    <span class="n">id_to_taxonomy_record</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_taxonomy</span><span class="p">()):</span>
+        <span class="n">identifier</span><span class="p">,</span> <span class="n">taxonomy</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">id_to_taxonomy_record</span><span class="p">[</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxonomy</span>
+    
+    <span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> 
+                             <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
+        <span class="n">identifier</span> <span class="o">=</span> <span class="n">seq</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ids_to_exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">ids_to_exclude</span><span class="p">:</span>
             <span class="c1"># if this id was tagged to not be included in the result, </span>
             <span class="c1"># move on to the next record</span>
             <span class="k">continue</span>
-        <span class="n">seq_tax</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">seq_tax</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
-        <span class="n">seq_phylum</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">seq_tax</span><span class="p">[:</span><span class="mi">7</span><span class="p">])</span>
+        
+        <span class="n">tax</span> <span class="o">=</span> <span class="n">id_to_taxonomy_record</span><span class="p">[</span><span class="n">identifier</span><span class="p">]</span>
+        <span class="n">split_taxonomy</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">tax</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)]</span>
+        <span class="n">taxonomy</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_taxonomy</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxonomy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">taxon_to_sequence_records</span><span class="p">:</span>
+            <span class="c1"># if this is not one of the taxa that we&#39;re interested in, </span>
+            <span class="c1"># move on to the next record. </span>
+            <span class="k">continue</span>
+        
+        <span class="k">if</span> <span class="n">seq</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
+            <span class="c1"># for the purpose of this exercise we&#39;ll skip records </span>
+            <span class="c1"># that have non-ACGT characters. if degenerate characters</span>
+            <span class="c1"># are present, move on to the next record</span>
+            <span class="k">continue</span>
             
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
-            <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">seq_phylum</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="c1"># if seq_phylum is not in phylum_to_seq_ids (i.e., it</span>
-            <span class="c1"># wasn&#39;t provided as a phylum of interest) skip this </span>
-            <span class="c1"># record</span>
-            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">sequence_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[:</span><span class="n">sequence_length</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="n">seq</span>
+
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">SequenceRecord</span><span class="p">(</span><span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">,</span>
+                            <span class="n">split_taxonomy</span><span class="o">=</span><span class="n">split_taxonomy</span><span class="p">,</span>
+                            <span class="n">taxonomy</span><span class="o">=</span><span class="n">taxonomy</span><span class="p">,</span>
+                            <span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="n">taxon_to_sequence_records</span><span class="p">[</span><span class="n">taxonomy</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
         
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">phylum</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> sequences were identified for phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">),</span> <span class="n">phylum</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">skbio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">qdr</span><span class="o">.</span><span class="n">get_reference_sequences</span><span class="p">(),</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> 
-                           <span class="n">constructor</span><span class="o">=</span><span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="p">):</span>
-        <span class="n">seq_id</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
-        
-        <span class="k">if</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">has_degenerates</span><span class="p">():</span>
-                <span class="n">phylum</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">phylum_to_seq_ids</span><span class="p">[</span><span class="n">phylum</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
-                <span class="c1"># for the purpose of this exercise we&#39;ll skip records </span>
-                <span class="c1"># that have non-ACGT characters</span>
-                <span class="k">del</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span> 
-                <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[:</span><span class="n">sequence_length</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># if this seq_id wasn&#39;t previously identified as being from one of our</span>
-            <span class="c1"># phyla of interest, skip this record</span>
-            <span class="k">pass</span>
+        <span class="k">for</span> <span class="n">taxon</span><span class="p">,</span> <span class="n">srs</span> <span class="ow">in</span> <span class="n">taxon_to_sequence_records</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> sequences were identified for taxon </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">srs</span><span class="p">),</span> <span class="n">taxon</span><span class="p">))</span>
     
-    <span class="k">if</span> <span class="n">class_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">sampled_result</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">seq_ids</span> <span class="ow">in</span> <span class="n">phylum_to_seq_ids</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">class_size</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Class size (</span><span class="si">%d</span><span class="s2">) too large for phylum </span><span class="si">%s</span><span class="s2">, which has only </span><span class="si">%d</span><span class="s2"> non-degenerate sequences.&quot;</span> <span class="o">%</span> 
-                                 <span class="p">(</span><span class="n">class_size</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">)))</span>
-            <span class="n">sampled_seq_ids</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq_ids</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">class_size</span><span class="p">)</span>
-            <span class="n">sampled_result</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">seq_id</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">seq_id</span><span class="p">]</span> <span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">sampled_seq_ids</span><span class="p">})</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">sampled_result</span>
+    <span class="k">if</span> <span class="n">class_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="n">sr</span> <span class="k">for</span> <span class="n">srs</span> <span class="ow">in</span> <span class="n">taxon_to_sequence_records</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">srs</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">taxon</span><span class="p">,</span> <span class="n">srs</span> <span class="ow">in</span> <span class="n">taxon_to_sequence_records</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">class_size</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">srs</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Class size (</span><span class="si">%d</span><span class="s2">) too large for taxon </span><span class="si">%s</span><span class="s2">, which has only </span><span class="si">%d</span><span class="s2"> non-degenerate sequences.&quot;</span> <span class="o">%</span> 
+                                 <span class="p">(</span><span class="n">class_size</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">srs</span><span class="p">)))</span>
+            <span class="n">sampled_sequence_records</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">srs</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">class_size</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="n">sr</span> <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">sampled_sequence_records</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">result</span>
 </pre></div>
@@ -809,7 +816,7 @@
 </div>
 <div class="cell docutils container" id="ml-define-sequences-per-phylum">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">phyla</span><span class="o">=</span><span class="p">{</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">taxa_of_interest</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea&#39;</span><span class="p">,</span>
     <span class="s1">&#39;k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri&#39;</span><span class="p">,</span>
     <span class="s1">&#39;k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica&#39;</span><span class="p">,</span>
@@ -818,20 +825,20 @@
     <span class="s1">&#39;k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii&#39;</span><span class="p">,</span>
     <span class="s1">&#39;k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava&#39;</span>
 <span class="p">}</span>
-<span class="n">sequences_per_phylum</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">sequences_per_taxon</span> <span class="o">=</span> <span class="mi">5</span>
 
-<span class="n">seq_data</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla</span><span class="p">,</span> <span class="n">sequences_per_phylum</span><span class="p">)</span>
+<span class="n">seq_data</span> <span class="o">=</span> <span class="n">load_annotated_sequences</span><span class="p">(</span><span class="n">taxa_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="n">sequences_per_taxon</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>41 sequences were identified for phylum k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea.
-28 sequences were identified for phylum k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica.
-18 sequences were identified for phylum k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
-21 sequences were identified for phylum k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans.
-137 sequences were identified for phylum k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri.
-137 sequences were identified for phylum k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes.
-28 sequences were identified for phylum k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>127 sequences were identified for taxon k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes.
+26 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica.
+35 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea.
+17 sequences were identified for taxon k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
+24 sequences were identified for taxon k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii.
+15 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans.
+121 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri.
 </pre></div>
 </div>
 </div>
@@ -839,26 +846,26 @@
 <p>We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source phylum for the sequence record, and a 16S rRNA sequence.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">seq_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">taxonomy</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🦠&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>237364
-k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
-ACGCTGGGGGCAGCCCTAACACACTTAAGTCGAGCGGATGACGGGAGCTTGCTCCTTGATTCAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGGTAGTGGGGGACAACGTTTTGAAAGGAACGTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGCCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGGGGTAATGGCTCCCCAAGGCGACGTTCCGTAACTGGTCTGAGAGGATTGATCAGTCACACTGGAATTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTTTTTGGACAATGGGCGAAAGCCTGATCCAGCCCATGCCGCGTGTGTGAAGAAGCTCTTCGGATTGTAAAGCCACTTTAAGTTGGGAGGAAGGGCAGTAAGTTAATACCTTGCTGTTTTGACGTTCCCGACAGAATAAGCACCGGCTAACTCTAGTGCCAGCAGCCGCGGTAATACAGAGG
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>510294
+k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
+AGAGTTTGATCCTGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTTGGTTGCTTGCAACCAACGATGGCGACCGGCGCACGGGTGAATAACGCGTATCCAACCTGCCCTTGCTCCATCGGATAACCCGTCTAAAGGCGGACTAACACTATATGCAGCCCACAGCAGGCATCTAACGTGGACGAAATGTGAAGGAAAACGATGGGGATGCGTCTGATCAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCGACGATCAGGAGGGGTTCTGAAACGAAGGTCCCCCACATAGCAACTGAAACACGGTCCAAACTCCTACCGGAGGCATCAGTGAGGAATATTGGTCAATGGGCGAGAGCCTGAACCAACCAAGTAGCGTGCACGAAGACGGACCTATGGGTTGTAAACTGCTTTTATACGGGGATAAAGTGGGCCACGTGTGGCTTATCGCACGTACCGTATGAATAAAGACCGGCT
 🦠
-91834
-k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
-GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTTCGATTCAGCGGCGGACGGGTGAGTAATACCTAGGAATCTGCCTGGTAGTGGGGGACAACGTTTCGAAAGGAACGCTAATACCGCATACGCCCTACGGGGGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGTACTTACCTAATACGTGAGTATTTTGACGTTACCGACAGAATAAGCACCGGCTAACTCT
+4447248
+k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica
+GAATGAACGCTCGCTACAGGCTTCGCACACGCAAGTTCGAGGGGAAAACGGCATCGAGTGCTTCGCACTCTTCGGACGTCGACCGGCGCACGGGTGAGTAACGCGTCATCAACTCTCCCCATCACCGTCGGGATAACCCGCCGAAAGGCAGACTAATACCGCACGGTTCTTTCGATGACGGCATCAGATCTGAAGTAAAGATCTATCGGTAACGGATCGGGGATGCGTCTGATTCAGTTTCGTTCGGCGGGGTAACGGCCCACCAAGGCGACGATCAGTAGGGGTTTCTGAGAGGAAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTTGGTCAATGGACGTAAGTCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTTGTAAACTGCTTTTTGTATGGGGATAAAGTTAGGGACGTGTCCCTATTTTGCAGGTACCATACGAATAAGGACCGGC
 🦠
-262708
-k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii
-CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGGTAGTGGGGGATAACGTTCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTCGGAACTGAGACACGGTCCAGACTCCTTACGGGAGGCAGCAGTGAGGGATATATTGGACAATCGAGCGCACAGCCTGATCCAGCCATGACAGGGTGTGTGAAGAATGTTCTTCGTATTGTAAAGCACTTTAAGGTCGGGAGGAAGGGCAGTTACCTAATACGTGATTGTTGTGATCGTTACTGACAGAACTAAGCACTGGCTAACTCTGTGCCAGCAGCCGCGGTAATACAGAGGGTGCAA
+4349788
+k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
+AGTGGAGCGCGAGGAGAAGAGCTTGCTCTTCGATTCATCGGCTGACGGGTGACTAATGCCTAGGAATCTGCCTGGTGGTGGGGGAGAACGTTTCTAAAGGAACGCTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCAGTAAGCTAATACCTTGCTGTTTTGACGTTACCAACAGAATAAGCACCGGCTAACTCTGTGCCCAGCAGCCGCGGTAATACAGAGGGTGCAAGCGTTAATCGGAATTA
 🦠
 </pre></div>
 </div>
@@ -874,9 +881,11 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">seq_id</span> <span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">seq_id</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-<span class="n">sequence_feature_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kmer_frequencies</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">sequence_feature_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">feature_table_from_sequence_records</span><span class="p">(</span><span class="n">sequence_records</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="n">kmer_frequencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">id_</span> <span class="p">:</span> <span class="n">sr</span><span class="o">.</span><span class="n">sequence</span><span class="o">.</span><span class="n">kmer_frequencies</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">id_</span><span class="p">,</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">sequence_records</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">kmer_frequencies</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 </div>
 </div>
@@ -884,7 +893,8 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 <p>After extracting all k-mers from the sequences and putting them in a table where the rows are our sequences (indexed by the unique sequence identifiers), the columns represent unique k-mers (labeled by the k-mer itself), and the values are the number of times each k-mer is observed in each sequence, we end up with our feature table for unsupervised and supervised learning.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_feature_table</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_feature_table</span> <span class="o">=</span> <span class="n">feature_table_from_sequence_records</span><span class="p">(</span><span class="n">seq_data</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="n">sequence_feature_table</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -907,27 +917,27 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>TTAA</th>
-      <th>TAAC</th>
-      <th>AACA</th>
-      <th>ACAC</th>
-      <th>CACA</th>
-      <th>ACAT</th>
-      <th>CATG</th>
-      <th>ATGC</th>
-      <th>TGCA</th>
-      <th>GCAA</th>
+      <th>GACG</th>
+      <th>ACGA</th>
+      <th>CGAA</th>
+      <th>GAAC</th>
+      <th>AACG</th>
+      <th>ACGC</th>
+      <th>CGCT</th>
+      <th>GCTG</th>
+      <th>CTGG</th>
+      <th>TGGC</th>
       <th>...</th>
-      <th>TAGT</th>
-      <th>CTTC</th>
-      <th>CTGT</th>
-      <th>TTCG</th>
-      <th>ATTT</th>
-      <th>AAGC</th>
-      <th>TTTC</th>
-      <th>CGCC</th>
-      <th>CTCG</th>
-      <th>CCTC</th>
+      <th>CTCT</th>
+      <th>TGTC</th>
+      <th>AATT</th>
+      <th>ATTC</th>
+      <th>TCCG</th>
+      <th>TCAT</th>
+      <th>ATCT</th>
+      <th>TCTA</th>
+      <th>TAGA</th>
+      <th>ATGT</th>
     </tr>
     <tr>
       <th>id</th>
@@ -956,118 +966,166 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
   </thead>
   <tbody>
     <tr>
-      <th>4108811</th>
+      <th>929839</th>
+      <td>5</td>
+      <td>2</td>
+      <td>4</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4226754</th>
+      <td>4</td>
       <td>1</td>
+      <td>4</td>
+      <td>3</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>458596</th>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>3</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>893992</th>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4121939</th>
+      <td>5</td>
+      <td>2</td>
+      <td>4</td>
+      <td>3</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4465561</th>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1066621</th>
       <td>6</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>3</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2904927</th>
-      <td>0</td>
-      <td>7</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>525243</th>
       <td>1</td>
-      <td>6</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>5</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>523033</th>
       <td>1</td>
-      <td>7</td>
-      <td>3</td>
-      <td>5</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
       <td>3</td>
       <td>4</td>
-      <td>3</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>347138</th>
-      <td>2</td>
-      <td>5</td>
-      <td>3</td>
-      <td>3</td>
       <td>2</td>
       <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
       <td>...</td>
       <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1077,45 +1135,21 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
     </tr>
     <tr>
       <th>525942</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>4</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4479603</th>
-      <td>1</td>
       <td>5</td>
       <td>2</td>
       <td>2</td>
-      <td>2</td>
       <td>3</td>
-      <td>2</td>
-      <td>2</td>
       <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
       <td>...</td>
-      <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1124,688 +1158,126 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
       <td>0</td>
     </tr>
     <tr>
-      <th>4298291</th>
-      <td>0</td>
-      <td>4</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>535359</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>4</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4408558</th>
-      <td>1</td>
-      <td>5</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>4</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4349788</th>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0</td>
+      <th>4447248</th>
       <td>6</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>91834</th>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>3</td>
       <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
       <td>2</td>
       <td>3</td>
-      <td>0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4432796</th>
-      <td>2</td>
       <td>5</td>
-      <td>1</td>
       <td>3</td>
       <td>2</td>
       <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>5</td>
       <td>0</td>
       <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>65400</th>
-      <td>2</td>
-      <td>4</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>237364</th>
-      <td>3</td>
-      <td>3</td>
-      <td>1</td>
-      <td>4</td>
-      <td>2</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1058276</th>
-      <td>3</td>
-      <td>4</td>
-      <td>2</td>
-      <td>4</td>
-      <td>4</td>
-      <td>1</td>
-      <td>3</td>
-      <td>4</td>
-      <td>3</td>
-      <td>3</td>
-      <td>...</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>867450</th>
-      <td>3</td>
-      <td>4</td>
-      <td>3</td>
-      <td>6</td>
-      <td>4</td>
-      <td>1</td>
-      <td>4</td>
-      <td>4</td>
-      <td>3</td>
-      <td>3</td>
-      <td>...</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>151117</th>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>0</td>
-      <td>3</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
       <td>...</td>
       <td>2</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
       <td>0</td>
       <td>1</td>
-    </tr>
-    <tr>
-      <th>4379848</th>
-      <td>3</td>
-      <td>4</td>
-      <td>2</td>
-      <td>4</td>
-      <td>4</td>
-      <td>1</td>
-      <td>3</td>
-      <td>4</td>
-      <td>3</td>
-      <td>3</td>
-      <td>...</td>
-      <td>3</td>
-      <td>2</td>
-      <td>0</td>
       <td>2</td>
       <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>976319</th>
-      <td>3</td>
-      <td>4</td>
-      <td>2</td>
-      <td>4</td>
-      <td>5</td>
-      <td>1</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>189521</th>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>323619</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4436552</th>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2280817</th>
-      <td>3</td>
-      <td>3</td>
-      <td>3</td>
-      <td>4</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>297414</th>
-      <td>2</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
+      <th>4321915</th>
       <td>3</td>
       <td>2</td>
       <td>2</td>
       <td>3</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1088265</th>
-      <td>1</td>
       <td>5</td>
       <td>2</td>
       <td>2</td>
+      <td>1</td>
+      <td>1</td>
       <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
       <td>...</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
       <td>0</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
-      <th>886828</th>
-      <td>1</td>
+      <th>519044</th>
       <td>4</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>5</td>
-      <td>4</td>
-      <td>...</td>
-      <td>1</td>
       <td>5</td>
       <td>2</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4226754</th>
-      <td>1</td>
+      <td>4</td>
       <td>5</td>
       <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
       <td>3</td>
-      <td>4</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
       <td>...</td>
       <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
+      <td>3</td>
       <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
     </tr>
     <tr>
-      <th>2101745</th>
-      <td>0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
-      <td>...</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
+      <th>3156638</th>
       <td>0</td>
       <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
       <td>0</td>
-    </tr>
-    <tr>
-      <th>1095260</th>
-      <td>1</td>
+      <td>2</td>
       <td>5</td>
-      <td>2</td>
-      <td>3</td>
-      <td>4</td>
-      <td>4</td>
-      <td>3</td>
-      <td>3</td>
-      <td>4</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>2</td>
       <td>...</td>
-      <td>0</td>
-      <td>2</td>
       <td>1</td>
       <td>1</td>
-      <td>0</td>
-      <td>3</td>
+      <td>1</td>
+      <td>1</td>
       <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
       <td>4</td>
       <td>2</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>260790</th>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>4</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>260730</th>
-      <td>2</td>
-      <td>4</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>262708</th>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0</td>
-      <td>4</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>260809</th>
-      <td>2</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>142888</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>35 rows × 256 columns</p>
+<p>12 rows × 256 columns</p>
 </div></div></div>
 </div>
 <p>As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We’ll next compile our sample label vector.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;phylum&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-<span class="n">sequence_labels</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
-<span class="n">sequence_labels</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">feature_labels_from_sequence_records</span><span class="p">(</span><span class="n">sequence_records</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">id_</span><span class="p">:</span><span class="n">sr</span><span class="o">.</span><span class="n">split_taxonomy</span> <span class="k">for</span> <span class="n">id_</span><span class="p">,</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">sequence_records</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="s1">&#39;phylum&#39;</span><span class="p">,</span> <span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="s1">&#39;family&#39;</span><span class="p">,</span> <span class="s1">&#39;genus&#39;</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="n">legend_entries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[[</span><span class="s1">&#39;genus&#39;</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;phylum&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">legend_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">s</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">:]))</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">legend_entries</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_labels</span> <span class="o">=</span> <span class="n">feature_labels_from_sequence_records</span><span class="p">(</span><span class="n">seq_data</span><span class="p">)</span>
+<span class="n">sequence_labels</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1828,153 +1300,159 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>domain</th>
       <th>phylum</th>
+      <th>class</th>
+      <th>order</th>
+      <th>family</th>
+      <th>genus</th>
+      <th>species</th>
+      <th>legend entry</th>
     </tr>
     <tr>
       <th>id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>4108811</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>2904927</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>525243</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>523033</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>347138</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>525942</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>4479603</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>4298291</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>535359</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>4408558</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>4349788</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-    </tr>
-    <tr>
-      <th>91834</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-    </tr>
-    <tr>
-      <th>4432796</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-    </tr>
-    <tr>
-      <th>65400</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-    </tr>
-    <tr>
-      <th>237364</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-    </tr>
-    <tr>
-      <th>1058276</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-    </tr>
-    <tr>
-      <th>867450</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-    </tr>
-    <tr>
-      <th>151117</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-    </tr>
-    <tr>
-      <th>4379848</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-    </tr>
-    <tr>
-      <th>976319</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-    </tr>
-    <tr>
-      <th>189521</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>323619</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>4436552</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>2280817</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>297414</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-    </tr>
-    <tr>
-      <th>1088265</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-    </tr>
-    <tr>
-      <th>886828</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
+      <th>929839</th>
+      <td>k__Bacteria</td>
+      <td>p__Actinobacteria</td>
+      <td>c__Actinobacteria</td>
+      <td>o__Actinomycetales</td>
+      <td>f__Propionibacteriaceae</td>
+      <td>g__Propionibacterium</td>
+      <td>s__acnes</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
       <th>4226754</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
+      <td>k__Bacteria</td>
+      <td>p__Actinobacteria</td>
+      <td>c__Actinobacteria</td>
+      <td>o__Actinomycetales</td>
+      <td>f__Propionibacteriaceae</td>
+      <td>g__Propionibacterium</td>
+      <td>s__acnes</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>2101745</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
+      <th>458596</th>
+      <td>k__Bacteria</td>
+      <td>p__Actinobacteria</td>
+      <td>c__Actinobacteria</td>
+      <td>o__Actinomycetales</td>
+      <td>f__Propionibacteriaceae</td>
+      <td>g__Propionibacterium</td>
+      <td>s__acnes</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>1095260</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
+      <th>893992</th>
+      <td>k__Bacteria</td>
+      <td>p__Actinobacteria</td>
+      <td>c__Actinobacteria</td>
+      <td>o__Actinomycetales</td>
+      <td>f__Propionibacteriaceae</td>
+      <td>g__Propionibacterium</td>
+      <td>s__acnes</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>260790</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>4121939</th>
+      <td>k__Bacteria</td>
+      <td>p__Actinobacteria</td>
+      <td>c__Actinobacteria</td>
+      <td>o__Actinomycetales</td>
+      <td>f__Propionibacteriaceae</td>
+      <td>g__Propionibacterium</td>
+      <td>s__acnes</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>260730</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>4465561</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__melaninogenica</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>262708</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>1066621</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__melaninogenica</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>260809</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>525942</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__melaninogenica</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>142888</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>4447248</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__melaninogenica</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+    </tr>
+    <tr>
+      <th>4321915</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__melaninogenica</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+    </tr>
+    <tr>
+      <th>519044</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__stercorea</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+    </tr>
+    <tr>
+      <th>3156638</th>
+      <td>k__Bacteria</td>
+      <td>p__Bacteroidetes</td>
+      <td>c__Bacteroidia</td>
+      <td>o__Bacteroidales</td>
+      <td>f__Prevotellaceae</td>
+      <td>g__Prevotella</td>
+      <td>s__stercorea</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
     </tr>
   </tbody>
 </table>
@@ -2018,7 +1496,7 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_25_0.svg" src="../_images/machine-learning_25_0.svg" /></div>
+<img alt="../_images/machine-learning_26_0.svg" src="../_images/machine-learning_26_0.svg" /></div>
 </div>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
@@ -2035,7 +1513,7 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 4108811 and 2904927 is 0.051.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 929839 and 4226754 is 0.113.
 </pre></div>
 </div>
 </div>
@@ -2058,7 +1536,7 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.348, between samples 1095260 and 4108811.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.366, between samples 4121939 and 519044.
 </pre></div>
 </div>
 </div>
@@ -2101,41 +1579,41 @@ CACATGCAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1095260    0.000000
-1088265    0.033948
-4226754    0.048523
-2101745    0.049494
-886828     0.083397
-91834      0.166839
-260790     0.172778
-260809     0.177594
-4349788    0.177659
-65400      0.177774
-4432796    0.188540
-260730     0.194684
-262708     0.201955
-151117     0.207360
-237364     0.207409
-4379848    0.209776
-142888     0.210388
-1058276    0.211841
-867450     0.212208
-976319     0.217335
-523033     0.229538
-189521     0.230393
-4298291    0.235430
-297414     0.238801
-4436552    0.241393
-323619     0.241992
-2280817    0.242166
-4479603    0.244829
-525942     0.253753
-535359     0.254286
-4408558    0.255183
-347138     0.262483
-525243     0.287560
-2904927    0.333862
-4108811    0.348361
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4121939    0.000000
+929839     0.011915
+4226754    0.017067
+893992     0.060257
+458596     0.100858
+65400      0.168621
+877752     0.168729
+260809     0.193778
+4437190    0.194980
+4349788    0.199312
+410048     0.205022
+275708     0.210559
+1066621    0.213631
+4465561    0.215686
+1058276    0.217504
+272189     0.217798
+976319     0.226494
+269930     0.226795
+525942     0.229498
+338752     0.236204
+970921     0.236289
+711843     0.240453
+3156638    0.241792
+4393400    0.243270
+4321915    0.246295
+276867     0.246937
+183598     0.250830
+198733     0.257761
+302538     0.258219
+527874     0.258320
+531114     0.259065
+510294     0.260813
+4447248    0.280704
+198573     0.282751
+519044     0.366255
 dtype: float64
 </pre></div>
 </div>
@@ -2155,7 +1633,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_36_0.png" src="../_images/machine-learning_36_0.png" />
+<img alt="../_images/machine-learning_37_0.png" src="../_images/machine-learning_37_0.png" />
 </div>
 </div>
 <p>While we may already be able to see some clustering of samples on the first axis, additional axes that are uncorrelated with this first axis can provide more information about which samples are most similar to each other.</p>
@@ -2202,869 +1680,869 @@ dtype: float64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>2904927 to 4108811</th>
-      <th>525243 to 4108811</th>
-      <th>525243 to 2904927</th>
-      <th>523033 to 4108811</th>
-      <th>523033 to 2904927</th>
-      <th>523033 to 525243</th>
-      <th>347138 to 4108811</th>
-      <th>347138 to 2904927</th>
-      <th>347138 to 525243</th>
-      <th>347138 to 523033</th>
+      <th>4226754 to 929839</th>
+      <th>458596 to 929839</th>
+      <th>458596 to 4226754</th>
+      <th>893992 to 929839</th>
+      <th>893992 to 4226754</th>
+      <th>893992 to 458596</th>
+      <th>4121939 to 929839</th>
+      <th>4121939 to 4226754</th>
+      <th>4121939 to 458596</th>
+      <th>4121939 to 893992</th>
       <th>...</th>
-      <th>142888 to 297414</th>
-      <th>142888 to 1088265</th>
-      <th>142888 to 886828</th>
-      <th>142888 to 4226754</th>
-      <th>142888 to 2101745</th>
-      <th>142888 to 1095260</th>
-      <th>142888 to 260790</th>
-      <th>142888 to 260730</th>
-      <th>142888 to 262708</th>
-      <th>142888 to 260809</th>
+      <th>527874 to 260809</th>
+      <th>527874 to 4393400</th>
+      <th>527874 to 976319</th>
+      <th>527874 to 1058276</th>
+      <th>527874 to 711843</th>
+      <th>527874 to 970921</th>
+      <th>527874 to 338752</th>
+      <th>527874 to 531114</th>
+      <th>527874 to 183598</th>
+      <th>527874 to 198733</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1058276</th>
-      <td>0.005556</td>
-      <td>0.107543</td>
-      <td>0.117474</td>
-      <td>0.143445</td>
-      <td>0.148983</td>
-      <td>0.089655</td>
-      <td>0.050287</td>
-      <td>0.058623</td>
-      <td>0.053067</td>
-      <td>0.059913</td>
+      <td>0.026930</td>
+      <td>0.119906</td>
+      <td>0.150249</td>
+      <td>-0.078072</td>
+      <td>-0.041679</td>
+      <td>0.006957</td>
+      <td>-0.012692</td>
+      <td>0.066015</td>
+      <td>0.041115</td>
+      <td>0.201423</td>
       <td>...</td>
-      <td>0.107893</td>
-      <td>0.044074</td>
-      <td>0.041265</td>
-      <td>0.069697</td>
-      <td>0.044626</td>
-      <td>0.068134</td>
-      <td>0.027131</td>
-      <td>0.060351</td>
-      <td>0.069098</td>
-      <td>0.067728</td>
+      <td>0.083569</td>
+      <td>0.181282</td>
+      <td>0.186626</td>
+      <td>0.213115</td>
+      <td>0.174333</td>
+      <td>0.159574</td>
+      <td>0.064667</td>
+      <td>0.049911</td>
+      <td>0.063575</td>
+      <td>0.018285</td>
     </tr>
     <tr>
-      <th>1088265</th>
-      <td>-0.002306</td>
-      <td>0.056683</td>
-      <td>0.072069</td>
-      <td>0.071811</td>
-      <td>0.079979</td>
-      <td>0.034862</td>
-      <td>0.048077</td>
-      <td>0.058753</td>
-      <td>0.093266</td>
-      <td>0.133466</td>
+      <th>1066621</th>
+      <td>0.063830</td>
+      <td>0.128675</td>
+      <td>0.136254</td>
+      <td>-0.014756</td>
+      <td>-0.017116</td>
+      <td>0.033384</td>
+      <td>0.082299</td>
+      <td>0.063181</td>
+      <td>0.055961</td>
+      <td>0.164837</td>
       <td>...</td>
-      <td>0.069987</td>
-      <td>0.256522</td>
-      <td>0.236915</td>
-      <td>0.244299</td>
-      <td>0.254592</td>
-      <td>0.222992</td>
-      <td>0.002356</td>
-      <td>-0.072017</td>
-      <td>-0.043616</td>
-      <td>0.068544</td>
+      <td>0.106424</td>
+      <td>0.132213</td>
+      <td>0.133243</td>
+      <td>0.098469</td>
+      <td>0.111893</td>
+      <td>0.070133</td>
+      <td>0.102945</td>
+      <td>0.092026</td>
+      <td>0.130097</td>
+      <td>0.093366</td>
     </tr>
     <tr>
-      <th>1095260</th>
-      <td>-0.047554</td>
-      <td>0.043377</td>
-      <td>0.072450</td>
-      <td>0.062845</td>
-      <td>0.080759</td>
-      <td>0.035638</td>
-      <td>-0.002589</td>
-      <td>0.022324</td>
-      <td>0.061667</td>
-      <td>0.104385</td>
+      <th>183598</th>
+      <td>0.046839</td>
+      <td>0.064859</td>
+      <td>0.096923</td>
+      <td>-0.031484</td>
+      <td>-0.016460</td>
+      <td>0.070904</td>
+      <td>0.083377</td>
+      <td>0.086124</td>
+      <td>0.112943</td>
+      <td>0.187459</td>
       <td>...</td>
-      <td>0.107200</td>
-      <td>0.248369</td>
-      <td>0.234414</td>
-      <td>0.248587</td>
-      <td>0.238236</td>
-      <td>0.285714</td>
-      <td>0.054522</td>
-      <td>0.040625</td>
-      <td>0.020808</td>
-      <td>0.110594</td>
+      <td>0.084644</td>
+      <td>0.093590</td>
+      <td>0.075641</td>
+      <td>0.045990</td>
+      <td>0.076753</td>
+      <td>0.048695</td>
+      <td>0.056861</td>
+      <td>0.089038</td>
+      <td>0.154167</td>
+      <td>0.071304</td>
     </tr>
     <tr>
-      <th>142888</th>
-      <td>0.075080</td>
-      <td>0.066053</td>
-      <td>0.058881</td>
-      <td>0.127131</td>
-      <td>0.118097</td>
-      <td>0.110069</td>
-      <td>0.061251</td>
-      <td>0.049064</td>
-      <td>0.096595</td>
-      <td>0.085376</td>
+      <th>198573</th>
+      <td>0.064338</td>
+      <td>0.037166</td>
+      <td>0.065896</td>
+      <td>-0.042509</td>
+      <td>-0.044342</td>
+      <td>0.085236</td>
+      <td>0.091328</td>
+      <td>0.066870</td>
+      <td>0.139454</td>
+      <td>0.205952</td>
       <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
+      <td>0.039984</td>
+      <td>0.075219</td>
+      <td>0.048521</td>
+      <td>0.022910</td>
+      <td>0.055033</td>
+      <td>0.002731</td>
+      <td>0.065717</td>
+      <td>0.072987</td>
+      <td>0.095799</td>
+      <td>0.025140</td>
     </tr>
     <tr>
-      <th>151117</th>
-      <td>0.004579</td>
-      <td>0.064079</td>
-      <td>0.077042</td>
-      <td>0.136104</td>
-      <td>0.141947</td>
-      <td>0.126110</td>
-      <td>0.028817</td>
-      <td>0.037871</td>
-      <td>0.070955</td>
-      <td>0.051309</td>
+      <th>198733</th>
+      <td>0.008457</td>
+      <td>0.105624</td>
+      <td>0.149680</td>
+      <td>-0.078308</td>
+      <td>-0.023678</td>
+      <td>0.017170</td>
+      <td>-0.012941</td>
+      <td>0.090273</td>
+      <td>0.053751</td>
+      <td>0.201610</td>
       <td>...</td>
-      <td>0.100398</td>
-      <td>0.044074</td>
-      <td>0.024071</td>
-      <td>0.077117</td>
-      <td>0.052912</td>
-      <td>0.060697</td>
-      <td>0.027131</td>
-      <td>0.081559</td>
-      <td>0.056490</td>
-      <td>0.056649</td>
-    </tr>
-    <tr>
-      <th>189521</th>
-      <td>0.138161</td>
-      <td>0.050638</td>
-      <td>0.026539</td>
-      <td>0.133454</td>
-      <td>0.110916</td>
-      <td>0.136795</td>
-      <td>0.090698</td>
-      <td>0.059497</td>
-      <td>0.134102</td>
-      <td>0.101111</td>
-      <td>...</td>
-      <td>0.199831</td>
-      <td>0.052415</td>
-      <td>0.066080</td>
-      <td>0.077142</td>
-      <td>0.052934</td>
-      <td>0.075454</td>
-      <td>-0.002908</td>
-      <td>-0.030239</td>
-      <td>0.030345</td>
-      <td>0.078444</td>
-    </tr>
-    <tr>
-      <th>2101745</th>
-      <td>-0.001622</td>
-      <td>0.057439</td>
-      <td>0.072584</td>
-      <td>0.091494</td>
-      <td>0.099253</td>
-      <td>0.064455</td>
-      <td>0.049152</td>
-      <td>0.059607</td>
-      <td>0.093544</td>
-      <td>0.113611</td>
-      <td>...</td>
-      <td>0.070301</td>
-      <td>0.253490</td>
-      <td>0.223231</td>
-      <td>0.243415</td>
-      <td>0.255411</td>
-      <td>0.212969</td>
-      <td>0.002807</td>
-      <td>-0.071189</td>
-      <td>-0.042769</td>
-      <td>0.068523</td>
-    </tr>
-    <tr>
-      <th>2280817</th>
-      <td>0.063116</td>
-      <td>0.128070</td>
-      <td>0.120362</td>
-      <td>0.214272</td>
-      <td>0.206616</td>
-      <td>0.176560</td>
-      <td>0.090637</td>
-      <td>0.081350</td>
-      <td>0.070021</td>
-      <td>0.016188</td>
-      <td>...</td>
-      <td>0.114764</td>
-      <td>0.058445</td>
-      <td>0.077909</td>
-      <td>0.082062</td>
-      <td>0.066519</td>
-      <td>0.080531</td>
-      <td>-0.012978</td>
-      <td>0.017427</td>
-      <td>-0.019497</td>
-      <td>0.046625</td>
-    </tr>
-    <tr>
-      <th>237364</th>
-      <td>-0.066601</td>
-      <td>0.074809</td>
-      <td>0.107296</td>
-      <td>0.136136</td>
-      <td>0.157121</td>
-      <td>0.114358</td>
-      <td>0.038486</td>
-      <td>0.068130</td>
-      <td>0.070212</td>
-      <td>0.058623</td>
-      <td>...</td>
-      <td>0.008341</td>
-      <td>0.016613</td>
-      <td>0.019537</td>
-      <td>0.014078</td>
-      <td>0.016912</td>
-      <td>0.021126</td>
-      <td>0.056653</td>
-      <td>0.037251</td>
-      <td>0.004493</td>
-      <td>0.040299</td>
-    </tr>
-    <tr>
-      <th>260730</th>
-      <td>0.040951</td>
-      <td>0.075101</td>
-      <td>0.077042</td>
-      <td>0.119803</td>
-      <td>0.118127</td>
-      <td>0.088789</td>
-      <td>0.049320</td>
-      <td>0.047339</td>
-      <td>0.079080</td>
-      <td>0.084008</td>
-      <td>...</td>
-      <td>-0.002441</td>
-      <td>-0.020143</td>
-      <td>-0.027435</td>
-      <td>-0.004335</td>
-      <td>-0.019998</td>
-      <td>0.010202</td>
-      <td>0.030883</td>
-      <td>0.071749</td>
-      <td>0.043119</td>
-      <td>0.040208</td>
-    </tr>
-    <tr>
-      <th>260790</th>
-      <td>0.002811</td>
-      <td>0.039809</td>
-      <td>0.054812</td>
-      <td>0.120080</td>
-      <td>0.126514</td>
-      <td>0.128033</td>
-      <td>0.034244</td>
-      <td>0.043705</td>
-      <td>0.095588</td>
-      <td>0.072262</td>
-      <td>...</td>
-      <td>0.006099</td>
-      <td>0.001056</td>
-      <td>-0.005198</td>
-      <td>0.007525</td>
-      <td>0.001264</td>
-      <td>0.021953</td>
-      <td>0.115044</td>
-      <td>0.049518</td>
-      <td>0.067093</td>
-      <td>0.067415</td>
+      <td>0.001407</td>
+      <td>0.019332</td>
+      <td>0.019542</td>
+      <td>0.006483</td>
+      <td>0.001289</td>
+      <td>-0.018232</td>
+      <td>0.037360</td>
+      <td>0.022122</td>
+      <td>0.034945</td>
+      <td>0.075556</td>
     </tr>
     <tr>
       <th>260809</th>
-      <td>0.005248</td>
-      <td>0.044588</td>
-      <td>0.058597</td>
-      <td>0.112137</td>
-      <td>0.118159</td>
-      <td>0.110500</td>
-      <td>0.079611</td>
-      <td>0.087444</td>
-      <td>0.129783</td>
-      <td>0.115074</td>
+      <td>0.096974</td>
+      <td>0.166354</td>
+      <td>0.146506</td>
+      <td>0.003973</td>
+      <td>-0.031784</td>
+      <td>0.015813</td>
+      <td>0.079053</td>
+      <td>0.017876</td>
+      <td>0.021695</td>
+      <td>0.138501</td>
       <td>...</td>
-      <td>0.066074</td>
-      <td>0.038495</td>
-      <td>0.061836</td>
-      <td>0.049801</td>
-      <td>0.038651</td>
-      <td>0.055765</td>
-      <td>0.084423</td>
-      <td>0.080736</td>
-      <td>0.084291</td>
-      <td>0.144068</td>
+      <td>0.180328</td>
+      <td>0.096963</td>
+      <td>0.084660</td>
+      <td>0.070713</td>
+      <td>0.090352</td>
+      <td>0.041716</td>
+      <td>0.023701</td>
+      <td>-0.001487</td>
+      <td>0.099007</td>
+      <td>0.003358</td>
     </tr>
     <tr>
-      <th>262708</th>
-      <td>0.079406</td>
-      <td>0.042318</td>
-      <td>0.035423</td>
-      <td>0.103931</td>
-      <td>0.094287</td>
-      <td>0.100311</td>
-      <td>0.068280</td>
-      <td>0.054688</td>
-      <td>0.122132</td>
-      <td>0.115082</td>
+      <th>269930</th>
+      <td>0.082506</td>
+      <td>0.146207</td>
+      <td>0.139198</td>
+      <td>-0.005252</td>
+      <td>-0.026391</td>
+      <td>0.025617</td>
+      <td>0.088573</td>
+      <td>0.041565</td>
+      <td>0.041872</td>
+      <td>0.155394</td>
       <td>...</td>
-      <td>0.025276</td>
-      <td>-0.021626</td>
-      <td>-0.027846</td>
-      <td>0.001958</td>
-      <td>-0.021299</td>
-      <td>0.009263</td>
-      <td>0.074178</td>
-      <td>0.076439</td>
-      <td>0.127193</td>
-      <td>0.074418</td>
+      <td>0.165383</td>
+      <td>0.121030</td>
+      <td>0.115439</td>
+      <td>0.104763</td>
+      <td>0.099111</td>
+      <td>0.057002</td>
+      <td>0.075817</td>
+      <td>0.061467</td>
+      <td>0.103008</td>
+      <td>-0.003403</td>
     </tr>
     <tr>
-      <th>2904927</th>
+      <th>272189</th>
+      <td>0.101954</td>
+      <td>0.077295</td>
+      <td>0.075513</td>
+      <td>0.028997</td>
+      <td>-0.012600</td>
+      <td>0.093210</td>
+      <td>0.089918</td>
+      <td>0.016550</td>
+      <td>0.103448</td>
+      <td>0.110835</td>
+      <td>...</td>
+      <td>0.176320</td>
+      <td>0.142147</td>
+      <td>0.129429</td>
+      <td>0.128155</td>
+      <td>0.126952</td>
+      <td>0.050581</td>
+      <td>0.088722</td>
+      <td>0.072380</td>
+      <td>0.116712</td>
+      <td>-0.033756</td>
+    </tr>
+    <tr>
+      <th>275708</th>
+      <td>0.082518</td>
+      <td>0.146234</td>
+      <td>0.139212</td>
+      <td>0.030631</td>
+      <td>0.008150</td>
+      <td>0.044170</td>
+      <td>0.036842</td>
+      <td>0.016575</td>
+      <td>0.029518</td>
+      <td>0.082407</td>
+      <td>...</td>
+      <td>0.191963</td>
+      <td>0.140777</td>
+      <td>0.129014</td>
+      <td>0.096784</td>
+      <td>0.124190</td>
+      <td>0.054111</td>
+      <td>0.040393</td>
+      <td>0.048903</td>
+      <td>0.123223</td>
+      <td>-0.005610</td>
+    </tr>
+    <tr>
+      <th>276867</th>
+      <td>0.064438</td>
+      <td>0.134494</td>
+      <td>0.140369</td>
+      <td>-0.008963</td>
+      <td>-0.012138</td>
+      <td>0.032172</td>
+      <td>0.039560</td>
+      <td>0.041745</td>
+      <td>0.040602</td>
+      <td>0.136034</td>
+      <td>...</td>
+      <td>0.146002</td>
+      <td>0.133805</td>
+      <td>0.122160</td>
+      <td>0.126203</td>
+      <td>0.130017</td>
+      <td>0.072488</td>
+      <td>0.017203</td>
+      <td>0.061484</td>
+      <td>0.093589</td>
+      <td>-0.048589</td>
+    </tr>
+    <tr>
+      <th>302538</th>
+      <td>0.010034</td>
+      <td>0.063872</td>
+      <td>0.116823</td>
+      <td>-0.057041</td>
+      <td>-0.004755</td>
+      <td>0.058390</td>
+      <td>-0.012575</td>
+      <td>0.088369</td>
+      <td>0.090951</td>
+      <td>0.173710</td>
+      <td>...</td>
+      <td>0.007292</td>
+      <td>0.031968</td>
+      <td>0.025510</td>
+      <td>-0.010099</td>
+      <td>0.014621</td>
+      <td>-0.010836</td>
+      <td>0.002585</td>
+      <td>0.040428</td>
+      <td>0.038515</td>
+      <td>0.004221</td>
+    </tr>
+    <tr>
+      <th>3156638</th>
+      <td>0.082403</td>
+      <td>0.090635</td>
+      <td>0.096701</td>
+      <td>0.011993</td>
+      <td>-0.009683</td>
+      <td>0.074756</td>
+      <td>0.139692</td>
+      <td>0.066381</td>
+      <td>0.103454</td>
+      <td>0.157925</td>
+      <td>...</td>
+      <td>0.109375</td>
+      <td>0.163694</td>
+      <td>0.141558</td>
+      <td>0.140250</td>
+      <td>0.145957</td>
+      <td>0.087154</td>
+      <td>0.118820</td>
+      <td>0.083810</td>
+      <td>0.113285</td>
+      <td>0.060052</td>
+    </tr>
+    <tr>
+      <th>338752</th>
+      <td>0.064041</td>
+      <td>0.077295</td>
+      <td>0.096791</td>
+      <td>-0.034481</td>
+      <td>-0.036319</td>
+      <td>0.060354</td>
+      <td>0.036316</td>
+      <td>0.040703</td>
+      <td>0.090672</td>
+      <td>0.168123</td>
+      <td>...</td>
+      <td>0.018301</td>
+      <td>0.051667</td>
+      <td>0.052128</td>
+      <td>0.042251</td>
+      <td>0.049656</td>
+      <td>0.038348</td>
+      <td>0.139241</td>
+      <td>0.020085</td>
+      <td>0.051356</td>
+      <td>0.068851</td>
+    </tr>
+    <tr>
+      <th>410048</th>
+      <td>0.117584</td>
+      <td>0.090095</td>
+      <td>0.076543</td>
+      <td>0.049314</td>
+      <td>-0.008457</td>
+      <td>0.094463</td>
+      <td>0.083973</td>
+      <td>-0.006945</td>
+      <td>0.090653</td>
+      <td>0.081067</td>
+      <td>...</td>
+      <td>0.167183</td>
+      <td>0.121062</td>
+      <td>0.101222</td>
+      <td>0.081167</td>
+      <td>0.115601</td>
+      <td>0.047305</td>
+      <td>0.097834</td>
+      <td>0.037411</td>
+      <td>0.084034</td>
+      <td>-0.050252</td>
+    </tr>
+    <tr>
+      <th>4121939</th>
+      <td>0.081600</td>
+      <td>0.169564</td>
+      <td>0.157592</td>
+      <td>0.079230</td>
+      <td>0.055855</td>
+      <td>0.052444</td>
       <td>0.000000</td>
-      <td>0.172892</td>
-      <td>0.180258</td>
-      <td>0.235012</td>
-      <td>0.240506</td>
-      <td>0.159325</td>
-      <td>0.167626</td>
-      <td>0.175214</td>
-      <td>0.097692</td>
-      <td>0.052903</td>
-      <td>...</td>
-      <td>0.154176</td>
-      <td>0.024195</td>
-      <td>0.076177</td>
-      <td>0.060889</td>
-      <td>0.034154</td>
-      <td>0.051157</td>
-      <td>-0.027224</td>
-      <td>-0.011283</td>
-      <td>-0.004026</td>
-      <td>0.056096</td>
-    </tr>
-    <tr>
-      <th>297414</th>
-      <td>0.068775</td>
-      <td>0.053402</td>
-      <td>0.048821</td>
-      <td>0.132443</td>
-      <td>0.124679</td>
-      <td>0.132194</td>
-      <td>0.082201</td>
-      <td>0.071431</td>
-      <td>0.124672</td>
-      <td>0.095716</td>
-      <td>...</td>
-      <td>0.217573</td>
-      <td>0.059360</td>
-      <td>0.081139</td>
-      <td>0.090724</td>
-      <td>0.059886</td>
-      <td>0.081634</td>
-      <td>0.011535</td>
-      <td>-0.007403</td>
-      <td>0.043237</td>
-      <td>0.099787</td>
-    </tr>
-    <tr>
-      <th>323619</th>
-      <td>0.038256</td>
-      <td>0.069900</td>
-      <td>0.072936</td>
-      <td>0.138526</td>
-      <td>0.137173</td>
-      <td>0.123452</td>
-      <td>0.074333</td>
-      <td>0.072634</td>
-      <td>0.104413</td>
-      <td>0.083349</td>
-      <td>...</td>
-      <td>0.174548</td>
-      <td>0.034331</td>
-      <td>0.070216</td>
-      <td>0.081877</td>
-      <td>0.042861</td>
-      <td>0.066464</td>
-      <td>0.029408</td>
-      <td>0.017395</td>
-      <td>0.032710</td>
-      <td>0.077598</td>
-    </tr>
-    <tr>
-      <th>347138</th>
-      <td>0.037582</td>
-      <td>0.120582</td>
-      <td>0.120597</td>
-      <td>0.164111</td>
-      <td>0.162559</td>
-      <td>0.107259</td>
-      <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>0.000000</td>
       <td>...</td>
-      <td>0.136163</td>
-      <td>0.017577</td>
-      <td>0.057390</td>
-      <td>0.038167</td>
-      <td>0.026922</td>
-      <td>0.067555</td>
-      <td>-0.019063</td>
-      <td>-0.007073</td>
-      <td>-0.011773</td>
-      <td>0.009419</td>
-    </tr>
-    <tr>
-      <th>4108811</th>
-      <td>0.051163</td>
-      <td>0.168831</td>
-      <td>0.161933</td>
-      <td>0.237288</td>
-      <td>0.231868</td>
-      <td>0.167308</td>
-      <td>0.171674</td>
-      <td>0.164240</td>
-      <td>0.104454</td>
-      <td>0.053589</td>
-      <td>...</td>
-      <td>0.152693</td>
-      <td>0.008761</td>
-      <td>0.052026</td>
-      <td>0.046960</td>
-      <td>0.018790</td>
-      <td>0.029197</td>
-      <td>-0.059363</td>
-      <td>-0.035620</td>
-      <td>-0.002286</td>
-      <td>0.031297</td>
+      <td>0.137972</td>
+      <td>0.056279</td>
+      <td>0.113306</td>
+      <td>0.093194</td>
+      <td>0.069797</td>
+      <td>0.026399</td>
+      <td>0.092960</td>
+      <td>0.041292</td>
+      <td>0.100272</td>
+      <td>0.006829</td>
     </tr>
     <tr>
       <th>4226754</th>
-      <td>-0.001056</td>
-      <td>0.032304</td>
-      <td>0.048881</td>
-      <td>0.073548</td>
-      <td>0.081428</td>
-      <td>0.064360</td>
-      <td>0.075575</td>
-      <td>0.085331</td>
-      <td>0.136547</td>
-      <td>0.152534</td>
+      <td>0.000000</td>
+      <td>0.167591</td>
+      <td>0.201878</td>
+      <td>0.056869</td>
+      <td>0.114833</td>
+      <td>0.042297</td>
+      <td>-0.045200</td>
+      <td>0.085859</td>
+      <td>-0.009020</td>
+      <td>0.007154</td>
       <td>...</td>
-      <td>0.116613</td>
-      <td>0.266336</td>
-      <td>0.220877</td>
-      <td>0.279661</td>
-      <td>0.266526</td>
-      <td>0.243321</td>
-      <td>0.018292</td>
-      <td>-0.016897</td>
-      <td>0.004305</td>
-      <td>0.096672</td>
+      <td>0.104438</td>
+      <td>0.077360</td>
+      <td>0.113748</td>
+      <td>0.084213</td>
+      <td>0.081325</td>
+      <td>0.069253</td>
+      <td>0.063606</td>
+      <td>0.042886</td>
+      <td>0.099057</td>
+      <td>0.009063</td>
     </tr>
     <tr>
-      <th>4298291</th>
-      <td>0.008561</td>
-      <td>0.086363</td>
-      <td>0.096784</td>
-      <td>0.155150</td>
-      <td>0.159892</td>
-      <td>0.131042</td>
-      <td>0.072915</td>
-      <td>0.079916</td>
-      <td>0.089607</td>
-      <td>0.064813</td>
+      <th>4321915</th>
+      <td>0.029115</td>
+      <td>0.090393</td>
+      <td>0.126423</td>
+      <td>-0.019172</td>
+      <td>0.012883</td>
+      <td>0.058800</td>
+      <td>0.086124</td>
+      <td>0.110839</td>
+      <td>0.090901</td>
+      <td>0.172562</td>
       <td>...</td>
-      <td>0.155015</td>
-      <td>0.043347</td>
-      <td>0.057395</td>
-      <td>0.083931</td>
-      <td>0.060478</td>
-      <td>0.074890</td>
-      <td>-0.003419</td>
-      <td>0.038584</td>
-      <td>0.016398</td>
-      <td>0.067726</td>
+      <td>0.040626</td>
+      <td>0.075807</td>
+      <td>0.076470</td>
+      <td>0.039489</td>
+      <td>0.062916</td>
+      <td>0.027527</td>
+      <td>0.089414</td>
+      <td>0.072985</td>
+      <td>0.074231</td>
+      <td>0.056203</td>
     </tr>
     <tr>
       <th>4349788</th>
-      <td>0.004904</td>
-      <td>0.064424</td>
-      <td>0.077273</td>
-      <td>0.112028</td>
-      <td>0.118124</td>
-      <td>0.088515</td>
-      <td>0.048995</td>
-      <td>0.057547</td>
-      <td>0.087636</td>
-      <td>0.091926</td>
+      <td>0.099206</td>
+      <td>0.143256</td>
+      <td>0.127566</td>
+      <td>0.016106</td>
+      <td>-0.022302</td>
+      <td>0.038807</td>
+      <td>0.035201</td>
+      <td>-0.006239</td>
+      <td>0.031774</td>
+      <td>0.100774</td>
       <td>...</td>
-      <td>0.012823</td>
-      <td>0.029685</td>
-      <td>0.031972</td>
-      <td>0.034316</td>
-      <td>0.029884</td>
-      <td>0.054606</td>
-      <td>0.056759</td>
-      <td>0.067039</td>
-      <td>0.058703</td>
-      <td>0.074965</td>
+      <td>0.184067</td>
+      <td>0.147505</td>
+      <td>0.142423</td>
+      <td>0.141524</td>
+      <td>0.140670</td>
+      <td>0.077967</td>
+      <td>0.076271</td>
+      <td>0.048411</td>
+      <td>0.104885</td>
+      <td>-0.030159</td>
     </tr>
     <tr>
-      <th>4379848</th>
-      <td>0.006725</td>
-      <td>0.096293</td>
-      <td>0.106606</td>
-      <td>0.134527</td>
-      <td>0.139935</td>
-      <td>0.088243</td>
-      <td>0.035029</td>
-      <td>0.043332</td>
-      <td>0.049540</td>
-      <td>0.057686</td>
+      <th>4393400</th>
+      <td>0.025828</td>
+      <td>0.091736</td>
+      <td>0.129296</td>
+      <td>-0.012419</td>
+      <td>0.022629</td>
+      <td>0.061324</td>
+      <td>0.151464</td>
+      <td>0.146721</td>
+      <td>0.105280</td>
+      <td>0.195986</td>
       <td>...</td>
-      <td>0.122529</td>
-      <td>0.051052</td>
-      <td>0.065065</td>
-      <td>0.083390</td>
-      <td>0.051616</td>
-      <td>0.088791</td>
-      <td>0.011486</td>
-      <td>0.015929</td>
-      <td>0.029751</td>
-      <td>0.056620</td>
+      <td>0.127922</td>
+      <td>0.237903</td>
+      <td>0.199720</td>
+      <td>0.202368</td>
+      <td>0.207689</td>
+      <td>0.169576</td>
+      <td>0.088278</td>
+      <td>0.129360</td>
+      <td>0.144424</td>
+      <td>0.060870</td>
     </tr>
     <tr>
-      <th>4408558</th>
-      <td>-0.013520</td>
-      <td>0.111339</td>
-      <td>0.126443</td>
-      <td>0.163529</td>
-      <td>0.172855</td>
-      <td>0.116525</td>
-      <td>0.068476</td>
-      <td>0.082014</td>
-      <td>0.065222</td>
-      <td>0.052641</td>
+      <th>4437190</th>
+      <td>0.081837</td>
+      <td>0.116886</td>
+      <td>0.117121</td>
+      <td>0.014858</td>
+      <td>-0.006366</td>
+      <td>0.057243</td>
+      <td>0.035954</td>
+      <td>0.017045</td>
+      <td>0.055394</td>
+      <td>0.102795</td>
       <td>...</td>
-      <td>0.151812</td>
-      <td>0.024432</td>
-      <td>0.053675</td>
-      <td>0.066544</td>
-      <td>0.024951</td>
-      <td>0.065205</td>
-      <td>0.028888</td>
-      <td>0.058816</td>
-      <td>0.032166</td>
-      <td>0.097397</td>
+      <td>0.186539</td>
+      <td>0.164141</td>
+      <td>0.135494</td>
+      <td>0.126847</td>
+      <td>0.146440</td>
+      <td>0.094371</td>
+      <td>0.052711</td>
+      <td>0.072655</td>
+      <td>0.131988</td>
+      <td>-0.028321</td>
     </tr>
     <tr>
-      <th>4432796</th>
-      <td>0.040838</td>
-      <td>0.085904</td>
-      <td>0.087193</td>
-      <td>0.127567</td>
-      <td>0.125811</td>
-      <td>0.088910</td>
-      <td>0.049988</td>
-      <td>0.048027</td>
-      <td>0.070709</td>
-      <td>0.076361</td>
+      <th>4447248</th>
+      <td>0.064820</td>
+      <td>0.092430</td>
+      <td>0.107944</td>
+      <td>-0.074656</td>
+      <td>-0.075774</td>
+      <td>0.028608</td>
+      <td>0.101194</td>
+      <td>0.070997</td>
+      <td>0.092682</td>
+      <td>0.253283</td>
       <td>...</td>
-      <td>0.029190</td>
-      <td>0.006196</td>
-      <td>0.016739</td>
-      <td>0.019778</td>
-      <td>0.006473</td>
-      <td>0.048034</td>
-      <td>0.075526</td>
-      <td>0.104734</td>
-      <td>0.067653</td>
-      <td>0.082171</td>
+      <td>0.083511</td>
+      <td>0.046971</td>
+      <td>0.063586</td>
+      <td>0.047824</td>
+      <td>0.055161</td>
+      <td>0.030785</td>
+      <td>0.075865</td>
+      <td>-0.039431</td>
+      <td>0.103179</td>
+      <td>-0.003697</td>
     </tr>
     <tr>
-      <th>4436552</th>
-      <td>0.010444</td>
-      <td>0.094975</td>
-      <td>0.104316</td>
-      <td>0.144935</td>
-      <td>0.149412</td>
-      <td>0.105780</td>
-      <td>0.090683</td>
-      <td>0.096775</td>
-      <td>0.097426</td>
-      <td>0.089042</td>
+      <th>4465561</th>
+      <td>0.014603</td>
+      <td>0.089731</td>
+      <td>0.134060</td>
+      <td>-0.043937</td>
+      <td>0.003354</td>
+      <td>0.046461</td>
+      <td>-0.011537</td>
+      <td>0.082840</td>
+      <td>0.068213</td>
+      <td>0.156922</td>
       <td>...</td>
-      <td>0.204778</td>
-      <td>0.065704</td>
-      <td>0.095519</td>
-      <td>0.096482</td>
-      <td>0.066273</td>
-      <td>0.094544</td>
-      <td>0.025783</td>
-      <td>-0.008216</td>
-      <td>0.042686</td>
-      <td>0.111593</td>
+      <td>0.078206</td>
+      <td>0.094546</td>
+      <td>0.106421</td>
+      <td>0.069104</td>
+      <td>0.090091</td>
+      <td>0.057873</td>
+      <td>0.065834</td>
+      <td>0.080807</td>
+      <td>0.101368</td>
+      <td>0.055940</td>
     </tr>
     <tr>
-      <th>4479603</th>
-      <td>0.011140</td>
-      <td>0.086475</td>
-      <td>0.096157</td>
-      <td>0.150568</td>
-      <td>0.154822</td>
-      <td>0.123836</td>
-      <td>0.054311</td>
-      <td>0.060934</td>
-      <td>0.073871</td>
-      <td>0.055489</td>
-      <td>...</td>
-      <td>0.153002</td>
-      <td>0.022247</td>
-      <td>0.042323</td>
-      <td>0.056818</td>
-      <td>0.022672</td>
-      <td>0.062772</td>
-      <td>0.030868</td>
-      <td>0.056992</td>
-      <td>0.034221</td>
-      <td>0.076903</td>
-    </tr>
-    <tr>
-      <th>523033</th>
-      <td>0.040608</td>
-      <td>-0.012547</td>
-      <td>-0.004953</td>
+      <th>458596</th>
+      <td>0.131040</td>
       <td>0.000000</td>
       <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.070528</td>
-      <td>0.068220</td>
-      <td>0.169393</td>
-      <td>0.225941</td>
+      <td>0.153603</td>
+      <td>0.078690</td>
+      <td>0.213636</td>
+      <td>0.097297</td>
+      <td>-0.018270</td>
+      <td>0.173913</td>
+      <td>-0.050044</td>
       <td>...</td>
-      <td>0.146900</td>
-      <td>0.059933</td>
-      <td>0.076155</td>
-      <td>0.092424</td>
-      <td>0.051899</td>
-      <td>0.082586</td>
-      <td>-0.044820</td>
-      <td>-0.011383</td>
-      <td>0.040995</td>
-      <td>0.055993</td>
+      <td>0.082632</td>
+      <td>0.075435</td>
+      <td>0.104100</td>
+      <td>0.062217</td>
+      <td>0.081361</td>
+      <td>0.026437</td>
+      <td>0.107445</td>
+      <td>0.056465</td>
+      <td>0.138478</td>
+      <td>-0.051462</td>
     </tr>
     <tr>
-      <th>525243</th>
-      <td>0.064563</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.108237</td>
-      <td>0.101693</td>
-      <td>0.153509</td>
-      <td>0.124224</td>
-      <td>0.113836</td>
-      <td>0.204167</td>
-      <td>0.153068</td>
+      <th>510294</th>
+      <td>0.007688</td>
+      <td>0.022385</td>
+      <td>0.086371</td>
+      <td>-0.028310</td>
+      <td>0.025225</td>
+      <td>0.103281</td>
+      <td>-0.065727</td>
+      <td>0.065803</td>
+      <td>0.115160</td>
+      <td>0.109465</td>
       <td>...</td>
-      <td>0.162510</td>
-      <td>0.014927</td>
-      <td>0.047332</td>
-      <td>0.067334</td>
-      <td>0.024483</td>
-      <td>0.042596</td>
-      <td>-0.020850</td>
-      <td>-0.056912</td>
-      <td>0.029218</td>
-      <td>0.056451</td>
+      <td>-0.022361</td>
+      <td>0.018427</td>
+      <td>0.026423</td>
+      <td>-0.019597</td>
+      <td>0.023103</td>
+      <td>-0.014239</td>
+      <td>0.038867</td>
+      <td>0.056009</td>
+      <td>0.058469</td>
+      <td>-0.007809</td>
+    </tr>
+    <tr>
+      <th>519044</th>
+      <td>0.064946</td>
+      <td>-0.041161</td>
+      <td>0.005575</td>
+      <td>-0.080889</td>
+      <td>-0.081900</td>
+      <td>0.122049</td>
+      <td>0.105280</td>
+      <td>0.072804</td>
+      <td>0.212403</td>
+      <td>0.263535</td>
+      <td>...</td>
+      <td>0.006884</td>
+      <td>0.033110</td>
+      <td>0.063868</td>
+      <td>0.023049</td>
+      <td>0.034024</td>
+      <td>-0.008141</td>
+      <td>0.034789</td>
+      <td>0.043228</td>
+      <td>0.082478</td>
+      <td>0.004120</td>
     </tr>
     <tr>
       <th>525942</th>
-      <td>0.011955</td>
-      <td>0.119361</td>
-      <td>0.126726</td>
-      <td>0.176549</td>
-      <td>0.180282</td>
-      <td>0.127828</td>
-      <td>0.098340</td>
-      <td>0.103836</td>
-      <td>0.083700</td>
-      <td>0.061658</td>
+      <td>0.028642</td>
+      <td>0.104060</td>
+      <td>0.137154</td>
+      <td>-0.037410</td>
+      <td>-0.004212</td>
+      <td>0.039470</td>
+      <td>0.037343</td>
+      <td>0.087912</td>
+      <td>0.067126</td>
+      <td>0.172497</td>
       <td>...</td>
-      <td>0.120943</td>
-      <td>0.036812</td>
-      <td>0.064312</td>
-      <td>0.069758</td>
-      <td>0.037216</td>
-      <td>0.061395</td>
-      <td>0.030331</td>
-      <td>0.094559</td>
-      <td>0.033657</td>
-      <td>0.095643</td>
+      <td>0.114439</td>
+      <td>0.132716</td>
+      <td>0.133796</td>
+      <td>0.105069</td>
+      <td>0.119833</td>
+      <td>0.083107</td>
+      <td>0.104382</td>
+      <td>0.102263</td>
+      <td>0.139740</td>
+      <td>0.095400</td>
     </tr>
     <tr>
-      <th>535359</th>
-      <td>0.013416</td>
-      <td>0.170058</td>
-      <td>0.173795</td>
-      <td>0.186222</td>
-      <td>0.189515</td>
-      <td>0.087023</td>
-      <td>0.120366</td>
-      <td>0.124990</td>
-      <td>0.060297</td>
-      <td>0.068235</td>
+      <th>527874</th>
+      <td>0.010166</td>
+      <td>0.077295</td>
+      <td>0.127028</td>
+      <td>-0.073083</td>
+      <td>-0.020333</td>
+      <td>0.040374</td>
+      <td>-0.012342</td>
+      <td>0.088307</td>
+      <td>0.079075</td>
+      <td>0.195008</td>
       <td>...</td>
-      <td>0.114563</td>
-      <td>0.061113</td>
-      <td>0.079622</td>
-      <td>0.077410</td>
-      <td>0.061418</td>
-      <td>0.069126</td>
-      <td>0.003567</td>
-      <td>0.057168</td>
-      <td>0.009260</td>
-      <td>0.086261</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>531114</th>
+      <td>-0.011293</td>
+      <td>0.049180</td>
+      <td>0.117542</td>
+      <td>-0.065460</td>
+      <td>0.008179</td>
+      <td>0.064664</td>
+      <td>-0.065575</td>
+      <td>0.090925</td>
+      <td>0.091379</td>
+      <td>0.158595</td>
+      <td>...</td>
+      <td>-0.001163</td>
+      <td>0.076683</td>
+      <td>0.050523</td>
+      <td>0.033028</td>
+      <td>0.056209</td>
+      <td>0.021177</td>
+      <td>0.020343</td>
+      <td>0.141026</td>
+      <td>0.081448</td>
+      <td>0.041291</td>
     </tr>
     <tr>
       <th>65400</th>
-      <td>-0.031382</td>
-      <td>0.074809</td>
-      <td>0.097299</td>
-      <td>0.119855</td>
-      <td>0.133565</td>
-      <td>0.089191</td>
-      <td>0.038486</td>
-      <td>0.057846</td>
-      <td>0.070212</td>
-      <td>0.075722</td>
+      <td>0.113734</td>
+      <td>0.165971</td>
+      <td>0.136806</td>
+      <td>0.067629</td>
+      <td>0.012977</td>
+      <td>0.049039</td>
+      <td>0.032597</td>
+      <td>-0.026668</td>
+      <td>0.010963</td>
+      <td>0.031453</td>
       <td>...</td>
-      <td>-0.003796</td>
-      <td>0.038327</td>
-      <td>0.017248</td>
-      <td>0.035970</td>
-      <td>0.038350</td>
-      <td>0.035372</td>
-      <td>0.040905</td>
-      <td>0.036517</td>
-      <td>0.027913</td>
-      <td>0.054536</td>
+      <td>0.206704</td>
+      <td>0.161334</td>
+      <td>0.156471</td>
+      <td>0.150018</td>
+      <td>0.126558</td>
+      <td>0.068016</td>
+      <td>0.088570</td>
+      <td>0.060069</td>
+      <td>0.126330</td>
+      <td>0.014984</td>
     </tr>
     <tr>
-      <th>867450</th>
-      <td>0.005391</td>
-      <td>0.085942</td>
-      <td>0.097289</td>
-      <td>0.127570</td>
-      <td>0.133355</td>
-      <td>0.088873</td>
-      <td>0.031276</td>
-      <td>0.040044</td>
-      <td>0.054944</td>
-      <td>0.062140</td>
+      <th>711843</th>
+      <td>-0.008249</td>
+      <td>0.063755</td>
+      <td>0.126994</td>
+      <td>-0.092499</td>
+      <td>-0.020861</td>
+      <td>0.040122</td>
+      <td>-0.011802</td>
+      <td>0.112867</td>
+      <td>0.091239</td>
+      <td>0.220913</td>
       <td>...</td>
-      <td>0.123059</td>
-      <td>0.047657</td>
-      <td>0.045546</td>
-      <td>0.103016</td>
-      <td>0.048306</td>
-      <td>0.079022</td>
-      <td>0.009628</td>
-      <td>0.062007</td>
-      <td>0.069367</td>
-      <td>0.044329</td>
+      <td>0.091654</td>
+      <td>0.159695</td>
+      <td>0.138023</td>
+      <td>0.149638</td>
+      <td>0.182927</td>
+      <td>0.139039</td>
+      <td>0.065235</td>
+      <td>0.072909</td>
+      <td>0.091071</td>
+      <td>0.003121</td>
     </tr>
     <tr>
-      <th>886828</th>
-      <td>-0.039413</td>
-      <td>0.072797</td>
-      <td>0.097694</td>
-      <td>0.102468</td>
-      <td>0.118119</td>
-      <td>0.064528</td>
-      <td>0.053672</td>
-      <td>0.075071</td>
-      <td>0.084646</td>
-      <td>0.105520</td>
+      <th>877752</th>
+      <td>0.099323</td>
+      <td>0.157354</td>
+      <td>0.138295</td>
+      <td>0.066912</td>
+      <td>0.026505</td>
+      <td>0.054903</td>
+      <td>0.083447</td>
+      <td>0.016898</td>
+      <td>0.030742</td>
+      <td>0.057570</td>
       <td>...</td>
-      <td>0.090455</td>
-      <td>0.224014</td>
-      <td>0.242553</td>
-      <td>0.191569</td>
-      <td>0.211993</td>
-      <td>0.199002</td>
-      <td>-0.010959</td>
-      <td>-0.092745</td>
-      <td>-0.053102</td>
-      <td>0.104108</td>
+      <td>0.176110</td>
+      <td>0.155361</td>
+      <td>0.136552</td>
+      <td>0.135772</td>
+      <td>0.118315</td>
+      <td>0.076072</td>
+      <td>0.076624</td>
+      <td>0.034192</td>
+      <td>0.106340</td>
+      <td>-0.033749</td>
     </tr>
     <tr>
-      <th>91834</th>
-      <td>-0.033609</td>
-      <td>0.063054</td>
-      <td>0.086921</td>
-      <td>0.088090</td>
-      <td>0.102699</td>
-      <td>0.053018</td>
-      <td>-0.012095</td>
-      <td>0.008937</td>
-      <td>0.037402</td>
-      <td>0.070649</td>
+      <th>893992</th>
+      <td>0.060883</td>
+      <td>0.185366</td>
+      <td>0.181319</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>-0.042171</td>
+      <td>0.006978</td>
+      <td>-0.024097</td>
+      <td>0.083744</td>
       <td>...</td>
-      <td>0.004184</td>
-      <td>0.030248</td>
-      <td>0.008860</td>
-      <td>0.042112</td>
-      <td>0.037778</td>
-      <td>0.041405</td>
-      <td>0.038368</td>
-      <td>0.036778</td>
-      <td>0.023238</td>
-      <td>0.044514</td>
+      <td>0.111730</td>
+      <td>0.056623</td>
+      <td>0.090936</td>
+      <td>0.095715</td>
+      <td>0.081656</td>
+      <td>0.048645</td>
+      <td>0.076790</td>
+      <td>0.019669</td>
+      <td>0.096171</td>
+      <td>0.014147</td>
+    </tr>
+    <tr>
+      <th>929839</th>
+      <td>0.113300</td>
+      <td>0.154589</td>
+      <td>0.128334</td>
+      <td>0.110577</td>
+      <td>0.054761</td>
+      <td>0.079504</td>
+      <td>0.041451</td>
+      <td>-0.021822</td>
+      <td>0.023190</td>
+      <td>-0.020874</td>
+      <td>...</td>
+      <td>0.158980</td>
+      <td>0.084819</td>
+      <td>0.113217</td>
+      <td>0.093126</td>
+      <td>0.069919</td>
+      <td>0.016086</td>
+      <td>0.107445</td>
+      <td>0.025646</td>
+      <td>0.126008</td>
+      <td>0.006500</td>
+    </tr>
+    <tr>
+      <th>970921</th>
+      <td>-0.099456</td>
+      <td>0.061653</td>
+      <td>0.176573</td>
+      <td>-0.141868</td>
+      <td>0.021590</td>
+      <td>0.016090</td>
+      <td>-0.070464</td>
+      <td>0.204905</td>
+      <td>0.079126</td>
+      <td>0.257064</td>
+      <td>...</td>
+      <td>0.054041</td>
+      <td>0.166513</td>
+      <td>0.162005</td>
+      <td>0.174918</td>
+      <td>0.177560</td>
+      <td>0.233607</td>
+      <td>0.064337</td>
+      <td>0.035080</td>
+      <td>0.073786</td>
+      <td>-0.056369</td>
     </tr>
     <tr>
       <th>976319</th>
-      <td>-0.028062</td>
-      <td>0.085997</td>
-      <td>0.106836</td>
-      <td>0.127351</td>
-      <td>0.140255</td>
-      <td>0.088474</td>
-      <td>0.032685</td>
-      <td>0.051193</td>
-      <td>0.056083</td>
-      <td>0.063441</td>
+      <td>0.009059</td>
+      <td>0.091198</td>
+      <td>0.138295</td>
+      <td>-0.025575</td>
+      <td>0.026505</td>
+      <td>0.054903</td>
+      <td>-0.012850</td>
+      <td>0.089521</td>
+      <td>0.066595</td>
+      <td>0.132027</td>
       <td>...</td>
-      <td>0.077361</td>
-      <td>0.045531</td>
-      <td>0.042521</td>
-      <td>0.078250</td>
-      <td>0.046043</td>
-      <td>0.061949</td>
-      <td>0.013075</td>
-      <td>0.059786</td>
-      <td>0.003906</td>
-      <td>0.056698</td>
+      <td>0.110690</td>
+      <td>0.197932</td>
+      <td>0.235772</td>
+      <td>0.206467</td>
+      <td>0.177897</td>
+      <td>0.163507</td>
+      <td>0.088268</td>
+      <td>0.084467</td>
+      <td>0.115680</td>
+      <td>0.060980</td>
     </tr>
   </tbody>
 </table>
@@ -3103,8 +2581,8 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Axis 1 is defined by the distance from sample 1095260 to 4108811
-Axis 2 is defined by the distance from sample 4436552 to 4479603
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Axis 1 is defined by the distance from sample 519044 to 4121939
+Axis 2 is defined by the distance from sample 4393400 to 1066621
 </pre></div>
 </div>
 </div>
@@ -3142,34 +2620,34 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
   </thead>
   <tbody>
     <tr>
-      <th>4436552 to 4479603</th>
-      <td>0.170286</td>
-      <td>0.000000</td>
-      <td>inf</td>
+      <th>4393400 to 1066621</th>
+      <td>0.200516</td>
+      <td>0.000840</td>
+      <td>238.613514</td>
     </tr>
     <tr>
-      <th>1095260 to 91834</th>
-      <td>0.272687</td>
-      <td>0.009244</td>
-      <td>29.499736</td>
+      <th>276867 to 458596</th>
+      <td>0.331967</td>
+      <td>0.003641</td>
+      <td>91.163304</td>
     </tr>
     <tr>
-      <th>1095260 to 4349788</th>
-      <td>0.282472</td>
-      <td>0.011204</td>
-      <td>25.210647</td>
+      <th>260809 to 275708</th>
+      <td>0.112554</td>
+      <td>0.002521</td>
+      <td>44.646465</td>
     </tr>
     <tr>
-      <th>4226754 to 4349788</th>
-      <td>0.283359</td>
-      <td>0.011485</td>
-      <td>24.673008</td>
+      <th>4393400 to 4465561</th>
+      <td>0.224789</td>
+      <td>0.006162</td>
+      <td>36.477151</td>
     </tr>
     <tr>
-      <th>297414 to 4298291</th>
-      <td>0.163793</td>
-      <td>0.006723</td>
-      <td>24.364224</td>
+      <th>410048 to 458596</th>
+      <td>0.274262</td>
+      <td>0.014566</td>
+      <td>18.829114</td>
     </tr>
     <tr>
       <th>...</th>
@@ -3178,34 +2656,34 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
       <td>...</td>
     </tr>
     <tr>
-      <th>4408558 to 525942</th>
-      <td>0.109376</td>
-      <td>0.612325</td>
-      <td>0.178623</td>
+      <th>4437190 to 269930</th>
+      <td>0.123872</td>
+      <td>0.595238</td>
+      <td>0.208105</td>
     </tr>
     <tr>
-      <th>535359 to 4108811</th>
-      <td>0.147965</td>
-      <td>0.894958</td>
-      <td>0.165332</td>
+      <th>269930 to 877752</th>
+      <td>0.151899</td>
+      <td>0.730443</td>
+      <td>0.207954</td>
     </tr>
     <tr>
-      <th>260730 to 260790</th>
-      <td>0.106195</td>
-      <td>0.649300</td>
-      <td>0.163553</td>
+      <th>893992 to 929839</th>
+      <td>0.153603</td>
+      <td>0.770308</td>
+      <td>0.199405</td>
     </tr>
     <tr>
-      <th>535359 to 2904927</th>
-      <td>0.142241</td>
-      <td>0.884874</td>
-      <td>0.160748</td>
+      <th>275708 to 276867</th>
+      <td>0.128599</td>
+      <td>0.656863</td>
+      <td>0.195777</td>
     </tr>
     <tr>
-      <th>297414 to 189521</th>
-      <td>0.076923</td>
-      <td>0.504762</td>
-      <td>0.152395</td>
+      <th>4349788 to 65400</th>
+      <td>0.134947</td>
+      <td>0.714006</td>
+      <td>0.189000</td>
     </tr>
   </tbody>
 </table>
@@ -3221,7 +2699,7 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_47_0.png" src="../_images/machine-learning_47_0.png" />
+<img alt="../_images/machine-learning_48_0.png" src="../_images/machine-learning_48_0.png" />
 </div>
 </div>
 <p>This plot illustrates that there is some structure in our dataset. If you look up distances between samples that are closer to each other in space in the scatterplot, those distances on average will be smaller than the distances between samples that are farther apart in the scatterplot. This structure in the dataset is what has been “learned” by the polar ordination algorithm. Notice that the sequence labels were not used at all in this analysis, but if you look up where each sample is found on the plot, and cross-reference that against the sample labels, you’ll discover that samples that cluster together are from the same phylum.</p>
@@ -3232,13 +2710,13 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
                     <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">second_axis_idx</span><span class="p">],</span> 
-                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_49_0.png" src="../_images/machine-learning_49_0.png" />
+<img alt="../_images/machine-learning_50_0.png" src="../_images/machine-learning_50_0.png" />
 </div>
 </div>
 <div class="admonition note">
@@ -3265,12 +2743,12 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">largest_distance_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_axis_summary</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">largest_distance_axis_idx</span><span class="p">],</span> 
-                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_53_0.png" src="../_images/machine-learning_53_0.png" />
+<img alt="../_images/machine-learning_54_0.png" src="../_images/machine-learning_54_0.png" />
 </div>
 </div>
 <p>Now contrast this with what we’d see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by phylum should be much less apparent here.</p>
@@ -3279,12 +2757,12 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">smallest_distance_axis_idx</span> <span class="o">=</span> <span class="n">distance_sorted_axis_summary</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">smallest_distance_axis_idx</span><span class="p">],</span> 
-                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_55_0.png" src="../_images/machine-learning_55_0.png" />
+<img alt="../_images/machine-learning_56_0.png" src="../_images/machine-learning_56_0.png" />
 </div>
 </div>
 <p>As you plot successive axes in an ordination, the axes represent smaller differences between samples. Typically you’ll want to focus on the first few ordination axes to the exclusion of later axes.</p>
@@ -3306,13 +2784,13 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">first_axis_idx</span><span class="p">],</span> 
                     <span class="n">y</span><span class="o">=</span><span class="n">sequence_polar_ordination</span><span class="p">[</span><span class="n">correlated_axis_idx</span><span class="p">],</span> 
-                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_58_0.png" src="../_images/machine-learning_58_0.png" />
+<img alt="../_images/machine-learning_59_0.png" src="../_images/machine-learning_59_0.png" />
 </div>
 </div>
 <p>You can see that we don’t get much additional information from the second axis than we do from the first. In fact, if we drew a line along the diagonal, the placement of points along that line would be almost identical to those that we observed in the strip plot of the first axis that we started with above. The correlated axis isn’t adding much new information to our understanding of the clustering of samples, so we might as well not have it.</p>
@@ -3327,12 +2805,12 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
                               <span class="n">sample_id2</span><span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values_a</span><span class="p">,</span> 
-                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_60_0.png" src="../_images/machine-learning_60_0.png" />
+<img alt="../_images/machine-learning_61_0.png" src="../_images/machine-learning_61_0.png" />
 </div>
 </div>
 <p>Now, let’s reverse the order of the sample ids that we’re providing as input to this function. In practice, this means that the sample that was previously placed at <span class="math notranslate nohighlight">\(0\)</span> will now be placed at <span class="math notranslate nohighlight">\(D\)</span> along this axis, and the sample that was previously placed at <span class="math notranslate nohighlight">\(D\)</span> will now be placed at <span class="math notranslate nohighlight">\(0\)</span> along this axis.</p>
@@ -3343,12 +2821,12 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
                               <span class="n">sample_id1</span><span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">axis1_values_b</span><span class="p">,</span> 
-                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;phylum&#39;</span><span class="p">])</span>
+                  <span class="n">y</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_62_0.png" src="../_images/machine-learning_62_0.png" />
+<img alt="../_images/machine-learning_63_0.png" src="../_images/machine-learning_63_0.png" />
 </div>
 </div>
 <p>Notice that these two plots are mirror images of each other. Because they’re perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn’t impact your results at all (some tools for viewing ordination plots, such as Emperor <span id="id2">[<a class="reference internal" href="#id30"><span>VazquezBPGK13</span></a>]</span>, include functionality that allows the viewer to flip axes if they prefer a particular orientation).</p>
@@ -3365,7 +2843,7 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/skbio/stats/ordination/_principal_coordinate_analysis.py:152: RuntimeWarning: The result contains negative eigenvalues. Please compare their magnitude with the magnitude of some of the largest positive eigenvalues. If the negative ones are smaller, it&#39;s probably safe to ignore them, but if they are large in magnitude, the results won&#39;t be useful. See the Notes section for more details. The smallest eigenvalue is -0.0071246855387334185 and the largest is 0.25953174531757023.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/skbio/stats/ordination/_principal_coordinate_analysis.py:152: RuntimeWarning: The result contains negative eigenvalues. Please compare their magnitude with the magnitude of some of the largest positive eigenvalues. If the negative ones are smaller, it&#39;s probably safe to ignore them, but if they are large in magnitude, the results won&#39;t be useful. See the Notes section for more details. The smallest eigenvalue is -0.01011897193462515 and the largest is 0.2546146466281253.
   RuntimeWarning
 </pre></div>
 </div>
@@ -3380,10 +2858,37 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_66_0.png" src="../_images/machine-learning_66_0.png" />
+<img alt="../_images/machine-learning_67_0.png" src="../_images/machine-learning_67_0.png" />
 </div>
 </div>
 <p>That plot becomes more informative when we integration sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC2&#39;</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_69_0.png" src="../_images/machine-learning_69_0.png" />
+</div>
+</div>
+<p><em>TODO: discuss looking at additional axes and metadata categories.</em></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
+                    <span class="n">y</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC3&#39;</span><span class="p">],</span> 
+                    <span class="n">hue</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine-learning_71_0.png" src="../_images/machine-learning_71_0.png" />
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">sequence_pcoa_ordination</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="s1">&#39;PC1&#39;</span><span class="p">],</span> 
@@ -3394,7 +2899,7 @@ Axis 2 is defined by the distance from sample 4436552 to 4479603
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine-learning_68_0.png" src="../_images/machine-learning_68_0.png" />
+<img alt="../_images/machine-learning_72_0.png" src="../_images/machine-learning_72_0.png" />
 </div>
 </div>
 <div class="admonition-exercise admonition">
@@ -3473,7 +2978,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: C, G, A, T
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: T, C, A, G
 For an alphabet size of 4, W contains 256 length-4 kmers.
 </pre></div>
 </div>
@@ -3510,9 +3015,9 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     <span class="n">Pi</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;P_i&#39;</span>
     
     <span class="c1"># number of times each taxon appears in training set</span>
-    <span class="n">taxon_counts</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">sequence_labels</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">taxon_counts</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">sequence_labels</span><span class="p">)</span>
     <span class="n">taxon_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">taxon_counts</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>
-    <span class="n">taxon_table</span> <span class="o">=</span> <span class="n">taxon_table</span> <span class="o">+</span> <span class="n">feature_table</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">sequence_labels</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">taxon_table</span> <span class="o">=</span> <span class="n">taxon_table</span> <span class="o">+</span> <span class="n">feature_table</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">sequence_labels</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
     <span class="n">taxon_table</span> <span class="o">=</span> <span class="n">taxon_table</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     
     <span class="c1"># probabilities of observing each kmer in each taxon</span>
@@ -3527,7 +3032,7 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_probability_table</span> <span class="o">=</span> <span class="n">compute_kmer_probability_table</span><span class="p">(</span><span class="n">sequence_feature_table</span><span class="p">,</span> <span class="n">sequence_labels</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmer_probability_table</span> <span class="o">=</span> <span class="n">compute_kmer_probability_table</span><span class="p">(</span><span class="n">sequence_feature_table</span><span class="p">,</span> <span class="n">sequence_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">],</span> <span class="n">W</span><span class="p">)</span>
 <span class="n">kmer_probability_table</span><span class="p">[:</span><span class="mi">25</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -3551,35 +3056,35 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea</th>
-      <th>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica</th>
-      <th>k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava</th>
-      <th>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans</th>
-      <th>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri</th>
-      <th>k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes</th>
-      <th>k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii</th>
+      <th>Propionibacterium acnes (Actinobacteria)</th>
+      <th>Prevotella melaninogenica (Bacteroidetes)</th>
+      <th>Prevotella stercorea (Bacteroidetes)</th>
+      <th>Pseudomonas viridiflava (Proteobacteria)</th>
+      <th>Pseudomonas veronii (Proteobacteria)</th>
+      <th>Flavobacterium succinicans (Bacteroidetes)</th>
+      <th>Prevotella copri (Bacteroidetes)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>AAAA</th>
-      <td>0.386574</td>
-      <td>0.386574</td>
-      <td>0.053241</td>
-      <td>0.553241</td>
-      <td>0.386574</td>
-      <td>0.386574</td>
-      <td>0.053241</td>
+      <td>0.377315</td>
+      <td>0.377315</td>
+      <td>0.210648</td>
+      <td>0.377315</td>
+      <td>0.043981</td>
+      <td>0.210648</td>
+      <td>0.210648</td>
     </tr>
     <tr>
       <th>AAAC</th>
-      <td>0.979167</td>
-      <td>0.979167</td>
-      <td>0.312500</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
+      <td>0.974537</td>
+      <td>0.974537</td>
+      <td>0.807870</td>
+      <td>0.307870</td>
+      <td>0.974537</td>
+      <td>0.974537</td>
+      <td>0.974537</td>
     </tr>
     <tr>
       <th>AAAG</th>
@@ -3593,33 +3098,33 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AAAT</th>
-      <td>0.715278</td>
-      <td>0.215278</td>
-      <td>0.048611</td>
-      <td>0.881944</td>
-      <td>0.048611</td>
-      <td>0.048611</td>
-      <td>0.048611</td>
+      <td>0.229167</td>
+      <td>0.062500</td>
+      <td>0.562500</td>
+      <td>0.229167</td>
+      <td>0.229167</td>
+      <td>0.895833</td>
+      <td>0.395833</td>
     </tr>
     <tr>
       <th>AACA</th>
-      <td>0.983796</td>
-      <td>0.817130</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.650463</td>
+      <td>0.969907</td>
+      <td>0.636574</td>
+      <td>0.969907</td>
+      <td>0.636574</td>
+      <td>0.636574</td>
+      <td>0.969907</td>
+      <td>0.969907</td>
     </tr>
     <tr>
       <th>AACC</th>
-      <td>0.956019</td>
-      <td>0.956019</td>
-      <td>0.456019</td>
-      <td>0.622685</td>
-      <td>0.956019</td>
-      <td>0.956019</td>
-      <td>0.289352</td>
+      <td>0.960648</td>
+      <td>0.960648</td>
+      <td>0.960648</td>
+      <td>0.460648</td>
+      <td>0.293981</td>
+      <td>0.793981</td>
+      <td>0.960648</td>
     </tr>
     <tr>
       <th>AACG</th>
@@ -3643,23 +3148,23 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AAGA</th>
-      <td>0.479167</td>
-      <td>0.979167</td>
-      <td>0.812500</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
-      <td>0.979167</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
+      <td>0.821759</td>
+      <td>0.988426</td>
+      <td>0.821759</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
     </tr>
     <tr>
       <th>AAGC</th>
+      <td>0.946759</td>
       <td>0.113426</td>
-      <td>0.280093</td>
+      <td>0.446759</td>
+      <td>0.946759</td>
       <td>0.946759</td>
       <td>0.613426</td>
-      <td>0.946759</td>
-      <td>0.946759</td>
-      <td>0.946759</td>
+      <td>0.780093</td>
     </tr>
     <tr>
       <th>AAGG</th>
@@ -3673,13 +3178,13 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AAGT</th>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.826389</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
     </tr>
     <tr>
       <th>AATA</th>
@@ -3694,12 +3199,12 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     <tr>
       <th>AATC</th>
       <td>0.261574</td>
-      <td>0.761574</td>
-      <td>0.928241</td>
-      <td>0.761574</td>
-      <td>0.094907</td>
+      <td>0.594907</td>
       <td>0.261574</td>
       <td>0.928241</td>
+      <td>0.928241</td>
+      <td>0.928241</td>
+      <td>0.094907</td>
     </tr>
     <tr>
       <th>AATG</th>
@@ -3713,23 +3218,23 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AATT</th>
-      <td>0.590278</td>
-      <td>0.923611</td>
-      <td>0.590278</td>
-      <td>0.923611</td>
-      <td>0.423611</td>
-      <td>0.090278</td>
-      <td>0.256944</td>
+      <td>0.071759</td>
+      <td>0.405093</td>
+      <td>0.238426</td>
+      <td>0.405093</td>
+      <td>0.571759</td>
+      <td>0.905093</td>
+      <td>0.405093</td>
     </tr>
     <tr>
       <th>ACAA</th>
-      <td>0.266204</td>
-      <td>0.099537</td>
-      <td>0.932870</td>
-      <td>0.932870</td>
-      <td>0.432870</td>
-      <td>0.766204</td>
-      <td>0.766204</td>
+      <td>0.937500</td>
+      <td>0.270833</td>
+      <td>0.437500</td>
+      <td>0.937500</td>
+      <td>0.770833</td>
+      <td>0.937500</td>
+      <td>0.104167</td>
     </tr>
     <tr>
       <th>ACAC</th>
@@ -3743,43 +3248,43 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>ACAG</th>
-      <td>0.789352</td>
-      <td>0.622685</td>
-      <td>0.956019</td>
-      <td>0.956019</td>
-      <td>0.622685</td>
-      <td>0.456019</td>
-      <td>0.789352</td>
-    </tr>
-    <tr>
-      <th>ACAT</th>
-      <td>0.979167</td>
-      <td>0.979167</td>
       <td>0.479167</td>
+      <td>0.979167</td>
+      <td>0.979167</td>
+      <td>0.979167</td>
       <td>0.812500</td>
       <td>0.979167</td>
       <td>0.979167</td>
-      <td>0.979167</td>
+    </tr>
+    <tr>
+      <th>ACAT</th>
+      <td>0.974537</td>
+      <td>0.974537</td>
+      <td>0.974537</td>
+      <td>0.474537</td>
+      <td>0.807870</td>
+      <td>0.807870</td>
+      <td>0.974537</td>
     </tr>
     <tr>
       <th>ACCA</th>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.826389</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
     </tr>
     <tr>
       <th>ACCC</th>
-      <td>0.895833</td>
-      <td>0.062500</td>
-      <td>0.062500</td>
-      <td>0.395833</td>
-      <td>0.729167</td>
-      <td>0.229167</td>
-      <td>0.229167</td>
+      <td>0.247685</td>
+      <td>0.581019</td>
+      <td>0.914352</td>
+      <td>0.414352</td>
+      <td>0.081019</td>
+      <td>0.247685</td>
+      <td>0.914352</td>
     </tr>
     <tr>
       <th>ACCG</th>
@@ -3793,23 +3298,23 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>ACCT</th>
-      <td>0.997685</td>
-      <td>0.997685</td>
-      <td>0.997685</td>
-      <td>0.997685</td>
-      <td>0.997685</td>
-      <td>0.997685</td>
-      <td>0.997685</td>
+      <td>0.993056</td>
+      <td>0.826389</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
     </tr>
     <tr>
       <th>ACGA</th>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.650463</td>
-      <td>0.983796</td>
-      <td>0.817130</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
+      <td>0.997685</td>
     </tr>
   </tbody>
 </table>
@@ -3817,33 +3322,35 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
 </div>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_seq_data</span> <span class="o">=</span> <span class="n">load_taxonomy_reference_database</span><span class="p">(</span><span class="n">phyla</span><span class="p">,</span> <span class="n">sequences_per_phylum</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ids_to_exclude</span><span class="o">=</span><span class="n">sequence_labels</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_seq_data</span> <span class="o">=</span> <span class="n">load_annotated_sequences</span><span class="p">(</span><span class="n">taxa_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="n">sequences_per_taxon</span><span class="p">,</span> 
+                                          <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ids_to_exclude</span><span class="o">=</span><span class="n">sequence_labels</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">query_labels</span> <span class="o">=</span> <span class="n">feature_labels_from_sequence_records</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">seq_id</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">query_seq_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">3</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">seq_id</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">[</span><span class="n">seq_id</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">query_seq_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">taxonomy</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;🦠&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>302538
-k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
-AGAGTTTGATCCTGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGAAACGACATCGAAAGCTTGCTTTTGATGGGCGTCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTGCCCACCACTTGGGGATAACCTTGCGAAAGTAAGACTAATACCCAATGATATCTCTAGAAGACATCTGAAAGAGATTAAAGATTTATCGGTGATGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCGACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAGTATTGGTCAATGGGCGAGAGCCTGAACCAGCCAAGTAGCGTGCAGGAAGACGGCCCTATGGGTTGTAAACTGCTTTTATACGGGGATAAAGTGAGTCACGTGTGGCTTATTGCAGGTACCGTATGAATAAGGACCG
-🦠
-89393
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>130002
 k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
-CTTGTACCTGGTGGCTCAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGATAGTGGGGGATAACGTTCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGTGGGGGATCTTCGGACCTCACGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGGGGTAAAGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCATTAACCTAATACGTTGATGTTTTGACGTTCCCGACAGAATAAGCACCGGCTAACTCTGTGCCAGCAGTCGCGGTAATACAGAGGGTGCAAGCGTTAATCGGAATTACTGGGCGTAAAGCGCGCGTA
+ATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGGAGAGCTTGCTCTTCGATTCAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGGTAGTGGGGGACAACGTTTCGAAAGGGACGCTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCAGTAAGCTAATACCTTACTGTTTTGACGTTACCGACAGAATAAGCACCGGCTAACTCTGTGCCAGCAGCCGCGGTAA
 🦠
-269937
-k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
-GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTGCCCTTGTCCATCGGATAACCCGTCGAAAGGCGGCCTAACACGATATGCAGTCCACAGCAGAGGCATCTGACGGCGGACGAGCATGTGAAGGAGAAGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCGACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGGCGAGAGCCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATGCGGGGATAAAGTGAGCCACGTGTGGCTTATTGCAGGTACCGCATGAATAAGGACCGGCTAATTCCGTGCCAGCAGCCGCGGTAATACGGAAGG
+265715
+k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
+ACACATGCAAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGATAGTGGGGGATAACGTCCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGTGGGGGCTCTTCGGACCTCACGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGGGGTAAAGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGTCGTTACCTAATACGTGGCGATTTTGACGTTACCGACAGAATAAGCACCGGCTAACTCTGTGCCAGCAGCCGCGGTAATACAGAGGGTGCAAGCGTTAATC
+🦠
+142888
+k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii
+GAGTTTGATCCTGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGGTAGTGGGGGATAACGTTCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCCATTACCTAATACCTGAAGGTTTTGACCTTACCCACCGAATAAGCACCCGCTAACTCT
 🦠
 </pre></div>
 </div>
@@ -3879,27 +3386,29 @@ GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACG
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_id</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">query_seq_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">[</span><span class="n">query_id</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is predicted to be from the phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_id</span><span class="p">,</span> <span class="n">taxon_assignment</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">random_sequence_record_choice</span><span class="p">(</span><span class="n">sequence_records</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sequence_records</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
+<span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is predicted to be from the taxon </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">taxon_assignment</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 272189 is predicted to be from the phylum k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 265715 is predicted to be from the taxon Pseudomonas veronii (Proteobacteria).
 </pre></div>
 </div>
 </div>
 </div>
-<p>Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is known to be from the phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_id</span><span class="p">,</span> <span class="n">query_seq_data</span><span class="p">[</span><span class="n">query_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is known to be from the phylum </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">query_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 272189 is known to be from the phylum k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 265715 is known to be from the phylum Pseudomonas viridiflava (Proteobacteria).
 </pre></div>
 </div>
 </div>
@@ -3944,18 +3453,16 @@ GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACG
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_id</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">query_seq_data</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">[</span><span class="n">query_id</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
+<span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">taxon_assignment</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.61
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prevotella melaninogenica (Bacteroidetes)
+0.84
 </pre></div>
 </div>
 </div>
@@ -3968,8 +3475,9 @@ GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACG
 <span class="n">incorrect_assignment_confidences</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="p">(</span><span class="n">known_taxonomy</span><span class="p">,</span> <span class="n">seq</span><span class="p">)</span> <span class="ow">in</span> <span class="n">query_seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">query_sr</span> <span class="ow">in</span> <span class="n">query_seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">known_taxonomy</span> <span class="o">=</span> <span class="n">query_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span>
     <span class="n">correct_assignment</span> <span class="o">=</span> <span class="n">known_taxonomy</span> <span class="o">==</span> <span class="n">predicted_taxonomy</span>
     <span class="k">if</span> <span class="n">correct_assignment</span><span class="p">:</span>
         <span class="n">correct_assignment_confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
@@ -4010,247 +3518,247 @@ GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACG
   <tbody>
     <tr>
       <th>0</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.50</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.95</td>
       <td>True</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.65</td>
-      <td>False</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.55</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.58</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.65</td>
       <td>True</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.55</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.87</td>
       <td>True</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.46</td>
-      <td>False</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.87</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.73</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.57</td>
       <td>True</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.63</td>
-      <td>True</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.46</td>
+      <td>False</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.93</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.92</td>
       <td>True</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.84</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.53</td>
       <td>True</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.56</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.91</td>
       <td>True</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.71</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.49</td>
       <td>True</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.45</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.20</td>
       <td>True</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.54</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.51</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.48</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>0.82</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>0.86</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>0.68</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>0.71</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Flavobacteriia...</td>
-      <td>0.81</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.55</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.77</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.36</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.78</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o_...</td>
-      <td>0.86</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>0.39</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>0.57</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>0.97</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>0.75</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>k__Bacteria;p__Actinobacteria;c__Actinobacteri...</td>
-      <td>0.83</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.57</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.60</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>32</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
       <td>0.58</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>33</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
+      <th>13</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.34</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.54</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.96</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.70</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.54</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.78</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
       <td>0.60</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.70</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.75</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.77</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.57</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.76</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.70</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.71</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.87</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.91</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.88</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.52</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.91</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.61</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.61</td>
       <td>True</td>
     </tr>
     <tr>
       <th>34</th>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>k__Bacteria;p__Proteobacteria;c__Gammaproteoba...</td>
-      <td>0.53</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.76</td>
       <td>True</td>
     </tr>
   </tbody>
@@ -4286,11 +3794,141 @@ GCTTAACACATGCAAGTACGAGGGGCAGCATGACGGAAGCTTGCTATTGTTGATGGCGACCGGCGCACGGGTGAGTAACG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fe6e94f3128&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fc53eacb898&gt;
 </pre></div>
 </div>
-<img alt="../_images/machine-learning_90_1.png" src="../_images/machine-learning_90_1.png" />
+<img alt="../_images/machine-learning_94_1.png" src="../_images/machine-learning_94_1.png" />
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">confusion_matrix</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Predicted taxonomy&#39;</span><span class="p">)[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">confusion_matrix</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+<span class="n">confusion_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Predicted taxonomy&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">],</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">confusion_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="7" halign="left">count</th>
+    </tr>
+    <tr>
+      <th>Known taxonomy</th>
+      <th>Flavobacterium succinicans (Bacteroidetes)</th>
+      <th>Prevotella copri (Bacteroidetes)</th>
+      <th>Prevotella melaninogenica (Bacteroidetes)</th>
+      <th>Prevotella stercorea (Bacteroidetes)</th>
+      <th>Propionibacterium acnes (Actinobacteria)</th>
+      <th>Pseudomonas veronii (Proteobacteria)</th>
+      <th>Pseudomonas viridiflava (Proteobacteria)</th>
+    </tr>
+    <tr>
+      <th>Predicted taxonomy</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Flavobacterium succinicans (Bacteroidetes)</th>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Prevotella copri (Bacteroidetes)</th>
+      <td>0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Prevotella melaninogenica (Bacteroidetes)</th>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Prevotella stercorea (Bacteroidetes)</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Propionibacterium acnes (Actinobacteria)</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Pseudomonas veronii (Proteobacteria)</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Pseudomonas viridiflava (Proteobacteria)</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
 <div class="admonition-exercise admonition">
