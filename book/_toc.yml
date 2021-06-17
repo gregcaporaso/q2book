@@ -1,12 +1,12 @@
-# Table of contents
-- file: front-matter/preface
+format: jb-book
+root: front-matter/preface
+parts:
+- caption: Front Matter
   numbered: true
-
-- part: Front Matter
   chapters:
   - file: front-matter/reading
-
-- part: Microbiome Bioinformatics with QIIME 2
+- caption: Microbiome Bioinformatics with QIIME 2
+  numbered: true
   chapters:
   - file: using/getting-started
   - file: using/interactive-introduction
@@ -18,19 +18,19 @@
   - file: using/alpha-diversity
   - file: using/beta-diversity
   - file: using/feature-table-normalization
-
-- part: Understanding the algorithms
-  chapters: 
+- caption: Understanding the algorithms
+  numbered: true
+  chapters:
   - file: algorithms/pairwise-alignment
   - file: algorithms/database-searching
   - file: algorithms/machine-learning
-
-- part: Developing with QIIME 2
-  chapters: 
+- caption: Developing with QIIME 2
+  numbered: true
+  chapters:
   - file: developing/getting-started
   - file: developing/first-plugin
-
-- part: Back Matter
+- caption: Back Matter
+  numbered: true
   chapters:
   - file: back-matter/importing-examples
   - file: back-matter/biological-information
