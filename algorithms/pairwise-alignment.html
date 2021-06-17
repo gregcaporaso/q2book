@@ -507,7 +507,7 @@
                 
   <div class="section" id="pairwise-sequence-alignment">
 <span id="pairwise-alignment"></span><h1><span class="section-number">1. </span>Pairwise sequence alignment<a class="headerlink" href="#pairwise-sequence-alignment" title="Permalink to this headline">¶</a></h1>
-<p>One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology <span id="id1">[<a class="reference internal" href="#id22"><span>AGM+90</span></a>]</span>. In this chapter we’ll explore why determining biological sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
+<p>One of the most fundamental problems in bioinformatics is determining how similar a pair of biological sequences are. There are many applications for this, including inferring the biological function of a new protein sequence, the source organism of an observed DNA sequence, and performing molecular phylogenetics to develop hypotheses about the relatedness of organisms. On the surface this seems like a pretty straight-forward problem, not one that would have been at the center of decades of research and the subject of one of the most cited papers in modern biology <span id="id1">[<a class="reference internal" href="#id22">AGM+90</a>]</span>. In this chapter we’ll explore why determining biological sequence similarity is harder than it might initially seem, and learn about <em>pairwise sequence alignment</em>, the standard approach for determining sequence similarity.</p>
 <p>Imagine you have three protein sequences - call them <code class="docutils literal notranslate"><span class="pre">r1</span></code>and <code class="docutils literal notranslate"><span class="pre">r2</span></code> (<em>r</em> is for <em>reference</em>) and <code class="docutils literal notranslate"><span class="pre">q1</span></code> (<em>q</em> is for <em>query</em>) - and you want to know whether <code class="docutils literal notranslate"><span class="pre">q1</span></code> is more similar to <code class="docutils literal notranslate"><span class="pre">r1</span></code> or <code class="docutils literal notranslate"><span class="pre">r2</span></code>. On the surface, it seems like you could just count the number of positions where they differ (i.e., compute the <a class="reference external" href="http://en.wikipedia.org/wiki/Hamming_distance">Hamming distance</a> between them) to figure this out. Here’s what this would look like using an implementation of Hamming distance from the SciPy Python library.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
@@ -1054,15 +1054,15 @@ M-LTDAEKKEVTALWGKAAGHGEEYGAEALERLFQAFPTTKTYFSHFDLSHGSAQIKAHGKKVADALSTAAGHFDDMDSA
 </div>
 </div>
 </div>
-<p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s <span id="id2">[<a class="reference internal" href="#id23"><span>MOD78</span></a>]</span> and by Steven Henikoff and Jorja Henikoff in the early 1990s <span id="id3">[<a class="reference internal" href="#id24"><span>HH92</span></a>]</span>. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) <span id="id4">[<a class="reference internal" href="#id25"><span>Edd04</span></a>]</span> presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We’ll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.</p>
+<p>Early work on defining protein substitution matrices was performed by Margaret Dayhoff in the 1970s <span id="id2">[<a class="reference internal" href="#id23">MOD78</a>]</span> and by Steven Henikoff and Jorja Henikoff in the early 1990s <span id="id3">[<a class="reference internal" href="#id24">HH92</a>]</span>. Briefly, these matrices are often defined empirically, by aligning sequences manually or through automated systems, and counting how frequent certain substitutions are. Eddy (2004) <span id="id4">[<a class="reference internal" href="#id25">Edd04</a>]</span> presents a discussion on the source of the widely used substitution matrices by Sean Eddy. We’ll work with the BLOSUM 50 substitution matrix for the remainder of this chapter.</p>
 </div>
 <div class="section" id="a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm">
 <span id="nw-alignment"></span><h2><span class="section-number">1.4. </span>A better approach for global pairwise alignment using the Needleman-Wunsch algorithm<a class="headerlink" href="#a-better-approach-for-global-pairwise-alignment-using-the-needleman-wunsch-algorithm" title="Permalink to this headline">¶</a></h2>
-<p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 <span id="id5">[<a class="reference internal" href="#id26"><span>NW70</span></a>]</span>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
+<p>We’re next going to work through the standard algorithm for aligning a pair of biological sequences. This algorithm was originally published by Saul B. Needleman and Christian D. Wunsch in 1970 <span id="id5">[<a class="reference internal" href="#id26">NW70</a>]</span>, and is therefore referred to as <em>Needleman-Wunsch alignment</em>. This performs what is known as <em>global alignment</em>, meaning that both sequences are aligned from their first amino acid residue (or base) through their last amino acid residue (or base). We’ll contrast this later in this chapter with local alignment.</p>
 <div class="section" id="stepwise-needleman-wunsch-alignment">
 <h3><span class="section-number">1.4.1. </span>Stepwise Needleman-Wunsch alignment<a class="headerlink" href="#stepwise-needleman-wunsch-alignment" title="Permalink to this headline">¶</a></h3>
 <p>Needleman-Wunsch alignment is similar to the approach that we explored above. We’ll work through the steps of the algorithm first, and then automate the process by defining Python functions that perform the steps for us given a pair of sequences.</p>
-<p>We’ll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we’re starting with are the same that are used in Chapter 2 of <em>Biological Sequence Analysis</em> <span id="id6">[<a class="reference internal" href="#id27"><span>Dur98</span></a>]</span>.</p>
+<p>We’ll define two protein sequences to work with in this section. After working through this section, come back to this cell and change these protein sequences to explore how it changes the process. Make some small changes and some large changes to the protein sequences. The sequences that we’re starting with are the same that are used in Chapter 2 of <em>Biological Sequence Analysis</em> <span id="id6">[<a class="reference internal" href="#id27">Dur98</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skbio</span> <span class="kn">import</span> <span class="n">Protein</span>
@@ -1750,7 +1750,7 @@ HEAGAWGHE-E
 </div>
 <div class="section" id="smith-waterman-local-sequence-alignment">
 <h2><span class="section-number">1.6. </span>Smith-Waterman local sequence alignment<a class="headerlink" href="#smith-waterman-local-sequence-alignment" title="Permalink to this headline">¶</a></h2>
-<p>The algorithm that is most commonly used for performing local alignment was originally published by Temple F. Smith and Michael S. Waterman (1981) <span id="id7">[<a class="reference internal" href="#id28"><span>SW81</span></a>]</span>, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.</p>
+<p>The algorithm that is most commonly used for performing local alignment was originally published by Temple F. Smith and Michael S. Waterman (1981) <span id="id7">[<a class="reference internal" href="#id28">SW81</a>]</span>, and is therefore referred to as Smith-Waterman alignment. In terms of the resulting alignment, the difference between Smith-Waterman and Needleman-Wunsch is that the aligned sequences in Smith-Waterman can be a subsequence of one or both of the unaligned (input) sequences. In Needleman-Wunsch alignment, the aligned sequences will be full-length with respect to the unaligned sequences.</p>
 <p>Algorithmically, Smith-Waterman is nearly identical to Needleman-Wunsch, with three small but important differences. We’ll now work through Smith-Waterman alignment following the same steps that we followed for Needleman-Wunsch, and look at the differences as we go. We’ll redefine our two sequences to align here. As you did for Needleman-Wunsch, after working through this example with these sequences, come back here and experiment with different sequences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2181,7 +2181,7 @@ HEAGAWGHEE-
 </div>
 <div class="section" id="differential-scoring-of-gaps">
 <h2><span class="section-number">1.7. </span>Differential scoring of gaps<a class="headerlink" href="#differential-scoring-of-gaps" title="Permalink to this headline">¶</a></h2>
-<p>The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn’t ideal based on what we know about how insertion/deletion events occur (see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK21114/">this discussion of replication slippage</a> <span id="id11">[<a class="reference internal" href="#id29"><span>Bro02</span></a>]</span> if you’re not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as <em>affine gap scoring</em>.</p>
+<p>The second limitation of the our simple alignment algorithm (which we discussed way back at the beginning of this chapter, and one that is also present in the versions of Needleman-Wunsch and Smith-Waterman implemented above, is that all gaps are scored equally whether they represent the opening of a new insertion/deletion, or the extension of an existing insertion/deletion. This isn’t ideal based on what we know about how insertion/deletion events occur (see <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK21114/">this discussion of replication slippage</a> <span id="id11">[<a class="reference internal" href="#id29">Bro02</a>]</span> if you’re not familiar with the biological process that is thought to lead to small insertions as deletions). Instead, we might want to incur a large penalty for opening a gap, but a smaller penalty for extending an existing gap. This is referred to as <em>affine gap scoring</em>.</p>
 <p>To score gap extensions differently from gap creations (or gap opens), we need to modify the terms corresponding to the addition of gaps in our scoring function. When we compute the score corresponding to a gap in our alignment (i.e., where we’d insert either a ↑ or a ← in <span class="math notranslate nohighlight">\(T\)</span>), we should incur a <em>gap extension penalty</em> if the value in <span class="math notranslate nohighlight">\(T\)</span> that the new arrow will point to is the same type of arrow. Otherwise, we should incur the <em>gap open penalty</em>. If we represent our gap open penalty as <span class="math notranslate nohighlight">\(d^0\)</span>, and our gap extend penalty as <span class="math notranslate nohighlight">\(d^e\)</span>, our scoring scheme would look now like the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -2400,7 +2400,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>148 ms ± 2.31 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>96.7 ms ± 786 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
@@ -2415,7 +2415,7 @@ HEAGAWGFHEE-
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>587 µs ± 11.1 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>403 µs ± 5.01 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div>
 </div>
 </div>
@@ -2495,10 +2495,10 @@ GGTCTTC---AGGCTTTCATCGGGAACGGCAT---CTCTGAGTTACTAC
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GGCACACGTT
-TGGTCGAGCC
-CCGAATCATAGATAACATATCGACA
-CCCTCAGGCTAATGCCTCGATTGCCATCGAGGGTCGTGTGTCTTCTACGT
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CCAGCTACGA
+AATCCGAGGC
+CTCCATATACGTGGCTTCAGTAGGG
+TGAAGATGGACAGTACTCTTATGAGATCACATAGCATGACCACAAATATC
 </pre></div>
 </div>
 </div>
@@ -2567,32 +2567,32 @@ CCCTCAGGCTAATGCCTCGATTGCCATCGAGGGTCGTGTGTCTTCTACGT
     <tr>
       <th>0</th>
       <td>5000.0</td>
-      <td>0.219232</td>
+      <td>0.181738</td>
     </tr>
     <tr>
       <th>1</th>
       <td>25000.0</td>
-      <td>1.341725</td>
+      <td>1.067699</td>
     </tr>
     <tr>
       <th>2</th>
       <td>45000.0</td>
-      <td>2.997162</td>
+      <td>2.329293</td>
     </tr>
     <tr>
       <th>3</th>
       <td>65000.0</td>
-      <td>5.148932</td>
+      <td>3.690398</td>
     </tr>
     <tr>
       <th>4</th>
       <td>85000.0</td>
-      <td>8.088925</td>
+      <td>5.387297</td>
     </tr>
     <tr>
       <th>5</th>
       <td>105000.0</td>
-      <td>11.330829</td>
+      <td>7.399289</td>
     </tr>
   </tbody>
 </table>
@@ -2617,7 +2617,7 @@ CCCTCAGGCTAATGCCTCGATTGCCATCGAGGGTCGTGTGTCTTCTACGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fc39fe17898&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1e2841e8d0&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_98_1.png" src="../_images/pairwise-alignment_98_1.png" />
@@ -2641,7 +2641,7 @@ CCCTCAGGCTAATGCCTCGATTGCCATCGAGGGTCGTGTGTCTTCTACGT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fc39fde2898&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1e2837cc88&gt;
 </pre></div>
 </div>
 <img alt="../_images/pairwise-alignment_100_1.png" src="../_images/pairwise-alignment_100_1.png" />

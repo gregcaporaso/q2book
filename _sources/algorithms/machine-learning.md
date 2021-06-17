@@ -101,9 +101,9 @@ import random
 
 In this chapter, we'll work with 16S rRNA data [as we did previously](load-qdr). Specifically, we'll load sequences from the Greengenes database and construct a feature table from them. We'll use this feature table in an unsupervised learning task and a supervised learning task. We'll also load labels for the sequences which we'll primarily use in our supervised learning task, but which we'll also use to aid in interpretation in our unsupervised learning task. 
 
-Our goal with these tasks will be to explore phylum-level taxonomy of a few microbial phyla based on sequence data. In our unsupervised learning task, we'll determine if samples (i.e., sequences) coming from the same phyla appear to generally be more similar to each other than samples coming from different phyla. In our supervised learning task, we'll determine if we can develop a classifier to predict microbial phylum from an unlabeled sequence. 
+Our goal with these tasks will be to explore species-level taxonomy of a few microbial species based on sequence data. In our unsupervised learning task, we'll determine if samples (i.e., sequences) coming from the same species appear to generally be more similar to each other than samples coming from different species. In our supervised learning task, we'll determine if we can develop a classifier to predict microbial species from an unlabeled sequence. 
 
-Let's start by loading five sequences from each of five specific microbial phyla from Greengenes.
+Let's start by loading five sequences from each of five specific microbial species from Greengenes.
 
 ```{code-cell} ipython3
 import collections
@@ -176,7 +176,7 @@ def load_annotated_sequences(taxa_of_interest, class_size=None, sequence_length=
     return result
 ```
 
-(ml:define-sequences-per-phylum)=
+(ml:define-sequences-per-speciesm)=
 
 ```{code-cell} ipython3
 taxa_of_interest = {
@@ -193,7 +193,7 @@ sequences_per_taxon = 5
 seq_data = load_annotated_sequences(taxa_of_interest, class_size=sequences_per_taxon)
 ```
 
-We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source phylum for the sequence record, and a 16S rRNA sequence.
+We can look at a few randomly selected records from the data that was just compiled as follows. For each, we have a unique identifier, the source species for the sequence record, and a 16S rRNA sequence.
 
 ```{code-cell} ipython3
 for sr in random.sample(list(seq_data.values()), 3):
@@ -203,7 +203,7 @@ for sr in random.sample(list(seq_data.values()), 3):
     print('🦠')
 ```
 
-The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let's set $k=7$, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you've finished reading this chapter.
+The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let's set $k=4$, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you've finished reading this chapter.
 
 (ml:define-k)=
 
@@ -226,7 +226,7 @@ sequence_feature_table = feature_table_from_sequence_records(seq_data, k)
 sequence_feature_table[:12]
 ```
 
-As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the phylum that each sequence was identified in. We'll next compile our sample label vector.
+As mentioned above, supervised learning tasks also require labels. In this example, the labels will be the species that each sequence was identified in. We'll next compile our sample label vector.
 
 ```{code-cell} ipython3
 def feature_labels_from_sequence_records(sequence_records):
@@ -430,9 +430,9 @@ _ = sns.scatterplot(x=sequence_polar_ordination[first_axis_idx],
                     y=sequence_polar_ordination[second_axis_idx])
 ```
 
-This plot illustrates that there is some structure in our dataset. If you look up distances between samples that are closer to each other in space in the scatterplot, those distances on average will be smaller than the distances between samples that are farther apart in the scatterplot. This structure in the dataset is what has been "learned" by the polar ordination algorithm. Notice that the sequence labels were not used at all in this analysis, but if you look up where each sample is found on the plot, and cross-reference that against the sample labels, you'll discover that samples that cluster together are from the same phylum. 
+This plot illustrates that there is some structure in our dataset. If you look up distances between samples that are closer to each other in space in the scatterplot, those distances on average will be smaller than the distances between samples that are farther apart in the scatterplot. This structure in the dataset is what has been "learned" by the polar ordination algorithm. Notice that the sequence labels were not used at all in this analysis, but if you look up where each sample is found on the plot, and cross-reference that against the sample labels, you'll discover that samples that cluster together are from the same species. 
 
-When labels are available for a collection of samples, labels can be used with an ordination plot to explore whether samples cluster by sample label. This is often achieved by coloring the points in a scatterplot by their label. We can do this for our sequence ordination as follows. Notice that the colors (the microbial phyla represented in our dataset) group together.
+When labels are available for a collection of samples, labels can be used with an ordination plot to explore whether samples cluster by sample label. This is often achieved by coloring the points in a scatterplot by their label. We can do this for our sequence ordination as follows. Notice that the colors (the microbial species represented in our dataset) group together.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -461,7 +461,7 @@ For example, let's focus on just a single axis again. We can sort our axis summa
 distance_sorted_axis_summary = axis_summaries.sort_values(by='maximum distance', ascending=True)
 ```
 
-First, we'll plot our samples along the axis representing the largest distance and we'll separate the samples by phylum so we can see how their placement along the axes we define differ. You should notice here that the samples within each phylum roughly group together, and there may even be some separation of phyla on the axis.
+First, we'll plot our samples along the axis representing the largest distance and we'll separate the samples by species so we can see how their placement along the axes we define differ. You should notice here that the samples within each species roughly group together, and there may even be some separation of species on the axis.
 
 ```{code-cell} ipython3
 largest_distance_axis_idx = distance_sorted_axis_summary.index[-1]
@@ -469,7 +469,7 @@ _ = sns.stripplot(x=sequence_polar_ordination[largest_distance_axis_idx],
                   y=sequence_labels['legend entry'])
 ```
 
-Now contrast this with what we'd see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by phylum should be much less apparent here.
+Now contrast this with what we'd see if we generated this same plot, but based on the smallest distance in the distance matrix rather than the largest. Clustering of samples by species should be much less apparent here.
 
 ```{code-cell} ipython3
 smallest_distance_axis_idx = distance_sorted_axis_summary.index[0]
@@ -525,7 +525,7 @@ _ = sns.stripplot(x=axis1_values_b,
                   y=sequence_labels['legend entry'])
 ```
 
-Notice that these two plots are mirror images of each other. Because they're perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn't impact your results at all (some tools for viewing ordination plots, such as Emperor {cite}`Vazquez-Baeza2013-ss`, include functionality that allows the viewer to flip axes if they prefer a particular orientation). 
+Notice that these two plots are mirror images of each other. Because they're perfectly anti-correlated, they present identical information about the grouping of the samples. This will be true for any axis in our ordination, and for this reason the directionality of the axes in an ordination is not meaningful. You can always flip an axis and have the same result. You may also notice that if you run the same ordination multiple times, the directionality of the axes might change across runs. This is typically a result of how the algorithm is implemented, and it doesn't impact your results at all. 
 
 ### Principle Coordinates Analysis (PCoA)
 
@@ -543,7 +543,7 @@ _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'],
                     y=sequence_pcoa_ordination.samples['PC2'])
 ```
 
-That plot becomes more informative when we integration sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.
+That plot becomes more informative when we integrate sample labels, but like polar ordination, those sample labels were not used in the PCoA computation.
 
 ```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
@@ -552,7 +552,16 @@ _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'],
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
-_TODO: discuss looking at additional axes and metadata categories._
+PCoA (and other) ordination plots are often used in exploratory analysis, for example to see if sample similarity is associated with categories of metadata. This can be achieved by altering the metadata category that is used to define the coloring of samples in the plot. For example, in the following plot samples are colored by phlyum. Comparing this with the plot above, where samples are colored by genus and species, illustrates that samples cluster more distinctly by phylum than by species. 
+
+```{code-cell} ipython3
+_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
+                    y=sequence_pcoa_ordination.samples['PC2'], 
+                    hue=sequence_labels['phylum'])
+_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```
+
+While in the examples presented here we have looked at the first two ordination axes, ordination methods typically generate many axes. The exact number of axes differs by method, but it's generally a function of the number of samples in the analysis. Ordination axes are typically ordered by the amount of variation in the data that is explained, so the first axis explains more varation than the second; the second axis explains more variation than the third; and so on. For that reason, visualization of ordination plots typically focus on the first two or three axes. It's possible to view additional axes however, and these may illustrate different patterns in your data. Typically however you will want to focus on the first few axes as the latter axis may be misleading if they explain relatively small amounts of variation. The following plot illustrates PCoA axis 1 versus PCoA axis 3, where the previous plots illustrate PCoA axis 1 versus PCoA axis 2.
 
 ```{code-cell} ipython3
 _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
@@ -561,12 +570,11 @@ _ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'],
 _ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ```
 
-```{code-cell} ipython3
-_ = sns.scatterplot(x=sequence_pcoa_ordination.samples['PC1'], 
-                    y=sequence_pcoa_ordination.samples['PC2'], 
-                    hue=sequence_labels['phylum'])
-_ = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+```{warning}
+Exploratory analysis of ordination data does not replace statistical comparisons of sample composition, and identifying a pattern in an ordination plot and subsequently testing whether it's significant is not the same as having an a priori hypothesis about how your samples will group and then testing for that statistically. If you have many metadata categories, and especially if you have relatively few samples, it's likely that spurious patterns may present themselves. **You should consider observations that result from exploratory analysis of ordination plots as hypotheses that can subsequntly be tested with different data.** Remember: exploratory analysis is a tool for hypothesis generation, and hypotheses generation and hypothesis testing cannot be performed on the same data.
 ```
+
+Emperor {cite}`Vazquez-Baeza2013-ss` is a widely used tool for visualizing ordination plots, and it makes interactive exploratory analysis of PCoA plots very straight-forward. For example, coloring samples by different metadata categories, comparing different ordination axes, and inverting ordination axes are all possible to do with a few mouse clicks. Emperor is a great place to get started when doing your own exploratory analysis of ordination plots. 
 
 ```{admonition} Exercise
 How does the clustering of samples compare between polar ordination and PCoA?
@@ -586,13 +594,13 @@ In a classification task, there are two or more pre-defined classes, and the goa
 
 When we're working with large data sets, supervised classification algorithms can help us with classification tasks that will make us more efficient or help us understand our data. A classic example of this outside of bioinformatics is an email spam filter. For every email that is received, the spam filter must define it as spam or not spam so the message can directed either to the user's spam folder or the user's inbox. The stakes can be high: a filter that is too permissive will cause the user's inbox to get filled with junk mail, while a filter that is overly restrictive could cause relevant messages to be directed to the spam folder. In either case, the email user could miss important messages.
 
-In the taxonomic assignment example that we'll work through in this chapter, our classes will be microbial phylum. Our phylum classifier for 16S rRNA sequences will take an unannotated sequence as input and as output present the phylum that the sequence most likely originated from.
+In the taxonomic assignment example that we'll work through in this chapter, our classes will be microbial species. Our species classifier for 16S rRNA sequences will take an unannotated sequence as input and as output present the species that the sequence most likely originated from.
 
 ### Training data, test data, and cross-validation
 
-Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the phylum assignment example, this would be 16S sequences that are taxonomically annotated at the phylum level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
+Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the species assignment example, this would be 16S sequences that are taxonomically annotated at the species level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
 
-In addition to the training data, an independent collection of observations with defined classes is needed as **test data**. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on **real world** data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the phylum assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn't be used for optimization of classifiers: in other words, you shouldn't develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk **over-fitting** the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data. 
+In addition to the training data, an independent collection of observations with defined classes is needed as **test data**. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on **real world** data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the species assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn't be used for optimization of classifiers: in other words, you shouldn't develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk **over-fitting** the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data. 
 
 Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach call **k-fold cross validation** during classifier development and optimization {numref}`cross-validation-1`. In k-fold cross-validation, the training data is split into `k` different data sets, where `k` is usually five or ten. In each of the data sets, $1/k$ of the entries are used as test data and all of the other entries are used as training data. In `k` iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the `k` iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.
 
@@ -673,11 +681,11 @@ print('For an alphabet size of %d, W contains %d length-%d kmers.' % (len(alphab
 ```{admonition} Exercise
 Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 5-mers are there? How many 5-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?
 ```
-<!-- Pick up here with text; need to adapt all text to refer to species rather than phylum assignment (or maybe "taxa" more generically -->
+<!-- Pick up here with text; may need additional edits to reflect the phylum to species change -->
 
 +++
 
-To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Let's start classifying at the phylum level to keep our task simple, since we're working with a small subset of the reference database here. In Greengenes, phylum is the second level of the taxonomy.
+To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. 
 
 Next, how long should our kmers be? We don't have a good idea of this to start with. The longer our kmers, the more likely they are to be specific to certain taxa, which is good because that will help with classification. However, if they get too long it becomes less likely that we'll observe those kmers in sequences that aren't represented in our database because the longer the sequence is the more likely we are to see variation across other organisms that are assigned to the same taxonomy. Based on some of my own work in this area, I'll start us out with 7-mers (i.e., kmers of length 7).
 
@@ -735,7 +743,7 @@ kmer_probability_table[:25]
 ```
 
 ```{raw-cell}
-This kmer probability table represents our kmer-based models of the phyla in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the phyla represented in this table.
+This kmer probability table represents our kmer-based models of the species in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the species represented in this table.
 
 ### Applying a Naive Bayes classifier 
 
@@ -799,7 +807,7 @@ Since we know the actual taxonomy assignment for this sequence, we can look that
 ```
 
 ```{code-cell} ipython3
-print("Sequence %s is known to be from the phylum %s." % (query_sr.identifier, query_labels['legend entry'][query_sr.identifier]))
+print("Sequence %s is known to be from the species %s." % (query_sr.identifier, query_labels['legend entry'][query_sr.identifier]))
 ```
 
 ```{admonition} Exercise
