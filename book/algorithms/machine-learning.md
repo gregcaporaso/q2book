@@ -203,7 +203,9 @@ for sr in random.sample(list(seq_data.values()), 3):
     print('🦠')
 ```
 
-The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let's set $k=4$, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you've finished reading this chapter.
+The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. We don't necessarily know how long our k-mers should be (i.e., what value `k` should be set to) however. The longer our kmers, the more likely they are to be specific to certain taxa, which is helpful for machine learning tasks. However, if they get too long it becomes less likely that we'll observe those kmers in other sequences because the longer a k-mer sequence is, the more likely we are to see variation across closely related organisms. This is a problem for machine learning tasks, because we need to identify features that are shared among related samples.
+
+ Let's set $k=4$, and use k-mers as the features that will define our sequence records for the examples in this chapter. I chose this value of $k$ for our work here based on experimentation with multiple Greengenes subsamples. The features could be based on different values of $k$, or other features of sequences that you identify. If you have ideas about other values that you could compute from these sequences, come back here and try it out after you've finished reading this chapter.
 
 (ml:define-k)=
 
@@ -529,7 +531,7 @@ Notice that these two plots are mirror images of each other. Because they're per
 
 ### Principle Coordinates Analysis (PCoA)
 
-Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinations analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.
+Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinates analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.
 
 ```{code-cell} ipython3
 import skbio.stats.ordination
@@ -598,11 +600,11 @@ In the taxonomic assignment example that we'll work through in this chapter, our
 
 ### Training data, test data, and cross-validation
 
-Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the species assignment example, this would be 16S sequences that are taxonomically annotated at the species level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
+Supervised classification algorithms need to be provided with data that is used to develop a model for use in classification. Developing this model is referred to as training the classifier. The data that is used for this is a collection of observations with defined classes, and is referred to as the **training data**. These labeled examples are the "supervision" aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the species assignment example, this would be 16S sequences that are taxonomically annotated at the species level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.
 
 In addition to the training data, an independent collection of observations with defined classes is needed as **test data**. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on **real world** data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the species assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn't be used for optimization of classifiers: in other words, you shouldn't develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk **over-fitting** the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data. 
 
-Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach call **k-fold cross validation** during classifier development and optimization {numref}`cross-validation-1`. In k-fold cross-validation, the training data is split into `k` different data sets, where `k` is usually five or ten. In each of the data sets, $1/k$ of the entries are used as test data and all of the other entries are used as training data. In `k` iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the `k` iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.
+Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach called **k-fold cross validation** during classifier development and optimization {numref}`cross-validation-1`. In k-fold cross-validation, the training data is split into `k` different data sets, where `k` is usually five or ten. In each of the data sets, $1/k$ of the entries are used as test data and all of the other entries are used as training data. In `k` iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the `k` iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.
 
 ```{figure} ./images/ml-cross-validation.png
 ---
@@ -656,15 +658,13 @@ Precision thus tells us how frequently our classifier yields false positives, wh
 
 ### Naive Bayes classifiers
 
-
-
-In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we'll train Naive Bayes classifiers to do this by building {ref}`kmer <kmer>`-based models of the 16S sequences of taxa in our reference database. We'll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown. 
+In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we'll train Naive Bayes classifiers to do this by building {ref}`kmer <kmer>`-based models of the 16S sequences of taxa in our training data. We'll then run test sequences through those models to identify the most likely taxonomic origin of each test sequence. Since we know the taxonomic origin of our test sequences, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown. 
 
 ### Training a Native Bayes classifier 
 
-Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. As with unsupervised learning tasks, the starting point is a feature table representing instances of the different classes. In addition to the feature table, since this is a supervised learning task, the sequence labels (i.e., the class labels) will also be used to build this model. Building the Naive Bayes classifier model is referred to as **training the classifier**.
+Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. As with unsupervised learning tasks, the starting point is a feature table representing instances of the different classes. In addition to the feature table, since this is a supervised learning task, the sequence labels (i.e., the class labels) will also be used to train the classifier.
 
-The first thing our Naive Bayes classifier will need is the set of all possible words of length ``k``. This will be dependent on the value of ``k`` and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as ``W``, and can be computed as follows.
+We'll again use k-mers as our features, and continue with the value of `k` that we defined above. The first thing our Naive Bayes classifier will need is the set of all possible features, which in our case will be all possible words of length `k`. This will be dependent on the value of `k` and the characters in our alphabet (i.e., the characters that we should expect to find in the sequences in our reference database). This set is referred to as `W`, and can be computed as follows.
 
 ```{code-cell} ipython3
 alphabet = skbio.DNA.nondegenerate_chars
@@ -681,33 +681,24 @@ print('For an alphabet size of %d, W contains %d length-%d kmers.' % (len(alphab
 ```{admonition} Exercise
 Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 5-mers are there? How many 5-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?
 ```
-<!-- Pick up here with text; may need additional edits to reflect the phylum to species change -->
 
-+++
+To train our taxonomic classifier, we also need to know what level of taxonomic specificity we want to classify our sequences to. We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Again, we'll mirror the choice we made for our unsupervised learning task and attempt to build a species classifier here. 
 
-To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. 
+With this information, we can next compute our **k-mer probability table**. The goal for this table is that it accurately represents the probability of observing each k-mer in `W` in a sequence from a given species. Because we don't know these probabilities, we estimate them based on the frequency that we observe each k-mer in the sequences in our training data. Our k-mer probability table is computed using the following values:
 
-Next, how long should our kmers be? We don't have a good idea of this to start with. The longer our kmers, the more likely they are to be specific to certain taxa, which is good because that will help with classification. However, if they get too long it becomes less likely that we'll observe those kmers in sequences that aren't represented in our database because the longer the sequence is the more likely we are to see variation across other organisms that are assigned to the same taxonomy. Based on some of my own work in this area, I'll start us out with 7-mers (i.e., kmers of length 7).
-
-Finally, we'll need to know the value of `W`, defined above as the set of all possible kmers given our alphabet and the value of `k`.
-
-
-
-With this information, we'll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:
-
-$N$ : The total number of sequences in the training set (i.e., our reference database).
+$N$ : The total number of sequences in the training data.
 
 $W$: The set of all possible kmers, given $k$ and an alphabet.
 
-$w_i$: An individual kmer in $W$.
+$w_i$: An individual k-mer in $W$.
 
-$n(w_i)$ : The number of total sequences containing $w_i$.
+$n(w_i)$ : The total number of training data sequences containing $w_i$.
 
-$P_i$ : The probability of observing $w_i$. Initially it might seem as though this would be computed as $n(w_i) / N$, but this neglects the possibility that a kmer observed in a query sequence might not be represented in our reference database (i.e., $n(w_i) = 0$), which would create problems later, when we're assigning probabilities to each class for query sequences. As a result, 0.5 is added to the numerator and 1 is added to the denominator. When we alter counts in this way, we refer to the values that we're adding as **pseudocounts**. 
+$P_i$ : The probability of observing $w_i$ in a relevant real world sequence from any species. Initially it might seem as though this would be computed as $n(w_i) / N$, but this neglects the possibility that a k-mer in a real world sequence might not be represented in any sequences in our training data (i.e., $n(w_i) = 0$). This would cause a problem when classifing that real world sequence - we'll revisit this shortly. As a result, 0.5 is added to the numerator and 1 is added to the denominator so that this is computed as $(n(w_i) + 0.5) / (N + 1)$. When we add to our counts in this way, we refer to the values that we're adding as **pseudocounts**. 
 
-$P(w_i | taxon)$ : The probability of observing a kmer given a taxon. Again, it would seem that this would be computed as the proportion of sequences in the taxon containing the kmer, but this would neglect that we'll likely observe kmers in our query sequences that are not represented in our reference database. A pseudocount is therefore added again to the numerator and denominator. This time the pseudocount in the numerator is scaled by how frequent the kmer is in the reference database as a whole: specifically, it is $P_i$.
+$P(w_i | species)$ : The probability of observing $w_i$ in a relevant real world sequence from a given species. Again, it would seem that this would be computed as the proportion of sequences in the species containing $w_i$, but this would neglect that we're likely to observe k-mers in real-world sequences that are not represented in our training data. A pseudocount is therefore added again to the numerator and denominator. This time the pseudocount in the numerator is scaled by how frequent $w_i$ is in the reference database as a whole: specifically, it is $P_i$. The pseudocount in the denominator is still 1. 
 
-Our "kmer probability table" is $P(w_i | taxon)$ computed for all kmers in W and all taxa represented in our reference database. We'll compute that and again look at the first 25 rows.
+Our "kmer probability table" is $P(w_i | species)$ computed for all kmers in W and all species represented in our reference database. Let's compute that, and then look at the first 25 rows.
 
 ```{code-cell} ipython3
 def compute_kmer_probability_table(feature_table, sequence_labels, W):
@@ -742,33 +733,33 @@ kmer_probability_table = compute_kmer_probability_table(sequence_feature_table, 
 kmer_probability_table[:25]
 ```
 
-```{raw-cell}
-This kmer probability table represents our kmer-based models of the species in our reference database. We can use this table to compute probabilities of taxonomically unannotated query sequences belonging to each of the species represented in this table.
+This k-mer probability table represents our k-mer-based models of the species in our training data. We can use this table to compute probabilities of real world sequences belonging to each of the species represented in this table.
 
 ### Applying a Naive Bayes classifier 
 
-With our kmer probability table we are now ready to classify unknown sequences. We'll begin by defining some query sequences. We'll pull these at random from our reference sequences, which means that some of the query sequences will be represented in our reference database and some won't be. We'll also trim out 200 bases of our reference sequences since (as of this writing) we typically don't obtain full-length 16S sequences from a DNA sequencing instrument. We're thus trying to emulate a real-world classification of environmental 16S rRNA sequences, where some might be perfect matches to sequences we've observed before while others might represent previously unobserved sequences (or even previously unknown organisms).
-```
+With our k-mer probability table we are now ready to classify unknown sequences. We'll begin by selecting sequences that will serve as our test data. We'll pull sequences for our species of interest at random from our reference database, excluding sequences that were used in our training data. 
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-query_seq_data = load_annotated_sequences(taxa_of_interest, class_size=sequences_per_taxon, 
+test_seq_data = load_annotated_sequences(taxa_of_interest, class_size=sequences_per_taxon, 
                                           verbose=False, ids_to_exclude=sequence_labels.index)
-query_labels = feature_labels_from_sequence_records(query_seq_data)
+test_labels = feature_labels_from_sequence_records(test_seq_data)
 ```
 
+We can now review a few of the sequences that were selected for our test data set.
+
 ```{code-cell} ipython3
-for sr in random.sample(list(query_seq_data.values()), 3):
+for sr in random.sample(list(test_seq_data.values()), 3):
     print(sr.identifier)
     print(sr.taxonomy)
     print(sr.sequence)
     print('🦠')
 ```
 
-For a given query sequence, its taxonomy will be classified as follows. First, the set of all kmers will be extracted from the sequence. This is referred to as $V$. Then, for all taxa in the kmer probability table, the probability of observing the query sequence will be computed given that taxon: $P(query | taxon)$. This is computed as the product of all its kmer probabilities for the given taxon. (It should be clear based on this formula why it was necessary to add pseudocounts when computing our kmer probability table - if not, kmer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.)
+For a sequence that is provided as input to our Naive Bayes classifier, which is generally referred to as a query sequence, taxonomy will be assigned as follows. First, the set of all k-mers will be extracted from the query sequence. This set of k-mers is referred to as $V$. Then, for each species represented in the k-mer probability table, the probability of observing the sequence will be computed assuming that the sequence is a representative of that species. This is referred to as the probability of the query sequence given the species, or $P(query | species)$. This is computed as the product of all its k-mer probabilities for the given species. It should be clear based on this formula why it was necessary to add pseudocounts when computing our k-mer probability table. If not, k-mer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.
 
-After computing $P(query | taxon)$ for all taxa, the taxonomy assignment returned is simply the one achieving the maximum probability. Here we'll classify a sequence and look at the resulting taxonomy assignment.
+After computing $P(query | species)$ for each species, the taxonomy assignment returned is simply the one achieving the highest probability. Here we'll classify a sequence and look at the resulting taxonomy assignment.
 
 ```{code-cell} ipython3
 # This function classifies a sequence that has already been split into a list
@@ -786,47 +777,51 @@ def classify_V(V, kmer_probability_table):
         P_S_t.append((query_log_probability, taxon))
     return max(P_S_t)[1], V
 
-# This function is a little more convenient to use. It classifies a sequence 
+# This function is more convenient to use. It classifies a sequence 
 # directly, first by computing V, and then by calling classify_V.
 def classify_sequence(query_sequence, kmer_probability_table, k):
     V = list(map(str, query_sequence.iter_kmers(k=k)))
     return classify_V(V, kmer_probability_table)
 ```
 
+We can now apply the Naive Bayes classifier to sequences in our test data set. Here I select a single test sequence, and then provide that as input to the `classify_sequence` function. 
+
 ```{code-cell} ipython3
 def random_sequence_record_choice(sequence_records):
     return random.sample(list(sequence_records.values()), 1)[0]
 
-query_sr = random_sequence_record_choice(query_seq_data)
+query_sr = random_sequence_record_choice(test_seq_data)
 taxon_assignment, V = classify_sequence(query_sr.sequence, kmer_probability_table, k)
-print("Sequence %s is predicted to be from the taxon %s." % (query_sr.identifier, taxon_assignment))
+print("Sequence %s is predicted to be from the species %s." % (query_sr.identifier, taxon_assignment))
 ```
 
-```{raw-cell}
-Since we know the actual taxonomy assignment for this sequence, we can look that up in our reference database. Was the assignment correct?
-```
+Because this query sequence is from our test data, we know the actual taxonomy assignment as we can look it up to determine if our classifier was correct. This is in contrast to applying our classifier to real world query sequences, where we typically won't know what the correct assignment in. We can use our test data to estimate how well we expect our classifier to perform on real world data. 
 
 ```{code-cell} ipython3
-print("Sequence %s is known to be from the species %s." % (query_sr.identifier, query_labels['legend entry'][query_sr.identifier]))
+print("Sequence %s is known to be from the species %s." % (query_sr.identifier, test_labels['legend entry'][query_sr.identifier]))
 ```
 
 ```{admonition} Exercise
-Try classifying a few other query sequences and determining if the returned class was correct. You can do this by changing which entry in `queries` you're assigning to the value `query`. Keep track of how many times the classifier returned the correct assignment.
+Was this sequence classified as the correct species? If not, was it at least classified to the correct genus? What about the correct phylum?
+```
+
+```{admonition} Exercise
+Try classifying a few other query sequences and determining if the returned species assignment was correct. You can do this by running the previous two code cells over again in order. Does this classifier seem to be working well?
 ```
 
 ### Evaluating our confidence in the results of the Naive Bayes classifier
 
-Because the query and reference sequences that were working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. Chances are however that if you run the above steps multiple times you'll get the wrong taxonomy assignment at least some of the time. Up to this point, we've left out an important piece of information: how confident should we be in our assignment, or in other words, how dependent is our taxonomy assignment on our specific query? If there were slight differences in our query (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because we sequenced a different region of the 16S sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is additionally important because our classifier will _always_ return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.
+Because the training and test sequences that we're working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. If you run the above steps multiple times you'll get the wrong taxonomy assignment at least some of the time, most likely. Up to this point, we've left out an important piece of information: how confident should we be in our assignment? In other words, how dependent is our taxonomy assignment on our specific query sequence? If there were slight differences in our query sequence (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because there are some sequencing errors in our sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is important because our classifier as implemented so far will _always_ return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.
 
-We can quantify confidence using an approach called bootstrapping. With a bootstrap approach, we'll get our taxonomy assignment as we did above, but then for some user-specified number of times, we'll create random subsets of V sampled with replacement. We'll then assign taxonomy to each random subset of V, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to V. The count of times that they are the same divided by the number of iterations we've chosen to run will be our confidence value. If the assignments are often the same we'll have a high confidence value. If the assignments are often different, we'll have a low confidence value.
+We can quantify confidence in our taxonomic assignments using an approach called bootstrapping. With a bootstrap approach, we'll get our taxonomy assignment as we did above, but then for some user-specified number of iterations, we'll create random subsets of $V$ sampled with replacement. We'll then assign taxonomy to each random subset of $V$, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to $V$. The count of times that they are the same divided by the number of iterations we've chosen to run will be our confidence in the assignment. If the assignments are often the same we'll have a high confidence value, up to a maximum confidence value of 1 if the assignments are always the same. If the assignments are often different we'll have a low confidence value, down to a minimum value of 0 if the assignments are never the same. 
 
-Let's now assign taxonomy and compute a confidence for that assignment.
+The following funtion will assign taxonomy to a query sequence, and will compute and return a confidence value for the assignment. 
 
 ```{code-cell} ipython3
-def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
+def classify_sequence_with_confidence(query_sequence, kmer_probability_table, k,
                                       confidence_iterations=100):
     # classify the query sequence, as we did above
-    taxon, V = classify_sequence(sequence, kmer_probability_table, k)
+    taxon, V = classify_sequence(query_sequence, kmer_probability_table, k)
 
     count_same_taxon = 0
     # Define the size of each subsample as 10% of the actual number of
@@ -847,25 +842,34 @@ def classify_sequence_with_confidence(sequence, kmer_probability_table, k,
     return (taxon, confidence)
 ```
 
+We can apply this to a randomly selected sequence from our test data as follows.
+
 ```{code-cell} ipython3
-query_sr = random_sequence_record_choice(query_seq_data)
+query_sr = random_sequence_record_choice(test_seq_data)
 taxon_assignment, confidence = classify_sequence_with_confidence(query_sr.sequence, kmer_probability_table, k)
 print(taxon_assignment)
 print(confidence)
+print("Sequence %s is predicted to be from the species %s. Confidence in this assignment is: %1.2f." % (query_sr.identifier, taxon_assignment, confidence))
 ```
 
-How did the computed confidence compare to the accuracy taxonomy assignment?
+```{code-cell} ipython3
+print("Sequence %s is known to be from the species %s." % (query_sr.identifier, test_labels['legend entry'][query_sr.identifier]))
+```
 
-At first glance, we don't necessarily have an idea of what good versus bad confidence scores are, but we can use our reference database to explore that. Knowing that can allows us to develop a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we might reject it. To explore this, let's compute taxonomy assignments and confidence for all of our query sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.
+```{admonition} Exercise
+Was this sequence classified as the correct species? Does the confidence value align with this result?
+```
+
+At first glance, we don't necessarily have an idea of what good versus bad confidence scores are, but we can use our test data to explore that. Once we know what a good confidence score is, we can apply a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we could label a sequence as "unclassified". To explore this, let's compute taxonomy assignments and confidence for all of our test sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.
 
 ```{code-cell} ipython3
 correct_assignment_confidences = []
 incorrect_assignment_confidences = []
 summary = []
 
-for query_id, query_sr in query_seq_data.items():
+for query_id, query_sr in test_seq_data.items():
     predicted_taxonomy, confidence = classify_sequence_with_confidence(query_sr.sequence, kmer_probability_table, k)
-    known_taxonomy = query_labels['legend entry'][query_sr.identifier]
+    known_taxonomy = test_labels['legend entry'][query_sr.identifier]
     correct_assignment = known_taxonomy == predicted_taxonomy
     if correct_assignment:
         correct_assignment_confidences.append(confidence)
@@ -873,18 +877,13 @@ for query_id, query_sr in query_seq_data.items():
         incorrect_assignment_confidences.append(confidence)
 
     summary.append([predicted_taxonomy, known_taxonomy, confidence, correct_assignment])
+
 summary = pd.DataFrame(summary, columns=['Predicted taxonomy', 'Known taxonomy', 'Confidence', 'Correct assignment'])
+
 summary
 ```
 
-<!-- Add confusion matrix computed from the above table. -->
-
-```{code-cell} ipython3
-n_correct_assignments = len(correct_assignment_confidences)
-n_incorrect_assignments = len(incorrect_assignment_confidences)
-accuracy = n_correct_assignments / (n_correct_assignments + n_incorrect_assignments)
-print('The accuracy of the classifier was %1.3f.' % accuracy)
-```
+Comparing distributions of confidence scores for correct and incorrect assignments is possible from the table above, and the table provides details that can be useful in assessing when the classifier is working well and when it isn't. A couple of boxplots however will make comparing these distributions trivial.
 
 ```{code-cell} ipython3
 import seaborn as sns
@@ -897,6 +896,19 @@ _ = ax.set_ylabel('Confidence')
 ax
 ```
 
+What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
+
+We can also compute the overall accuracy of our classifier as follows:
+
+```{code-cell} ipython3
+n_correct_assignments = len(correct_assignment_confidences)
+n_incorrect_assignments = len(incorrect_assignment_confidences)
+accuracy = n_correct_assignments / (n_correct_assignments + n_incorrect_assignments)
+print('The accuracy of the classifier was %1.3f.' % accuracy)
+```
+
+Finally, we can summarize how this classifier worked by creating a **confusion matrix**. A confusion matrix has two axes - one corresponding to the actual assignments and one corresponding to the predicted assignments. The values in the confusion matrix represent how each instance of each known taxonomy was classified. The order of the classes on the two axes should always be the same in a confusion matrix. A good classifier will then have high values along the diagonal. If classifier accuracy is not great, you can see which known classes were misassigned, or where the classifier got confused. 
+
 ```{code-cell} ipython3
 confusion_matrix = summary.groupby('Predicted taxonomy')['Known taxonomy'].value_counts().to_frame()
 confusion_matrix.columns = ['count']
@@ -904,7 +916,7 @@ confusion_matrix = pd.pivot_table(confusion_matrix, index=['Predicted taxonomy']
 confusion_matrix
 ```
 
-What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?
+If the classifier generated here got some classifications wrong, did the classifier at least assign the sequences to the correct phylum?
 
 ```{admonition} Exercise
 Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parameters) and modify those values. How does the accuracy of the classifier change if you increase or decrease `k` while keeping the value of `taxonomic_level` fixed? How does the accuracy change if you increase or decrease the `taxonomic_level` while keeping `k` fixed? 
@@ -912,11 +924,11 @@ Jump back up to where we [defined `k` and `taxonomic_level`](ml:define-nb-parame
 
 ## Variations on the input to machine learning algorithms
 
-As in the Iris dataset, the labels in our microbial data are discrete (i.e., categorical or qualitative) as opposed to continuous (i.e., quantitative). If our labels in a supervised learning project were continous instead of discrete - for example the abundance of an organism in an environment - we could still supervised learning, but we would work with different algorithms. Specifically, we'd used supervised regression algorithms, rather than supervised classification algorithms.  
+As in the Iris dataset, the labels in our microbial data are discrete (i.e., categorical or qualitative) as opposed to continuous (i.e., quantitative). If our labels in a supervised learning project were continous instead of discrete - for example the abundance of an organism in an environment - we could still apply supervised learning, but we would work with different algorithms. Specifically, we'd used supervised regression algorithms, rather than supervised classification algorithms.  
 
 Similarly, while the features we worked with in our unsupervised and supervised learning examples were continuous values, feature values could also be discrete (e.g., the sex of a subject, or the species of a specimen in an environment). The applicable algorithms might change, but machine learning techniques in general would still be available. 
 
-scikit-learn provides other example datasets, including [the diabetes dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes), [the housing market dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset) and [the hand-writing dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset). These are good illustrations of other types of data that can be used in machine learning tasks. The message to take away is that if you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data. That said, and as I mentioned at the beginning of this chapter, this introduction barely scratches the surface of this complex branch of statistics and computer science. Especially with the accessible of these methods through software like scikit-learn, it's easy to get to the point where you know enough to get yourself into trouble by using machine learning methods inappropriately. If you'd like to apply these tools in your research, you must continue your learning. I recommend continuing with [scikit-learn's documentation](https://scikit-learn.org/).
+scikit-learn provides other example datasets, including [the diabetes dataset](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes), [the housing market dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset) and [the hand-writing dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset). These are good illustrations of other types of data that can be used in machine learning tasks. The message to take away is that if you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data. That said, and as I mentioned at the beginning of this chapter, this introduction barely scratches the surface of this complex branch of statistics and computer science. Especially with the accessibility of these methods through software like scikit-learn, it's easy to get to the point where you know enough to get yourself into trouble by using machine learning methods inappropriately. If you'd like to apply these tools in your research, you must continue your learning. I recommend continuing with [scikit-learn's documentation](https://scikit-learn.org/).
 
 ## List of works cited
 
