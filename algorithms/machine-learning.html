@@ -423,8 +423,13 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#applying-a-naive-bayes-classifier">
+     3.5.6. Applying a Naive Bayes classifier
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-     3.5.6. Evaluating our confidence in the results of the Naive Bayes classifier
+     3.5.7. Evaluating our confidence in the results of the Naive Bayes classifier
     </a>
    </li>
   </ul>
@@ -832,13 +837,13 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>35 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans.
 127 sequences were identified for taxon k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes.
 24 sequences were identified for taxon k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii.
-17 sequences were identified for taxon k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
-15 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Flavobacteriia;o__Flavobacteriales;f__Flavobacteriaceae;g__Flavobacterium;s__succinicans.
-26 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica.
 121 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri.
+35 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea.
+17 sequences were identified for taxon k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava.
+26 sequences were identified for taxon k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica.
 </pre></div>
 </div>
 </div>
@@ -855,23 +860,24 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>198869
-k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
-TAGAGTTTGATCCTGGCTCAGGACGAACGCTGGCGGCGCGCCTAACACATGCAAGTCGAGCGGCAGCATGTTGGTTGCTTGCAACCAATGATGGCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTACCCTTGTCCATCGGATAACCCGTCGAAAGGCGGCCTAACACGATATGCGGTTCACAGCAGGCATCTAACGTGAACGAAATGTGAAGGAGAAGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCTACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGACGAGAGTCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATAGGGGGATAAAGTGTGCCACGTGTGGCATATTGCAGGTACCCTATGAATAAGGACCGGCT
-🦠
-4318208
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>296374
 k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri
-GATGAACGCTAGCTACAGGCTTAACACATGCAAGTCCGAGGGGGAAACGACATTCGAAAGCCTCCCTTTCGAGGGCGTCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTGCCCACCACTTGGGGATAACCTTCGCGAAAGTAAGAACTAATACCCAATCGATATCTCTAGAAAGACATTCTGAAAGAGAATAAAGAATTCATCGGTCGAATGGATGAGGGATGCGTCTGATTCAGCTTCGTTGGCGGGGTAACGGCCCACCAAGGCTACGATCAGTAGGGGTTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGACGAAAGTCTGAACCAGCCAAGTAGCGTGCAGGAAGACGGCCCTATGGGTTGTAAACTGCTTTTTATAAGGGAATAAAGTGAGTCTCGTGAGACTTTTTGCATGTACCTTATGAATAAGGACCGGCTA
+TAGAGTTTGATCCTGGCTCAGGATGAACGCTAGCGACAGGCTTAACACATGCAAGTCGAGGGGCAGCGAGGGCGTAGCAATACGCCTGTCGGCGACCGGCGCACTGGTGAGTAACACGTATGCGACCTGCCCCACGGTAAGGGATAACCCGCGGAAACGCGGCCTAATACCTTATGGTCTCCGAGAATGGCATCTGCCTCGGAGTAAAGATTTATTGCCGTGGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCTACGATCAGTAGGGGTTCTGAGAGGAAAGCCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGGCGAGAGCCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATACGGGGATAAAACGTGGGACGTGTCCCGCCTTGCAGGTACCGTATGAATAAGGACCGGCT
 🦠
-591785
-k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
-TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATGGCGACCGGCGCACGGGTGAGTAACGCGTATCCAACCTACCCTTGTCCATCGGATAACCCGTCGAAAGGCGGCCTAACACGATATGCGGTTCACAGCAGGCATCTAACGTGAACGAAATGTGAAGGAGAAGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCGACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGACGAGAGTCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTATAGGGGGATAAAGTGTGCCACGTGTGGCATATTGCAGGTACCCTATGAATAAGGACCGGCTAATTCCGTGCCAG
+4400440
+k__Bacteria;p__Actinobacteria;c__Actinobacteria;o__Actinomycetales;f__Propionibacteriaceae;g__Propionibacterium;s__acnes
+GCTGGCGGCGTGCTTAACACATGCAAGTCGAACGGAAAGGCCCTGCTTTTGTGGGGTGCTCGAGTGGCGAACGGGTGAGTAACACGTGAGTAACCTGCCCTTGACTTTGGGATAACTTCAAGAAACTGGGGCTAATACCGGATAGGAGCTCCTGCTGCATGGTGGGGGTTGGAAAGTTTCGGCGGTTGGGGATGGACTCGCGGCTTATCAGCTTGTTGGTGGGGTAGTGGCTTACCAAGGCTTTGACGGGTAGCCGGCCTGAGAGGGTGACCGGCCACATTGGGACTGAGATACGGCCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGCACAATGGGCGGAAGCCTGATGCAGCAACGCCGCGTGCGGGATGACGGCCTTCGGGTTGTAAACCGCTTTCGCCTGTGACGAAGCGTGAGTGACGGTAATGGATAAAGAAGCACCGGCTAACTACGTGCCAGCAGCCGCGGTGATACGTAGGGTGCGAGCGTTGTCC
+🦠
+89393
+k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
+CTTGTACCTGGTGGCTCAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGATAGTGGGGGATAACGTTCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGTGGGGGATCTTCGGACCTCACGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGGGGTAAAGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCATTAACCTAATACGTTGATGTTTTGACGTTCCCGACAGAATAAGCACCGGCTAACTCTGTGCCAGCAGTCGCGGTAATACAGAGGGTGCAAGCGTTAATCGGAATTACTGGGCGTAAAGCGCGCGTA
 🦠
 </pre></div>
 </div>
 </div>
 </div>
-<p>The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. Let’s set <span class="math notranslate nohighlight">\(k=4\)</span>, and use k-mers as the features that will define our sequence records for the examples in this chapter. The features could be anything however - if you have ideas about other values that you could compute from these sequences, come back here and try it out after you’ve finished reading this chapter.</p>
+<p>The first thing we need to generate from these data is our feature table, which raises the question of which features we want our machine learning algorithms to work with. In the last chapter, we discussed k-mers are length-k stretches of adjacent characters in a sequence. Those k-mers helped us to identify relevant sequences in our database searching, so they may be useful here as well. We don’t necessarily know how long our k-mers should be (i.e., what value <code class="docutils literal notranslate"><span class="pre">k</span></code> should be set to) however. The longer our kmers, the more likely they are to be specific to certain taxa, which is helpful for machine learning tasks. However, if they get too long it becomes less likely that we’ll observe those kmers in other sequences because the longer a k-mer sequence is, the more likely we are to see variation across closely related organisms. This is a problem for machine learning tasks, because we need to identify features that are shared among related samples.</p>
+<p>Let’s set <span class="math notranslate nohighlight">\(k=4\)</span>, and use k-mers as the features that will define our sequence records for the examples in this chapter. I chose this value of <span class="math notranslate nohighlight">\(k\)</span> for our work here based on experimentation with multiple Greengenes subsamples. The features could be based on different values of <span class="math notranslate nohighlight">\(k\)</span>, or other features of sequences that you identify. If you have ideas about other values that you could compute from these sequences, come back here and try it out after you’ve finished reading this chapter.</p>
 <div class="cell docutils container" id="ml-define-k">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">4</span>
@@ -917,27 +923,27 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>AGTT</th>
-      <th>GTTT</th>
-      <th>TTTG</th>
-      <th>TTGA</th>
-      <th>TGAT</th>
-      <th>GATC</th>
-      <th>ATCC</th>
-      <th>TCCT</th>
-      <th>CCTG</th>
-      <th>CTGT</th>
+      <th>AGTC</th>
+      <th>GTCG</th>
+      <th>TCGA</th>
+      <th>CGAG</th>
+      <th>GAGG</th>
+      <th>AGGG</th>
+      <th>GGGG</th>
+      <th>GGGT</th>
+      <th>GGTA</th>
+      <th>GTAT</th>
       <th>...</th>
-      <th>CAGA</th>
-      <th>CCTC</th>
-      <th>TCGT</th>
-      <th>TACT</th>
+      <th>TGTT</th>
+      <th>CGCC</th>
+      <th>CTGT</th>
+      <th>CACC</th>
+      <th>CCCG</th>
+      <th>ACCC</th>
+      <th>CAAA</th>
+      <th>TCTC</th>
       <th>CTCT</th>
-      <th>AATC</th>
-      <th>CGTT</th>
-      <th>ATTT</th>
-      <th>GTTA</th>
-      <th>AAAA</th>
+      <th>ATTC</th>
     </tr>
     <tr>
       <th>id</th>
@@ -966,17 +972,17 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
   </thead>
   <tbody>
     <tr>
-      <th>527574</th>
+      <th>1111241</th>
+      <td>2</td>
       <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
+      <td>2</td>
       <td>3</td>
+      <td>6</td>
+      <td>4</td>
       <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
+      <td>5</td>
+      <td>6</td>
+      <td>4</td>
       <td>...</td>
       <td>0</td>
       <td>0</td>
@@ -990,189 +996,117 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>0</td>
     </tr>
     <tr>
-      <th>198869</th>
-      <td>1</td>
-      <td>1</td>
+      <th>207627</th>
+      <td>2</td>
       <td>1</td>
       <td>1</td>
       <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>520657</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>591785</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>524371</th>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
+      <td>7</td>
+      <td>4</td>
       <td>2</td>
       <td>4</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1093959</th>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
       <td>6</td>
-      <td>1</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>936633</th>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>6</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>893992</th>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>3</td>
-      <td>6</td>
-      <td>1</td>
-      <td>...</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>4462014</th>
-      <td>1</td>
-      <td>1</td>
       <td>4</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>241971</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+      <td>4</td>
+      <td>2</td>
+      <td>4</td>
+      <td>7</td>
+      <td>3</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>151117</th>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>5</td>
+      <td>4</td>
+      <td>1</td>
+      <td>5</td>
+      <td>7</td>
+      <td>3</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4393400</th>
       <td>3</td>
       <td>2</td>
       <td>1</td>
-      <td>0</td>
+      <td>1</td>
+      <td>6</td>
+      <td>5</td>
       <td>3</td>
+      <td>5</td>
       <td>7</td>
       <td>1</td>
       <td>...</td>
       <td>0</td>
-      <td>1</td>
       <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4400440</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>7</td>
+      <td>8</td>
+      <td>3</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1182,76 +1116,148 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>0</td>
     </tr>
     <tr>
-      <th>935658</th>
+      <th>886828</th>
       <td>1</td>
       <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>7</td>
+      <td>9</td>
+      <td>3</td>
+      <td>0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>458596</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7</td>
+      <td>7</td>
+      <td>5</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
       <td>3</td>
       <td>2</td>
       <td>2</td>
       <td>0</td>
       <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1047169</th>
+      <td>1</td>
+      <td>1</td>
       <td>2</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
       <td>6</td>
-      <td>1</td>
+      <td>8</td>
+      <td>3</td>
+      <td>0</td>
       <td>...</td>
       <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
       <td>0</td>
+      <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>400315</th>
+      <th>1099802</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>2</td>
+      <td>10</td>
+      <td>6</td>
+      <td>3</td>
       <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>2</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>1</td>
       <td>...</td>
-      <td>3</td>
-      <td>0</td>
-      <td>0</td>
       <td>1</td>
       <td>2</td>
       <td>1</td>
       <td>2</td>
       <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>260730</th>
-      <td>3</td>
-      <td>0</td>
+      <th>260790</th>
       <td>1</td>
       <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
       <td>2</td>
       <td>4</td>
-      <td>3</td>
       <td>2</td>
-      <td>3</td>
-      <td>1</td>
+      <td>4</td>
+      <td>0</td>
       <td>...</td>
-      <td>4</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
       <td>0</td>
       <td>0</td>
       <td>1</td>
       <td>3</td>
-      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>242843</th>
       <td>2</td>
-      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5</td>
+      <td>3</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+      <td>...</td>
       <td>1</td>
       <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
     </tr>
   </tbody>
 </table>
@@ -1323,62 +1329,62 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
   </thead>
   <tbody>
     <tr>
-      <th>527574</th>
+      <th>1111241</th>
       <td>k__Bacteria</td>
       <td>p__Bacteroidetes</td>
-      <td>c__Bacteroidia</td>
-      <td>o__Bacteroidales</td>
-      <td>f__Prevotellaceae</td>
-      <td>g__Prevotella</td>
-      <td>s__stercorea</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>c__Flavobacteriia</td>
+      <td>o__Flavobacteriales</td>
+      <td>f__Flavobacteriaceae</td>
+      <td>g__Flavobacterium</td>
+      <td>s__succinicans</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>198869</th>
+      <th>207627</th>
       <td>k__Bacteria</td>
       <td>p__Bacteroidetes</td>
-      <td>c__Bacteroidia</td>
-      <td>o__Bacteroidales</td>
-      <td>f__Prevotellaceae</td>
-      <td>g__Prevotella</td>
-      <td>s__stercorea</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>c__Flavobacteriia</td>
+      <td>o__Flavobacteriales</td>
+      <td>f__Flavobacteriaceae</td>
+      <td>g__Flavobacterium</td>
+      <td>s__succinicans</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>520657</th>
+      <th>241971</th>
       <td>k__Bacteria</td>
       <td>p__Bacteroidetes</td>
-      <td>c__Bacteroidia</td>
-      <td>o__Bacteroidales</td>
-      <td>f__Prevotellaceae</td>
-      <td>g__Prevotella</td>
-      <td>s__stercorea</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>c__Flavobacteriia</td>
+      <td>o__Flavobacteriales</td>
+      <td>f__Flavobacteriaceae</td>
+      <td>g__Flavobacterium</td>
+      <td>s__succinicans</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>591785</th>
+      <th>151117</th>
       <td>k__Bacteria</td>
       <td>p__Bacteroidetes</td>
-      <td>c__Bacteroidia</td>
-      <td>o__Bacteroidales</td>
-      <td>f__Prevotellaceae</td>
-      <td>g__Prevotella</td>
-      <td>s__stercorea</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>c__Flavobacteriia</td>
+      <td>o__Flavobacteriales</td>
+      <td>f__Flavobacteriaceae</td>
+      <td>g__Flavobacterium</td>
+      <td>s__succinicans</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>524371</th>
+      <th>4393400</th>
       <td>k__Bacteria</td>
       <td>p__Bacteroidetes</td>
-      <td>c__Bacteroidia</td>
-      <td>o__Bacteroidales</td>
-      <td>f__Prevotellaceae</td>
-      <td>g__Prevotella</td>
-      <td>s__stercorea</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>c__Flavobacteriia</td>
+      <td>o__Flavobacteriales</td>
+      <td>f__Flavobacteriaceae</td>
+      <td>g__Flavobacterium</td>
+      <td>s__succinicans</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
     </tr>
     <tr>
-      <th>1093959</th>
+      <th>4400440</th>
       <td>k__Bacteria</td>
       <td>p__Actinobacteria</td>
       <td>c__Actinobacteria</td>
@@ -1389,7 +1395,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>936633</th>
+      <th>886828</th>
       <td>k__Bacteria</td>
       <td>p__Actinobacteria</td>
       <td>c__Actinobacteria</td>
@@ -1400,7 +1406,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>893992</th>
+      <th>458596</th>
       <td>k__Bacteria</td>
       <td>p__Actinobacteria</td>
       <td>c__Actinobacteria</td>
@@ -1411,7 +1417,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>4462014</th>
+      <th>1047169</th>
       <td>k__Bacteria</td>
       <td>p__Actinobacteria</td>
       <td>c__Actinobacteria</td>
@@ -1422,7 +1428,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>935658</th>
+      <th>1099802</th>
       <td>k__Bacteria</td>
       <td>p__Actinobacteria</td>
       <td>c__Actinobacteria</td>
@@ -1433,7 +1439,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Propionibacterium acnes (Actinobacteria)</td>
     </tr>
     <tr>
-      <th>400315</th>
+      <th>260790</th>
       <td>k__Bacteria</td>
       <td>p__Proteobacteria</td>
       <td>c__Gammaproteobacteria</td>
@@ -1444,7 +1450,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
       <td>Pseudomonas veronii (Proteobacteria)</td>
     </tr>
     <tr>
-      <th>260730</th>
+      <th>242843</th>
       <td>k__Bacteria</td>
       <td>p__Proteobacteria</td>
       <td>c__Gammaproteobacteria</td>
@@ -1513,7 +1519,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 527574 and 198869 is 0.137.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The Jaccard Distance between samples 1111241 and 207627 is 0.130.
 </pre></div>
 </div>
 </div>
@@ -1536,7 +1542,7 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.343, between samples 935658 and 591785.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The largest distance in the distance matrix is 0.350, between samples 458596 and 207627.
 </pre></div>
 </div>
 </div>
@@ -1579,41 +1585,41 @@ TGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATGTCGGTTGCTTGCAACCGATGATG
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>935658     0.000000
-1093959    0.011479
-936633     0.013172
-4462014    0.020440
-893992     0.048715
-65400      0.162871
-999394     0.169161
-398604     0.180520
-265715     0.182399
-4349788    0.185072
-259419     0.192065
-400315     0.197133
-260730     0.197386
-237364     0.207583
-241971     0.211166
-274219     0.216037
-207627     0.220718
-4465561    0.223618
-4379848    0.229235
-4307652    0.241409
-4460404    0.241672
-711843     0.242918
-196296     0.243087
-307571     0.254661
-342638     0.257944
-4318208    0.258391
-4393400    0.262810
-524371     0.266792
-4321402    0.276136
-3035308    0.276603
-4408558    0.276724
-527574     0.294288
-198869     0.294365
-520657     0.302226
-591785     0.342975
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>458596     0.000000
+1099802    0.050104
+4400440    0.067448
+886828     0.074532
+1047169    0.122622
+303283     0.169537
+514227     0.169975
+183062     0.195786
+510921     0.199260
+4428060    0.201028
+296374     0.202498
+272189     0.203000
+368681     0.204759
+4244333    0.212283
+237364     0.213925
+525942     0.218864
+4307782    0.218937
+91834      0.220242
+4451252    0.222643
+1108595    0.227759
+260790     0.230898
+4307391    0.232791
+516093     0.235028
+525348     0.235531
+242843     0.238238
+275708     0.242073
+4432796    0.246253
+249556     0.246253
+89393      0.265652
+276867     0.273788
+151117     0.285394
+1111241    0.292929
+241971     0.295603
+4393400    0.299130
+207627     0.349794
 dtype: float64
 </pre></div>
 </div>
@@ -1680,869 +1686,869 @@ dtype: float64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>198869 to 527574</th>
-      <th>520657 to 527574</th>
-      <th>520657 to 198869</th>
-      <th>591785 to 527574</th>
-      <th>591785 to 198869</th>
-      <th>591785 to 520657</th>
-      <th>524371 to 527574</th>
-      <th>524371 to 198869</th>
-      <th>524371 to 520657</th>
-      <th>524371 to 591785</th>
+      <th>207627 to 1111241</th>
+      <th>241971 to 1111241</th>
+      <th>241971 to 207627</th>
+      <th>151117 to 1111241</th>
+      <th>151117 to 207627</th>
+      <th>151117 to 241971</th>
+      <th>4393400 to 1111241</th>
+      <th>4393400 to 207627</th>
+      <th>4393400 to 241971</th>
+      <th>4393400 to 151117</th>
       <th>...</th>
-      <th>3035308 to 711843</th>
-      <th>3035308 to 4307652</th>
-      <th>3035308 to 4465561</th>
-      <th>3035308 to 4460404</th>
-      <th>3035308 to 4321402</th>
-      <th>3035308 to 4408558</th>
-      <th>3035308 to 196296</th>
-      <th>3035308 to 307571</th>
-      <th>3035308 to 4318208</th>
-      <th>3035308 to 342638</th>
+      <th>4307391 to 183062</th>
+      <th>4307391 to 272189</th>
+      <th>4307391 to 89393</th>
+      <th>4307391 to 237364</th>
+      <th>4307391 to 4432796</th>
+      <th>4307391 to 91834</th>
+      <th>4307391 to 4307782</th>
+      <th>4307391 to 525942</th>
+      <th>4307391 to 4428060</th>
+      <th>4307391 to 4451252</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1093959</th>
-      <td>0.053703</td>
-      <td>0.043024</td>
-      <td>0.044440</td>
-      <td>0.141190</td>
-      <td>0.174585</td>
-      <td>0.189947</td>
-      <td>0.027913</td>
-      <td>-0.028256</td>
-      <td>-0.057819</td>
-      <td>-0.079125</td>
+      <th>1047169</th>
+      <td>0.104836</td>
+      <td>0.086309</td>
+      <td>0.059575</td>
+      <td>0.054353</td>
+      <td>0.009315</td>
+      <td>0.029626</td>
+      <td>0.143748</td>
+      <td>0.098292</td>
+      <td>0.111905</td>
+      <td>0.143436</td>
       <td>...</td>
-      <td>0.093697</td>
-      <td>0.079286</td>
-      <td>0.137919</td>
-      <td>0.116594</td>
-      <td>0.041701</td>
-      <td>0.029970</td>
-      <td>0.099344</td>
-      <td>0.068493</td>
-      <td>0.068966</td>
-      <td>0.077449</td>
+      <td>0.073130</td>
+      <td>0.056845</td>
+      <td>0.077873</td>
+      <td>0.074801</td>
+      <td>0.117282</td>
+      <td>0.120948</td>
+      <td>0.065510</td>
+      <td>0.032746</td>
+      <td>0.053759</td>
+      <td>0.047832</td>
     </tr>
     <tr>
-      <th>196296</th>
-      <td>0.030733</td>
-      <td>-0.033604</td>
-      <td>-0.041803</td>
-      <td>0.041726</td>
-      <td>0.067359</td>
-      <td>0.121178</td>
-      <td>0.026753</td>
-      <td>0.003159</td>
-      <td>0.041521</td>
-      <td>0.019757</td>
+      <th>1099802</th>
+      <td>0.193590</td>
+      <td>0.072161</td>
+      <td>-0.032388</td>
+      <td>0.101041</td>
+      <td>-0.035804</td>
+      <td>0.086480</td>
+      <td>0.129336</td>
+      <td>0.008395</td>
+      <td>0.113092</td>
+      <td>0.094410</td>
       <td>...</td>
-      <td>0.018518</td>
-      <td>0.015669</td>
-      <td>0.074133</td>
-      <td>0.056799</td>
-      <td>-0.007104</td>
-      <td>0.027353</td>
-      <td>0.109649</td>
-      <td>0.095765</td>
-      <td>0.054919</td>
-      <td>0.102365</td>
+      <td>0.115592</td>
+      <td>0.094506</td>
+      <td>0.048517</td>
+      <td>0.084480</td>
+      <td>0.090475</td>
+      <td>0.092980</td>
+      <td>0.078545</td>
+      <td>0.051243</td>
+      <td>0.107813</td>
+      <td>0.062689</td>
     </tr>
     <tr>
-      <th>198869</th>
+      <th>1108595</th>
+      <td>0.118916</td>
+      <td>0.090674</td>
+      <td>0.049921</td>
+      <td>0.078075</td>
+      <td>0.019188</td>
+      <td>0.049229</td>
+      <td>0.040581</td>
+      <td>0.019554</td>
+      <td>0.046688</td>
+      <td>0.059764</td>
+      <td>...</td>
+      <td>0.054135</td>
+      <td>0.017059</td>
+      <td>0.045006</td>
+      <td>0.019076</td>
+      <td>0.038695</td>
+      <td>0.034188</td>
+      <td>0.056071</td>
+      <td>0.061082</td>
+      <td>0.061422</td>
+      <td>0.070592</td>
+    </tr>
+    <tr>
+      <th>1111241</th>
+      <td>0.130435</td>
+      <td>0.106195</td>
+      <td>0.050946</td>
+      <td>0.128755</td>
+      <td>0.059910</td>
+      <td>0.086133</td>
+      <td>0.091703</td>
+      <td>0.041756</td>
+      <td>0.066664</td>
+      <td>0.047480</td>
+      <td>...</td>
+      <td>0.025810</td>
+      <td>0.047488</td>
+      <td>0.067141</td>
+      <td>0.017294</td>
+      <td>0.061314</td>
+      <td>0.081906</td>
+      <td>0.007365</td>
+      <td>0.011243</td>
+      <td>0.026456</td>
+      <td>0.041915</td>
+    </tr>
+    <tr>
+      <th>151117</th>
+      <td>0.059992</td>
+      <td>0.057278</td>
+      <td>0.079025</td>
       <td>0.000000</td>
-      <td>-0.017378</td>
-      <td>0.059091</td>
-      <td>0.028607</td>
-      <td>0.093750</td>
-      <td>0.072786</td>
-      <td>0.052997</td>
-      <td>0.094170</td>
-      <td>0.073695</td>
-      <td>0.066090</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.077443</td>
+      <td>0.096681</td>
+      <td>0.092207</td>
+      <td>0.149573</td>
       <td>...</td>
-      <td>0.077929</td>
-      <td>0.060426</td>
-      <td>0.116885</td>
-      <td>0.107245</td>
-      <td>0.066970</td>
-      <td>0.088691</td>
-      <td>0.097933</td>
-      <td>0.100627</td>
-      <td>0.012412</td>
-      <td>0.136325</td>
+      <td>0.038002</td>
+      <td>0.081713</td>
+      <td>0.084704</td>
+      <td>0.071702</td>
+      <td>0.063073</td>
+      <td>0.095072</td>
+      <td>0.022454</td>
+      <td>0.021166</td>
+      <td>0.006684</td>
+      <td>0.038531</td>
+    </tr>
+    <tr>
+      <th>183062</th>
+      <td>0.111903</td>
+      <td>0.112758</td>
+      <td>0.072843</td>
+      <td>0.092894</td>
+      <td>0.042073</td>
+      <td>0.045921</td>
+      <td>0.023451</td>
+      <td>0.014981</td>
+      <td>0.020953</td>
+      <td>0.036505</td>
+      <td>...</td>
+      <td>0.168033</td>
+      <td>0.039417</td>
+      <td>0.027786</td>
+      <td>0.043579</td>
+      <td>0.068801</td>
+      <td>0.025795</td>
+      <td>0.125462</td>
+      <td>0.025379</td>
+      <td>0.100855</td>
+      <td>0.063502</td>
     </tr>
     <tr>
       <th>207627</th>
-      <td>0.041181</td>
-      <td>-0.008928</td>
-      <td>-0.021112</td>
-      <td>0.044172</td>
-      <td>0.055537</td>
-      <td>0.088836</td>
-      <td>0.067094</td>
-      <td>0.059027</td>
-      <td>0.091328</td>
-      <td>0.068165</td>
+      <td>0.000000</td>
+      <td>0.068230</td>
+      <td>0.142222</td>
+      <td>0.057394</td>
+      <td>0.123348</td>
+      <td>0.047116</td>
+      <td>0.065332</td>
+      <td>0.143478</td>
+      <td>0.077266</td>
+      <td>0.092742</td>
       <td>...</td>
-      <td>0.241484</td>
-      <td>0.121282</td>
-      <td>0.141763</td>
-      <td>0.149446</td>
-      <td>0.057621</td>
-      <td>0.117444</td>
-      <td>0.045025</td>
-      <td>0.118331</td>
-      <td>0.095326</td>
-      <td>0.075091</td>
+      <td>0.054295</td>
+      <td>0.061359</td>
+      <td>0.113865</td>
+      <td>0.068378</td>
+      <td>0.109085</td>
+      <td>0.111170</td>
+      <td>0.042446</td>
+      <td>-0.000019</td>
+      <td>0.002046</td>
+      <td>0.049596</td>
     </tr>
     <tr>
       <th>237364</th>
-      <td>0.043123</td>
-      <td>0.011763</td>
-      <td>0.012064</td>
-      <td>0.005830</td>
-      <td>-0.001595</td>
-      <td>-0.012681</td>
-      <td>0.057251</td>
-      <td>0.038853</td>
-      <td>0.043719</td>
-      <td>0.094433</td>
+      <td>0.074462</td>
+      <td>0.119149</td>
+      <td>0.111953</td>
+      <td>0.028812</td>
+      <td>0.014774</td>
+      <td>-0.021646</td>
+      <td>-0.031132</td>
+      <td>0.014132</td>
+      <td>-0.016399</td>
+      <td>0.058203</td>
       <td>...</td>
-      <td>0.141814</td>
-      <td>0.136756</td>
-      <td>0.146154</td>
-      <td>0.137082</td>
-      <td>0.050806</td>
-      <td>0.134495</td>
-      <td>0.029420</td>
-      <td>0.064401</td>
-      <td>0.029876</td>
-      <td>0.088546</td>
+      <td>0.049095</td>
+      <td>0.124588</td>
+      <td>0.113995</td>
+      <td>0.189300</td>
+      <td>0.122514</td>
+      <td>0.141969</td>
+      <td>0.012286</td>
+      <td>0.052209</td>
+      <td>0.053518</td>
+      <td>0.026824</td>
     </tr>
     <tr>
       <th>241971</th>
-      <td>0.042242</td>
-      <td>0.027644</td>
-      <td>0.043034</td>
-      <td>0.031111</td>
-      <td>0.035491</td>
-      <td>0.010169</td>
-      <td>0.091010</td>
-      <td>0.099624</td>
-      <td>0.091731</td>
-      <td>0.111502</td>
+      <td>0.099525</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.088410</td>
+      <td>0.050481</td>
+      <td>0.132159</td>
+      <td>0.110624</td>
+      <td>0.081949</td>
+      <td>0.152174</td>
+      <td>0.093811</td>
       <td>...</td>
-      <td>0.180579</td>
-      <td>0.108152</td>
-      <td>0.129695</td>
-      <td>0.127978</td>
-      <td>0.070008</td>
-      <td>0.102976</td>
-      <td>-0.020511</td>
-      <td>0.047112</td>
-      <td>0.068966</td>
-      <td>0.011753</td>
+      <td>0.035159</td>
+      <td>0.063199</td>
+      <td>0.066327</td>
+      <td>0.022008</td>
+      <td>0.042598</td>
+      <td>0.094718</td>
+      <td>0.044080</td>
+      <td>0.052040</td>
+      <td>0.037582</td>
+      <td>0.037002</td>
     </tr>
     <tr>
-      <th>259419</th>
-      <td>0.096603</td>
-      <td>0.047301</td>
-      <td>-0.047355</td>
-      <td>0.101188</td>
-      <td>0.055176</td>
-      <td>0.109884</td>
-      <td>0.090683</td>
-      <td>0.019865</td>
-      <td>0.064970</td>
-      <td>0.040393</td>
+      <th>242843</th>
+      <td>0.111466</td>
+      <td>0.129014</td>
+      <td>0.085382</td>
+      <td>0.079795</td>
+      <td>0.028861</td>
+      <td>0.020097</td>
+      <td>0.023469</td>
+      <td>0.015390</td>
+      <td>0.009620</td>
+      <td>0.047793</td>
       <td>...</td>
-      <td>0.178965</td>
-      <td>0.156148</td>
-      <td>0.183940</td>
-      <td>0.169969</td>
-      <td>0.059396</td>
-      <td>0.155861</td>
-      <td>0.108565</td>
-      <td>0.130992</td>
-      <td>0.042644</td>
-      <td>0.159661</td>
+      <td>0.019108</td>
+      <td>0.136758</td>
+      <td>0.132939</td>
+      <td>0.154312</td>
+      <td>0.140520</td>
+      <td>0.162182</td>
+      <td>0.012016</td>
+      <td>0.037443</td>
+      <td>0.038796</td>
+      <td>0.013696</td>
     </tr>
     <tr>
-      <th>260730</th>
-      <td>0.070478</td>
-      <td>0.046861</td>
-      <td>0.012488</td>
-      <td>0.074090</td>
-      <td>0.055033</td>
-      <td>0.060632</td>
-      <td>0.079945</td>
-      <td>0.038998</td>
-      <td>0.043578</td>
-      <td>0.054189</td>
+      <th>249556</th>
+      <td>0.072670</td>
+      <td>0.112471</td>
+      <td>0.108609</td>
+      <td>0.067341</td>
+      <td>0.056886</td>
+      <td>0.021258</td>
+      <td>-0.008906</td>
+      <td>0.029966</td>
+      <td>0.001655</td>
+      <td>0.038663</td>
       <td>...</td>
-      <td>0.161672</td>
-      <td>0.152290</td>
-      <td>0.172750</td>
-      <td>0.158664</td>
-      <td>0.051916</td>
-      <td>0.132962</td>
-      <td>0.076779</td>
-      <td>0.096231</td>
-      <td>0.030707</td>
-      <td>0.128948</td>
+      <td>0.048681</td>
+      <td>0.163164</td>
+      <td>0.159906</td>
+      <td>0.149921</td>
+      <td>0.173917</td>
+      <td>0.158731</td>
+      <td>0.035243</td>
+      <td>0.080649</td>
+      <td>0.067951</td>
+      <td>0.051447</td>
     </tr>
     <tr>
-      <th>265715</th>
-      <td>0.084325</td>
-      <td>0.045296</td>
-      <td>-0.022503</td>
-      <td>0.088865</td>
-      <td>0.055693</td>
-      <td>0.090180</td>
-      <td>0.091010</td>
-      <td>0.038326</td>
-      <td>0.068300</td>
-      <td>0.053238</td>
+      <th>260790</th>
+      <td>0.086371</td>
+      <td>0.149891</td>
+      <td>0.123985</td>
+      <td>0.080554</td>
+      <td>0.056191</td>
+      <td>0.004062</td>
+      <td>0.040294</td>
+      <td>0.048957</td>
+      <td>0.005191</td>
+      <td>0.057454</td>
       <td>...</td>
-      <td>0.193509</td>
-      <td>0.152894</td>
-      <td>0.191892</td>
-      <td>0.168616</td>
-      <td>0.076341</td>
-      <td>0.130259</td>
-      <td>0.096012</td>
-      <td>0.137738</td>
-      <td>0.055046</td>
-      <td>0.138686</td>
-    </tr>
-    <tr>
-      <th>274219</th>
-      <td>0.070237</td>
-      <td>0.063224</td>
-      <td>0.042852</td>
-      <td>0.046490</td>
-      <td>0.016306</td>
-      <td>-0.014637</td>
-      <td>0.102204</td>
-      <td>0.078571</td>
-      <td>0.067411</td>
-      <td>0.110104</td>
-      <td>...</td>
-      <td>0.161672</td>
-      <td>0.135365</td>
-      <td>0.144878</td>
-      <td>0.135910</td>
-      <td>0.061188</td>
-      <td>0.123210</td>
-      <td>0.029997</td>
-      <td>0.047227</td>
-      <td>0.017441</td>
-      <td>0.087769</td>
-    </tr>
-    <tr>
-      <th>3035308</th>
-      <td>0.001540</td>
-      <td>-0.051986</td>
-      <td>-0.007516</td>
-      <td>-0.039370</td>
-      <td>-0.004754</td>
-      <td>-0.000735</td>
-      <td>0.015166</td>
-      <td>0.025264</td>
-      <td>0.042206</td>
-      <td>0.086957</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>307571</th>
-      <td>0.020936</td>
-      <td>-0.045128</td>
-      <td>-0.040050</td>
-      <td>0.012064</td>
-      <td>0.039693</td>
-      <td>0.083754</td>
-      <td>0.025904</td>
-      <td>0.015933</td>
-      <td>0.055080</td>
-      <td>0.048611</td>
-      <td>...</td>
-      <td>0.050926</td>
-      <td>0.027930</td>
-      <td>0.075826</td>
-      <td>0.065405</td>
-      <td>0.015221</td>
-      <td>0.038385</td>
-      <td>0.087338</td>
-      <td>0.100000</td>
-      <td>0.062757</td>
-      <td>0.081439</td>
-    </tr>
-    <tr>
-      <th>342638</th>
-      <td>0.026801</td>
-      <td>-0.023222</td>
-      <td>-0.013767</td>
-      <td>0.035566</td>
-      <td>0.064390</td>
-      <td>0.094330</td>
-      <td>0.039213</td>
-      <td>0.030842</td>
-      <td>0.053241</td>
-      <td>0.041685</td>
-      <td>...</td>
-      <td>0.046987</td>
-      <td>0.039027</td>
-      <td>0.095325</td>
-      <td>0.080901</td>
-      <td>0.016700</td>
-      <td>0.057609</td>
-      <td>0.105534</td>
-      <td>0.092062</td>
-      <td>0.038758</td>
-      <td>0.113043</td>
-    </tr>
-    <tr>
-      <th>398604</th>
-      <td>0.057009</td>
-      <td>-0.002836</td>
-      <td>-0.046760</td>
-      <td>0.074043</td>
-      <td>0.074673</td>
-      <td>0.134757</td>
-      <td>0.068761</td>
-      <td>0.038909</td>
-      <td>0.086654</td>
-      <td>0.040132</td>
-      <td>...</td>
-      <td>0.157589</td>
-      <td>0.155568</td>
-      <td>0.183250</td>
-      <td>0.161856</td>
-      <td>0.078339</td>
-      <td>0.155222</td>
-      <td>0.108159</td>
-      <td>0.130350</td>
-      <td>0.056031</td>
-      <td>0.158859</td>
-    </tr>
-    <tr>
-      <th>400315</th>
-      <td>0.083492</td>
-      <td>0.063293</td>
-      <td>0.012209</td>
-      <td>0.074059</td>
-      <td>0.035948</td>
-      <td>0.036036</td>
-      <td>0.090665</td>
-      <td>0.038932</td>
-      <td>0.043706</td>
-      <td>0.067740</td>
-      <td>...</td>
-      <td>0.154448</td>
-      <td>0.143475</td>
-      <td>0.158793</td>
-      <td>0.150847</td>
-      <td>0.052302</td>
+      <td>0.065399</td>
+      <td>0.159650</td>
       <td>0.141897</td>
-      <td>0.061487</td>
-      <td>0.080029</td>
-      <td>0.017826</td>
-      <td>0.115131</td>
+      <td>0.156088</td>
+      <td>0.178912</td>
+      <td>0.166448</td>
+      <td>0.067427</td>
+      <td>0.067861</td>
+      <td>0.053673</td>
+      <td>0.076036</td>
     </tr>
     <tr>
-      <th>4307652</th>
-      <td>0.059530</td>
-      <td>-0.005836</td>
-      <td>-0.058075</td>
-      <td>0.007812</td>
-      <td>-0.022794</td>
-      <td>0.017251</td>
-      <td>0.062389</td>
-      <td>0.024009</td>
-      <td>0.077595</td>
-      <td>0.098912</td>
+      <th>272189</th>
+      <td>0.127071</td>
+      <td>0.097603</td>
+      <td>0.047615</td>
+      <td>0.054995</td>
+      <td>-0.013527</td>
+      <td>0.021176</td>
+      <td>0.040355</td>
+      <td>0.011996</td>
+      <td>0.041717</td>
+      <td>0.079493</td>
       <td>...</td>
-      <td>0.099593</td>
-      <td>0.166667</td>
-      <td>0.147696</td>
-      <td>0.149792</td>
-      <td>0.071091</td>
-      <td>0.133266</td>
-      <td>0.023818</td>
-      <td>0.046549</td>
-      <td>0.007686</td>
-      <td>0.057539</td>
+      <td>0.047485</td>
+      <td>0.202429</td>
+      <td>0.133819</td>
+      <td>0.133229</td>
+      <td>0.123095</td>
+      <td>0.156186</td>
+      <td>0.021908</td>
+      <td>0.052059</td>
+      <td>0.068483</td>
+      <td>0.038253</td>
     </tr>
     <tr>
-      <th>4318208</th>
-      <td>0.058408</td>
-      <td>-0.025578</td>
-      <td>-0.091427</td>
-      <td>-0.008875</td>
-      <td>-0.044781</td>
-      <td>0.015996</td>
-      <td>0.041480</td>
-      <td>-0.011202</td>
-      <td>0.061008</td>
-      <td>0.089379</td>
+      <th>275708</th>
+      <td>0.073255</td>
+      <td>0.132201</td>
+      <td>0.122805</td>
+      <td>0.080554</td>
+      <td>0.070060</td>
+      <td>0.018276</td>
+      <td>-0.010770</td>
+      <td>0.028243</td>
+      <td>-0.013237</td>
+      <td>0.026147</td>
       <td>...</td>
-      <td>0.032704</td>
-      <td>0.006361</td>
-      <td>0.033872</td>
-      <td>0.035960</td>
-      <td>0.074674</td>
-      <td>0.054955</td>
-      <td>0.069084</td>
-      <td>0.086561</td>
-      <td>0.137931</td>
-      <td>0.047291</td>
+      <td>0.066629</td>
+      <td>0.150418</td>
+      <td>0.151777</td>
+      <td>0.146320</td>
+      <td>0.169001</td>
+      <td>0.150578</td>
+      <td>0.056929</td>
+      <td>0.067160</td>
+      <td>0.083133</td>
+      <td>0.087188</td>
     </tr>
     <tr>
-      <th>4321402</th>
-      <td>0.032829</td>
-      <td>-0.015407</td>
-      <td>-0.013524</td>
-      <td>-0.013129</td>
-      <td>-0.013377</td>
-      <td>-0.007026</td>
-      <td>0.079972</td>
-      <td>0.093885</td>
-      <td>0.126284</td>
-      <td>0.142213</td>
+      <th>276867</th>
+      <td>0.082802</td>
+      <td>0.137907</td>
+      <td>0.118310</td>
+      <td>0.102201</td>
+      <td>0.082561</td>
+      <td>0.034781</td>
+      <td>0.056314</td>
+      <td>0.062440</td>
+      <td>0.023207</td>
+      <td>0.048642</td>
       <td>...</td>
-      <td>0.085128</td>
-      <td>0.087451</td>
-      <td>0.095922</td>
-      <td>0.084454</td>
-      <td>0.205021</td>
-      <td>0.089891</td>
-      <td>-0.013284</td>
-      <td>0.031206</td>
-      <td>0.110995</td>
-      <td>0.030288</td>
+      <td>0.084895</td>
+      <td>0.139065</td>
+      <td>0.140555</td>
+      <td>0.119571</td>
+      <td>0.170423</td>
+      <td>0.157450</td>
+      <td>0.067848</td>
+      <td>0.096443</td>
+      <td>0.083550</td>
+      <td>0.087461</td>
     </tr>
     <tr>
-      <th>4349788</th>
-      <td>0.095768</td>
-      <td>0.112064</td>
-      <td>0.072538</td>
-      <td>0.100161</td>
-      <td>0.054944</td>
-      <td>0.011282</td>
-      <td>0.111515</td>
-      <td>0.057788</td>
-      <td>0.021639</td>
-      <td>0.067701</td>
+      <th>296374</th>
+      <td>0.138020</td>
+      <td>0.128047</td>
+      <td>0.060305</td>
+      <td>0.118588</td>
+      <td>0.041275</td>
+      <td>0.058669</td>
+      <td>0.023769</td>
+      <td>-0.008559</td>
+      <td>0.010476</td>
+      <td>0.014582</td>
       <td>...</td>
-      <td>0.164204</td>
-      <td>0.146306</td>
-      <td>0.168918</td>
-      <td>0.161306</td>
-      <td>0.069371</td>
-      <td>0.145017</td>
-      <td>0.077386</td>
-      <td>0.081477</td>
-      <td>0.081541</td>
-      <td>0.131461</td>
+      <td>0.155262</td>
+      <td>0.050445</td>
+      <td>0.037609</td>
+      <td>0.037889</td>
+      <td>0.087884</td>
+      <td>0.054888</td>
+      <td>0.116333</td>
+      <td>0.052156</td>
+      <td>0.107430</td>
+      <td>0.085935</td>
     </tr>
     <tr>
-      <th>4379848</th>
-      <td>0.009591</td>
-      <td>0.015287</td>
-      <td>0.096322</td>
-      <td>0.022740</td>
-      <td>0.071411</td>
-      <td>0.013203</td>
-      <td>0.069523</td>
-      <td>0.109320</td>
-      <td>0.064157</td>
-      <td>0.092849</td>
+      <th>303283</th>
+      <td>0.134581</td>
+      <td>0.122708</td>
+      <td>0.059474</td>
+      <td>0.054508</td>
+      <td>-0.021977</td>
+      <td>0.000529</td>
+      <td>0.060056</td>
+      <td>0.017761</td>
+      <td>0.036069</td>
+      <td>0.091991</td>
       <td>...</td>
-      <td>0.166314</td>
-      <td>0.103981</td>
-      <td>0.124437</td>
-      <td>0.107863</td>
-      <td>0.066165</td>
-      <td>0.089273</td>
-      <td>0.018792</td>
-      <td>0.061296</td>
-      <td>0.035217</td>
-      <td>0.044717</td>
+      <td>0.170076</td>
+      <td>0.036643</td>
+      <td>0.012823</td>
+      <td>0.042132</td>
+      <td>0.060687</td>
+      <td>0.012236</td>
+      <td>0.110741</td>
+      <td>0.019417</td>
+      <td>0.099104</td>
+      <td>0.063283</td>
+    </tr>
+    <tr>
+      <th>368681</th>
+      <td>0.143764</td>
+      <td>0.099470</td>
+      <td>0.033700</td>
+      <td>0.108522</td>
+      <td>0.024694</td>
+      <td>0.071825</td>
+      <td>0.022376</td>
+      <td>-0.014671</td>
+      <td>0.029579</td>
+      <td>0.022393</td>
+      <td>...</td>
+      <td>0.133370</td>
+      <td>0.016200</td>
+      <td>0.004427</td>
+      <td>0.019429</td>
+      <td>0.023107</td>
+      <td>-0.008302</td>
+      <td>0.086770</td>
+      <td>0.039584</td>
+      <td>0.076947</td>
+      <td>0.031696</td>
+    </tr>
+    <tr>
+      <th>4244333</th>
+      <td>0.154830</td>
+      <td>0.118156</td>
+      <td>0.037504</td>
+      <td>0.100252</td>
+      <td>0.004361</td>
+      <td>0.048753</td>
+      <td>0.055624</td>
+      <td>-0.003481</td>
+      <td>0.036575</td>
+      <td>0.049896</td>
+      <td>...</td>
+      <td>0.056668</td>
+      <td>0.013898</td>
+      <td>-0.014402</td>
+      <td>-0.001139</td>
+      <td>-0.013208</td>
+      <td>0.024678</td>
+      <td>0.014468</td>
+      <td>0.015946</td>
+      <td>0.016742</td>
+      <td>0.023805</td>
+    </tr>
+    <tr>
+      <th>4307391</th>
+      <td>0.148599</td>
+      <td>0.127551</td>
+      <td>0.050233</td>
+      <td>0.108805</td>
+      <td>0.019876</td>
+      <td>0.049536</td>
+      <td>0.054785</td>
+      <td>0.001647</td>
+      <td>0.029513</td>
+      <td>0.042020</td>
+      <td>...</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>4307782</th>
+      <td>0.111308</td>
+      <td>0.079613</td>
+      <td>0.048640</td>
+      <td>0.092556</td>
+      <td>0.042349</td>
+      <td>0.072225</td>
+      <td>0.057589</td>
+      <td>0.037341</td>
+      <td>0.064656</td>
+      <td>0.057727</td>
+      <td>...</td>
+      <td>0.103527</td>
+      <td>0.015006</td>
+      <td>0.028719</td>
+      <td>0.008999</td>
+      <td>0.029940</td>
+      <td>0.017317</td>
+      <td>0.138655</td>
+      <td>0.040878</td>
+      <td>0.073806</td>
+      <td>0.054364</td>
     </tr>
     <tr>
       <th>4393400</th>
-      <td>-0.008221</td>
-      <td>-0.037278</td>
-      <td>0.041930</td>
-      <td>-0.020074</td>
-      <td>0.036849</td>
-      <td>0.012841</td>
-      <td>0.035633</td>
-      <td>0.075546</td>
-      <td>0.064571</td>
-      <td>0.093302</td>
+      <td>0.111894</td>
+      <td>0.122533</td>
+      <td>0.080149</td>
+      <td>0.118599</td>
+      <td>0.068914</td>
+      <td>0.063110</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
       <td>...</td>
-      <td>0.183671</td>
+      <td>0.042910</td>
+      <td>0.054025</td>
+      <td>0.087751</td>
+      <td>0.058915</td>
+      <td>0.089487</td>
+      <td>0.081381</td>
+      <td>0.005511</td>
+      <td>0.038666</td>
+      <td>-0.003650</td>
+      <td>0.052587</td>
+    </tr>
+    <tr>
+      <th>4400440</th>
+      <td>0.147409</td>
+      <td>0.094536</td>
+      <td>0.026673</td>
+      <td>0.086455</td>
+      <td>-0.002194</td>
+      <td>0.054291</td>
+      <td>0.158293</td>
+      <td>0.068886</td>
+      <td>0.114929</td>
+      <td>0.124719</td>
+      <td>...</td>
+      <td>0.058967</td>
+      <td>0.062025</td>
+      <td>0.052757</td>
+      <td>0.082409</td>
+      <td>0.088293</td>
+      <td>0.122867</td>
+      <td>0.048875</td>
+      <td>0.009154</td>
+      <td>0.033264</td>
+      <td>0.078553</td>
+    </tr>
+    <tr>
+      <th>4428060</th>
+      <td>0.166761</td>
+      <td>0.117383</td>
+      <td>0.025985</td>
+      <td>0.123708</td>
+      <td>0.016228</td>
+      <td>0.072225</td>
+      <td>0.086645</td>
+      <td>0.005500</td>
+      <td>0.055808</td>
+      <td>0.048725</td>
+      <td>...</td>
+      <td>0.058248</td>
+      <td>0.032831</td>
+      <td>0.017160</td>
+      <td>0.027437</td>
+      <td>0.025099</td>
+      <td>0.034304</td>
+      <td>0.051658</td>
+      <td>0.034778</td>
+      <td>0.097046</td>
+      <td>0.056499</td>
+    </tr>
+    <tr>
+      <th>4432796</th>
+      <td>0.072670</td>
+      <td>0.164090</td>
+      <td>0.147152</td>
+      <td>0.105973</td>
+      <td>0.097211</td>
+      <td>0.017416</td>
+      <td>-0.008906</td>
+      <td>0.029966</td>
+      <td>-0.034367</td>
+      <td>0.005409</td>
+      <td>...</td>
+      <td>0.084885</td>
+      <td>0.126067</td>
+      <td>0.146936</td>
+      <td>0.134174</td>
+      <td>0.207317</td>
+      <td>0.132429</td>
+      <td>0.044766</td>
+      <td>0.110800</td>
+      <td>0.053619</td>
+      <td>0.087654</td>
+    </tr>
+    <tr>
+      <th>4451252</th>
+      <td>0.141454</td>
+      <td>0.133164</td>
+      <td>0.060978</td>
+      <td>0.111993</td>
+      <td>0.030761</td>
+      <td>0.048132</td>
+      <td>0.040664</td>
+      <td>-0.000882</td>
+      <td>0.017086</td>
+      <td>0.030617</td>
+      <td>...</td>
+      <td>0.045855</td>
+      <td>0.022930</td>
+      <td>0.036180</td>
+      <td>0.017194</td>
+      <td>0.051302</td>
+      <td>0.040120</td>
+      <td>0.047575</td>
+      <td>0.105090</td>
+      <td>0.070642</td>
+      <td>0.121339</td>
+    </tr>
+    <tr>
+      <th>458596</th>
+      <td>0.152499</td>
+      <td>0.077037</td>
+      <td>0.008938</td>
+      <td>0.036925</td>
+      <td>-0.059279</td>
+      <td>0.020097</td>
+      <td>0.088986</td>
+      <td>0.019961</td>
+      <td>0.085375</td>
+      <td>0.124864</td>
+      <td>...</td>
       <td>0.131328</td>
-      <td>0.134225</td>
-      <td>0.139707</td>
-      <td>0.045799</td>
-      <td>0.110230</td>
-      <td>-0.015566</td>
-      <td>0.062614</td>
-      <td>0.032892</td>
-      <td>0.058243</td>
+      <td>0.112838</td>
+      <td>0.059708</td>
+      <td>0.103239</td>
+      <td>0.086372</td>
+      <td>0.134050</td>
+      <td>0.077395</td>
+      <td>0.049967</td>
+      <td>0.116531</td>
+      <td>0.078849</td>
     </tr>
     <tr>
-      <th>4408558</th>
-      <td>0.039790</td>
-      <td>-0.013588</td>
-      <td>-0.026370</td>
-      <td>0.002614</td>
-      <td>-0.001272</td>
-      <td>0.019252</td>
-      <td>0.039906</td>
-      <td>0.013144</td>
-      <td>0.041870</td>
-      <td>0.075802</td>
+      <th>510921</th>
+      <td>0.145684</td>
+      <td>0.136557</td>
+      <td>0.059631</td>
+      <td>0.109585</td>
+      <td>0.023773</td>
+      <td>0.043059</td>
+      <td>0.059076</td>
+      <td>0.007040</td>
+      <td>0.025814</td>
+      <td>0.043979</td>
       <td>...</td>
-      <td>0.080950</td>
-      <td>0.120947</td>
-      <td>0.117473</td>
-      <td>0.119619</td>
-      <td>0.066320</td>
-      <td>0.151261</td>
-      <td>0.037734</td>
-      <td>0.058062</td>
-      <td>0.060266</td>
-      <td>0.077085</td>
+      <td>0.153935</td>
+      <td>0.024624</td>
+      <td>0.020401</td>
+      <td>0.019537</td>
+      <td>0.040015</td>
+      <td>0.009629</td>
+      <td>0.124213</td>
+      <td>0.052241</td>
+      <td>0.118825</td>
+      <td>0.096318</td>
     </tr>
     <tr>
-      <th>4460404</th>
-      <td>0.071126</td>
-      <td>0.027056</td>
-      <td>-0.025087</td>
-      <td>0.044679</td>
-      <td>0.012440</td>
-      <td>0.036036</td>
-      <td>0.073702</td>
-      <td>0.027052</td>
-      <td>0.057088</td>
-      <td>0.075986</td>
+      <th>514227</th>
+      <td>0.169734</td>
+      <td>0.165057</td>
+      <td>0.058855</td>
+      <td>0.113902</td>
+      <td>0.002848</td>
+      <td>0.024364</td>
+      <td>0.102839</td>
+      <td>0.013147</td>
+      <td>0.032298</td>
+      <td>0.067094</td>
       <td>...</td>
-      <td>0.131034</td>
-      <td>0.166435</td>
-      <td>0.182178</td>
-      <td>0.185185</td>
-      <td>0.076283</td>
-      <td>0.146447</td>
-      <td>0.095928</td>
-      <td>0.121121</td>
-      <td>0.048280</td>
-      <td>0.132530</td>
+      <td>0.160213</td>
+      <td>0.014574</td>
+      <td>-0.000882</td>
+      <td>0.029792</td>
+      <td>0.040500</td>
+      <td>-0.001628</td>
+      <td>0.112258</td>
+      <td>0.051998</td>
+      <td>0.101063</td>
+      <td>0.076368</td>
     </tr>
     <tr>
-      <th>4462014</th>
-      <td>0.085391</td>
-      <td>0.083730</td>
-      <td>0.045021</td>
-      <td>0.107957</td>
-      <td>0.081165</td>
-      <td>0.067951</td>
-      <td>0.077735</td>
-      <td>0.013380</td>
-      <td>-0.009885</td>
-      <td>0.017235</td>
+      <th>516093</th>
+      <td>0.102375</td>
+      <td>0.137272</td>
+      <td>0.099884</td>
+      <td>0.081732</td>
+      <td>0.040496</td>
+      <td>0.015349</td>
+      <td>0.040299</td>
+      <td>0.034410</td>
+      <td>0.014000</td>
+      <td>0.056443</td>
       <td>...</td>
-      <td>0.094178</td>
-      <td>0.104776</td>
-      <td>0.130067</td>
-      <td>0.118338</td>
-      <td>0.061625</td>
-      <td>0.057593</td>
-      <td>0.082240</td>
-      <td>0.090762</td>
-      <td>0.084430</td>
-      <td>0.078637</td>
+      <td>0.137518</td>
+      <td>-0.013516</td>
+      <td>-0.008021</td>
+      <td>-0.000823</td>
+      <td>0.047907</td>
+      <td>-0.000915</td>
+      <td>0.088784</td>
+      <td>0.006590</td>
+      <td>0.081527</td>
+      <td>0.074947</td>
     </tr>
     <tr>
-      <th>4465561</th>
-      <td>0.051554</td>
-      <td>0.003060</td>
-      <td>-0.023358</td>
-      <td>0.053227</td>
-      <td>0.053180</td>
-      <td>0.087612</td>
-      <td>0.057844</td>
-      <td>0.027617</td>
-      <td>0.056484</td>
-      <td>0.047364</td>
+      <th>525348</th>
+      <td>0.075629</td>
+      <td>0.104727</td>
+      <td>0.100114</td>
+      <td>0.068519</td>
+      <td>0.054987</td>
+      <td>0.028627</td>
+      <td>0.040312</td>
+      <td>0.058734</td>
+      <td>0.036719</td>
+      <td>0.067825</td>
       <td>...</td>
-      <td>0.138406</td>
-      <td>0.171400</td>
-      <td>0.193416</td>
-      <td>0.190274</td>
-      <td>0.090492</td>
-      <td>0.150212</td>
-      <td>0.130767</td>
-      <td>0.146659</td>
-      <td>0.047497</td>
-      <td>0.163100</td>
+      <td>0.127013</td>
+      <td>0.028577</td>
+      <td>0.041634</td>
+      <td>0.023844</td>
+      <td>0.078272</td>
+      <td>0.023396</td>
+      <td>0.089642</td>
+      <td>0.003488</td>
+      <td>0.111971</td>
+      <td>0.050691</td>
     </tr>
     <tr>
-      <th>520657</th>
-      <td>0.039091</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.042309</td>
-      <td>0.055956</td>
-      <td>0.072072</td>
-      <td>0.067878</td>
-      <td>0.063451</td>
-      <td>0.081081</td>
-      <td>0.071033</td>
+      <th>525942</th>
+      <td>0.157014</td>
+      <td>0.090111</td>
+      <td>0.014560</td>
+      <td>0.101294</td>
+      <td>0.003138</td>
+      <td>0.072303</td>
+      <td>0.025641</td>
+      <td>-0.024629</td>
+      <td>0.038078</td>
+      <td>0.030617</td>
       <td>...</td>
-      <td>0.078688</td>
-      <td>0.078351</td>
-      <td>0.121725</td>
-      <td>0.112852</td>
-      <td>0.068702</td>
-      <td>0.096057</td>
-      <td>0.116410</td>
-      <td>0.119852</td>
-      <td>0.048360</td>
-      <td>0.139593</td>
+      <td>0.014719</td>
+      <td>0.025063</td>
+      <td>0.038152</td>
+      <td>0.026879</td>
+      <td>0.052086</td>
+      <td>0.026501</td>
+      <td>0.028732</td>
+      <td>0.097458</td>
+      <td>0.034925</td>
+      <td>0.084407</td>
     </tr>
     <tr>
-      <th>524371</th>
-      <td>0.000538</td>
-      <td>-0.043572</td>
-      <td>0.010135</td>
-      <td>0.027866</td>
-      <td>0.091915</td>
-      <td>0.110537</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
+      <th>886828</th>
+      <td>0.145126</td>
+      <td>0.073200</td>
+      <td>0.012836</td>
+      <td>0.102160</td>
+      <td>0.016613</td>
+      <td>0.086735</td>
+      <td>0.155317</td>
+      <td>0.069059</td>
+      <td>0.128024</td>
+      <td>0.109376</td>
       <td>...</td>
-      <td>0.078542</td>
-      <td>0.061135</td>
-      <td>0.115740</td>
-      <td>0.106336</td>
-      <td>0.035451</td>
-      <td>0.096237</td>
-      <td>0.116917</td>
-      <td>0.109414</td>
-      <td>0.037308</td>
-      <td>0.131678</td>
+      <td>0.051600</td>
+      <td>0.038130</td>
+      <td>0.021166</td>
+      <td>0.055374</td>
+      <td>0.073203</td>
+      <td>0.064531</td>
+      <td>0.039579</td>
+      <td>0.014743</td>
+      <td>0.053857</td>
+      <td>0.048338</td>
     </tr>
     <tr>
-      <th>527574</th>
-      <td>0.137168</td>
-      <td>0.107623</td>
-      <td>-0.031651</td>
-      <td>0.132743</td>
-      <td>0.040505</td>
-      <td>0.077925</td>
-      <td>0.165939</td>
-      <td>0.093387</td>
-      <td>0.138917</td>
-      <td>0.103466</td>
+      <th>89393</th>
+      <td>0.072568</td>
+      <td>0.129177</td>
+      <td>0.121177</td>
+      <td>0.079853</td>
+      <td>0.070054</td>
+      <td>0.020023</td>
+      <td>0.007084</td>
+      <td>0.040278</td>
+      <td>-0.000368</td>
+      <td>0.037696</td>
       <td>...</td>
-      <td>0.101492</td>
-      <td>0.108152</td>
-      <td>0.152355</td>
-      <td>0.158788</td>
-      <td>0.087903</td>
-      <td>0.123377</td>
-      <td>0.134452</td>
-      <td>0.127232</td>
-      <td>0.068966</td>
-      <td>0.166977</td>
+      <td>0.035097</td>
+      <td>0.140308</td>
+      <td>0.212245</td>
+      <td>0.127812</td>
+      <td>0.150429</td>
+      <td>0.126066</td>
+      <td>0.043961</td>
+      <td>0.083088</td>
+      <td>0.037530</td>
+      <td>0.063286</td>
     </tr>
     <tr>
-      <th>591785</th>
-      <td>0.036391</td>
-      <td>-0.003919</td>
-      <td>-0.000871</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.082042</td>
-      <td>0.092343</td>
-      <td>0.115272</td>
-      <td>0.131579</td>
+      <th>91834</th>
+      <td>0.105560</td>
+      <td>0.104406</td>
+      <td>0.072423</td>
+      <td>0.089188</td>
+      <td>0.044911</td>
+      <td>0.049022</td>
+      <td>0.055884</td>
+      <td>0.041476</td>
+      <td>0.046327</td>
+      <td>0.059580</td>
       <td>...</td>
-      <td>0.057902</td>
-      <td>0.070573</td>
-      <td>0.088805</td>
-      <td>0.098541</td>
-      <td>0.070913</td>
-      <td>0.086533</td>
-      <td>0.036276</td>
-      <td>0.058958</td>
-      <td>0.039618</td>
-      <td>0.078983</td>
-    </tr>
-    <tr>
-      <th>65400</th>
-      <td>0.057676</td>
-      <td>0.063410</td>
-      <td>0.072349</td>
-      <td>0.074154</td>
-      <td>0.073854</td>
-      <td>0.036036</td>
-      <td>0.090748</td>
-      <td>0.076681</td>
-      <td>0.043719</td>
-      <td>0.067748</td>
-      <td>...</td>
-      <td>0.152066</td>
-      <td>0.158108</td>
-      <td>0.186422</td>
-      <td>0.172120</td>
-      <td>0.077620</td>
-      <td>0.158021</td>
-      <td>0.078164</td>
-      <td>0.099987</td>
-      <td>0.068966</td>
-      <td>0.134462</td>
-    </tr>
-    <tr>
-      <th>711843</th>
-      <td>0.035756</td>
-      <td>-0.009782</td>
-      <td>-0.010075</td>
-      <td>0.026039</td>
-      <td>0.037798</td>
-      <td>0.056712</td>
-      <td>0.042714</td>
-      <td>0.023968</td>
-      <td>0.042567</td>
-      <td>0.055713</td>
-      <td>...</td>
-      <td>0.199187</td>
-      <td>0.119026</td>
-      <td>0.142536</td>
-      <td>0.140942</td>
-      <td>0.082706</td>
-      <td>0.106598</td>
-      <td>0.033639</td>
-      <td>0.101439</td>
-      <td>0.047229</td>
-      <td>0.082793</td>
-    </tr>
-    <tr>
-      <th>893992</th>
-      <td>0.084379</td>
-      <td>0.045813</td>
-      <td>-0.021689</td>
-      <td>0.150034</td>
-      <td>0.142224</td>
-      <td>0.202071</td>
-      <td>0.068129</td>
-      <td>-0.002073</td>
-      <td>0.020786</td>
-      <td>-0.037329</td>
-      <td>...</td>
-      <td>0.140553</td>
-      <td>0.156276</td>
-      <td>0.180438</td>
-      <td>0.163401</td>
-      <td>0.095224</td>
-      <td>0.096544</td>
-      <td>0.164242</td>
-      <td>0.159508</td>
-      <td>0.124369</td>
-      <td>0.142397</td>
-    </tr>
-    <tr>
-      <th>935658</th>
-      <td>0.036582</td>
-      <td>0.021376</td>
-      <td>0.044757</td>
-      <td>0.125794</td>
-      <td>0.177837</td>
-      <td>0.193917</td>
-      <td>0.025210</td>
-      <td>-0.008079</td>
-      <td>-0.034614</td>
-      <td>-0.067001</td>
-      <td>...</td>
-      <td>0.115903</td>
-      <td>0.142996</td>
-      <td>0.182759</td>
-      <td>0.163235</td>
-      <td>0.071694</td>
-      <td>0.086259</td>
-      <td>0.141110</td>
-      <td>0.134213</td>
-      <td>0.084902</td>
-      <td>0.135593</td>
-    </tr>
-    <tr>
-      <th>936633</th>
-      <td>0.053982</td>
-      <td>0.043353</td>
-      <td>0.044394</td>
-      <td>0.140930</td>
-      <td>0.173810</td>
-      <td>0.188976</td>
-      <td>0.053034</td>
-      <td>0.015605</td>
-      <td>-0.006843</td>
-      <td>-0.047182</td>
-      <td>...</td>
-      <td>0.125695</td>
-      <td>0.153419</td>
-      <td>0.190385</td>
-      <td>0.171914</td>
-      <td>0.072309</td>
-      <td>0.099688</td>
-      <td>0.157809</td>
-      <td>0.152404</td>
-      <td>0.100011</td>
-      <td>0.151739</td>
-    </tr>
-    <tr>
-      <th>999394</th>
-      <td>0.056358</td>
-      <td>0.045558</td>
-      <td>0.042893</td>
-      <td>0.059680</td>
-      <td>0.055288</td>
-      <td>0.036036</td>
-      <td>0.090835</td>
-      <td>0.078753</td>
-      <td>0.067594</td>
-      <td>0.082460</td>
-      <td>...</td>
-      <td>0.169526</td>
-      <td>0.151254</td>
-      <td>0.150570</td>
-      <td>0.149952</td>
-      <td>0.113939</td>
-      <td>0.139829</td>
-      <td>0.027681</td>
-      <td>0.047921</td>
-      <td>0.108235</td>
-      <td>0.075205</td>
+      <td>0.029449</td>
+      <td>0.148013</td>
+      <td>0.113944</td>
+      <td>0.143871</td>
+      <td>0.122540</td>
+      <td>0.191837</td>
+      <td>0.023959</td>
+      <td>0.052166</td>
+      <td>0.067810</td>
+      <td>0.063430</td>
     </tr>
   </tbody>
 </table>
@@ -2581,8 +2587,8 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Axis 1 is defined by the distance from sample 935658 to 591785
-Axis 2 is defined by the distance from sample 274219 to 4462014
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Axis 1 is defined by the distance from sample 458596 to 207627
+Axis 2 is defined by the distance from sample 4428060 to 4244333
 </pre></div>
 </div>
 </div>
@@ -2620,34 +2626,34 @@ Axis 2 is defined by the distance from sample 274219 to 4462014
   </thead>
   <tbody>
     <tr>
-      <th>274219 to 4462014</th>
-      <td>0.297071</td>
+      <th>4428060 to 4244333</th>
+      <td>0.162500</td>
       <td>0.000000</td>
       <td>inf</td>
     </tr>
     <tr>
-      <th>400315 to 1093959</th>
-      <td>0.291667</td>
-      <td>0.001120</td>
-      <td>260.312500</td>
-    </tr>
-    <tr>
-      <th>999394 to 1093959</th>
-      <td>0.260047</td>
-      <td>0.001120</td>
-      <td>232.091784</td>
-    </tr>
-    <tr>
-      <th>4349788 to 1093959</th>
-      <td>0.260047</td>
+      <th>510921 to 4400440</th>
+      <td>0.325000</td>
       <td>0.001401</td>
-      <td>185.673427</td>
+      <td>232.033749</td>
     </tr>
     <tr>
-      <th>274219 to 1093959</th>
-      <td>0.307054</td>
-      <td>0.002241</td>
-      <td>137.022822</td>
+      <th>303283 to 4400440</th>
+      <td>0.299578</td>
+      <td>0.005323</td>
+      <td>56.285199</td>
+    </tr>
+    <tr>
+      <th>296374 to 1047169</th>
+      <td>0.266393</td>
+      <td>0.006303</td>
+      <td>42.261840</td>
+    </tr>
+    <tr>
+      <th>89393 to 1111241</th>
+      <td>0.223151</td>
+      <td>0.010365</td>
+      <td>21.529578</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2656,34 +2662,34 @@ Axis 2 is defined by the distance from sample 274219 to 4462014
       <td>...</td>
     </tr>
     <tr>
-      <th>4408558 to 4307652</th>
-      <td>0.139286</td>
-      <td>0.743180</td>
-      <td>0.187418</td>
+      <th>237364 to 242843</th>
+      <td>0.117402</td>
+      <td>0.595980</td>
+      <td>0.196990</td>
     </tr>
     <tr>
-      <th>4465561 to 591785</th>
-      <td>0.171548</td>
-      <td>0.929132</td>
-      <td>0.184633</td>
+      <th>249556 to 260790</th>
+      <td>0.089686</td>
+      <td>0.510260</td>
+      <td>0.175766</td>
     </tr>
     <tr>
-      <th>520657 to 527574</th>
-      <td>0.112064</td>
-      <td>0.633613</td>
-      <td>0.176865</td>
+      <th>4428060 to 525942</th>
+      <td>0.110169</td>
+      <td>0.633098</td>
+      <td>0.174017</td>
     </tr>
     <tr>
-      <th>4460404 to 591785</th>
-      <td>0.155462</td>
-      <td>0.914566</td>
-      <td>0.169985</td>
+      <th>510921 to 514227</th>
+      <td>0.113636</td>
+      <td>0.681048</td>
+      <td>0.166855</td>
     </tr>
     <tr>
-      <th>893992 to 936633</th>
-      <td>0.105065</td>
-      <td>0.752661</td>
-      <td>0.139591</td>
+      <th>151117 to 207627</th>
+      <td>0.123348</td>
+      <td>0.759997</td>
+      <td>0.162301</td>
     </tr>
   </tbody>
 </table>
@@ -2834,7 +2840,7 @@ Axis 2 is defined by the distance from sample 274219 to 4462014
 </div>
 <div class="section" id="principle-coordinates-analysis-pcoa">
 <h3><span class="section-number">3.4.4. </span>Principle Coordinates Analysis (PCoA)<a class="headerlink" href="#principle-coordinates-analysis-pcoa" title="Permalink to this headline">¶</a></h3>
-<p>Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinations analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.</p>
+<p>Finally, lets conclude our introduction to unsupervised learning by plotting these same data using principle coordinates analysis, or PCoA. As mentioned earlier, the math for PCoA is more complex than for polar ordination, but it works better than polar ordination and should be preferred in practice to polar ordination. scikit-bio includes an implementation of PCoA that can be used in practice as illustrated here.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">skbio.stats.ordination</span>
@@ -2843,7 +2849,7 @@ Axis 2 is defined by the distance from sample 274219 to 4462014
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/skbio/stats/ordination/_principal_coordinate_analysis.py:152: RuntimeWarning: The result contains negative eigenvalues. Please compare their magnitude with the magnitude of some of the largest positive eigenvalues. If the negative ones are smaller, it&#39;s probably safe to ignore them, but if they are large in magnitude, the results won&#39;t be useful. See the Notes section for more details. The smallest eigenvalue is -0.008049029808515863 and the largest is 0.27324769881034205.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/q2book/lib/python3.6/site-packages/skbio/stats/ordination/_principal_coordinate_analysis.py:152: RuntimeWarning: The result contains negative eigenvalues. Please compare their magnitude with the magnitude of some of the largest positive eigenvalues. If the negative ones are smaller, it&#39;s probably safe to ignore them, but if they are large in magnitude, the results won&#39;t be useful. See the Notes section for more details. The smallest eigenvalue is -0.006105242855485753 and the largest is 0.23189701232698162.
   RuntimeWarning
 </pre></div>
 </div>
@@ -2927,9 +2933,9 @@ Axis 2 is defined by the distance from sample 274219 to 4462014
 </div>
 <div class="section" id="training-data-test-data-and-cross-validation">
 <h3><span class="section-number">3.5.2. </span>Training data, test data, and cross-validation<a class="headerlink" href="#training-data-test-data-and-cross-validation" title="Permalink to this headline">¶</a></h3>
-<p>Supervised classification algorithms need to be provided with data that is used to develop a model to use in classification (in other words, to train the classifier). This data is a collection of observations with defined classes, and is referred to as the <strong>training data</strong>. These labeled examples are the “supervision” aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the species assignment example, this would be 16S sequences that are taxonomically annotated at the species level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.</p>
+<p>Supervised classification algorithms need to be provided with data that is used to develop a model for use in classification. Developing this model is referred to as training the classifier. The data that is used for this is a collection of observations with defined classes, and is referred to as the <strong>training data</strong>. These labeled examples are the “supervision” aspect of supervised learning. In the email spam filter example, this would be email messages that are annotated as either spam or not spam. In the species assignment example, this would be 16S sequences that are taxonomically annotated at the species level. It is typically important that the training data be balanced - in other words, that there are roughly the same number of examples of each class.</p>
 <p>In addition to the training data, an independent collection of observations with defined classes is needed as <strong>test data</strong>. These observations are not used to train the classifier, but rather to evaluate how the classifier performs on previously unseen data. The goal of testing the classifier on these test data is to predict what performance will be on <strong>real world</strong> data. Real world data refers to data for which the class is currently unknown. In the spam filter example, real world data would be new emails that you are receiving. In the species assignment example, real world data could be sequences that you obtain from the environment using a DNA sequencing instrument. The test data shouldn’t be used for optimization of classifiers: in other words, you shouldn’t develop a classifier on training data, test it on test data, go back and make changes to the classifier, and then re-test on test data. This would risk <strong>over-fitting</strong> the classifier to a particular test data set and performance on that test data may no longer be predictive of how the classifier will perform when it is used on real world data.</p>
-<p>Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach call <strong>k-fold cross validation</strong> during classifier development and optimization <a class="reference internal" href="#cross-validation-1"><span class="std std-numref">Fig. 3.1</span></a>. In k-fold cross-validation, the training data is split into <code class="docutils literal notranslate"><span class="pre">k</span></code> different data sets, where <code class="docutils literal notranslate"><span class="pre">k</span></code> is usually five or ten. In each of the data sets, <span class="math notranslate nohighlight">\(1/k\)</span> of the entries are used as test data and all of the other entries are used as training data. In <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.</p>
+<p>Because training and test data sets can be very costly to develop (for example, they may require many hours of annotation by humans) we often use an approach called <strong>k-fold cross validation</strong> during classifier development and optimization <a class="reference internal" href="#cross-validation-1"><span class="std std-numref">Fig. 3.1</span></a>. In k-fold cross-validation, the training data is split into <code class="docutils literal notranslate"><span class="pre">k</span></code> different data sets, where <code class="docutils literal notranslate"><span class="pre">k</span></code> is usually five or ten. In each of the data sets, <span class="math notranslate nohighlight">\(1/k\)</span> of the entries are used as test data and all of the other entries are used as training data. In <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations, the classifier is developed on the training data and tested on the test data. The average performance of the classifier is then computed across the <code class="docutils literal notranslate"><span class="pre">k</span></code> iterations. k-fold cross validation therefore allows for developing and optimizing a classifier without using dedicated test data.</p>
 <div class="figure align-default" id="cross-validation-1">
 <img alt="../_images/ml-cross-validation.png" src="../_images/ml-cross-validation.png" />
 <p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">An illustration of k-fold cross validation where a single data set is split into k independent training and test data sets. Each circle represents a labeled entry for use in training or testing, and colors indicate the class of each entry. In the case of a spam filter, for example, red circles might represent spam messages while green circles represent messages that are not spam.
@@ -2963,12 +2969,12 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </div>
 <div class="section" id="naive-bayes-classifiers">
 <h3><span class="section-number">3.5.4. </span>Naive Bayes classifiers<a class="headerlink" href="#naive-bayes-classifiers" title="Permalink to this headline">¶</a></h3>
-<p>In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we’ll train Naive Bayes classifiers to do this by building <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">kmer</span></a>-based models of the 16S sequences of taxa in our reference database. We’ll then run our query sequences through those models to identify the most likely taxonomic origin of each query sequence. Since we know the taxonomic origin of our query sequences in this case, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown.</p>
+<p>In this chapter, instead of using sequence alignment to identify the most likely taxonomic origin of a sequence, we’ll train Naive Bayes classifiers to do this by building <a class="reference internal" href="database-searching.html#kmer"><span class="std std-ref">kmer</span></a>-based models of the 16S sequences of taxa in our training data. We’ll then run test sequences through those models to identify the most likely taxonomic origin of each test sequence. Since we know the taxonomic origin of our test sequences, we can evaluate the accuracy of our classifiers by seeing how often they return the known taxonomy assignment. If our training and testing approaches are well-designed, the performance on our tests will inform us of how accurate we can expect our classifier to be on data where the actual taxonomic origin is unknown.</p>
 </div>
 <div class="section" id="training-a-native-bayes-classifier">
 <h3><span class="section-number">3.5.5. </span>Training a Native Bayes classifier<a class="headerlink" href="#training-a-native-bayes-classifier" title="Permalink to this headline">¶</a></h3>
-<p>Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. As with unsupervised learning tasks, the starting point is a feature table representing instances of the different classes. In addition to the feature table, since this is a supervised learning task, the sequence labels (i.e., the class labels) will also be used to build this model. Building the Naive Bayes classifier model is referred to as <strong>training the classifier</strong>.</p>
-<p>The first thing our Naive Bayes classifier will need is the set of all possible words of length <code class="docutils literal notranslate"><span class="pre">k</span></code>. This will be dependent on the value of <code class="docutils literal notranslate"><span class="pre">k</span></code> and the characters in our alphabet (i.e., the characters that we should expect to find in the reference database). This set is referred to as <code class="docutils literal notranslate"><span class="pre">W</span></code>, and can be computed as follows.</p>
+<p>Naive Bayes classifiers work by building a model of what different classes look like based on labeled training data. As with unsupervised learning tasks, the starting point is a feature table representing instances of the different classes. In addition to the feature table, since this is a supervised learning task, the sequence labels (i.e., the class labels) will also be used to train the classifier.</p>
+<p>We’ll again use k-mers as our features, and continue with the value of <code class="docutils literal notranslate"><span class="pre">k</span></code> that we defined above. The first thing our Naive Bayes classifier will need is the set of all possible features, which in our case will be all possible words of length <code class="docutils literal notranslate"><span class="pre">k</span></code>. This will be dependent on the value of <code class="docutils literal notranslate"><span class="pre">k</span></code> and the characters in our alphabet (i.e., the characters that we should expect to find in the sequences in our reference database). This set is referred to as <code class="docutils literal notranslate"><span class="pre">W</span></code>, and can be computed as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphabet</span> <span class="o">=</span> <span class="n">skbio</span><span class="o">.</span><span class="n">DNA</span><span class="o">.</span><span class="n">nondegenerate_chars</span>
@@ -2984,7 +2990,7 @@ Image source: <a class="reference external" href="https://commons.wikimedia.org/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: G, A, T, C
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Alphabet contains the characters: G, T, C, A
 For an alphabet size of 4, W contains 256 length-4 kmers.
 </pre></div>
 </div>
@@ -2994,17 +3000,15 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
 <p class="admonition-title">Exercise</p>
 <p>Given the DNA alphabet (A, C, G, and T), how many different kmers of length 3 are there (i.e., 3-mers)? How many different 5-mers are there? How many 5-mers are there if there are twenty characters in our alphabet (as would be the case if we were working with protein sequences instead of DNA sequences)?</p>
 </div>
-<!-- Pick up here with text; may need additional edits to reflect the phylum to species change --><p>To train our taxonomic classifier, we next need to define a few things. First, at what level of taxonomic specificity do we want to classify our sequences? We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species.</p>
-<p>Next, how long should our kmers be? We don’t have a good idea of this to start with. The longer our kmers, the more likely they are to be specific to certain taxa, which is good because that will help with classification. However, if they get too long it becomes less likely that we’ll observe those kmers in sequences that aren’t represented in our database because the longer the sequence is the more likely we are to see variation across other organisms that are assigned to the same taxonomy. Based on some of my own work in this area, I’ll start us out with 7-mers (i.e., kmers of length 7).</p>
-<p>Finally, we’ll need to know the value of <code class="docutils literal notranslate"><span class="pre">W</span></code>, defined above as the set of all possible kmers given our alphabet and the value of <code class="docutils literal notranslate"><span class="pre">k</span></code>.</p>
-<p>With this information, we’ll next compute our kmer probability table. The content of this table will be the probability of observing every kmer in W given a taxon. This is computed based on a few values:</p>
-<p><span class="math notranslate nohighlight">\(N\)</span> : The total number of sequences in the training set (i.e., our reference database).</p>
+<p>To train our taxonomic classifier, we also need to know what level of taxonomic specificity we want to classify our sequences to. We should expect to achieve higher accuracy at less specific taxonomic levels such as phylum or class, but these are likely to be less informative biologically than more specific levels such as genus or species. Again, we’ll mirror the choice we made for our unsupervised learning task and attempt to build a species classifier here.</p>
+<p>With this information, we can next compute our <strong>k-mer probability table</strong>. The goal for this table is that it accurately represents the probability of observing each k-mer in <code class="docutils literal notranslate"><span class="pre">W</span></code> in a sequence from a given species. Because we don’t know these probabilities, we estimate them based on the frequency that we observe each k-mer in the sequences in our training data. Our k-mer probability table is computed using the following values:</p>
+<p><span class="math notranslate nohighlight">\(N\)</span> : The total number of sequences in the training data.</p>
 <p><span class="math notranslate nohighlight">\(W\)</span>: The set of all possible kmers, given <span class="math notranslate nohighlight">\(k\)</span> and an alphabet.</p>
-<p><span class="math notranslate nohighlight">\(w_i\)</span>: An individual kmer in <span class="math notranslate nohighlight">\(W\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(n(w_i)\)</span> : The number of total sequences containing <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
-<p><span class="math notranslate nohighlight">\(P_i\)</span> : The probability of observing <span class="math notranslate nohighlight">\(w_i\)</span>. Initially it might seem as though this would be computed as <span class="math notranslate nohighlight">\(n(w_i) / N\)</span>, but this neglects the possibility that a kmer observed in a query sequence might not be represented in our reference database (i.e., <span class="math notranslate nohighlight">\(n(w_i) = 0\)</span>), which would create problems later, when we’re assigning probabilities to each class for query sequences. As a result, 0.5 is added to the numerator and 1 is added to the denominator. When we alter counts in this way, we refer to the values that we’re adding as <strong>pseudocounts</strong>.</p>
-<p><span class="math notranslate nohighlight">\(P(w_i | taxon)\)</span> : The probability of observing a kmer given a taxon. Again, it would seem that this would be computed as the proportion of sequences in the taxon containing the kmer, but this would neglect that we’ll likely observe kmers in our query sequences that are not represented in our reference database. A pseudocount is therefore added again to the numerator and denominator. This time the pseudocount in the numerator is scaled by how frequent the kmer is in the reference database as a whole: specifically, it is <span class="math notranslate nohighlight">\(P_i\)</span>.</p>
-<p>Our “kmer probability table” is <span class="math notranslate nohighlight">\(P(w_i | taxon)\)</span> computed for all kmers in W and all taxa represented in our reference database. We’ll compute that and again look at the first 25 rows.</p>
+<p><span class="math notranslate nohighlight">\(w_i\)</span>: An individual k-mer in <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(n(w_i)\)</span> : The total number of training data sequences containing <span class="math notranslate nohighlight">\(w_i\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(P_i\)</span> : The probability of observing <span class="math notranslate nohighlight">\(w_i\)</span> in a relevant real world sequence from any species. Initially it might seem as though this would be computed as <span class="math notranslate nohighlight">\(n(w_i) / N\)</span>, but this neglects the possibility that a k-mer in a real world sequence might not be represented in any sequences in our training data (i.e., <span class="math notranslate nohighlight">\(n(w_i) = 0\)</span>). This would cause a problem when classifing that real world sequence - we’ll revisit this shortly. As a result, 0.5 is added to the numerator and 1 is added to the denominator so that this is computed as <span class="math notranslate nohighlight">\((n(w_i) + 0.5) / (N + 1)\)</span>. When we add to our counts in this way, we refer to the values that we’re adding as <strong>pseudocounts</strong>.</p>
+<p><span class="math notranslate nohighlight">\(P(w_i | species)\)</span> : The probability of observing <span class="math notranslate nohighlight">\(w_i\)</span> in a relevant real world sequence from a given species. Again, it would seem that this would be computed as the proportion of sequences in the species containing <span class="math notranslate nohighlight">\(w_i\)</span>, but this would neglect that we’re likely to observe k-mers in real-world sequences that are not represented in our training data. A pseudocount is therefore added again to the numerator and denominator. This time the pseudocount in the numerator is scaled by how frequent <span class="math notranslate nohighlight">\(w_i\)</span> is in the reference database as a whole: specifically, it is <span class="math notranslate nohighlight">\(P_i\)</span>. The pseudocount in the denominator is still 1.</p>
+<p>Our “kmer probability table” is <span class="math notranslate nohighlight">\(P(w_i | species)\)</span> computed for all kmers in W and all species represented in our reference database. Let’s compute that, and then look at the first 25 rows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_kmer_probability_table</span><span class="p">(</span><span class="n">feature_table</span><span class="p">,</span> <span class="n">sequence_labels</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
@@ -3062,35 +3066,35 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Prevotella stercorea (Bacteroidetes)</th>
+      <th>Flavobacterium succinicans (Bacteroidetes)</th>
       <th>Propionibacterium acnes (Actinobacteria)</th>
       <th>Pseudomonas veronii (Proteobacteria)</th>
-      <th>Pseudomonas viridiflava (Proteobacteria)</th>
-      <th>Flavobacterium succinicans (Bacteroidetes)</th>
-      <th>Prevotella melaninogenica (Bacteroidetes)</th>
       <th>Prevotella copri (Bacteroidetes)</th>
+      <th>Prevotella stercorea (Bacteroidetes)</th>
+      <th>Pseudomonas viridiflava (Proteobacteria)</th>
+      <th>Prevotella melaninogenica (Bacteroidetes)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>AAAA</th>
-      <td>0.034722</td>
-      <td>0.034722</td>
-      <td>0.368056</td>
-      <td>0.034722</td>
-      <td>0.368056</td>
-      <td>0.534722</td>
-      <td>0.034722</td>
+      <td>0.206019</td>
+      <td>0.372685</td>
+      <td>0.039352</td>
+      <td>0.539352</td>
+      <td>0.039352</td>
+      <td>0.206019</td>
+      <td>0.206019</td>
     </tr>
     <tr>
       <th>AAAC</th>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.483796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
+      <td>0.979167</td>
+      <td>0.979167</td>
+      <td>0.812500</td>
+      <td>0.979167</td>
+      <td>0.979167</td>
+      <td>0.479167</td>
+      <td>0.979167</td>
     </tr>
     <tr>
       <th>AAAG</th>
@@ -3105,10 +3109,10 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     <tr>
       <th>AAAT</th>
       <td>0.891204</td>
-      <td>0.057870</td>
       <td>0.224537</td>
       <td>0.057870</td>
-      <td>0.891204</td>
+      <td>0.224537</td>
+      <td>0.724537</td>
       <td>0.224537</td>
       <td>0.057870</td>
     </tr>
@@ -3117,20 +3121,20 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
       <td>0.974537</td>
       <td>0.974537</td>
       <td>0.474537</td>
-      <td>0.807870</td>
       <td>0.974537</td>
-      <td>0.807870</td>
+      <td>0.974537</td>
+      <td>0.641204</td>
       <td>0.974537</td>
     </tr>
     <tr>
       <th>AACC</th>
-      <td>0.946759</td>
-      <td>0.946759</td>
-      <td>0.113426</td>
-      <td>0.280093</td>
-      <td>0.613426</td>
-      <td>0.946759</td>
-      <td>0.946759</td>
+      <td>0.618056</td>
+      <td>0.951389</td>
+      <td>0.118056</td>
+      <td>0.951389</td>
+      <td>0.951389</td>
+      <td>0.451389</td>
+      <td>0.951389</td>
     </tr>
     <tr>
       <th>AACG</th>
@@ -3154,23 +3158,23 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AAGA</th>
-      <td>0.483796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
-      <td>0.983796</td>
+      <td>0.960648</td>
+      <td>0.960648</td>
+      <td>0.793981</td>
+      <td>0.793981</td>
+      <td>0.293981</td>
+      <td>0.793981</td>
+      <td>0.793981</td>
     </tr>
     <tr>
       <th>AAGC</th>
-      <td>0.113426</td>
-      <td>0.946759</td>
-      <td>0.946759</td>
-      <td>0.946759</td>
-      <td>0.780093</td>
-      <td>0.113426</td>
-      <td>0.946759</td>
+      <td>0.956019</td>
+      <td>0.956019</td>
+      <td>0.956019</td>
+      <td>0.622685</td>
+      <td>0.289352</td>
+      <td>0.956019</td>
+      <td>0.456019</td>
     </tr>
     <tr>
       <th>AAGG</th>
@@ -3204,13 +3208,13 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AATC</th>
-      <td>0.090278</td>
-      <td>0.090278</td>
-      <td>0.923611</td>
-      <td>0.923611</td>
-      <td>0.756944</td>
-      <td>0.756944</td>
-      <td>0.256944</td>
+      <td>0.932870</td>
+      <td>0.266204</td>
+      <td>0.932870</td>
+      <td>0.266204</td>
+      <td>0.266204</td>
+      <td>0.932870</td>
+      <td>0.599537</td>
     </tr>
     <tr>
       <th>AATG</th>
@@ -3224,22 +3228,22 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>AATT</th>
-      <td>0.252315</td>
-      <td>0.252315</td>
-      <td>0.585648</td>
-      <td>0.585648</td>
-      <td>0.918981</td>
-      <td>0.585648</td>
-      <td>0.418981</td>
+      <td>0.900463</td>
+      <td>0.067130</td>
+      <td>0.567130</td>
+      <td>0.067130</td>
+      <td>0.233796</td>
+      <td>0.567130</td>
+      <td>0.400463</td>
     </tr>
     <tr>
       <th>ACAA</th>
+      <td>0.928241</td>
+      <td>0.761574</td>
+      <td>0.928241</td>
+      <td>0.261574</td>
       <td>0.094907</td>
       <td>0.928241</td>
-      <td>0.928241</td>
-      <td>0.928241</td>
-      <td>0.928241</td>
-      <td>0.094907</td>
       <td>0.094907</td>
     </tr>
     <tr>
@@ -3256,41 +3260,41 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
       <th>ACAG</th>
       <td>0.974537</td>
       <td>0.474537</td>
-      <td>0.974537</td>
-      <td>0.974537</td>
+      <td>0.807870</td>
       <td>0.974537</td>
       <td>0.807870</td>
-      <td>0.807870</td>
+      <td>0.974537</td>
+      <td>0.974537</td>
     </tr>
     <tr>
       <th>ACAT</th>
-      <td>0.969907</td>
-      <td>0.969907</td>
-      <td>0.636574</td>
-      <td>0.636574</td>
-      <td>0.636574</td>
-      <td>0.969907</td>
-      <td>0.969907</td>
+      <td>0.451389</td>
+      <td>0.951389</td>
+      <td>0.451389</td>
+      <td>0.951389</td>
+      <td>0.951389</td>
+      <td>0.284722</td>
+      <td>0.951389</td>
     </tr>
     <tr>
       <th>ACCA</th>
-      <td>0.988426</td>
-      <td>0.988426</td>
-      <td>0.821759</td>
-      <td>0.821759</td>
-      <td>0.988426</td>
-      <td>0.988426</td>
-      <td>0.988426</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.993056</td>
+      <td>0.826389</td>
+      <td>0.993056</td>
     </tr>
     <tr>
       <th>ACCC</th>
-      <td>0.905093</td>
-      <td>0.238426</td>
-      <td>0.238426</td>
-      <td>0.071759</td>
-      <td>0.238426</td>
-      <td>0.405093</td>
-      <td>0.905093</td>
+      <td>0.076389</td>
+      <td>0.743056</td>
+      <td>0.076389</td>
+      <td>0.743056</td>
+      <td>0.909722</td>
+      <td>0.243056</td>
+      <td>0.409722</td>
     </tr>
     <tr>
       <th>ACCG</th>
@@ -3314,30 +3318,36 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
     </tr>
     <tr>
       <th>ACGA</th>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.826389</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
-      <td>0.993056</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
+      <td>0.988426</td>
+      <td>0.655093</td>
+      <td>0.988426</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
+<p>This k-mer probability table represents our k-mer-based models of the species in our training data. We can use this table to compute probabilities of real world sequences belonging to each of the species represented in this table.</p>
+</div>
+<div class="section" id="applying-a-naive-bayes-classifier">
+<h3><span class="section-number">3.5.6. </span>Applying a Naive Bayes classifier<a class="headerlink" href="#applying-a-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<p>With our k-mer probability table we are now ready to classify unknown sequences. We’ll begin by selecting sequences that will serve as our test data. We’ll pull sequences for our species of interest at random from our reference database, excluding sequences that were used in our training data.</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_seq_data</span> <span class="o">=</span> <span class="n">load_annotated_sequences</span><span class="p">(</span><span class="n">taxa_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="n">sequences_per_taxon</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_seq_data</span> <span class="o">=</span> <span class="n">load_annotated_sequences</span><span class="p">(</span><span class="n">taxa_of_interest</span><span class="p">,</span> <span class="n">class_size</span><span class="o">=</span><span class="n">sequences_per_taxon</span><span class="p">,</span> 
                                           <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ids_to_exclude</span><span class="o">=</span><span class="n">sequence_labels</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">query_labels</span> <span class="o">=</span> <span class="n">feature_labels_from_sequence_records</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
+<span class="n">test_labels</span> <span class="o">=</span> <span class="n">feature_labels_from_sequence_records</span><span class="p">(</span><span class="n">test_seq_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>We can now review a few of the sequences that were selected for our test data set.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">query_seq_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">3</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">test_seq_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">3</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">taxonomy</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>
@@ -3346,24 +3356,24 @@ For an alphabet size of 4, W contains 256 length-4 kmers.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4307391
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>981912
 k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__melaninogenica
-GAACGAACGCTAGCTACAGGCTTAACACACGCAAGTTCGAGGGGAAACGGCATTAAGCGCTTCGCACTTTTTCGGACGTCGACCGGCGCACGGGCGAGTAACGCGTATCCAACCTTCCCACGACTAAGGGATAACCTGCCGAAAGGCAGACTAATACCTTATAGTCTTCACTGACGGCATCAGATGTGAAGTAAAGATTTATCGGTTATGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCAACGATCAGTAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGGCGAGAGCCTGAACCAGCCAAGTAGCGTGCAGGATGACGGCCCTATGGGTTGTAAACTGCTTTTGTATGGGGATAATGTCAATCACGTGTGATTGTTTGCAGGTACCATACGAATAAGGACCGGCTAATTCCGTGCCAG
+GATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGAAACGGCATTTATTGCTTGCACCGAATGGACGTCGACCGGCGCACGGGTGAATAACGCGTATCCAACCTTCCCACAACTAAGGGATAACCGTGCCGAAAGGCAGACTAATACCTTATGTAATCCTTTGATGGCATCAGATAAGGATAAAAGATTTATCGGTTATGGATGGGGATGCGTCTGATTAGCTTGTTGGTGGGGTAACGGCCCACCAAGGCAACGATCAGTAAGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGACGGAAGTCTGAACCAGCCGAGTAGCGTGCAGGAAGACGGCCCTATGGGTTGTAAACTGCTTTTGTATGGGGATAAAGTCAATCACGTGTGATTGTTTGCAGGTACCATACGAATAAGGACCGGCTAATTCCGTGCCAACAG
 🦠
-321875
-k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__copri
-AGAGTTTGATCCTGGCTCAGGATGAACGCTAGCTACAGGCTTAACACATGCAAGTCGAGGGGCAGCATTAAAGTTTGCTTGCAAACTTTAGATGGCGACCGGCGCACGGGTGAGTAACACGTATCCAACCTGCCGATAACTCGGGGATAGCCTTTCGAAAGAAAGATTAATACCCGATGGTATATTTTCACCGCATGGTGAAACTATTAAAGAATTTCGGTTATCGATGGGGATGCGTTCCATTAGGCAGTTGGTGAGGTAACGGCTCACCAAACCTTCGATGGATAGGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGAGACACGGTCCAAACTCCTACGGGAGGCAGCAGTGAGGAATATTGGTCAATGGGCGCGAGCCTGAACCAGCCAAGTAGCGTGAAGGATGACGGCCCTATGGGTTGTAAACTTCTTTTATATGGGAATAAAGTTAGGGACGTGTCCCTTTTTGTGGGTACCGTATGAATAAGGACCGG
+750018
+k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__veronii
+ATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGTAGAGAGAAGCTTGCTTCTCTTGAGAGCGGCGGACGGGTGAGTAATGCCTAGGAATCTGCCTGGTAGTGGGGGATAACGTTCGGAAACGGACGCTAATACCGCATACGTCCTACGGGAGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCTACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGCAGTTACCTAATACGTGATTGTTTTGACGTTACCGACAGAATAAGCACCGGCTAACTCTGTGCCAGCAGCCGCGGTAA
 🦠
-91834
-k__Bacteria;p__Proteobacteria;c__Gammaproteobacteria;o__Pseudomonadales;f__Pseudomonadaceae;g__Pseudomonas;s__viridiflava
-GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTTCGATTCAGCGGCGGACGGGTGAGTAATACCTAGGAATCTGCCTGGTAGTGGGGGACAACGTTTCGAAAGGAACGCTAATACCGCATACGCCCTACGGGGGAAAGCAGGGGACCTTCGGGCCTTGCGCTATCAGATGAGCCTAGGTCGGATTAGCTAGTTGGTGAGGTAATGGCTCACCAAGGCGACGATCCGTAACTGGTCTGAGAGGATGATCAGTCACACTGGAACTGAGACACGGTCCAGACTCCTACGGGAGGCAGCAGTGGGGAATATTGGACAATGGGCGAAAGCCTGATCCAGCCATGCCGCGTGTGTGAAGAAGGTCTTCGGATTGTAAAGCACTTTAAGTTGGGAGGAAGGGTACTTACCTAATACGTGAGTATTTTGACGTTACCGACAGAATAAGCACCGGCTAACTCT
+3955398
+k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Prevotellaceae;g__Prevotella;s__stercorea
+GCTTAACACATGCAAGTCGAGCGCTTTCATGTTGGTTGCTTGCCCCCGATGATGGCGACCGGCGCACGGGTGGGTAACGCGTATCCAACCTACCCTTGTCCCTCGGATAACCCGTCGAAAGGCGGCCTAACACGATATGCGGTTCACAGCAGGCATCTAACGTCCAACACAAATGTGAAGGATAAGGATGGGGATGCGTCTGATTAGCTTGTTGGCGGGGTAACGGCCCACCAAGGCTACGATCAGTACGGGTTCTGAGAGGAAGGTCCCCCACATTGGAACTGACACACGCCCCAAACTCCTACGGGAGGCACCACTGAGAAATATTGGTCAATGCACGAGAGTCTGAACCACCCAAGTAGCGCGCAGGATGACGGCCCTATGGATTGTACACTGCTTTTATAGGGGAATAAAGTGTGCCACCTGTGGCATATTGCAGGTACCCTGCGAATACTGACCGTCTAACTCCGTGCCAGCAGCCGCGGTAATACGGAAGGTCC
 🦠
 </pre></div>
 </div>
 </div>
 </div>
-<p>For a given query sequence, its taxonomy will be classified as follows. First, the set of all kmers will be extracted from the sequence. This is referred to as <span class="math notranslate nohighlight">\(V\)</span>. Then, for all taxa in the kmer probability table, the probability of observing the query sequence will be computed given that taxon: <span class="math notranslate nohighlight">\(P(query | taxon)\)</span>. This is computed as the product of all its kmer probabilities for the given taxon. (It should be clear based on this formula why it was necessary to add pseudocounts when computing our kmer probability table - if not, kmer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.)</p>
-<p>After computing <span class="math notranslate nohighlight">\(P(query | taxon)\)</span> for all taxa, the taxonomy assignment returned is simply the one achieving the maximum probability. Here we’ll classify a sequence and look at the resulting taxonomy assignment.</p>
+<p>For a sequence that is provided as input to our Naive Bayes classifier, which is generally referred to as a query sequence, taxonomy will be assigned as follows. First, the set of all k-mers will be extracted from the query sequence. This set of k-mers is referred to as <span class="math notranslate nohighlight">\(V\)</span>. Then, for each species represented in the k-mer probability table, the probability of observing the sequence will be computed assuming that the sequence is a representative of that species. This is referred to as the probability of the query sequence given the species, or <span class="math notranslate nohighlight">\(P(query | species)\)</span>. This is computed as the product of all its k-mer probabilities for the given species. It should be clear based on this formula why it was necessary to add pseudocounts when computing our k-mer probability table. If not, k-mer probabilities of zero would result in a zero probability of the sequence being derived from that taxon at this step.</p>
+<p>After computing <span class="math notranslate nohighlight">\(P(query | species)\)</span> for each species, the taxonomy assignment returned is simply the one achieving the highest probability. Here we’ll classify a sequence and look at the resulting taxonomy assignment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This function classifies a sequence that has already been split into a list</span>
@@ -3381,7 +3391,7 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
         <span class="n">P_S_t</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">query_log_probability</span><span class="p">,</span> <span class="n">taxon</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">P_S_t</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">V</span>
 
-<span class="c1"># This function is a little more convenient to use. It classifies a sequence </span>
+<span class="c1"># This function is more convenient to use. It classifies a sequence </span>
 <span class="c1"># directly, first by computing V, and then by calling classify_V.</span>
 <span class="k">def</span> <span class="nf">classify_sequence</span><span class="p">(</span><span class="n">query_sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">V</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">query_sequence</span><span class="o">.</span><span class="n">iter_kmers</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)))</span>
@@ -3390,51 +3400,57 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
 </div>
 </div>
 </div>
+<p>We can now apply the Naive Bayes classifier to sequences in our test data set. Here I select a single test sequence, and then provide that as input to the <code class="docutils literal notranslate"><span class="pre">classify_sequence</span></code> function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">random_sequence_record_choice</span><span class="p">(</span><span class="n">sequence_records</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">sequence_records</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
+<span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">test_seq_data</span><span class="p">)</span>
 <span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is predicted to be from the taxon </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">taxon_assignment</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is predicted to be from the species </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">taxon_assignment</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 4307391 is predicted to be from the taxon Prevotella melaninogenica (Bacteroidetes).
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 519044 is predicted to be from the species Prevotella stercorea (Bacteroidetes).
 </pre></div>
 </div>
 </div>
 </div>
+<p>Because this query sequence is from our test data, we know the actual taxonomy assignment as we can look it up to determine if our classifier was correct. This is in contrast to applying our classifier to real world query sequences, where we typically won’t know what the correct assignment in. We can use our test data to estimate how well we expect our classifier to perform on real world data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is known to be from the species </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">query_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is known to be from the species </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 4307391 is known to be from the species Prevotella melaninogenica (Bacteroidetes).
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 519044 is known to be from the species Prevotella stercorea (Bacteroidetes).
 </pre></div>
 </div>
 </div>
 </div>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
-<p>Try classifying a few other query sequences and determining if the returned class was correct. You can do this by changing which entry in <code class="docutils literal notranslate"><span class="pre">queries</span></code> you’re assigning to the value <code class="docutils literal notranslate"><span class="pre">query</span></code>. Keep track of how many times the classifier returned the correct assignment.</p>
+<p>Was this sequence classified as the correct species? If not, was it at least classified to the correct genus? What about the correct phylum?</p>
+</div>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Try classifying a few other query sequences and determining if the returned species assignment was correct. You can do this by running the previous two code cells over again in order. Does this classifier seem to be working well?</p>
 </div>
 </div>
 <div class="section" id="evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier">
-<h3><span class="section-number">3.5.6. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
-<p>Because the query and reference sequences that were working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. Chances are however that if you run the above steps multiple times you’ll get the wrong taxonomy assignment at least some of the time. Up to this point, we’ve left out an important piece of information: how confident should we be in our assignment, or in other words, how dependent is our taxonomy assignment on our specific query? If there were slight differences in our query (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because we sequenced a different region of the 16S sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is additionally important because our classifier will <em>always</em> return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.</p>
-<p>We can quantify confidence using an approach called bootstrapping. With a bootstrap approach, we’ll get our taxonomy assignment as we did above, but then for some user-specified number of times, we’ll create random subsets of V sampled with replacement. We’ll then assign taxonomy to each random subset of V, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to V. The count of times that they are the same divided by the number of iterations we’ve chosen to run will be our confidence value. If the assignments are often the same we’ll have a high confidence value. If the assignments are often different, we’ll have a low confidence value.</p>
-<p>Let’s now assign taxonomy and compute a confidence for that assignment.</p>
+<h3><span class="section-number">3.5.7. </span>Evaluating our confidence in the results of the Naive Bayes classifier<a class="headerlink" href="#evaluating-our-confidence-in-the-results-of-the-naive-bayes-classifier" title="Permalink to this headline">¶</a></h3>
+<p>Because the training and test sequences that we’re working with were randomly selected from the full reference database, each time you run this notebook you should observe different results. If you run the above steps multiple times you’ll get the wrong taxonomy assignment at least some of the time, most likely. Up to this point, we’ve left out an important piece of information: how confident should we be in our assignment? In other words, how dependent is our taxonomy assignment on our specific query sequence? If there were slight differences in our query sequence (e.g., because we observed a very closely related organism, such as one of the same species but a different strain, or because there are some sequencing errors in our sequence) would we obtain the same taxonomy assignment? If so, we should have higher confidence in our assignment. If not, we should have lower confidence in our assignment. This is important because our classifier as implemented so far will <em>always</em> return one of the classes, even if our query sequence is very different than any of the sequences in our reference database.</p>
+<p>We can quantify confidence in our taxonomic assignments using an approach called bootstrapping. With a bootstrap approach, we’ll get our taxonomy assignment as we did above, but then for some user-specified number of iterations, we’ll create random subsets of <span class="math notranslate nohighlight">\(V\)</span> sampled with replacement. We’ll then assign taxonomy to each random subset of <span class="math notranslate nohighlight">\(V\)</span>, and count the number of times the resulting taxonomy assignment is the same as the one we received when assigning taxonomy to <span class="math notranslate nohighlight">\(V\)</span>. The count of times that they are the same divided by the number of iterations we’ve chosen to run will be our confidence in the assignment. If the assignments are often the same we’ll have a high confidence value, up to a maximum confidence value of 1 if the assignments are always the same. If the assignments are often different we’ll have a low confidence value, down to a minimum value of 0 if the assignments are never the same.</p>
+<p>The following funtion will assign taxonomy to a query sequence, and will compute and return a confidence value for the assignment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span>
                                       <span class="n">confidence_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="c1"># classify the query sequence, as we did above</span>
-    <span class="n">taxon</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">taxon</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">classify_sequence</span><span class="p">(</span><span class="n">query_sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 
     <span class="n">count_same_taxon</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="c1"># Define the size of each subsample as 10% of the actual number of</span>
@@ -3457,35 +3473,51 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
 </div>
 </div>
 </div>
+<p>We can apply this to a randomly selected sequence from our test data as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">query_seq_data</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query_sr</span> <span class="o">=</span> <span class="n">random_sequence_record_choice</span><span class="p">(</span><span class="n">test_seq_data</span><span class="p">)</span>
 <span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">taxon_assignment</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is predicted to be from the species </span><span class="si">%s</span><span class="s2">. Confidence in this assignment is: </span><span class="si">%1.2f</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">taxon_assignment</span><span class="p">,</span> <span class="n">confidence</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pseudomonas veronii (Proteobacteria)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prevotella melaninogenica (Bacteroidetes)
+0.83
+Sequence 4298291 is predicted to be from the species Prevotella melaninogenica (Bacteroidetes). Confidence in this assignment is: 0.83.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.47
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence </span><span class="si">%s</span><span class="s2"> is known to be from the species </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequence 4298291 is known to be from the species Prevotella melaninogenica (Bacteroidetes).
 </pre></div>
 </div>
 </div>
 </div>
-<p>How did the computed confidence compare to the accuracy taxonomy assignment?</p>
-<p>At first glance, we don’t necessarily have an idea of what good versus bad confidence scores are, but we can use our reference database to explore that. Knowing that can allows us to develop a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we might reject it. To explore this, let’s compute taxonomy assignments and confidence for all of our query sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.</p>
+<div class="admonition-exercise admonition">
+<p class="admonition-title">Exercise</p>
+<p>Was this sequence classified as the correct species? Does the confidence value align with this result?</p>
+</div>
+<p>At first glance, we don’t necessarily have an idea of what good versus bad confidence scores are, but we can use our test data to explore that. Once we know what a good confidence score is, we can apply a confidence threshold that we can use in our work. For example, we can define a confidence threshold above which we would accept a taxonomy assignment and below which we could label a sequence as “unclassified”. To explore this, let’s compute taxonomy assignments and confidence for all of our test sequences and then see what the distributions of confidence scores look like for correct assignments and incorrect assignments.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">correct_assignment_confidences</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">incorrect_assignment_confidences</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">query_sr</span> <span class="ow">in</span> <span class="n">query_seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">query_sr</span> <span class="ow">in</span> <span class="n">test_seq_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">classify_sequence_with_confidence</span><span class="p">(</span><span class="n">query_sr</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">kmer_probability_table</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-    <span class="n">known_taxonomy</span> <span class="o">=</span> <span class="n">query_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span>
+    <span class="n">known_taxonomy</span> <span class="o">=</span> <span class="n">test_labels</span><span class="p">[</span><span class="s1">&#39;legend entry&#39;</span><span class="p">][</span><span class="n">query_sr</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span>
     <span class="n">correct_assignment</span> <span class="o">=</span> <span class="n">known_taxonomy</span> <span class="o">==</span> <span class="n">predicted_taxonomy</span>
     <span class="k">if</span> <span class="n">correct_assignment</span><span class="p">:</span>
         <span class="n">correct_assignment_confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
@@ -3493,7 +3525,9 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
         <span class="n">incorrect_assignment_confidences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
 
     <span class="n">summary</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">predicted_taxonomy</span><span class="p">,</span> <span class="n">known_taxonomy</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">correct_assignment</span><span class="p">])</span>
+
 <span class="n">summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Predicted taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;Known taxonomy&#39;</span><span class="p">,</span> <span class="s1">&#39;Confidence&#39;</span><span class="p">,</span> <span class="s1">&#39;Correct assignment&#39;</span><span class="p">])</span>
+
 <span class="n">summary</span>
 </pre></div>
 </div>
@@ -3526,268 +3560,254 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
   <tbody>
     <tr>
       <th>0</th>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>0.66</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>0.58</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>0.48</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>0.41</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>Prevotella stercorea (Bacteroidetes)</td>
-      <td>0.55</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>0.55</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>0.62</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>0.83</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>0.60</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>Propionibacterium acnes (Actinobacteria)</td>
-      <td>0.51</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>0.70</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>0.60</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>0.69</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>0.67</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>0.72</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>0.60</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>0.77</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>Pseudomonas veronii (Proteobacteria)</td>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>0.60</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>0.63</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>Pseudomonas viridiflava (Proteobacteria)</td>
-      <td>0.53</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>0.91</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>21</th>
       <td>Flavobacterium succinicans (Bacteroidetes)</td>
       <td>Flavobacterium succinicans (Bacteroidetes)</td>
       <td>0.86</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>22</th>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>0.87</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>23</th>
+      <th>1</th>
       <td>Flavobacterium succinicans (Bacteroidetes)</td>
       <td>Flavobacterium succinicans (Bacteroidetes)</td>
       <td>0.59</td>
       <td>True</td>
     </tr>
     <tr>
+      <th>2</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.93</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.85</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>Flavobacterium succinicans (Bacteroidetes)</td>
+      <td>0.75</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.86</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.73</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.29</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.83</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>Propionibacterium acnes (Actinobacteria)</td>
+      <td>0.81</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.74</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.31</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.53</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.77</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>0.69</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.50</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.30</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.40</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.60</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella copri (Bacteroidetes)</td>
+      <td>0.68</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.42</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.49</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.54</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.50</td>
+      <td>True</td>
+    </tr>
+    <tr>
       <th>24</th>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>Flavobacterium succinicans (Bacteroidetes)</td>
-      <td>0.91</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>Prevotella stercorea (Bacteroidetes)</td>
+      <td>0.62</td>
       <td>True</td>
     </tr>
     <tr>
       <th>25</th>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>0.92</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.66</td>
       <td>True</td>
     </tr>
     <tr>
       <th>26</th>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>0.64</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.34</td>
       <td>True</td>
     </tr>
     <tr>
       <th>27</th>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>0.84</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.54</td>
       <td>True</td>
     </tr>
     <tr>
       <th>28</th>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>0.90</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.58</td>
       <td>True</td>
     </tr>
     <tr>
       <th>29</th>
+      <td>Pseudomonas veronii (Proteobacteria)</td>
+      <td>Pseudomonas viridiflava (Proteobacteria)</td>
+      <td>0.61</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>30</th>
       <td>Prevotella melaninogenica (Bacteroidetes)</td>
       <td>Prevotella melaninogenica (Bacteroidetes)</td>
       <td>0.73</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>30</th>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>0.83</td>
-      <td>True</td>
-    </tr>
-    <tr>
       <th>31</th>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>0.84</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.90</td>
       <td>True</td>
     </tr>
     <tr>
       <th>32</th>
       <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>0.54</td>
-      <td>False</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.99</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>33</th>
       <td>Prevotella melaninogenica (Bacteroidetes)</td>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>0.38</td>
-      <td>False</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.86</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>34</th>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>Prevotella copri (Bacteroidetes)</td>
-      <td>0.58</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>Prevotella melaninogenica (Bacteroidetes)</td>
+      <td>0.64</td>
       <td>True</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<!-- Add confusion matrix computed from the above table. --><div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_correct_assignments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">correct_assignment_confidences</span><span class="p">)</span>
-<span class="n">n_incorrect_assignments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">incorrect_assignment_confidences</span><span class="p">)</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">n_correct_assignments</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_correct_assignments</span> <span class="o">+</span> <span class="n">n_incorrect_assignments</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The accuracy of the classifier was </span><span class="si">%1.3f</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">accuracy</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The accuracy of the classifier was 0.857.
-</pre></div>
-</div>
-</div>
-</div>
+<p>Comparing distributions of confidence scores for correct and incorrect assignments is possible from the table above, and the table provides details that can be useful in assessing when the classifier is working well and when it isn’t. A couple of boxplots however will make comparing these distributions trivial.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
@@ -3802,12 +3822,30 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4431f0df28&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4f6de8f630&gt;
 </pre></div>
 </div>
-<img alt="../_images/machine-learning_95_1.png" src="../_images/machine-learning_95_1.png" />
+<img alt="../_images/machine-learning_97_1.png" src="../_images/machine-learning_97_1.png" />
 </div>
 </div>
+<p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
+<p>We can also compute the overall accuracy of our classifier as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_correct_assignments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">correct_assignment_confidences</span><span class="p">)</span>
+<span class="n">n_incorrect_assignments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">incorrect_assignment_confidences</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">n_correct_assignments</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_correct_assignments</span> <span class="o">+</span> <span class="n">n_incorrect_assignments</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The accuracy of the classifier was </span><span class="si">%1.3f</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The accuracy of the classifier was 0.857.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can summarize how this classifier worked by creating a <strong>confusion matrix</strong>. A confusion matrix has two axes - one corresponding to the actual assignments and one corresponding to the predicted assignments. The values in the confusion matrix represent how each instance of each known taxonomy was classified. The order of the classes on the two axes should always be the same in a confusion matrix. A good classifier will then have high values along the diagonal. If classifier accuracy is not great, you can see which known classes were misassigned, or where the classifier got confused.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">confusion_matrix</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Predicted taxonomy&#39;</span><span class="p">)[</span><span class="s1">&#39;Known taxonomy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
@@ -3910,7 +3948,7 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>5</td>
+      <td>4</td>
       <td>0</td>
       <td>0</td>
     </tr>
@@ -3922,7 +3960,7 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
       <td>0</td>
       <td>0</td>
       <td>4</td>
-      <td>2</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>Pseudomonas viridiflava (Proteobacteria)</th>
@@ -3930,15 +3968,15 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
       <td>1</td>
-      <td>3</td>
+      <td>1</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>What does this plot tell you about how well setting a confidence threshold is likely to work? If you never wanted to reject a correct assignment, how often would you accept an incorrect assignment? If you never wanted to accept an incorrect assignment, how often would you reject a correct assignment?</p>
+<p>If the classifier generated here got some classifications wrong, did the classifier at least assign the sequences to the correct phylum?</p>
 <div class="admonition-exercise admonition">
 <p class="admonition-title">Exercise</p>
 <p>Jump back up to where we <span class="xref myst">defined <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code></span> and modify those values. How does the accuracy of the classifier change if you increase or decrease <code class="docutils literal notranslate"><span class="pre">k</span></code> while keeping the value of <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> fixed? How does the accuracy change if you increase or decrease the <code class="docutils literal notranslate"><span class="pre">taxonomic_level</span></code> while keeping <code class="docutils literal notranslate"><span class="pre">k</span></code> fixed?</p>
@@ -3947,9 +3985,9 @@ GAGTTTGATCATGGCTCAGATTGAACGCTGGCGGCAGGCCTAACACATGCAAGTCGAGCGGATGAGAAGAGCTTGCTCTT
 </div>
 <div class="section" id="variations-on-the-input-to-machine-learning-algorithms">
 <h2><span class="section-number">3.6. </span>Variations on the input to machine learning algorithms<a class="headerlink" href="#variations-on-the-input-to-machine-learning-algorithms" title="Permalink to this headline">¶</a></h2>
-<p>As in the Iris dataset, the labels in our microbial data are discrete (i.e., categorical or qualitative) as opposed to continuous (i.e., quantitative). If our labels in a supervised learning project were continous instead of discrete - for example the abundance of an organism in an environment - we could still supervised learning, but we would work with different algorithms. Specifically, we’d used supervised regression algorithms, rather than supervised classification algorithms.</p>
+<p>As in the Iris dataset, the labels in our microbial data are discrete (i.e., categorical or qualitative) as opposed to continuous (i.e., quantitative). If our labels in a supervised learning project were continous instead of discrete - for example the abundance of an organism in an environment - we could still apply supervised learning, but we would work with different algorithms. Specifically, we’d used supervised regression algorithms, rather than supervised classification algorithms.</p>
 <p>Similarly, while the features we worked with in our unsupervised and supervised learning examples were continuous values, feature values could also be discrete (e.g., the sex of a subject, or the species of a specimen in an environment). The applicable algorithms might change, but machine learning techniques in general would still be available.</p>
-<p>scikit-learn provides other example datasets, including <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes">the diabetes dataset</a>, <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset">the housing market dataset</a> and <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset">the hand-writing dataset</a>. These are good illustrations of other types of data that can be used in machine learning tasks. The message to take away is that if you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data. That said, and as I mentioned at the beginning of this chapter, this introduction barely scratches the surface of this complex branch of statistics and computer science. Especially with the accessible of these methods through software like scikit-learn, it’s easy to get to the point where you know enough to get yourself into trouble by using machine learning methods inappropriately. If you’d like to apply these tools in your research, you must continue your learning. I recommend continuing with <a class="reference external" href="https://scikit-learn.org/">scikit-learn’s documentation</a>.</p>
+<p>scikit-learn provides other example datasets, including <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html#sklearn.datasets.load_diabetes">the diabetes dataset</a>, <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#boston-house-prices-dataset">the housing market dataset</a> and <a class="reference external" href="https://scikit-learn.org/stable/datasets/toy_dataset.html#optical-recognition-of-handwritten-digits-dataset">the hand-writing dataset</a>. These are good illustrations of other types of data that can be used in machine learning tasks. The message to take away is that if you can wrangle your data into a feature table, potentially with corresponding sample labels, you will likely be able to apply machine learning techniques to that data. That said, and as I mentioned at the beginning of this chapter, this introduction barely scratches the surface of this complex branch of statistics and computer science. Especially with the accessibility of these methods through software like scikit-learn, it’s easy to get to the point where you know enough to get yourself into trouble by using machine learning methods inappropriately. If you’d like to apply these tools in your research, you must continue your learning. I recommend continuing with <a class="reference external" href="https://scikit-learn.org/">scikit-learn’s documentation</a>.</p>
 </div>
 <div class="section" id="list-of-works-cited">
 <h2><span class="section-number">3.7. </span>List of works cited<a class="headerlink" href="#list-of-works-cited" title="Permalink to this headline">¶</a></h2>
