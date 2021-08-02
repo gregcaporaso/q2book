@@ -18,22 +18,10 @@ parts:
   - file: using/alpha-diversity
   - file: using/beta-diversity
   - file: using/feature-table-normalization
-- caption: Understanding the algorithms
-  numbered: true
-  chapters:
-  - file: algorithms/pairwise-alignment
-  - file: algorithms/database-searching
-  - file: algorithms/machine-learning
-- caption: Developing with QIIME 2
-  numbered: true
-  chapters:
-  - file: developing/getting-started
-  - file: developing/first-plugin
 - caption: Back Matter
   numbered: true
   chapters:
   - file: back-matter/importing-examples
-  - file: back-matter/biological-information
   - file: back-matter/advanced-metadata-formatting
   - file: back-matter/microbiome-methods
   - file: back-matter/q2-origin-story
